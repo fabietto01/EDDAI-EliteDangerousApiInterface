@@ -15,7 +15,7 @@ def equal_list_models(list1:list[models.Model], list2:list[models.Model]) -> boo
         return False
     for index in range(len(list1)):
         if isinstance(list1[index], list2[index].__class__):
-            filds = [f.name for f in list1[index]._meta.get_fields() if not f.name in ['id','update_at']]
+            filds = [f.name for f in list1[index]._meta.get_fields() if not f.name in ['id','updated']]
             for fild in filds:
                 if getattr(list1[index], fild) != getattr(list2[index], fild):
                     return False
@@ -23,7 +23,7 @@ def equal_list_models(list1:list[models.Model], list2:list[models.Model]) -> boo
             return False
     return True
 
-def in_list_models(instanze:models.Model, list:list[models.Model], fields_exclus:list[str]=['id','update_at']) -> bool:
+def in_list_models(instanze:models.Model, list:list[models.Model], fields_exclus:list[str]=['id','updated']) -> bool:
     """
     dato che la funzione __eq__ della classe models.Model ugualia solo per pk,
     ho creato questa funzione per verificare se una istanza è presente in una lista

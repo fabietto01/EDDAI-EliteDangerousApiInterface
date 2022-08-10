@@ -3,6 +3,8 @@ from django.conf import settings
 import zlib, zmq, simplejson, logging
 import time
 
+from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
+
 class EddnClient(object):
 
     __log = logging.getLogger(__name__)
@@ -69,6 +71,5 @@ class EddnClient(object):
 
     def process(self, data:json):
         if data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
-            self.__log.debug(f"Received message from EDDN broker: {data}")
-            
-            
+            analytic = JournalAnalytic(data=data)
+            analytic.analyst()

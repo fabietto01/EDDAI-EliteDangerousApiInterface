@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_filters', #pip install django-filter
 
     'ed_core',
+    'ed_system',
     'core',
     'eddn',
 
@@ -95,6 +96,7 @@ DATABASES = {
     }
 }
 
+DATABASE_ROUTERS = ["core.router.EDInfoRouter"]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
