@@ -43,9 +43,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', #per il login con token
     'django_filters', #pip install django-filter
 
+    'core',
+
     'ed_core',
     'ed_system',
-    'core',
+    'ed_economy',
+    'ed_bgs',
     'eddn',
 
 

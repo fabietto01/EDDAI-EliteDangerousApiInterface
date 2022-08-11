@@ -1,0 +1,1 @@
+from ed_economy.models.Economy import Economy

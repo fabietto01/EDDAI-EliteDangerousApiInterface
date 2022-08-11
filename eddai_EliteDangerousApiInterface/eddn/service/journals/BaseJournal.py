@@ -10,9 +10,6 @@ class BaseJournal(BaseSerializer):
         min_length=3,
         max_length=3,
     )
-    SystemAddress = serializers.IntegerField(
-        min_value=0
-    )
     StarSystem = serializers.CharField(
         min_length=1
     )

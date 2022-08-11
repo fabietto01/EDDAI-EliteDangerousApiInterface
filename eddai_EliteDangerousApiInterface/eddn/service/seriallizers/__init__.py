@@ -1,2 +1,3 @@
-from eddn.service.Seriallizers.BaseSecondarySerializer import BaseSecondariSerializer
-from eddn.service.Seriallizers.BaseSerializer import BaseSerializer
+from eddn.service.seriallizers.BaseSecondarySerializer import BaseSecondariSerializer
+from eddn.service.seriallizers.BaseSerializer import BaseSerializer
+

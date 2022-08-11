@@ -41,7 +41,7 @@ class BaseDataAnalytics(object):
         """
         chimma questa funzione quando qualcosa va storto cosi da salvare l'errore
         """
-        if self.instance is None:
+        if not self.instance is None:
             self.instance.error = {"error": f"{str}"} if str is not None else analyst.errors if analyst else {}
             self.instance.save(force_update=True)
         else:
@@ -61,7 +61,10 @@ class BaseDataAnalytics(object):
             if analyst.is_valid():
                 analyst.save()
             else:
-                self.__log.error("analyst is not valid")
+                self.analyst_error(analyst=analyst.errors)
         except NotSerializerError as e:
+            self.analyst_error(str=e)
+            return None
+        except Exception as e:
             self.analyst_error(str=e)
             return None

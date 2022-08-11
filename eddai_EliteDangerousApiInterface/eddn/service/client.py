@@ -70,6 +70,9 @@ class EddnClient(object):
                 self.process(dataJson)
 
     def process(self, data:json):
-        if data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
-            analytic = JournalAnalytic(data=data)
-            analytic.analyst()
+        try:
+            if data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
+                analytic = JournalAnalytic(data=data)
+                analytic.analyst()
+        except Exception as e:
+            self.__log.critical(f"un errore da parte dei analisi dei dati: {e}")

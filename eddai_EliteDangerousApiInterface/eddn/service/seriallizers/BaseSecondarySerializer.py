@@ -1,5 +1,4 @@
-from eddn.service.Seriallizers.BaseSerializer import BaseSerializer
-
+from eddn.service.seriallizers.BaseSerializer import BaseSerializer
 
 class BaseSecondariSerializer(BaseSerializer):
     def save(self, **kwargs):

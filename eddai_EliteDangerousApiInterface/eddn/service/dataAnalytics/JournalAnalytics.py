@@ -2,6 +2,8 @@ from eddn.service.dataAnalytics.BaseDataAnalytics import BaseDataAnalytics
 from eddn.service.dataAnalytics.Erors import NotSerializerError
 from rest_framework.serializers import Serializer
 
+from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
+
 class JournalAnalytic(BaseDataAnalytics):
 
     def get_event(self) -> str:
@@ -19,10 +21,17 @@ class JournalAnalytic(BaseDataAnalytics):
         try:
             func = getattr(self, f"analyst_{self.get_event()}")
         except AttributeError as e:
-            raise NotSerializerError(f"the service has not yet analyzed this event -> {e}")
+            raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")
         else:
             return func()
 
     def analyst_FSDJump(self):
         data = self.get_message()
-        pass
+        for attr, value in data.items():
+            if attr in ('Powers', 'PowerplayState'):
+                dwadadawd= 3
+            elif attr == "Factions":
+                for attr2, value2 in value.items():
+                    if attr2 in ('HomeSystem', 'SquadronFaction'):
+                        dwadadawd= 3
+        return FSDJumpSerializer(data=data)
