@@ -7,20 +7,20 @@ from eddn.service.seriallizers.customFields.CustomChoiceField import CustomChoic
 
 from ed_system.models import System
 from ed_economy.models import Economy
-from eddn.models import get_model_list_from_eddn
+from eddn.models import eddn_get_data_list, eddn_get_instanze
 
-from core.utility import update_or_create_if_time, get_or_none
+from core.utility import update_or_create_if_time
 
 class FSDJumpSerializer(BaseJournal):
     """
     sserializer dedicato alla lavorazione dei dati con scema journal e evento FSDJump
     """
     SystemEconomy = CustomChoiceField(
-        choices=get_model_list_from_eddn(Economy),
+        choices=eddn_get_data_list(Economy),
         required=False,
     )
     SystemSecondEconomy = CustomChoiceField(
-        choices=get_model_list_from_eddn(Economy),
+        choices=eddn_get_data_list(Economy),
         required=False,
     )
     SystemSecurity = CustomChoiceField(
@@ -40,8 +40,8 @@ class FSDJumpSerializer(BaseJournal):
         defaults = BaseJournal.set_data_defaults(self, validated_data)
         defaults.update(
             {
-                "primaryEconomy":    validated_data.get('SystemEconomy', None),
-                "secondaryEconomy": validated_data.get('SystemSecondEconomy', None),
+                "primaryEconomy": eddn_get_instanze(Economy, validated_data.get('SystemEconomy', None)),
+                "secondaryEconomy": eddn_get_instanze(Economy, validated_data.get('SystemEconomy', None)),
                 "security": validated_data.get('SystemSecurity', None),
             }
         )

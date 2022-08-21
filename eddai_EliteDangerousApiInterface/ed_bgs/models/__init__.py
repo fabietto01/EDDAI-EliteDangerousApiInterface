@@ -1,0 +1,1 @@
+from ed_bgs.models.MinorFaction import MinorFaction

@@ -2,17 +2,22 @@ from django.db import models
 
 from django.utils.translation import gettext_lazy as _
 
-from core.utility import get_values_list_or_default
+from core.utility import get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
+
 # Create your models here.
 
-def get_model_list_from_eddn(klass) -> list[models.Model]:
+def eddn_get_data_list(klass) -> list[str]:
     """
     ritorna una lista di modelli da usare per la mapatura e verivica dei datti ricevuti da EDDN
     """
-    data = get_values_list_or_default(klass, [], (OperationalError, ProgrammingError), '_eddn', 'name', 'id')
+    data = get_values_list_or_default(klass, [], (OperationalError, ProgrammingError), '_eddn', 'name')
     x =  [data[0] if data[0] != None else data[1] for data in data]
     return x
+
+def eddn_get_instanze(klass, eddn: str) -> models.Model:
+    return get_or_none(klass, _eddn=eddn)
+    
 
 class DataLog(models.Model):
     data = models.JSONField(
@@ -54,12 +59,6 @@ class AbstractDataEDDN(models.Model):
     @eddn.setter
     def eddn(self, value: str) -> None:
         self.__eddn = value
-
-    def eddn_value_list(klass) -> list[models.Model]:
-        data = get_values_list_or_default(klass, [], (OperationalError, ProgrammingError), '_eddn', 'name')
-        x =  [data.eddn for data in data]
-        return x
-
 
     class Meta:
         abstract = True
