@@ -7,18 +7,6 @@ from django.db import OperationalError, ProgrammingError
 
 # Create your models here.
 
-def eddn_get_data_list(klass) -> list[str]:
-    """
-    ritorna una lista di modelli da usare per la mapatura e verivica dei datti ricevuti da EDDN
-    """
-    data = get_values_list_or_default(klass, [], (OperationalError, ProgrammingError), '_eddn', 'name')
-    x =  [data[0] if data[0] != None else data[1] for data in data]
-    return x
-
-def eddn_get_instanze(klass, eddn: str) -> models.Model:
-    return get_or_none(klass, _eddn=eddn)
-    
-
 class DataLog(models.Model):
     data = models.JSONField(
         verbose_name=_('data')
@@ -60,5 +48,19 @@ class AbstractDataEDDN(models.Model):
     def eddn(self, value: str) -> None:
         self.__eddn = value
 
+    def get_data_list(self) -> list[str]:
+        """
+        ritorna una lista di modelli da usare per la mapatura e verivica dei datti ricevuti da EDDN
+        """
+        data = get_values_list_or_default(self.__class__, [], (OperationalError, ProgrammingError), '_eddn', 'name')
+        x =  [data[0] if data[0] != None else data[1] for data in data]
+        return x
+
+    def get_instanze_from_eddn(self, eddn: str) -> models.Model:
+        _eddn = get_or_none(self.__class__, _eddn=eddn)
+        if _eddn:
+            return _eddn
+        return get_or_none(self.__class__, name=eddn)
+        
     class Meta:
         abstract = True

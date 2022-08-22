@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 from ed_economy.models import Economy
+from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
 
 class System(models.Model):
     """

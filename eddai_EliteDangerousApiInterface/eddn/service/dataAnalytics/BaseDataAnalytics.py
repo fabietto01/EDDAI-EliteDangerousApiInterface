@@ -61,7 +61,7 @@ class BaseDataAnalytics(object):
             if analyst.is_valid():
                 analyst.save()
             else:
-                self.analyst_error(analyst=analyst.errors)
+                self.analyst_error(analyst=analyst)
         except NotSerializerError as e:
             self.analyst_error(str=e)
             return None

@@ -31,7 +31,10 @@ class JournalAnalytic(BaseDataAnalytics):
             if attr in ('Powers', 'PowerplayState'):
                 dwadadawd= 3
             elif attr == "Factions":
-                for attr2, value2 in value.items():
-                    if attr2 in ('HomeSystem', 'SquadronFaction'):
-                        dwadadawd= 3
+                for faction in value:
+                    for attr2, value2 in faction.items():
+                        if attr2 in ('HomeSystem', 'SquadronFaction'):
+                            dwadadawd= 3
+        if data.get('Factions', []) != []:
+            dwadadawd= 3
         return FSDJumpSerializer(data=data)
