@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from ed_bgs.models.Faction import Faction
+from ed_bgs.models.Faction import Faction, default_faction
 from ed_bgs.models.Government import Government
-from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
+
 
 class MinorFaction(models.Model):
     """
@@ -14,10 +14,10 @@ class MinorFaction(models.Model):
     )
     allegiance = models.ForeignKey(
         Faction, on_delete=models.PROTECT,
+        default=default_faction,
         verbose_name=_('allegiance'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
-        null=True
     )
     government = models.ForeignKey(
         Government, on_delete=models.PROTECT,

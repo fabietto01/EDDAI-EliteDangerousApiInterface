@@ -3,6 +3,10 @@ from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
 
+def default_faction():
+    from core.utility import get_or_none
+    return get_or_none(Faction, name='Independent')
+
 class Faction(AbstractDataEDDN, models.Model):
 
     name = models.CharField(

@@ -8,6 +8,20 @@ class MinorFactionInSystemInline(admin.TabularInline):
     raw_id_fields = ("system",)
     extra = 0
 
+class StateInMinorFaction(admin.TabularInline):
+    model = StateInMinorFaction
+    raw_id_fields = ("minorFaction",)
+    extra = 0
+
+@admin.register(MinorFactionInSystem)
+class MinorFactionInSystemAdmin(admin.ModelAdmin):
+    model = MinorFactionInSystem
+    list_display = ('system', 'minorFaction', 'Influence')
+    list_filter = ('system', 'minorFaction')
+    search_fields = ('system', 'minorFaction')
+    inlines = [StateInMinorFaction]
+    raw_id_fields = ("system","minorFaction")
+
 @admin.register(Faction)
 class FactionAdmin(admin.ModelAdmin):
     model = Faction

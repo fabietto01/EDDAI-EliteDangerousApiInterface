@@ -1,7 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class State(models.Model):
+from eddn.models import AbstractDataEDDN
+from core.utility import get_values_list_or_default
+from django.db import OperationalError, ProgrammingError
+
+class State(AbstractDataEDDN, models.Model):
     """
     modello utilizato per memorizzare tutti i tipi di stati per le minori fazioni
     """
@@ -26,6 +30,14 @@ class State(models.Model):
         blank=True, null=True,
         verbose_name=_('description')
     )
+
+    def get_data_list(self, type) -> list[str]:
+        """
+        ritorna una lista di modelli da usare per la mapatura e verivica dei datti ricevuti da EDDN
+        """
+        data = get_values_list_or_default(State.objects.filter(type=type), [], (OperationalError, ProgrammingError), '_eddn', 'name')
+        x =  [data[0] if data[0] != None else data[1] for data in data]
+        return x
 
     def __str__(self) -> str:
         return str(self.name)

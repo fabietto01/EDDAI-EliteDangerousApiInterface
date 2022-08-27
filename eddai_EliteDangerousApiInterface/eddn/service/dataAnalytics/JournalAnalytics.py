@@ -35,6 +35,8 @@ class JournalAnalytic(BaseDataAnalytics):
                     for attr2, value2 in faction.items():
                         if attr2 in ('HomeSystem', 'SquadronFaction'):
                             dwadadawd= 3
+                        if str(attr2).endswith('States') and not attr2 in ('RecoveringStates', 'ActiveStates', 'PendingStates'):
+                            dwadadawd= 3
         if data.get('Factions', []) != []:
             dwadadawd= 3
         return FSDJumpSerializer(data=data)

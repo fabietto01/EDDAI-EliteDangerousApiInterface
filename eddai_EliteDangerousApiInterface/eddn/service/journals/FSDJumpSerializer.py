@@ -47,7 +47,7 @@ class FSDJumpSerializer(BaseJournal):
         defaults.update(
             {
                 "primaryEconomy": Economy().get_instanze_from_eddn(validated_data.get('SystemEconomy', None)),
-                "secondaryEconomy": Economy().get_instanze_from_eddn(validated_data.get('SystemEconomy', None)),
+                "secondaryEconomy": Economy().get_instanze_from_eddn(validated_data.get('SystemSecondEconomy', None)),
                 "security": validated_data.get('SystemSecurity', None),
             }
         )
