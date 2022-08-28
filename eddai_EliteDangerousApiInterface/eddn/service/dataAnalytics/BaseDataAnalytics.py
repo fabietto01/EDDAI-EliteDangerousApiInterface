@@ -37,7 +37,7 @@ class BaseDataAnalytics(object):
         """
         raise NotImplementedError('`get_analyst()` must be implemented.')
 
-    def analyst_error(self, str:str=None, analyst:Serializer=None):
+    def analyst_error(self, str:str=None, analyst:Serializer=None, debug:bool=False):
         """
         chimma questa funzione quando qualcosa va storto cosi da salvare l'errore
         """
@@ -50,7 +50,10 @@ class BaseDataAnalytics(object):
                 error={"error": f"{str}"} if str is not None else analyst.errors if analyst else {},
                 schema=self.get_schema()
             )
-        self.__log.error(f"analyst error -> {str if str else analyst.errors if analyst else 'unknown'}")
+        if debug:
+            self.__log.debug(f"analyst debug -> {str if str else analyst.errors if analyst else 'unknown'}")
+        else:
+            self.__log.error(f"analyst error -> {str if str else analyst.errors if analyst else 'unknown'}")
         
     def analyst(self):
         """
@@ -63,7 +66,7 @@ class BaseDataAnalytics(object):
             else:
                 self.analyst_error(analyst=analyst)
         except NotSerializerError as e:
-            self.analyst_error(str=e)
+            self.analyst_error(str=e, debug=True)
             return None
         except Exception as e:
             self.analyst_error(str=e)

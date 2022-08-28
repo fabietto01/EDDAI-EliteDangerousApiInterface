@@ -10,18 +10,19 @@ from ed_system.models import System
 from ed_economy.models import Economy
 from ed_bgs.models import MinorFactionInSystem
 
-from core.utility import update_or_create_if_time
+from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
+from django.db import OperationalError, ProgrammingError
 
 class FSDJumpSerializer(BaseJournal):
     """
     sserializer dedicato alla lavorazione dei dati con scema journal e evento FSDJump
     """
     SystemEconomy = CustomChoiceField(
-        choices=Economy().get_data_list(),
+        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
         required=False,
     )
     SystemSecondEconomy = CustomChoiceField(
-        choices=Economy().get_data_list(),
+        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
         required=False,
     )
     SystemSecurity = CustomChoiceField(
@@ -46,9 +47,12 @@ class FSDJumpSerializer(BaseJournal):
         defaults = BaseJournal.set_data_defaults(self, validated_data)
         defaults.update(
             {
-                "primaryEconomy": Economy().get_instanze_from_eddn(validated_data.get('SystemEconomy', None)),
-                "secondaryEconomy": Economy().get_instanze_from_eddn(validated_data.get('SystemSecondEconomy', None)),
-                "security": validated_data.get('SystemSecurity', None),
+                "primaryEconomy": get_or_none(Economy, eddn=validated_data.get('SystemEconomy', None)),
+                "secondaryEconomy": get_or_none(Economy, eddn=validated_data.get('SystemSecondEconomy', None)),
+                "security":  System.SecurityChoices[
+                    validated_data.get('SystemSecurity', '')[0].upper() + validated_data.get('SystemSecurity', '')[1:]
+                ].value if validated_data.get('SystemSecurity', None) else None,
+                "population": validated_data.get('Population', None),
             }
         )
         return defaults
@@ -57,7 +61,9 @@ class FSDJumpSerializer(BaseJournal):
         for faction in self.factions_data:
             serializer = MinorFactionInSystemSerializer(data=faction)
             if serializer.is_valid():
-                serializer.save(system=instance, timestamp=self.get_time())
+                serializer.save(
+                    system=instance, timestamp=self.get_time()
+                )
 
     def data_preparation(self, validated_data: dict) -> dict:
         self.factions_data:dict = validated_data.pop("Factions", [])

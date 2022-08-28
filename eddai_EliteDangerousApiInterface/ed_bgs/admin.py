@@ -17,7 +17,6 @@ class StateInMinorFaction(admin.TabularInline):
 class MinorFactionInSystemAdmin(admin.ModelAdmin):
     model = MinorFactionInSystem
     list_display = ('system', 'minorFaction', 'Influence')
-    list_filter = ('system', 'minorFaction')
     search_fields = ('system', 'minorFaction')
     inlines = [StateInMinorFaction]
     raw_id_fields = ("system","minorFaction")
@@ -35,6 +34,7 @@ class MinorFactionAdmin(admin.ModelAdmin):
     search_fields = ("name","pk")
     list_display = ("name", "allegiance", "government")
     list_display_links = ("name",)
+    list_filter = ('allegiance', 'government')
     inlines = [MinorFactionInSystemInline]
 
 @admin.register(Government)
@@ -42,9 +42,11 @@ class GovernmentAdmin(admin.ModelAdmin):
     model = Government
     search_fields = ("name","pk")
     list_display = ("name", "type")
+    list_filter = ('type',)
 
 @admin.register(State)
 class StateAdmin(admin.ModelAdmin):
     model = State
     search_fields = ("name","pk")
     list_display = ("name", "type")
+    list_filter = ('type',)

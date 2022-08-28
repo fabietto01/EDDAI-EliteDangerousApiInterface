@@ -94,8 +94,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     'ed_info':{
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db_ed.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ed_info-dev',
+        'USER': 'ed_info-dev-user',
+        'PASSWORD': 'vkWCRnO7$oOLCm^ZNd#P@1*Pgbch7wPAMgm3Knd1FrRD&SH5DS',
+        'HOST': '185.25.206.129',
+        'PORT': '3306',
     }
 }
 
@@ -169,6 +173,7 @@ EDDN_RELY = "tcp://eddn.edcd.io:9500"
 EDDN_TIMEOUT = 600000
 AUTHORI_SED_SOFTWARS = [
     "E:D Market Connector",
+    "E:D Market Connector [Windows]",
     "EDDiscovery",
     "EDDI",
     "EDCE",

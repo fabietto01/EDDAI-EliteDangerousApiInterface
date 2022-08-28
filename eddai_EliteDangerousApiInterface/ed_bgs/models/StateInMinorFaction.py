@@ -8,6 +8,15 @@ class StateInMinorFaction(models.Model):
     presente al interno di un sistema per esaltezza questo ultimo e la relazione tra minor faction 
     e Systema
     """
+    class PhaseChoices(models.TextChoices):
+        """
+        tipi di fassi che possiede uno statto
+        """
+        RECOVERING = 'R', _('Recovering')
+        ACTIVE = 'A', _('Active')
+        PENDING = 'P', _('Pending')
+        
+
     minorFaction = models.ForeignKey(
         'ed_bgs.MinorFactionInSystem', on_delete=models.CASCADE,
         verbose_name=_('Minor Faction'),
@@ -20,6 +29,9 @@ class StateInMinorFaction(models.Model):
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
+    phase = models.CharField(
+        max_length=1, choices=PhaseChoices.choices,
+    )
 
     def __str__(self) -> str:
         return str(self.minorFaction) + " - " + str(self.state)
@@ -29,5 +41,5 @@ class StateInMinorFaction(models.Model):
         verbose_name_plural = _('States from the Minor Factions')
         ordering = ('minorFaction', 'state')
         indexes = [
-            models.Index(fields=['minorFaction', 'state']),
+            models.Index(fields=['minorFaction', 'state', 'phase']),
         ]

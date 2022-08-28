@@ -74,8 +74,11 @@ class BaseSerializer(serializers.Serializer):
         default_data = self.clean_data_defaults(default_data)
         return default_data
 
-    def get_time(self) -> datetime:
+    def get_time(self, validated_data:dict = None) -> datetime:
         """
         restituisce il giorno e ora in qui e stato inviato il datto da eddn
         """
-        return self.validated_data.get("timestamp", datetime.now())
+        if validated_data:
+            return validated_data.get('timestamp')
+        return self.validated_data.get('timestamp')
+

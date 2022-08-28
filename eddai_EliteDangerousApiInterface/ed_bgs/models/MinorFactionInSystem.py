@@ -24,6 +24,10 @@ class MinorFactionInSystem(models.Model):
         updated = models.DateTimeField(
             auto_now=True
         )
+
+        @property
+        def happiness(self):
+            pass
     
         def __str__(self) -> str:
             return str(self.system) + " - " + str(self.minorFaction)

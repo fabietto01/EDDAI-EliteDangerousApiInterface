@@ -42,13 +42,13 @@ class System(models.Model):
     )
     primaryEconomy = models.ForeignKey(
         Economy, on_delete=models.SET_NULL, 
-        verbose_name=_('economy'), blank=True, null=True,
+        verbose_name=_('Primary economy'), blank=True, null=True,
         related_name='%(app_label)s_%(class)s_primary_related',
         related_query_name='%(app_label)s_%(class)ss_primary'
     )
     secondaryEconomy = models.ForeignKey(
         Economy, on_delete=models.SET_NULL, 
-        verbose_name=_('economy'), blank=True, null=True,
+        verbose_name=_('Secondary economy'), blank=True, null=True,
         related_name='%(app_label)s_%(class)s_secondary_related',
         related_query_name='%(app_label)s_%(class)ss_secondary'
     )

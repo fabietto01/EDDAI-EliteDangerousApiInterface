@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
+from eddn.manager import EddnManager
 
 from core.utility import get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
@@ -32,10 +33,15 @@ class AbstractDataEDDN(models.Model):
     modelo astrato utilizato per unificare il salvatagio e la lettura dei dati
     che vengo utilizati per verificare e mapare i datti di eddn
     """
+    name = models.CharField(
+        max_length=255,  verbose_name=_('name')
+    )
     _eddn = models.CharField(
         max_length=100, unique=True, 
         blank=True, null=True
     )
+
+    objects = EddnManager()
 
     @property
     def eddn(self) -> str:
@@ -47,20 +53,7 @@ class AbstractDataEDDN(models.Model):
     @eddn.setter
     def eddn(self, value: str) -> None:
         self.__eddn = value
-
-    def get_data_list(self) -> list[str]:
-        """
-        ritorna una lista di modelli da usare per la mapatura e verivica dei datti ricevuti da EDDN
-        """
-        data = get_values_list_or_default(self.__class__, [], (OperationalError, ProgrammingError), '_eddn', 'name')
-        x =  [data[0] if data[0] != None else data[1] for data in data]
-        return x
-
-    def get_instanze_from_eddn(self, eddn: str) -> models.Model:
-        _eddn = get_or_none(self.__class__, _eddn=eddn)
-        if _eddn:
-            return _eddn
-        return get_or_none(self.__class__, name=eddn)
+    eddn.fget.short_description = _('value for eddn')
         
     class Meta:
         abstract = True

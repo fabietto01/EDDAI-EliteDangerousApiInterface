@@ -5,34 +5,57 @@ from eddn.service.seriallizers.customFields.CustomChoiceField import HappinessCh
 from ed_bgs.models import (
     Faction, Government, MinorFaction, 
     MinorFactionInSystem, State,
+    StateInMinorFaction
 )
 
-from core.utility import update_or_create_if_time
+from core.utility import (
+    update_or_create_if_time, in_list_models, 
+    get_values_list_or_default, get_or_none
+)
+from django.db import OperationalError, ProgrammingError
+
+class StateSerializer(serializers.Serializer):
+    State = serializers.ChoiceField(
+        choices=get_values_list_or_default(State.objects.exclude(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    )
+    Trend = None
 
 class MinorFactionInSystemSerializer(BaseSerializer):
     Name = serializers.CharField(
         min_length=1
     )
     Allegiance = serializers.ChoiceField(
-        choices=Faction().get_data_list(),
+        choices=get_values_list_or_default(Faction, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )
     Government = serializers.ChoiceField(
-        choices=Government().get_data_list(),
+        choices=get_values_list_or_default(Government, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )
     Influence = serializers.FloatField(
         min_value=0, max_value=1,
     )
     Happiness = HappinessChoiceField(
-        choices=State().get_data_list(State.TypeChoices.HAPPINESS.value),
+        choices=get_values_list_or_default(State.objects.filter(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )
-    RecoveringStates = None
-    ActiveStates = None
-    PendingStates = None
+    RecoveringStates = serializers.ListField(
+        child=StateSerializer(),
+        min_length = 1,
+        required = False,
+    )
+    ActiveStates = serializers.ListField(
+        child=StateSerializer(),
+        min_length = 1,
+        required = False,
+    )
+    PendingStates = serializers.ListField(
+        child=StateSerializer(),
+        min_length = 1,
+        required = False,
+    )
 
     def set_data_defaults_minorFaction(self, validated_data: dict) -> dict:
         return {
-            "allegiance": Faction().get_instanze_from_eddn(validated_data.get('Allegiance')),
-            "government": Government().get_instanze_from_eddn(validated_data.get('Government')),
+            "allegiance": get_or_none(Faction, eddn=validated_data.get('Allegiance')),
+            "government": get_or_none(Government, eddn=validated_data.get('Government')),
         }
     
     def set_data_defaults_MinorFactionInSystem(self, validated_data: dict) -> dict:
@@ -53,23 +76,102 @@ class MinorFactionInSystemSerializer(BaseSerializer):
         return default_data
 
     def data_preparation(self, validated_data: dict) -> dict:
-        self.happiness = validated_data.get('Happiness', None)
+        self.stato_data = {
+            "Happiness": validated_data.get('Happiness', None),
+            'RecoveringStates': validated_data.get('RecoveringStates', []),
+            'ActiveStates': validated_data.get('ActiveStates', []),
+            'PendingStates': validated_data.get('PendingStates', [])
+        }
+
+    def create_state(self, instance):
+        """
+        metodo chiamato quando ll'istanza è creata quindi si occupa di creare
+        gli stati corellatti al istanza
+        """
+        stateAddList = []
+        self.populate_models_list(stateAddList, instance)
+        if stateAddList:
+            StateInMinorFaction.objects.bulk_create(stateAddList)
+
+    def update_state(self, instance):
+        """
+        medoto chiamato quando l'istanza è aggiornata quindi si occupa di aggiornare
+        gli stati corellati al istanza
+        """
+        stateAddList = []
+        stateRemoveList = []
+        stateList = []
+        self.populate_models_list(stateList, instance)
+        stateQsList = list(StateInMinorFaction.objects.filter(minorFaction=instance))
+        for state in stateList:
+            if not in_list_models(state, stateQsList):
+                stateAddList.append(state)
+        for state in stateQsList:
+            if not in_list_models(state, stateList):
+                stateRemoveList.append(state.id)
+        if stateAddList:
+            StateInMinorFaction.objects.bulk_create(stateAddList)
+        if stateRemoveList:
+            StateInMinorFaction.objects.filter(id__in=stateRemoveList).delete()
+
+    def populate_models_list(self, list:list, instance) -> list:
+        """
+        metodo che popola la lista di istanze da creare o aggiornare
+        """
+        if self.stato_data.get('Happiness', None):
+            list.append(
+                self.get_state_instance(
+                    instance=instance, 
+                    state=State.objects.get(eddn=self.stato_data.get('Happiness', {}).get('State'))
+                )
+            )
+        if self.stato_data.get('RecoveringStates', []):
+            for state in self.stato_data.get('RecoveringStates', []):
+                list.append(
+                    self.get_state_instance(
+                        instance=instance, 
+                        state=State.objects.get(eddn=state.get('State')),
+                        phase=StateInMinorFaction.PhaseChoices.RECOVERING.value
+                    )
+                )
+        if self.stato_data.get('ActiveStates', []):
+            for state in self.stato_data.get('ActiveStates', []):
+                list.append(
+                    self.get_state_instance(
+                        instance=instance, 
+                        state=State.objects.get(eddn=state.get('State')),
+                        phase=StateInMinorFaction.PhaseChoices.ACTIVE.value
+                    )
+                )
+        if self.stato_data.get('PendingStates', []):
+            for state in self.stato_data.get('PendingStates', []):
+                list.append(
+                    self.get_state_instance(
+                        instance=instance, 
+                        state=State.objects.get(eddn=state.get('State')),
+                        phase=StateInMinorFaction.PhaseChoices.PENDING.value
+                    )
+                )
+
+    def get_state_instance(self, instance:MinorFactionInSystem, state:State, phase:str=StateInMinorFaction.PhaseChoices.ACTIVE.value) -> StateInMinorFaction:
+        return StateInMinorFaction(minorFaction=instance, state=state, phase=phase)
 
     def create_dipendent(self, instance):
-        pass
+        self.create_state(instance)
+
 
     def update_dipendent(self, instance):
-        pass
+        self.update_state(instance)
 
     def update_or_create(self, validated_data: dict):
         minorFaction, create = update_or_create_if_time(
-            MinorFaction, time=self.get_time(), 
+            MinorFaction, time=self.get_time(validated_data), 
             defaults=self.get_data_defaults(validated_data, minorFaction=True),
             name=validated_data.get('Name'),
         )
         self.data_preparation(validated_data)
         self.instance, create = update_or_create_if_time(
-            MinorFactionInSystem, time=self.get_time(), 
+            MinorFactionInSystem, time=self.get_time(validated_data), 
             defaults=self.get_data_defaults(validated_data, MinorFactionInSystem=True),
             create_function=self.create_dipendent, update_function=self.update_dipendent,
             system=validated_data.get('system'), minorFaction=minorFaction,
