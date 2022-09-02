@@ -4,11 +4,11 @@ from django.db import OperationalError, ProgrammingError
 from eddn.service.journals.BaseJournal import BaseJournal
 
 from eddn.service.seriallizers.customFields.CustomChoiceField import CustomChoiceField
-from eddn.service.journals.MinorFaction import MinorFactionInSystemSerializer
+from eddn.service.journals.MinorFaction import MinorFactionInSystemSerializer, MinorFactionInSystemSerializerBase
 
 from ed_system.models import System
 from ed_economy.models import Economy
-from ed_bgs.models import MinorFactionInSystem
+from ed_bgs.models import MinorFactionInSystem, MinorFaction
 
 from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
@@ -38,7 +38,9 @@ class FSDJumpSerializer(BaseJournal):
         min_length=0,
         max_length=MinorFactionInSystem.MaxRelation,
     )
-    SystemFaction = None
+    SystemFaction = MinorFactionInSystemSerializerBase(
+        required=False,
+    )
     Conflicts = None
     Powers = None
     PowerplayState = None
@@ -57,6 +59,14 @@ class FSDJumpSerializer(BaseJournal):
         )
         return defaults
 
+    def check_control_faction(self, instance:System):
+        """
+        controlla se la fazione che controlla il sistema corisposnde nel casso la aggiorna
+        """
+        if self.control_faction:
+            minorfaction = MinorFaction.objects.get(name=self.control_faction.get('Name'))
+            
+
     def update_minor_faction(self, instance):
         for faction in self.factions_data:
             serializer = MinorFactionInSystemSerializer(data=faction)
@@ -67,6 +77,7 @@ class FSDJumpSerializer(BaseJournal):
 
     def data_preparation(self, validated_data: dict) -> dict:
         self.factions_data:dict = validated_data.pop("Factions", [])
+        self.control_faction:dict = validated_data.pop("SystemFaction", None)
 
     def create_dipendent(self, instance):
         self.update_minor_faction(instance)
