@@ -122,7 +122,7 @@ def update_or_create_if_time(klass, time:datetime, defaults:dict, update_functio
         if instance.updated < time:
             for attr, value in defaults.items():
                 setattr(instance, attr, value)
-            instance.save(force_update=True)
+            instance.save()
             if update_function != None:
                 update_function(instance)
     else:

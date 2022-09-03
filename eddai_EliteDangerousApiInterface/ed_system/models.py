@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 from ed_economy.models import Economy
+from ed_bgs.models.MinorFaction import MinorFaction
 from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
 
 class System(models.Model):
@@ -52,9 +53,12 @@ class System(models.Model):
         related_name='%(app_label)s_%(class)s_secondary_related',
         related_query_name='%(app_label)s_%(class)ss_secondary'
     )
-    
-
-
+    conrollingFaction = models.ForeignKey(
+        MinorFaction, on_delete=models.SET_NULL,
+        verbose_name=_('controlling faction'), blank=True, null=True,
+        related_name='%(app_label)s_%(class)s_controlling_related',
+        related_query_name='%(app_label)s_%(class)ss_controlling'
+    )
     description = models.TextField(
         blank=True, null=True,
         verbose_name=_('description')
@@ -76,8 +80,16 @@ class System(models.Model):
     economy.fget.short_description = _('economy')  
 
     def clean(self) -> None:
-        if System.objects.filter(x=self.x, y=self.y, z=self.z).exclude(self).exists():
+        if System.objects.filter(
+            x=self.x, y=self.y, z=self.z
+        ).exclude(
+            id=self.id
+        ).exists():
             raise ValidationError(_('a system with these coordinates already exists'))
+        if self.conrollingFaction != None:
+            if not MinorFactionInSystem.objects.filter(system=self, minorFaction=self.conrollingFaction).exists():
+                raise ValidationError(_('the controlling faction is not present in the system'))
+
         
     def __str__(self):
         return self.name
@@ -90,4 +102,9 @@ class System(models.Model):
                 fields=['x','y',"z"], 
                 name='unique_system_coordinates',
             )
+        ]
+        indexes = [
+            models.Index(fields=['primaryEconomy', 'secondaryEconomy'], name='system_economy_idx'),
+            models.Index(fields=['conrollingFaction'], name='system_controllingFaction_idx'),
+            models.Index(fields=['security'], name='system_security_idx'),
         ]

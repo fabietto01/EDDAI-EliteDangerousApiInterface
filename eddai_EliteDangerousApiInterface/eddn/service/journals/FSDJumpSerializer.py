@@ -65,6 +65,9 @@ class FSDJumpSerializer(BaseJournal):
         """
         if self.control_faction:
             minorfaction = MinorFaction.objects.get(name=self.control_faction.get('Name'))
+            if not instance.conrollingFaction == minorfaction:
+                instance.conrollingFaction = minorfaction
+                instance.save(force_update=['conrollingFaction'])
             
 
     def update_minor_faction(self, instance):
@@ -81,9 +84,11 @@ class FSDJumpSerializer(BaseJournal):
 
     def create_dipendent(self, instance):
         self.update_minor_faction(instance)
+        self.check_control_faction(instance)
 
     def update_dipendent(self, instance):
         self.update_minor_faction(instance)
+        self.check_control_faction(instance)
 
     def update_or_create(self, validated_data: dict) -> System:
         self.data_preparation(validated_data)
