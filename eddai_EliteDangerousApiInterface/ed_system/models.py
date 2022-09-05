@@ -38,7 +38,7 @@ class System(models.Model):
         verbose_name=_('security'), max_length=1, 
         choices=SecurityChoices.choices, blank=True, null=True
     )
-    population = models.PositiveIntegerField(
+    population = models.PositiveBigIntegerField(
         verbose_name=_('population'), default=0
     )
     primaryEconomy = models.ForeignKey(
@@ -80,17 +80,12 @@ class System(models.Model):
     economy.fget.short_description = _('economy')  
 
     def clean(self) -> None:
-        if System.objects.filter(
-            x=self.x, y=self.y, z=self.z
-        ).exclude(
-            id=self.id
-        ).exists():
+        if System.objects.filter(x=self.x, y=self.y, z=self.z).exclude(pk=self.pk).exists():
             raise ValidationError(_('a system with these coordinates already exists'))
         if self.conrollingFaction != None:
             if not MinorFactionInSystem.objects.filter(system=self, minorFaction=self.conrollingFaction).exists():
                 raise ValidationError(_('the controlling faction is not present in the system'))
 
-        
     def __str__(self):
         return self.name
 

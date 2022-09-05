@@ -37,6 +37,7 @@ class MinorFactionInSystemSerializer(MinorFactionInSystemSerializerBase):
     )
     Happiness = HappinessChoiceField(
         choices=get_values_list_or_default(State.objects.filter(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        allow_blank=True,
     )
     RecoveringStates = serializers.ListField(
         child=StateSerializer(),

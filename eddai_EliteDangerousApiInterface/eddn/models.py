@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 
 from django.utils.translation import gettext_lazy as _
 from eddn.manager import EddnManager
@@ -22,6 +23,10 @@ class DataLog(models.Model):
         verbose_name=_("update"), auto_now=True,
     )
 
+    def __str__(self) -> str:
+        return str(self.schema)
+
+
     class Meta:
         verbose_name = _("data log")
         verbose_name_plural = _("data logs")
@@ -44,6 +49,7 @@ class AbstractDataEDDN(models.Model):
     objects = EddnManager()
 
     @property
+    @admin.display()
     def eddn(self) -> str:
         if self.__eddn:
             return self.__eddn

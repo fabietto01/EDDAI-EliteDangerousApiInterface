@@ -65,6 +65,7 @@ class BaseDataAnalytics(object):
                 analyst.save()
             else:
                 self.analyst_error(analyst=analyst)
+            return analyst
         except NotSerializerError as e:
             self.analyst_error(str=e, debug=True)
             return None
