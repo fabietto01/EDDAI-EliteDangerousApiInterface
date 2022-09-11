@@ -4,3 +4,4 @@ from ed_bgs.models.Government import Government
 from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
 from ed_bgs.models.State import State
 from ed_bgs.models.StateInMinorFaction import StateInMinorFaction
+from ed_bgs.models.Power import Power

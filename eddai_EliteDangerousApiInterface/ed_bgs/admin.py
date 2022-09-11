@@ -17,7 +17,7 @@ class StateInMinorFaction(admin.TabularInline):
 class MinorFactionInSystemAdmin(admin.ModelAdmin):
     model = MinorFactionInSystem
     list_display = ('system', 'minorFaction', 'Influence')
-    search_fields = ('system', 'minorFaction')
+    search_fields = ('system__name', 'minorFaction__name')
     inlines = [StateInMinorFaction]
     raw_id_fields = ("system","minorFaction")
 
@@ -50,3 +50,12 @@ class StateAdmin(admin.ModelAdmin):
     search_fields = ("name","pk")
     list_display = ("name", "type")
     list_filter = ('type',)
+
+@admin.register(Power)
+class PowerAdmin(admin.ModelAdmin):
+    model = Power
+    search_fields = ("name","pk")
+    list_display = ("name", "allegiance", "headquarter")
+    list_display_links = ("name",)
+    list_filter = ('allegiance',)
+    raw_id_fields = ("headquarter",)
