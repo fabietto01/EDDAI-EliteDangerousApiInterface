@@ -1,4 +1,3 @@
-from random import choices
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
 

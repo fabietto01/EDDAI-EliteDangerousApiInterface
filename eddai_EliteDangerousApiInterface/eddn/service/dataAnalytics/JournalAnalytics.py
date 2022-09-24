@@ -28,19 +28,15 @@ class JournalAnalytic(BaseDataAnalytics):
     def analyst_FSDJump(self):
         data = self.get_message()
         for attr, value in data.items():
-            if attr == "Powers":
-                if len(data.get(attr, [])) > 1:
-                    dadfawdawda = 1
-                break
-            if attr == 'PowerplayState':
-                dwadadawd= 3
-            elif attr == "Factions":
+            if attr == "Factions":
                 for faction in value:
                     for attr2, value2 in faction.items():
                         if attr2 in ('HomeSystem', 'SquadronFaction'):
                             dwadadawd= 3
             elif attr == "Conflicts":
                 dadwad = 3
-        if data.get('Factions', []) != []:
-            dwadadawd= 3
         return FSDJumpSerializer(data=data)
+
+    def analyst_Scan(self):
+        data = self.get_message()
+        raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")
