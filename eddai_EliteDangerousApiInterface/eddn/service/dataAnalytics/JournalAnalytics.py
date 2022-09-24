@@ -31,6 +31,7 @@ class JournalAnalytic(BaseDataAnalytics):
             if attr == "Powers":
                 if len(data.get(attr, [])) > 1:
                     dadfawdawda = 1
+                break
             if attr == 'PowerplayState':
                 dwadadawd= 3
             elif attr == "Factions":
