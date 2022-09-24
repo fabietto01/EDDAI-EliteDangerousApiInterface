@@ -121,14 +121,15 @@ class FSDJumpSerializer(BaseJournal):
                 instance.powers.add(power)
     
     def update_PowerInSystem(self, instance):
-        defaults = {
-            'state': PowerState.objects.get(eddn=self.powers_data.get('PowerplayState')),
-        }
-        powerInstanceqs, create = update_or_create_if_time(
-            PowerInSystem, time=self.get_time(), defaults=defaults,
-            update_function=self.update_power, create_function=self.create_power, 
-            system=instance
-        )
+        if self.powers_data.get('Powers', []) and self.powers_data.get('PowerplayState', None):
+            defaults = {
+                'state': PowerState.objects.get(eddn=self.powers_data.get('PowerplayState', None)),
+            }
+            powerInstanceqs, create = update_or_create_if_time(
+                PowerInSystem, time=self.get_time(), defaults=defaults,
+                update_function=self.update_power, create_function=self.create_power, 
+                system=instance
+            )
 
     def data_preparation(self, validated_data: dict) -> dict:
         self.factions_data:dict = validated_data.pop("Factions", [])
