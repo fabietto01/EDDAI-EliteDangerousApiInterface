@@ -19,13 +19,19 @@ class DataLogAdmin(admin.ModelAdmin):
     def re_processing(self, request, queryset):
         successful = []
         unsuccessful = []
-        number_of_workers = os.cpu_count()
+        """ number_of_workers = os.cpu_count()
         with ThreadPool(number_of_workers) as pool:
             for analytic, instance in pool.imap(self.process, list(queryset)):
                 if analytic != None and analytic.errors == {}:
                     successful.append(instance.pk)
                 else:
-                    unsuccessful.append(instance.pk)
+                    unsuccessful.append(instance.pk) """
+        for instance in list(queryset):
+            analytic, instance = self.process(instance)
+            if analytic != None and analytic.errors == {}:
+                successful.append(instance.pk)
+            else:
+                unsuccessful.append(instance.pk)
         if successful:
             queryset.filter(pk__in=successful).delete()
             self.message_user(
