@@ -21,12 +21,12 @@ class FSDJumpSerializer(BaseJournal):
     SystemEconomy = CustomChoiceField(
         choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
         required=False,
-        allow_null=True,
+        allow_blank=True,
     )
     SystemSecondEconomy = CustomChoiceField(
         choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
         required=False,
-        allow_null=True,
+        allow_blank=True,
     )
     SystemSecurity = CustomChoiceField(
         choices=[sc.lower() for sc in System.SecurityChoices.names],
@@ -80,7 +80,7 @@ class FSDJumpSerializer(BaseJournal):
                 "primaryEconomy": get_or_none(Economy, eddn=validated_data.get('SystemEconomy', None)),
                 "secondaryEconomy": get_or_none(Economy, eddn=validated_data.get('SystemSecondEconomy', None)),
                 "security":  System.SecurityChoices[
-                    validated_data.get('SystemSecurity', '')[0].upper() + validated_data.get('SystemSecurity', '')[1:]
+                    validated_data.get('SystemSecurity', '').capitalize()
                 ].value if validated_data.get('SystemSecurity', None) else None,
                 "population": validated_data.get('Population', None),
             }
