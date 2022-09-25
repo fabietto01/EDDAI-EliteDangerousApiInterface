@@ -10,12 +10,12 @@
 	"MassEM": 3.108387,
 	"Materials": [
 	   {
-		  "Name": "yttrium",
-		  "Percent": 1.455882
+		  "Name": "iron",
+		  "Percent": 24.374876
 	   },
 	   {
-		  "Name": "mercury",
-		  "Percent": 1.064411
+		  "Name": "nickel",
+		  "Percent": 18.436134
 	   }
 	],
 	"PlanetClass": "High metal content body",

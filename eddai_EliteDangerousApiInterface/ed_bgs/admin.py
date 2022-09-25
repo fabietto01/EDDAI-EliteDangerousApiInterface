@@ -6,7 +6,7 @@ from ed_bgs.forms.PowerInSystemModelFrom import PowerInSystemForm
 
 class MinorFactionInSystemInline(admin.TabularInline):
     model = MinorFactionInSystem
-    raw_id_fields = ("system",)
+    raw_id_fields = ("system","minorFaction")
     extra = 0
 
 class StateInMinorFaction(admin.TabularInline):
@@ -16,6 +16,12 @@ class StateInMinorFaction(admin.TabularInline):
 
 class PowerInSystemTabularInline(admin.TabularInline):
     model = PowerInSystem
+    raw_id_fields = ("system",)
+    extra = 0
+
+class PowerInSystemStackedInline(admin.StackedInline):
+    model = PowerInSystem
+    form = PowerInSystemForm
     raw_id_fields = ("system",)
     extra = 0
 

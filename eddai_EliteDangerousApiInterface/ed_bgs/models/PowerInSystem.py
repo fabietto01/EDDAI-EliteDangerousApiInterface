@@ -34,7 +34,7 @@ class PowerInSystem(models.Model):
     )
 
     def __str__(self) -> str: 
-        return str(self.state) + " by " + " and ".join([str(p.name) for p in self.power.all()])
+        return str(self.state) + " by " + " and ".join([str(p.name) for p in self.powers.all()])
 
     class Meta:
         verbose_name = _('Power in System')

@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 class PowerInSystemForm(ModelForm):
 
     def clean(self):
-        powers = self.cleaned_data.get('power')
+        powers = self.cleaned_data.get('powers')
         if powers.count() > PowerInSystem.MaxRelation or powers.count() == 0:
             raise ValidationError(_('You can select only 1 or 2 powers'))
         state = self.cleaned_data.get('state')

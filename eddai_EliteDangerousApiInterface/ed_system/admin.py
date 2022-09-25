@@ -1,14 +1,9 @@
 from django.contrib import admin
 
 from ed_system.models import System
-from ed_bgs.models import MinorFactionInSystem
+from ed_bgs.admin import MinorFactionInSystemInline, PowerInSystemStackedInline
 # Register your models here.
 
-
-class MinorFactionInSystemInline(admin.TabularInline):
-    model = MinorFactionInSystem
-    raw_id_fields = ("minorFaction",)
-    extra = 0
 
 @admin.register(System)
 class SystemAdmin(admin.ModelAdmin):
@@ -17,4 +12,6 @@ class SystemAdmin(admin.ModelAdmin):
     search_fields = ("name","pk")
     list_display = ("name", "economy","security","population","updated")
     list_display_links = ("name",)
-    inlines = [MinorFactionInSystemInline]
+    inlines = [
+        MinorFactionInSystemInline, PowerInSystemStackedInline
+    ]
