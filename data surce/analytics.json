@@ -1,0 +1,313 @@
+{
+   "Scan": {
+      "Stary": {
+         "AbsoluteMagnitude": 7.365189,
+         "Age_MY": 12918,
+         "Luminosity": "Va",
+         "StarType": "K",
+         "StellarMass": 0.621094,
+         "Subclass": 8
+      },
+      "Body": {
+         "Atmosphere": "",
+         "AtmosphereType": "None",
+         "Composition": {
+            "Ice": 0.0,
+            "Metal": 0.326013,
+            "Rock": 0.673988
+         },
+         "Landable": true,
+         "MassEM": 3.108387,
+         "Materials": [
+            {
+               "Name": "iron",
+               "Percent": 24.374876
+            },
+            {
+               "Name": "nickel",
+               "Percent": 18.436134
+            },
+            {
+               "Name": "sulphur",
+               "Percent": 17.425444
+            },
+            {
+               "Name": "carbon",
+               "Percent": 14.652993
+            },
+            {
+               "Name": "phosphorus",
+               "Percent": 9.381097
+            },
+            {
+               "Name": "vanadium",
+               "Percent": 5.985621
+            },
+            {
+               "Name": "zirconium",
+               "Percent": 2.830426
+            },
+            {
+               "Name": "selenium",
+               "Percent": 2.727229
+            },
+            {
+               "Name": "niobium",
+               "Percent": 1.665893
+            },
+            {
+               "Name": "yttrium",
+               "Percent": 1.455882
+            },
+            {
+               "Name": "mercury",
+               "Percent": 1.064411
+            }
+         ],
+         "PlanetClass": "High metal content body",
+         "SurfaceGravity": 17.35237,
+         "SurfacePressure": 0.0,
+         "TerraformState": "",
+         "TidalLock": true,
+         "Volcanism": "minor metallic magma volcanism",
+         "AtmosphereComposition": [
+            {
+               "Name": "Hydrogen",
+               "Percent": 73.57048
+            },
+            {
+               "Name": "Helium",
+               "Percent": 26.42951
+            }
+         ],
+         "ReserveLevel": "PristineResources"
+      },
+      "ParentsStarBody": {
+         "AscendingNode": -140.393835,
+         "AxialTilt": -0.142709,
+         "BodyID": 12,
+         "BodyName": "Eoch Proo JR-S c18-1 3",
+         "DistanceFromArrivalLS": 33.967497,
+         "Eccentricity": 2e-06,
+         "MeanAnomaly": 2.0737,
+         "OrbitalInclination": 0.001632,
+         "OrbitalPeriod": 610748.398304,
+         "Parents": [
+            {
+               "Star": 0
+            }
+         ],
+         "Periapsis": 126.764425,
+         "Radius": 8449730.0,
+         "RotationPeriod": 611515.431478,
+         "ScanType": "Detailed",
+         "SemiMajorAxis": 10183222293.85376,
+         "StarPos": [
+            -7942.75,
+            -2178.65625,
+            20229.375
+         ],
+         "StarSystem": "Eoch Proo JR-S c18-1",
+         "SurfaceTemperature": 740.102356,
+         "SystemAddress": 345441116834,
+         "WasDiscovered": false,
+         "WasMapped": false,
+         "event": "Scan",
+         "horizons": true,
+         "odyssey": true,
+         "timestamp": "2022-09-24T23:34:30Z",
+         "Rings": [
+            {
+               "InnerRad": 88836000.0,
+               "MassMT": 6831700000.0,
+               "Name": "Froalt SL-A c28-70 B 6 A Ring",
+               "OuterRad": 92693000.0,
+               "RingClass": "eRingClass_Metalic"
+            },
+            {
+               "InnerRad": 92793000.0,
+               "MassMT": 91948000000.0,
+               "Name": "Froalt SL-A c28-70 B 6 B Ring",
+               "OuterRad": 134230000.0,
+               "RingClass": "eRingClass_Rocky"
+            }
+         ]
+      },
+      "allStar": {
+         "AbsoluteMagnitude": 7.365189,
+         "Age_MY": 12918,
+         "AscendingNode": 75.282062,
+         "AxialTilt": 0.0,
+         "BodyID": 2,
+         "BodyName": "Skaude JK-T c5-33 A",
+         "DistanceFromArrivalLS": 0.0,
+         "Eccentricity": 0.034691,
+         "Luminosity": "Va",
+         "MeanAnomaly": 209.18392,
+         "OrbitalInclination": -15.46125,
+         "OrbitalPeriod": 26247516.870499,
+         "Parents": [
+            {
+               "Null": 1
+            },
+            {
+               "Null": 0
+            }
+         ],
+         "Periapsis": 238.612635,
+         "Radius": 473189600.0,
+         "RotationPeriod": 260660.095003,
+         "ScanType": "AutoScan",
+         "SemiMajorAxis": 38970316052.43683,
+         "StarPos": [
+            -5112.28125,
+            -458.40625,
+            9425.28125
+         ],
+         "StarSystem": "Skaude JK-T c5-33",
+         "StarType": "K",
+         "StellarMass": 0.621094,
+         "Subclass": 8,
+         "SurfaceTemperature": 3908.0,
+         "SystemAddress": 9146233166386,
+         "WasDiscovered": false,
+         "WasMapped": false,
+         "event": "Scan",
+         "horizons": true,
+         "odyssey": true,
+         "timestamp": "2022-09-24T23:34:31Z",
+         "Rings": [
+            {
+               "InnerRad": 714150000.0,
+               "MassMT": 24692000000.0,
+               "Name": "HIP 97196 C A Belt",
+               "OuterRad": 1690400000.0,
+               "RingClass": "eRingClass_Rocky"
+            }
+         ]
+      },
+      "allBody": {
+         "AscendingNode": -140.393835,
+         "Atmosphere": "",
+         "AtmosphereType": "None",
+         "AxialTilt": -0.142709,
+         "BodyID": 12,
+         "BodyName": "Eoch Proo JR-S c18-1 3",
+         "Composition": {
+            "Ice": 0.0,
+            "Metal": 0.326013,
+            "Rock": 0.673988
+         },
+         "DistanceFromArrivalLS": 33.967497,
+         "Eccentricity": 2e-06,
+         "Landable": true,
+         "MassEM": 3.108387,
+         "Materials": [
+            {
+               "Name": "iron",
+               "Percent": 24.374876
+            },
+            {
+               "Name": "nickel",
+               "Percent": 18.436134
+            },
+            {
+               "Name": "sulphur",
+               "Percent": 17.425444
+            },
+            {
+               "Name": "carbon",
+               "Percent": 14.652993
+            },
+            {
+               "Name": "phosphorus",
+               "Percent": 9.381097
+            },
+            {
+               "Name": "vanadium",
+               "Percent": 5.985621
+            },
+            {
+               "Name": "zirconium",
+               "Percent": 2.830426
+            },
+            {
+               "Name": "selenium",
+               "Percent": 2.727229
+            },
+            {
+               "Name": "niobium",
+               "Percent": 1.665893
+            },
+            {
+               "Name": "yttrium",
+               "Percent": 1.455882
+            },
+            {
+               "Name": "mercury",
+               "Percent": 1.064411
+            }
+         ],
+         "MeanAnomaly": 2.0737,
+         "OrbitalInclination": 0.001632,
+         "OrbitalPeriod": 610748.398304,
+         "Parents": [
+            {
+               "Star": 0
+            }
+         ],
+         "Periapsis": 126.764425,
+         "PlanetClass": "High metal content body",
+         "Radius": 8449730.0,
+         "RotationPeriod": 611515.431478,
+         "ScanType": "Detailed",
+         "SemiMajorAxis": 10183222293.85376,
+         "StarPos": [
+            -7942.75,
+            -2178.65625,
+            20229.375
+         ],
+         "StarSystem": "Eoch Proo JR-S c18-1",
+         "SurfaceGravity": 17.35237,
+         "SurfacePressure": 0.0,
+         "SurfaceTemperature": 740.102356,
+         "SystemAddress": 345441116834,
+         "TerraformState": "",
+         "TidalLock": true,
+         "Volcanism": "minor metallic magma volcanism",
+         "WasDiscovered": false,
+         "WasMapped": false,
+         "event": "Scan",
+         "horizons": true,
+         "odyssey": true,
+         "timestamp": "2022-09-24T23:34:30Z",
+         "AtmosphereComposition": [
+            {
+               "Name": "Hydrogen",
+               "Percent": 73.57048
+            },
+            {
+               "Name": "Helium",
+               "Percent": 26.42951
+            }
+         ],
+         "ReserveLevel": "PristineResources",
+         "Rings": [
+            {
+               "InnerRad": 88836000.0,
+               "MassMT": 6831700000.0,
+               "Name": "Froalt SL-A c28-70 B 6 A Ring",
+               "OuterRad": 92693000.0,
+               "RingClass": "eRingClass_Metalic"
+            },
+            {
+               "InnerRad": 92793000.0,
+               "MassMT": 91948000000.0,
+               "Name": "Froalt SL-A c28-70 B 6 B Ring",
+               "OuterRad": 134230000.0,
+               "RingClass": "eRingClass_Rocky"
+            }
+         ]
+      }
+   }
+}

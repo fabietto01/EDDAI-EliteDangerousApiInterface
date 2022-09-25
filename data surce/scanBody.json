@@ -1,39 +1,38 @@
 {
-	"AscendingNode": -84.738906, 
-	"Atmosphere": "methane atmosphere", 
-	"AtmosphereComposition": [{"Name": "Methane", "Percent": 100.0}], 
-	"AtmosphereType": "Methane", 
-	"AxialTilt": -0.241407, 
-	"BodyID": 25, 
-	"BodyName": "Syneayae DM-P c5-0 8 b", 
-	"Composition": {"Ice": 0.826462, "Metal": 0.015526, "Rock": 0.158011}, 
-	"DistanceFromArrivalLS": 1454.466176, 
-	"Eccentricity": 1.5e-05, 
-	"Landable": false, 
-	"MassEM": 0.001418, 
-	"MeanAnomaly": 294.734033, 
-	"OrbitalInclination": 0.645747, 
-	"OrbitalPeriod": 1062598.824501, 
-	"Parents": [{"Planet": 22}, {"Star": 0}], 
-	"Periapsis": 197.730578, 
-	"PlanetClass": "Icy body", 
-	"Radius": 991087.25, 
-	"RotationPeriod": 1039442.45537, 
-	"ScanType": "Detailed", 
-	"SemiMajorAxis": 1137039661.407471, 
-	"StarPos": [5054.28125, 5.875, 60650.0625], 
-	"StarSystem": "Syneayae DM-P c5-0", 
-	"SurfaceGravity": 0.575262, 
-	"SurfacePressure": 16681.347656, 
-	"SurfaceTemperature": 99.48629, 
-	"SystemAddress": 92308259378, 
-	"TerraformState": "", 
-	"TidalLock": true, 
-	"Volcanism": "", 
-	"WasDiscovered": true, 
-	"WasMapped": false, 
-	"event": "Scan", 
-	"horizons": true, 
-	"odyssey": true, 
-	"timestamp": "2022-09-24T21:00:24Z"
-}
+	"Atmosphere": "",
+	"AtmosphereType": "None",
+	"Composition": {
+	   "Ice": 0.0,
+	   "Metal": 0.326013,
+	   "Rock": 0.673988
+	},
+	"Landable": true,
+	"MassEM": 3.108387,
+	"Materials": [
+	   {
+		  "Name": "yttrium",
+		  "Percent": 1.455882
+	   },
+	   {
+		  "Name": "mercury",
+		  "Percent": 1.064411
+	   }
+	],
+	"PlanetClass": "High metal content body",
+	"SurfaceGravity": 17.35237,
+	"SurfacePressure": 0.0,
+	"TerraformState": "",
+	"TidalLock": true,
+	"Volcanism": "minor metallic magma volcanism",
+	"AtmosphereComposition": [
+	   {
+		  "Name": "Hydrogen",
+		  "Percent": 73.57048
+	   },
+	   {
+		  "Name": "Helium",
+		  "Percent": 26.42951
+	   }
+	],
+	"ReserveLevel": "PristineResources"
+ }
