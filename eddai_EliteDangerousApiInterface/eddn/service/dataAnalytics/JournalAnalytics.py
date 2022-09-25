@@ -12,7 +12,6 @@ class JournalAnalytic(BaseDataAnalytics):
         """
         return self.get_message().get("event", '')
 
-
     def get_analyst(self) -> Serializer:
         """
         funzione chiamata da analyst() per ottenere l'elaboratore dei datti piu coretto per
