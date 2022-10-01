@@ -87,6 +87,3 @@ class PowerInSystemAdmin(admin.ModelAdmin):
     list_display_links = ("__str__",)
     list_filter = ('powers',"state")
     raw_id_fields = ("system",)
-
-
-

@@ -84,6 +84,16 @@ class BaseBody(models.Model):
         ],
         null=True, blank=True
     )
+    ascendingNode = models.FloatField(
+        verbose_name=_('ascending node'),
+        help_text=_('ascending node of the orbit'),
+        null=True, blank=True
+    )
+    meanAnomaly = models.FloatField(
+        verbose_name=_('mean anomaly'),
+        help_text=_('mean anomaly of the orbit'),
+        null=True, blank=True
+    )
     #rotating
     axialTilt = models.FloatField(
         verbose_name=_('axial tilt'),
