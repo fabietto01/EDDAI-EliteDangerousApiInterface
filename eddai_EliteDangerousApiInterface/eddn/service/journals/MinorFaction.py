@@ -66,18 +66,6 @@ class MinorFactionInSystemSerializer(MinorFactionInSystemSerializerBase):
             "Influence": validated_data.get('Influence'),
         }
 
-    def get_data_defaults(self, validated_data:dict, minorFaction:bool=None, MinorFactionInSystem:bool=None) -> dict:
-        """
-        chiama questo medodo per restituire i default data
-        """
-        default_data = {}
-        if minorFaction:
-            default_data = self.set_data_defaults_minorFaction(validated_data)
-        if MinorFactionInSystem:
-            default_data = self.set_data_defaults_MinorFactionInSystem(validated_data)
-        default_data = self.clean_data_defaults(default_data)
-        return default_data
-
     def data_preparation(self, validated_data: dict) -> dict:
         self.stato_data = {
             "Happiness": validated_data.get('Happiness', None),
@@ -162,20 +150,19 @@ class MinorFactionInSystemSerializer(MinorFactionInSystemSerializerBase):
     def create_dipendent(self, instance):
         self.create_state(instance)
 
-
     def update_dipendent(self, instance):
         self.update_state(instance)
 
     def update_or_create(self, validated_data: dict):
         minorFaction, create = update_or_create_if_time(
             MinorFaction, time=self.get_time(validated_data), 
-            defaults=self.get_data_defaults(validated_data, minorFaction=True),
+            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_minorFaction),
             name=validated_data.get('Name'),
         )
         self.data_preparation(validated_data)
         self.instance, create = update_or_create_if_time(
             MinorFactionInSystem, time=self.get_time(validated_data), 
-            defaults=self.get_data_defaults(validated_data, MinorFactionInSystem=True),
+            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_MinorFactionInSystem),
             create_function=self.create_dipendent, update_function=self.update_dipendent,
             system=validated_data.get('system'), minorFaction=minorFaction,
         )

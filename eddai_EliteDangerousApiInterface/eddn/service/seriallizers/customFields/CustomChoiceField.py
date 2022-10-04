@@ -1,7 +1,4 @@
-from pickle import EMPTY_LIST
-from turtle import st
 from django.utils.translation import gettext_lazy as _
-from typing import Dict, Type
 from rest_framework import serializers
 from django_filters.filters import EMPTY_VALUES
 import re
@@ -50,3 +47,10 @@ class HappinessChoiceField(serializers.ChoiceField):
         if value in EMPTY_VALUES:
             return value
         return f"$Faction_{value.get('State')}Band{value.get('StatePhase')};"
+
+class RingClassmChoiceField(serializers.ChoiceField):
+    def to_internal_value(self, data):
+        if (not data in EMPTY_VALUES) and (not data in  self.choice_strings_to_values.keys()):
+            reg = re.findall(r'eRingClass_([a-zA-Z]{1,})$', data)
+            data = str(reg[0]) if reg else ''
+        return super().to_internal_value(data)

@@ -3,6 +3,8 @@ from eddn.service.dataAnalytics.Erors import NotSerializerError
 from rest_framework.serializers import Serializer
 
 from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
+from eddn.service.journals.scan.BaseScanSerializer import BaseScanSerializer
+from eddn.service.journals.scan import StarScanSerializer
 
 class JournalAnalytic(BaseDataAnalytics):
 
@@ -38,4 +40,6 @@ class JournalAnalytic(BaseDataAnalytics):
 
     def analyst_Scan(self):
         data = self.get_message()
-        raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")
+        if 'StarType' in data.keys():
+            return StarScanSerializer(data=data)
+        return BaseScanSerializer(data=data)

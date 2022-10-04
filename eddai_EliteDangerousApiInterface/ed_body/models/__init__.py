@@ -1,4 +1,3 @@
-
 from ed_body.models.StarLuminosity import StarLuminosity
 from ed_body.models.StarType import StarType
 

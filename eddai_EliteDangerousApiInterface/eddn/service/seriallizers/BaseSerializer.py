@@ -66,11 +66,14 @@ class BaseSerializer(serializers.Serializer):
                 del default_data[key]
         return default_data
 
-    def get_data_defaults(self, validated_data:dict) -> dict:
+    def get_data_defaults(self, validated_data:dict, fuction=None) -> dict:
         """
         chiama questo medodo per restituire i default data
         """
-        default_data = self.set_data_defaults(validated_data)
+        if fuction:
+            default_data = fuction(validated_data)
+        else: 
+            default_data = self.set_data_defaults(validated_data)
         default_data = self.clean_data_defaults(default_data)
         return default_data
 

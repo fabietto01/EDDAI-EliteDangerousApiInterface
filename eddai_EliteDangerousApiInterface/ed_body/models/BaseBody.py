@@ -36,13 +36,15 @@ class BaseBody(models.Model):
         help_text=_('radius of the body'),
         validators=[
             MinValueValidator(0, _('the radius cannot be less than 0'))
-        ]
+        ],
+        null=True, blank=True
     )
     surfaceTemperature = models.FloatField(
         verbose_name=_('surface temperature'),
         validators=[
             MinValueValidator(0, _('the surface temperature cannot be less than 0'))
-        ]
+        ],
+        null=True, blank=True
     )
     #orbit parameters
     eccentricity = models.FloatField(
@@ -107,9 +109,6 @@ class BaseBody(models.Model):
     rotationPeriod = models.FloatField(
         verbose_name=_('rotation period'),
         help_text=_('rotation period of the body in seconds'),
-        validators=[
-            MinValueValidator(0, _('the rotation period cannot be less than 0'))
-        ],
         null=True, blank=True
     )
     updated = models.DateTimeField(

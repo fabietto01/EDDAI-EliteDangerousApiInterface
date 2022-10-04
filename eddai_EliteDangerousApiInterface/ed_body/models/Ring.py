@@ -13,7 +13,7 @@ class Ring(models.Model):
         enumerazione per i tipi di anelli
         """
         METAL_RICH = 'MetalRich', _('Metal Rich')
-        METALLIC = 'Metallic', _('Metallic')
+        METALLIC = 'Metalic', _('Metalic')
         ROCKY = 'Rocky', _('Rocky')
         Icy = 'Icy', _('Icy')
 
@@ -32,21 +32,24 @@ class Ring(models.Model):
         help_text=_('inner radius of the ring'),
         validators=[
             MinValueValidator(0, _('the inner radius cannot be less than 0'))
-        ]
+        ],
+        null=True, blank=True
     )
     outerRad = models.FloatField(
         verbose_name=_('outer radius'),
         help_text=_('outer radius of the ring'),
         validators=[
             MinValueValidator(0, _('the outer radius cannot be less than 0'))
-        ]
+        ],
+        null=True, blank=True
     )
     massMT = models.FloatField(
         verbose_name=_('mass'),
         help_text=_('mass of the ring'),
         validators=[
             MinValueValidator(0, _('the mass cannot be less than 0'))
-        ]
+        ],
+        null=True, blank=True
     )
     ringType = models.CharField(
         max_length=255,
