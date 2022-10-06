@@ -4,7 +4,7 @@ class EDInfoRouter:
     modelli nelle applicazione ed_system.
     """
     route_app_labels = {
-        "ed_system","ed_body","ed_bgs","ed_core","ed_economy","ed_station","eddn",'ed_materials',
+        "ed_system","ed_body","ed_bgs","ed_core","ed_economy","ed_station","eddn",'ed_material',
         'ed_mining'
     }
 
