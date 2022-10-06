@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ed_economy',
     'ed_bgs',
     'ed_body',
+    'ed_material',
     'eddn',
 
 
