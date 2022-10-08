@@ -1,6 +1,35 @@
 {
-	"Atmosphere": "",
 	"AtmosphereType": "None",
+	"PlanetClass": "High metal content body",
+	"Volcanism": "minor metallic magma volcanism",
+
+	"Atmosphere": "",
+	"AtmosphereComposition": [
+		{
+		   "Name": "Hydrogen",
+		   "Percent": 73.57048
+		},
+		{
+		   "Name": "Helium",
+		   "Percent": 26.42951
+		}
+	 ],
+	 "Materials": [
+		{
+		   "Name": "iron",
+		   "Percent": 24.374876
+		},
+		{
+		   "Name": "nickel",
+		   "Percent": 18.436134
+		}
+	 ],
+
+	
+	
+	
+
+	"TerraformState": "",
 	"Composition": {
 	   "Ice": 0.0,
 	   "Metal": 0.326013,
@@ -8,31 +37,8 @@
 	},
 	"Landable": true,
 	"MassEM": 3.108387,
-	"Materials": [
-	   {
-		  "Name": "iron",
-		  "Percent": 24.374876
-	   },
-	   {
-		  "Name": "nickel",
-		  "Percent": 18.436134
-	   }
-	],
-	"PlanetClass": "High metal content body",
 	"SurfaceGravity": 17.35237,
 	"SurfacePressure": 0.0,
-	"TerraformState": "",
 	"TidalLock": true,
-	"Volcanism": "minor metallic magma volcanism",
-	"AtmosphereComposition": [
-	   {
-		  "Name": "Hydrogen",
-		  "Percent": 73.57048
-	   },
-	   {
-		  "Name": "Helium",
-		  "Percent": 26.42951
-	   }
-	],
 	"ReserveLevel": "PristineResources"
  }
