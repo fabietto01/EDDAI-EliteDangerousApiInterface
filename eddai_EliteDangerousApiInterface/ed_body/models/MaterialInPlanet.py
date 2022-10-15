@@ -31,7 +31,7 @@ class MaterialInPlanet(models.Model):
     )
 
     def clean(self) -> None:
-        if self.material.type != Material.MaterialType.RAW:
+        if self.material.type != Material.MaterialType.RAW.label:
             raise ValidationError(_('the material must be raw'))
 
     class Meta:

@@ -54,3 +54,9 @@ class RingClassmChoiceField(serializers.ChoiceField):
             reg = re.findall(r'eRingClass_([a-zA-Z]{1,})$', data)
             data = str(reg[0]) if reg else ''
         return super().to_internal_value(data)
+
+class ReserveLevelChoiceField(serializers.ChoiceField):
+    def to_internal_value(self, data):
+        if str(data).endswith('Resources'):
+            data = data[:-9]
+        return super().to_internal_value(data)

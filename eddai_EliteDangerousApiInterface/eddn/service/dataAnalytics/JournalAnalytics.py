@@ -4,7 +4,7 @@ from rest_framework.serializers import Serializer
 
 from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
 from eddn.service.journals.scan.BaseScanSerializer import BaseScanSerializer
-from eddn.service.journals.scan import StarScanSerializer
+from eddn.service.journals.scan import StarScanSerializer, PlanetScanSerializer
 
 class JournalAnalytic(BaseDataAnalytics):
 
@@ -42,4 +42,4 @@ class JournalAnalytic(BaseDataAnalytics):
         data = self.get_message()
         if 'StarType' in data.keys():
             return StarScanSerializer(data=data)
-        return BaseScanSerializer(data=data)
+        return PlanetScanSerializer(data=data)
