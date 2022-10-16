@@ -15,42 +15,59 @@ from eddn.service.journals.scan.CompositionSerializers import CompositionSeriali
 class PlanetScanSerializer(BaseScanSerializer):
     
     AtmosphereType = serializers.ChoiceField(
-        choices=get_values_list_or_default(AtmosphereType, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
+        choices=get_values_list_or_default(AtmosphereType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        required=False,
     )
     PlanetClass = serializers.ChoiceField(
-        choices=get_values_list_or_default(PlanetType, [], (OperationalError, ProgrammingError), 'name', flat=True)
+        choices=get_values_list_or_default(PlanetType, [], (OperationalError, ProgrammingError), 'name', flat=True),
+        required=False,
     )
     Volcanism = serializers.ChoiceField(
-        choices=get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'name', flat=True)
+        choices=get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'name', flat=True),
+        allow_blank=True,
+        required=False,
     )
     TerraformState = serializers.ChoiceField(
         choices=Planet.TerraformingState.choices,
+        required=False,
     )
-    Composition = CompositionSerializers()
-    Landable = serializers.BooleanField()
+    Composition = CompositionSerializers(
+        required=False,
+    )
+    Landable = serializers.BooleanField(
+        required=False,
+    )
     MassEM = serializers.FloatField(
         min_value=0,
+        required=False,
     )
     SurfaceGravity = serializers.FloatField(
         min_value=0,
+        required=False,
     )
     SurfacePressure = serializers.FloatField(
         min_value=0,
+        required=False,
     )
-    TidalLock = serializers.BooleanField()
+    TidalLock = serializers.BooleanField(
+        required=False,
+    )
     ReserveLevel = ReserveLevelChoiceField(
         choices=Planet.ReserveLevel.choices,
+        required=False,
     )
     Materials = serializers.ListField(
         child=MaterialsSerializer(),
+        required=False,
     )
     AtmosphereComposition = serializers.ListField(
         child=AtmosphereComponentSerializer(),
+        required=False,
     )
 
     def data_preparation(self, validated_data: dict) -> dict:
-        self.materials_data:dict = validated_data.pop('Materials')
-        self.atmosphereComposition_data:dict = validated_data.pop('AtmosphereComposition')
+        self.materials_data:dict = validated_data.pop('Materials', None)
+        self.atmosphereComposition_data:dict = validated_data.pop('AtmosphereComposition', None)
         return BaseScanSerializer.data_preparation(self, validated_data)
 
     def update_atmosphereComposition(self, instance):
@@ -101,21 +118,21 @@ class PlanetScanSerializer(BaseScanSerializer):
         
     def set_data_defaults(self, validated_data: dict) -> dict:
         defaults = BaseScanSerializer.set_data_defaults(self, validated_data)
-        composition:dict = validated_data.get('Composition')
+        composition:dict = validated_data.get('Composition', {})
         defaults.update({
-            'atmosphereType': get_or_none(AtmosphereType, name=validated_data.get('AtmosphereType')),
-            'planetType': get_or_none(PlanetType, name=validated_data.get('PlanetClass')),
-            'volcanism': get_or_none(Volcanism, name=validated_data.get('Volcanism')),
-            'terraformState': validated_data.get('TerraformState'),
-            'landable': validated_data.get('Landable'),
-            '_compositionIce': composition.get('Ice'),
-            '_compositionRock': composition.get('Rock'),
-            '_compositionMetal': composition.get('Metal'),
-            'massEM': validated_data.get('MassEM'),
-            'surfaceGravity': validated_data.get('SurfaceGravity'),
-            'surfacePressure': validated_data.get('SurfacePressure'),
-            'tidalLock': validated_data.get('TidalLock'),
-            'reserveLevel': validated_data.get('ReserveLevel'),
+            'atmosphereType': get_or_none(AtmosphereType, name=validated_data.get('AtmosphereType', None)),	
+            'planetType': get_or_none(PlanetType, name=validated_data.get('PlanetClass', None)),
+            'volcanism': get_or_none(Volcanism, name=validated_data.get('Volcanism', None)),
+            'terraformState': validated_data.get('TerraformState', None),
+            'landable': validated_data.get('Landable', None),
+            '_compositionIce': composition.get('Ice') if composition else None,
+            '_compositionRock': composition.get('Rock') if composition else None,
+            '_compositionMetal': composition.get('Metal') if composition else None,
+            'massEM': validated_data.get('MassEM', None),
+            'surfaceGravity': validated_data.get('SurfaceGravity', None),
+            'surfacePressure': validated_data.get('SurfacePressure', None),
+            'tidalLock': validated_data.get('TidalLock', None),
+            'reserveLevel': validated_data.get('ReserveLevel', None),
         })
 
     def create_dipendent(self, instance):
