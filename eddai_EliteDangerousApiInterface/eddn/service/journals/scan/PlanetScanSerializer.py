@@ -29,6 +29,7 @@ class PlanetScanSerializer(BaseScanSerializer):
     )
     TerraformState = serializers.ChoiceField(
         choices=Planet.TerraformingState.choices,
+        allow_blank=True,
         required=False,
     )
     Composition = CompositionSerializers(
