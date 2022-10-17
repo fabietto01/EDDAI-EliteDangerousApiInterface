@@ -117,7 +117,7 @@ class BaseScanSerializer(BaseJournal):
         self.data_preparation(validated_data)
         ModelClass:BaseBody = self.Meta.model
         body, create = update_or_create_if_time(
-            ModelClass, time=self.get_time(validated_data), defaults=self.get_data_defaults(validated_data),
+            ModelClass,  time=self.get_time(validated_data), defaults=self.get_data_defaults(validated_data),
             create_function=self.create_dipendent, update_function=self.update_dipendent,
             system=system, name=validated_data.get('BodyName'), bodyID=validated_data.get('BodyID')
         )

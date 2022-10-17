@@ -71,7 +71,6 @@ class FSDJumpSerializer(BaseJournal):
                 )
         return super().validate(attrs)
 
-    
     def set_data_defaults(self, validated_data: dict) -> dict:
         defaults = BaseJournal.set_data_defaults(self, validated_data)
         defaults.update(

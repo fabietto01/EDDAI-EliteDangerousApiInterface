@@ -55,19 +55,22 @@ class Planet(BaseBody):
         verbose_name=_('ice'),
         validators=[
             MinValueValidator(0, _('the composition ice cannot be less than 0')),
-        ]
+        ],
+        null=True,        
     )
     _compositionRock = models.FloatField(
         verbose_name=_('rock'),
         validators=[
             MinValueValidator(0, _('the composition rock cannot be less than 0')),
-        ]
+        ],
+        null=True,
     )
     _compositionMetal = models.FloatField(
         verbose_name=_('metal'),
         validators=[
             MinValueValidator(0, _('the composition metal cannot be less than 0')),
-        ]
+        ],
+        null=True,
     )
     landable = models.BooleanField(
         verbose_name=_('landable'),

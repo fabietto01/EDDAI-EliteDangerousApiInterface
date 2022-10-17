@@ -34,6 +34,9 @@ class MaterialInPlanet(models.Model):
         if self.material.type != Material.MaterialType.RAW.label:
             raise ValidationError(_('the material must be raw'))
 
+    def __str__(self) -> str:
+        return f'{self.material.name}'
+
     class Meta:
         verbose_name = _('material in planet')
         verbose_name_plural = _('materials in planets')

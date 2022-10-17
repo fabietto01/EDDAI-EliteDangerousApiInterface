@@ -74,7 +74,7 @@ class PlanetScanSerializer(BaseScanSerializer):
     def update_atmosphereComposition(self, instance):
         atmosphereCompositionList = [
             AtmosphereComponentInPlanet(
-                atmosphereComponent=AtmosphereComponent.objects.get(name=atmosphereComponent.get('Name')),
+                atmosphere_component=AtmosphereComponent.objects.get(name=atmosphereComponent.get('Name')),
                 percent=atmosphereComponent.get('Percent'),
                 planet=instance,
             ) for atmosphereComponent in self.atmosphereComposition_data
@@ -126,15 +126,16 @@ class PlanetScanSerializer(BaseScanSerializer):
             'volcanism': get_or_none(Volcanism, name=validated_data.get('Volcanism', None)),
             'terraformState': validated_data.get('TerraformState', None),
             'landable': validated_data.get('Landable', None),
-            '_compositionIce': composition.get('Ice') if composition else None,
-            '_compositionRock': composition.get('Rock') if composition else None,
-            '_compositionMetal': composition.get('Metal') if composition else None,
+            '_compositionIce': composition.get('Ice', None),
+            '_compositionRock': composition.get('Rock', None),
+            '_compositionMetal': composition.get('Metal', None),
             'massEM': validated_data.get('MassEM', None),
             'surfaceGravity': validated_data.get('SurfaceGravity', None),
             'surfacePressure': validated_data.get('SurfacePressure', None),
             'tidalLock': validated_data.get('TidalLock', None),
             'reserveLevel': validated_data.get('ReserveLevel', None),
         })
+        return defaults
 
     def create_dipendent(self, instance):
         if self.materials_data:

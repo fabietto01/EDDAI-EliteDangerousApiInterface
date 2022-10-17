@@ -29,6 +29,9 @@ class AtmosphereComponentInPlanet(models.Model):
         ]
     )
 
+    def __str__(self) -> str:
+        return f'{self.atmosphere_component.name}'
+
     class Meta:
         verbose_name = _('atmosphere component in planet')
         verbose_name_plural = _('atmosphere components in planets')
