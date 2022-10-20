@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class Volcanism(models.Model):
+from eddn.models import AbstractDataEDDN
+
+class Volcanism(AbstractDataEDDN):
     """
     modello per la tipologia dei vulcanismi
     """

@@ -43,7 +43,7 @@ class RingAdmin(admin.ModelAdmin):
 class StarAdmin(admin.ModelAdmin):
     model = Star
     list_display = ('name', 'system', 'distance', "luminosity", "starType", "rotating", "orbiting")
-    search_fields = ('name', 'system__name', 'pk')
+    search_fields = ('name', 'system__name', 'id')
     raw_id_fields = ("system",)
     list_filter = ('luminosity', 'starType', )
     inlines = [RingInline]
@@ -52,7 +52,7 @@ class StarAdmin(admin.ModelAdmin):
 class PlanetAdmin(admin.ModelAdmin):
     model = Planet
     list_display = ('name', 'system', 'distance', "atmosphereType", "planetType", "terraformState")
-    search_fields = ('name', 'system__name', 'pk')
+    search_fields = ('name', 'system__name', 'id')
     raw_id_fields = ("system",)
     list_filter = ('atmosphereType', 'planetType', 'volcanism', 'terraformState', 'reserveLevel')
     inlines = [RingInline, AtmosphereComponentInPlanetInline, MaterialInPlanetInline]

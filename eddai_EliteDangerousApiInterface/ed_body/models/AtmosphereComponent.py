@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class AtmosphereComponent(models.Model):
+from eddn.models import AbstractDataEDDN
+
+class AtmosphereComponent(AbstractDataEDDN):
     """
     modello per i componenti delle atmosfere
     """

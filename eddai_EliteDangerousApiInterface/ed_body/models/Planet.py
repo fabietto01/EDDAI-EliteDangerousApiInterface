@@ -16,6 +16,7 @@ class Planet(BaseBody):
         TERRAFORMABLE = 'Terraformable', _('Terraformable')
         TERRAFORMMING = 'Terraforming', _('Terraforming')
         TERRAFORMMED = 'Terraformed', _('Terraformed')
+        NOT_TERRAFORMABLE = '', _('Not Terraformable')
         
     class ReserveLevel(models.TextChoices):
         PRISTINE = 'Pristine', _('Pristine')

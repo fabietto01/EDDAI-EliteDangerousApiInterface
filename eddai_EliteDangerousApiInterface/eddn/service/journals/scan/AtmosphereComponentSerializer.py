@@ -8,7 +8,7 @@ from ed_body.models import Planet, AtmosphereComponentInPlanet, AtmosphereCompon
 
 class AtmosphereComponentSerializer(BaseSerializer):
     Name = serializers.ChoiceField(
-        choices=get_values_list_or_default(AtmosphereComponent, [], (OperationalError, ProgrammingError), 'name', flat=True)
+        choices=get_values_list_or_default(AtmosphereComponent, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
     )
     Percent = serializers.FloatField(
         min_value=0,
@@ -23,6 +23,6 @@ class AtmosphereComponentSerializer(BaseSerializer):
     def update_or_create(self, validated_data: dict) -> AtmosphereComponentInPlanet:
         atmosphereComponentInPlanet, created = update_or_create_if_time(
             AtmosphereComponentInPlanet, time=self.get_time(validated_data), defaults=self.get_data_defaults(validated_data),
-            planet=validated_data.get('planet'), atmosphereComponent=validated_data.get('atmosphereComponent')
+            planet=validated_data.get('planet'), atmosphereComponent=get_or_none(AtmosphereComponent, eddn=validated_data.get('Name'))
         )
         return atmosphereComponentInPlanet

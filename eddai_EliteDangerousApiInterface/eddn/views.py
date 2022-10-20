@@ -1,13 +1,9 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.db.models import Count, F, Value
 
 from eddn.service.client import EddnClient
 
-from ed_bgs.models import (
-        Faction, Government, MinorFaction, 
-        MinorFactionInSystem, State,
-        StateInMinorFaction
-    )
+from ed_body.models import AtmosphereComponent
 
 # Create your views here.
 
@@ -17,7 +13,5 @@ def startEddn(request):
     return HttpResponse(status=400, reason='EDDN is not running')
 
 def startTest(request):
-    
-    StateInMinorFaction.objects.filter(phase="a").update(phase="A")
-    
+          
     return HttpResponse(status=200, reason='ok')

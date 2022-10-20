@@ -4,9 +4,6 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from eddn.manager import EddnManager
 
-from core.utility import get_values_list_or_default, get_or_none
-from django.db import OperationalError, ProgrammingError
-
 # Create your models here.
 
 class DataLog(models.Model):
@@ -31,7 +28,6 @@ class DataLog(models.Model):
         verbose_name = _("data log")
         verbose_name_plural = _("data logs")
         ordering = ['-update']
-
 
 class AbstractDataEDDN(models.Model):
     """

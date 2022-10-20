@@ -6,7 +6,6 @@ from django.db import OperationalError, ProgrammingError
 
 from ed_body.models import Star, StarLuminosity, StarType
 
-
 class StarScanSerializer(BaseScanSerializer):
     
     AbsoluteMagnitude = serializers.FloatField(
@@ -40,7 +39,6 @@ class StarScanSerializer(BaseScanSerializer):
             'subclass': validated_data.get('Subclass'),
         })
         return defaults
-
 
     class Meta:
         model = Star

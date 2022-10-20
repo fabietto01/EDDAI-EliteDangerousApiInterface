@@ -23,7 +23,7 @@ class PlanetScanSerializer(BaseScanSerializer):
         required=False,
     )
     Volcanism = serializers.ChoiceField(
-        choices=get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'name', flat=True),
+        choices=get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
         allow_blank=True,
         required=False,
     )
@@ -74,7 +74,7 @@ class PlanetScanSerializer(BaseScanSerializer):
     def update_atmosphereComposition(self, instance):
         atmosphereCompositionList = [
             AtmosphereComponentInPlanet(
-                atmosphere_component=AtmosphereComponent.objects.get(name=atmosphereComponent.get('Name')),
+                atmosphere_component=AtmosphereComponent.objects.get(eddn=atmosphereComponent.get('Name')),
                 percent=atmosphereComponent.get('Percent'),
                 planet=instance,
             ) for atmosphereComponent in self.atmosphereComposition_data
@@ -121,9 +121,9 @@ class PlanetScanSerializer(BaseScanSerializer):
         defaults = BaseScanSerializer.set_data_defaults(self, validated_data)
         composition:dict = validated_data.get('Composition', {})
         defaults.update({
-            'atmosphereType': get_or_none(AtmosphereType, name=validated_data.get('AtmosphereType', None)),	
+            'atmosphereType': get_or_none(AtmosphereType, eddn=validated_data.get('AtmosphereType', None)),	
             'planetType': get_or_none(PlanetType, name=validated_data.get('PlanetClass', None)),
-            'volcanism': get_or_none(Volcanism, name=validated_data.get('Volcanism', None)),
+            'volcanism': get_or_none(Volcanism, eddn=validated_data.get('Volcanism', None)),
             'terraformState': validated_data.get('TerraformState', None),
             'landable': validated_data.get('Landable', None),
             '_compositionIce': composition.get('Ice', None),
