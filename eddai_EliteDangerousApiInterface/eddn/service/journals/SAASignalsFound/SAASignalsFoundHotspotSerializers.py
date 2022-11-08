@@ -4,10 +4,10 @@ from eddn.service.journals.SAASignalsFound.SAASignalsFoundSerializers import SAA
 
 from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
 
-from ed_mining.models import HotspotSignals
+from ed_mining.models import HotspotSignals, HotSpot
+
 
 class HotspotSerializers(serializers.Serializer):
-
     Type = serializers.ChoiceField(
         choices=get_values_list_or_default(HotspotSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )
@@ -19,4 +19,4 @@ class SAASignalsFoundHotspotSerializers(SAASignalsFoundSerializers):
     Signals = HotspotSerializers()
 
     class Meta:
-        model = None
+        model = HotSpot

@@ -13,4 +13,7 @@ class SAASignalsFoundSerializers(BaseJournal):
     Signals = None
 
     def update_or_create(self, validated_data: dict, update_function=None, create_function=None):
-        return super().update_or_create(validated_data, update_function, create_function)   
+        self.initial, create = update_or_create_if_time(
+            self.Meta.model, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
+        )   
+        return self.initial
