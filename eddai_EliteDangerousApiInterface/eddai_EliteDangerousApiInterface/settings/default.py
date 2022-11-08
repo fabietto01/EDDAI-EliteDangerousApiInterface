@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'ed_bgs',
     'ed_body',
     'ed_material',
+    'ed_mining',
     'eddn',
 
 

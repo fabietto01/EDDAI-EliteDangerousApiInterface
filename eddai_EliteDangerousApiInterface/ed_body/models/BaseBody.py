@@ -10,6 +10,19 @@ class BaseBody(models.Model):
     """
     modello di base per le informazioni dei corpi celesti
     presenti al interno del systema
+
+    query per order by
+
+        SELECT * FROM `ed_info-dev`.ed_body_basebody as feat where system_id = 8158 order by 
+        case
+            when parentsID = 0
+            then bodyID
+            else (
+                select bodyID
+                from `ed_info-dev`.ed_body_basebody as parent
+                where feat.parentsID = parent.bodyID and feat.system_id = parent.system_id
+            ) 
+        end asc
     """
     name = models.CharField(
         max_length=255,
@@ -22,7 +35,12 @@ class BaseBody(models.Model):
         related_query_name='%(app_label)s_%(class)ss'
     )
     bodyID = models.PositiveIntegerField(
-        verbose_name=_('bodyID'),
+        verbose_name=_('body ID'),
+    )
+    parentsID = models.PositiveSmallIntegerField(
+        default=0,
+        verbose_name=_('parents ID'),
+        help_text=_("enter the body ID of the object which orbit"),
     )
     distance = models.FloatField(
         verbose_name=_('distance'),

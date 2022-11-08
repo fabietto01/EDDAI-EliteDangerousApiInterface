@@ -5,6 +5,7 @@ from rest_framework.serializers import Serializer
 from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
 from eddn.service.journals.scan.BaseScanSerializer import BaseScanSerializer
 from eddn.service.journals.scan import StarScanSerializer, PlanetScanSerializer
+from eddn.service.journals.SAASignalsFound import SAASignalsFoundHotspotSerializers
 
 class JournalAnalytic(BaseDataAnalytics):
 
@@ -43,3 +44,9 @@ class JournalAnalytic(BaseDataAnalytics):
         if 'StarType' in data.keys():
             return StarScanSerializer(data=data)
         return PlanetScanSerializer(data=data)
+
+    def analyst_SAASignalsFound(self):
+        data=self.get_message()
+        if  'Rings' in data.get('BodyName', ''):
+            return SAASignalsFoundHotspotSerializers(data=data)
+        raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")

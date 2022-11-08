@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
 
-
 class Economy(AbstractDataEDDN, models.Model):
 
     name = models.CharField(
@@ -13,9 +12,6 @@ class Economy(AbstractDataEDDN, models.Model):
     description = models.TextField(
         blank=True, null=True
     )
-
-    
-
 
     def __str__(self) -> str:
         return self.name

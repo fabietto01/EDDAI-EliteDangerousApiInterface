@@ -25,6 +25,10 @@ class BaseScanSerializer(BaseJournal):
     BodyID = serializers.IntegerField(
         min_value=0,
     )
+    Parents = serializers.ListField(
+        child=serializers.JSONField(),
+        min_length=1,
+    )
     AxialTilt = serializers.FloatField(
         min_value=-360,
         max_value=360,
@@ -88,6 +92,7 @@ class BaseScanSerializer(BaseJournal):
             'semiMajorAxis': validated_data.get('SemiMajorAxis', None),
             'ascendingNode': validated_data.get('AscendingNode', None),
             'meanAnomaly': validated_data.get('MeanAnomaly', None),
+            'parentsID': list(validated_data.get('Parents', None)[0].values())[0] if validated_data.get('Parents', None) else None,
         }
 
     def data_preparation(self, validated_data: dict) -> dict:
