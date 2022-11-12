@@ -41,13 +41,15 @@ class BaseBody(models.Model):
         default=0,
         verbose_name=_('parents ID'),
         help_text=_("enter the body ID of the object which orbit"),
+        null=True
     )
     distance = models.FloatField(
         verbose_name=_('distance'),
         help_text=_('distance from the stary center'),
         validators=[
             MinValueValidator(0, _('the distance cannot be less than 0'))
-        ]
+        ],
+        null=True
     )
     radius = models.FloatField(
         verbose_name=_('radius'),

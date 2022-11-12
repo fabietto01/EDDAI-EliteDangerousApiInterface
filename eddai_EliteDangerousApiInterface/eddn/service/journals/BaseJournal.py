@@ -19,6 +19,12 @@ class BaseJournal(BaseSerializer):
         ]
     )
 
+    def create_dipendent(self, instance):
+        raise NotImplementedError
+
+    def update_dipendent(self, instance):
+        raise NotImplementedError
+
     def set_data_defaults(self, validated_data:dict) -> dict:
         x,y,z = validated_data.get('StarPos')
         return {

@@ -56,6 +56,7 @@ class Ring(models.Model):
         choices=RingType.choices,
         verbose_name=_('ring type'),
         help_text=_('type of the ring'),
+        null=True
     )
 
     def clean(self) -> None:

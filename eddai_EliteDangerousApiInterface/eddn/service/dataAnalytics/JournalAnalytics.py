@@ -47,6 +47,6 @@ class JournalAnalytic(BaseDataAnalytics):
 
     def analyst_SAASignalsFound(self):
         data=self.get_message()
-        if 'Rings' in data.get('BodyName', ''):
+        if 'Ring' in data.get('BodyName', ''):
             return SAASignalsFoundHotspotSerializers(data=data)
         raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")
