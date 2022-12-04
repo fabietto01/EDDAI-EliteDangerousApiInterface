@@ -7,5 +7,3 @@ class EddnManager(models.Manager):
         return super().get_queryset().annotate(
              eddn=Coalesce('_eddn', 'name')
         )
-
-    

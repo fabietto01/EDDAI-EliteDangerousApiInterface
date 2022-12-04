@@ -4,7 +4,7 @@ from eddn.service.journals.BaseJournal import BaseJournal
 from ed_body.models import BaseBody
 from ed_system.models import System
 
-from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
+from core.utility import update_or_create_if_time
 
 class SAASignalsFoundSerializers(BaseJournal):
     BodyName = serializers.CharField(
