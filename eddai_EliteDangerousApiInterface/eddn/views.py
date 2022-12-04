@@ -3,7 +3,7 @@ from django.db.models import Count, F, Value
 
 from eddn.service.client import EddnClient
 
-from ed_body.models import AtmosphereComponent
+from ed_body.models import BaseBody
 
 # Create your views here.
 
@@ -13,5 +13,4 @@ def startEddn(request):
     return HttpResponse(status=400, reason='EDDN is not running')
 
 def startTest(request):
-          
-    return HttpResponse(status=200, reason='ok')
+    return HttpResponse(status=200, reason='ok') 
