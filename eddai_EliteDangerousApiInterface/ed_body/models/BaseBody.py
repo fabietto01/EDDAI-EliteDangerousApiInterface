@@ -1,16 +1,11 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
-
-
 from ed_system.models import System
 
-from typing import Any, TypeVar, Optional, Iterable
-from django.db import (
-    router,
-)
 
 class BaseBody(models.Model):
     """
@@ -156,6 +151,35 @@ class BaseBody(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None) -> None:
+        """
+        method overriding to avoid the error when the parent is already present in 
+        the db and you want to add the child
+        """
+
+        def str_in_list(string: str, list: list) -> bool:
+            """
+            check if one of the strings in the list is present in the string
+            """
+            for item in list:
+                if item in string:
+                    return True
+            return False
+
+        try:
+            super().save(force_insert, force_update, using, update_fields)
+        except IntegrityError as e:
+            if str_in_list(str(e), [c.name for c in BaseBody._meta.constraints]) and self.__class__ != BaseBody.__class__:
+                try:
+                    parent = BaseBody.objects.get(name=self.name, system=self.system, bodyID=self.bodyID)
+                    t = BaseBody._meta.get_base_chain(BaseBody)
+                    if parent:
+                        self.pk = parent.id
+                        return super().save_base(raw=True)
+                except BaseBody.DoesNotExist:
+                    raise e
+            raise e
 
     class Meta:
         verbose_name = _('body')
