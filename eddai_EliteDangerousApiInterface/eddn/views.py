@@ -18,14 +18,5 @@ def startEddn(request):
     return HttpResponse(status=400, reason='EDDN is not running')
 
 def startTest(request):
-    parent = BaseBody.objects.get(name='Test')
-
-    Planet.objects.create(
-        name='Test1',
-        system=System.objects.get(name='sol'),
-        bodyID=999999,
-        landable=True,
-        massEM=999999,
-    )
 
     return HttpResponse(status=200, reason='ok') 
