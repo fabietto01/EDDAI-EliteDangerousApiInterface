@@ -20,19 +20,8 @@ def startEddn(request):
 def startTest(request):
     parent = BaseBody.objects.get(name='Test')
 
-    Star.objects.create(
-        name='Test',
-        system=System.objects.get(name='sol'),
-        bodyID=999999,
-        absoluteMagnitude=6.0,
-        age=6.0,
-        luminosity=StarLuminosity.objects.get(name='Ia0'),
-        starType=StarType.objects.get(name='O'),
-        stellarMass=6.0,
-        subclass=6,
-    )
     Planet.objects.create(
-        name='Test',
+        name='Test1',
         system=System.objects.get(name='sol'),
         bodyID=999999,
         landable=True,

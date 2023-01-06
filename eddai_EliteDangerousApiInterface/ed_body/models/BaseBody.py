@@ -167,16 +167,36 @@ class BaseBody(models.Model):
                     return True
             return False
 
+        def get_child_instance(parent):
+            """
+            get the child instance of the parent
+            """
+            childList = []
+            exist = False
+            for filds in parent._meta.get_fields():
+                if filds.one_to_one and filds.parent_link:
+                    try:
+                        child = getattr(parent, filds.name)
+                        if child.__class__ != self.__class__:
+                            childList.append(child)
+                        elif child.__class__ == self.__class__ and child.id == parent.id:
+                            exist = True
+                            break
+                    except filds.related_model.DoesNotExist:
+                        pass
+            return childList, exist
+
         try:
             super().save(force_insert, force_update, using, update_fields)
         except IntegrityError as e:
             if str_in_list(str(e), [c.name for c in BaseBody._meta.constraints]) and self.__class__ != BaseBody.__class__:
                 try:
                     parent = BaseBody.objects.get(name=self.name, system=self.system, bodyID=self.bodyID)
-                    t = BaseBody._meta.get_base_chain(BaseBody)
-                    if parent:
-                        self.pk = parent.id
-                        return super().save_base(raw=True)
+                    childList, exist = get_child_instance(parent)
+                    if parent and (not childList) and (not exist):
+                        self.basebody_ptr = parent
+                        self.basebody_ptr_id = parent.id
+                        return super().save(force_insert, force_update, using, update_fields)
                 except BaseBody.DoesNotExist:
                     raise e
             raise e
