@@ -21,14 +21,6 @@ class SAASignalsFoundHotspotSerializers(SAASignalsFoundSerializers):
         min_length=1
     )
 
-    def validate(self, attrs):
-        bodyName = str(attrs.get('BodyName')).split(' Ring')[0]
-        try:
-            self.bodyInstance = BaseBody.objects.get(name=bodyName)
-        except BaseBody.DoesNotExist:
-            raise serializers.ValidationError('Body not found')
-        return super().validate(attrs)
-
     def set_data_defaults(self, validated_data: dict) -> dict:
         return {
             'body': self.bodyInstance,
