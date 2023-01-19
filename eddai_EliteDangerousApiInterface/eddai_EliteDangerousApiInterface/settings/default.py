@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': 'ed_info-dev',
         'USER': 'ed_info-dev-user',
         'PASSWORD': 'vkWCRnO7$oOLCm^ZNd#P@1*Pgbch7wPAMgm3Knd1FrRD&SH5DS',
-        'HOST': '185.25.206.129',
+        'HOST': '129.152.2.89',
         'PORT': '3306',
     }
 }
