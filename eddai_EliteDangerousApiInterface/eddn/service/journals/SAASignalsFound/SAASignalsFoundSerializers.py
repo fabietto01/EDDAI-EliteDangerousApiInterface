@@ -2,6 +2,7 @@ from rest_framework import serializers
 from eddn.service.journals.BaseJournal import BaseJournal
 
 from ed_body.models import BaseBody
+from ed_system.models import System
 
 from core.utility import update_or_create_if_time
 
@@ -15,10 +16,10 @@ class SAASignalsFoundSerializers(BaseJournal):
     Signals = None
 
     def set_data_defaults(self, validated_data: dict) -> dict:
-        return {}
+        raise NotImplementedError('set_data_defaults must be implemented in child class')
 
     def set_data_defaults_system(self, validated_data: dict) -> dict:
-        return BaseJournal.set_data_defaults(validated_data)
+        return super(SAASignalsFoundSerializers, self).set_data_defaults(validated_data)
 
     def update_dipendence(self, instance):
         pass
@@ -30,17 +31,21 @@ class SAASignalsFoundSerializers(BaseJournal):
         self.signals:list[dict] = validated_data.get('Signals', None)
 
     def update_or_create(self, validated_data: dict):
-        bodyName = str(validated_data.get('BodyName')).split(' Ring')[0]
+        self.systemInstance, create = update_or_create_if_time(
+            System, time=self.get_time(),
+            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_system),
+            name=validated_data.get('StarSystem'),
+        )
         self.bodyInstance, created = update_or_create_if_time(
             BaseBody, time=self.get_time(), 
-            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_system),
-            name=bodyName
+            defaults={},
+            bodyID=validated_data.get('BodyID'), system=self.systemInstance
         )
         self.data_preparation(validated_data)
         self.initial, create = update_or_create_if_time(
             self.Meta.model, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
             create_function=self.create_dipendence, update_function=self.update_dipendence,
-            name=validated_data.get('BodyName')   
+            name=validated_data.get('BodyName'), 
         )
         return self.initial
     

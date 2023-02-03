@@ -28,6 +28,9 @@ class HotSpot(models.Model):
             MinValueValidator(0, _('the count cannot be less than 0'))
         ],
     )
+    updated = models.DateTimeField(
+        auto_now=True
+    )
     
     def __str__(self):
         return self.type + ' in ' + self.ring

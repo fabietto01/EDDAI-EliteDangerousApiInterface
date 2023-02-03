@@ -5,7 +5,7 @@ from eddn.service.journals.SAASignalsFound.SAASignalsFoundSerializers import SAA
 from core.utility import  in_list_models, get_values_list_or_default
 
 from ed_mining.models import HotspotSignals, HotSpot
-from ed_body.models import Ring, BaseBody
+from ed_body.models import Ring
 
 class HotspotSerializers(serializers.Serializer):
     Type = serializers.ChoiceField(
@@ -16,6 +16,9 @@ class HotspotSerializers(serializers.Serializer):
     )
 
 class SAASignalsFoundHotspotSerializers(SAASignalsFoundSerializers):
+    """
+    serializers dedicated to the Hotspot signals
+    """
     Signals = serializers.ListField(
         child=HotspotSerializers(),
         min_length=1

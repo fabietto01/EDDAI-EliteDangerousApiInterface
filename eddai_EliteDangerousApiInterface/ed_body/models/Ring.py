@@ -58,6 +58,9 @@ class Ring(models.Model):
         help_text=_('type of the ring'),
         null=True
     )
+    updated = models.DateTimeField(
+        auto_now=True
+    )
 
     def clean(self) -> None:
         if self.innerRad > self.outerRad:
