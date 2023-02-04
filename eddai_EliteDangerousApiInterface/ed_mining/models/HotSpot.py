@@ -10,7 +10,7 @@ class HotSpot(models.Model):
     """
     """
     type = models.ForeignKey(
-        HotspotSignals, models.CASCADE,
+        HotspotSignals, models.PROTECT,
         verbose_name=_('type'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
@@ -33,7 +33,7 @@ class HotSpot(models.Model):
     )
     
     def __str__(self):
-        return self.type + ' in ' + self.ring
+        return str(self.type) + ' in ' + str(self.ring)
 
     class Meta:
         verbose_name = _("HotSpot")
