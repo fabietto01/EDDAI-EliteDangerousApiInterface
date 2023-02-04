@@ -41,9 +41,10 @@ class JournalAnalytic(BaseDataAnalytics):
 
     def analyst_Scan(self):
         data = self.get_message()
-        if 'StarType' in data.keys():
-            return StarScanSerializer(data=data)
-        return PlanetScanSerializer(data=data)
+        if not 'Ring' in data.get('BodyName', ''):
+            if 'StarType' in data.keys():
+                return StarScanSerializer(data=data)
+            return PlanetScanSerializer(data=data)
 
     def analyst_SAASignalsFound(self):
         data=self.get_message()
