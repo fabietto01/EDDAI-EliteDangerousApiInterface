@@ -191,7 +191,7 @@ class BaseBody(models.Model):
         except IntegrityError as e:
             if str_in_list(str(e), [c.name for c in BaseBody._meta.constraints]) and self.__class__ != BaseBody.__class__:
                 try:
-                    parent = BaseBody.objects.get(name=self.name, system=self.system, bodyID=self.bodyID)
+                    parent = BaseBody.objects.get(name=self.name, system=self.system)
                     childList, exist = get_child_instance(parent)
                     if parent and (not childList) and (not exist):
                         self.basebody_ptr = parent
