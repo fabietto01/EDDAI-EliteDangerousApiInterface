@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from ed_body.models import *
 from ed_body.forms.MaterialInPlanetForm import MaterialInPlanetForm
+from ed_exploration.admin import SignalInline, SampleInline
 
 class RingInline(admin.TabularInline):
     model = Ring
@@ -55,7 +56,10 @@ class PlanetAdmin(admin.ModelAdmin):
     search_fields = ('name', 'system__name', 'id')
     raw_id_fields = ("system",)
     list_filter = ('atmosphereType', 'planetType', 'volcanism', 'terraformState', 'reserveLevel')
-    inlines = [RingInline, AtmosphereComponentInPlanetInline, MaterialInPlanetInline]
+    inlines = [
+        RingInline, AtmosphereComponentInPlanetInline, 
+        MaterialInPlanetInline, SignalInline, SampleInline
+    ]
 
 @admin.register(AtmosphereType)
 class AtmosphereTypeAdmin(admin.ModelAdmin):
