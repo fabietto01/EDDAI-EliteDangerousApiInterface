@@ -45,6 +45,9 @@ class JournalAnalytic(BaseDataAnalytics):
             if 'StarType' in data.keys():
                 return StarScanSerializer(data=data)
             return PlanetScanSerializer(data=data)
+        raise NotSerializerError(
+            f"the service with this '{self.get_event()}' event, is not able to scan bodies that have inside the name 'Ring'"
+        )
 
     def analyst_SAASignalsFound(self):
         data=self.get_message()
