@@ -5,7 +5,7 @@ from rest_framework.serializers import Serializer
 from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
 from eddn.service.journals.scan.BaseScanSerializer import BaseScanSerializer
 from eddn.service.journals.scan import StarScanSerializer, PlanetScanSerializer
-from eddn.service.journals.SAASignalsFound import SAASignalsFoundHotspotSerializers
+from eddn.service.journals.SAASignalsFound import SAASignalsFoundHotspotSerializers, SAASignalsFoundSignalAndSampleSerializers
 
 class JournalAnalytic(BaseDataAnalytics):
 
@@ -53,4 +53,4 @@ class JournalAnalytic(BaseDataAnalytics):
         data=self.get_message()
         if 'Ring' in data.get('BodyName', ''):
             return SAASignalsFoundHotspotSerializers(data=data)
-        raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")
+        return SAASignalsFoundSignalAndSampleSerializers(data=data)
