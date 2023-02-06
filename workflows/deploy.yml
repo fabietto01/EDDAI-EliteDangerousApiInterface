@@ -35,4 +35,3 @@ jobs:
           token: ${{ github.token }}
           state: "failure"
           deployment_id: ${{ github.event.deployment.id }}
-      
