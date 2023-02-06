@@ -16,7 +16,3 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: ls
-      - name: Mark deployment as success
-        if: ${{ success() }}
-      - name: Mark deployment as failed
-        if: ${{ failure() }}
