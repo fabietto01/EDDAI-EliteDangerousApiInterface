@@ -14,7 +14,6 @@ jobs:
           token: ${{ github.token }}
           state: "in_progress"
           deployment_id: ${{ github.event.deployment.id }}
-          description: Deploying to production
       - name: Deploy
         uses: invi5H/ssh-action@v1
         with:
