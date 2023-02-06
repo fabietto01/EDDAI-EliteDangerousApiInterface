@@ -6,9 +6,10 @@ on:
       - dev-branch
 jobs:
   deploy:
+    name: dajgo-deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Start Deploy
+      - name: Start deploy
         uses: timely-deploy/status-action@v1
         with:
           token: ${{ github.token }}
