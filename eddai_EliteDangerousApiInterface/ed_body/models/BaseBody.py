@@ -158,6 +158,8 @@ class BaseBody(models.Model):
         the db and you want to add the child
         """
 
+        from django.db import transaction
+
         def str_in_list(string: str, list: list) -> bool:
             """
             check if one of the strings in the list is present in the string
@@ -199,6 +201,8 @@ class BaseBody(models.Model):
                         return super().save(force_insert, force_update, using, update_fields)
                 except BaseBody.DoesNotExist:
                     raise e
+                except Exception as a:
+                    print(a)
             raise e
 
     class Meta:
