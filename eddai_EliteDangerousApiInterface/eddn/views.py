@@ -18,5 +18,18 @@ def startEddn(request):
     return HttpResponse(status=400, reason='EDDN is not running')
 
 def startTest(request):
+    instanze, crate = BaseBody.objects.get_or_create(
+        defaults={
+            'bodyID': 1,
+            'distance': 1,
+        },
+        name='test', system=System.objects.get(name='test')
+    )
+    PlanetIStanze = Planet.objects.get_or_create(
+        defaults={
+            'bodyID': 999999,
+        },
+        name='Test', system=System.objects.get(name='Sol')
+    )
 
     return HttpResponse(status=200, reason='ok') 

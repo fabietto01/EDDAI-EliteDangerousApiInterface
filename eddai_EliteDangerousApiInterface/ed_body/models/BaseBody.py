@@ -152,22 +152,7 @@ class BaseBody(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None) -> None:
-        """
-        method overriding to avoid the error when the parent is already present in 
-        the db and you want to add the child
-        """
-
-        from django.db import transaction
-
-        def str_in_list(string: str, list: list) -> bool:
-            """
-            check if one of the strings in the list is present in the string
-            """
-            for item in list:
-                if item in string:
-                    return True
-            return False
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
 
         def get_child_instance(parent):
             """
@@ -189,22 +174,21 @@ class BaseBody(models.Model):
             return childList, exist
 
         try:
+            self.validate_constraints()
             super().save(force_insert, force_update, using, update_fields)
-        except IntegrityError as e:
-            if str_in_list(str(e), [c.name for c in BaseBody._meta.constraints]) and self.__class__ != BaseBody.__class__:
-                try:
-                    parent = BaseBody.objects.get(name=self.name, system=self.system)
-                    childList, exist = get_child_instance(parent)
-                    if parent and (not childList) and (not exist):
-                        self.basebody_ptr = parent
-                        self.basebody_ptr_id = parent.id
-                        return super().save(force_insert, force_update, using, update_fields)
-                except BaseBody.DoesNotExist:
+        except ValidationError as e:
+            try:
+                parent = BaseBody.objects.get(name=self.name, system=self.system)
+                childList, exist = get_child_instance(parent)
+                if parent and (not childList) and (not exist):
+                    self.basebody_ptr = parent
+                    self.basebody_ptr_id = parent.id
+                    super().save(force_insert, force_update, using, update_fields)
+                else:
                     raise e
-                except Exception as a:
-                    print(a)
-            raise e
-
+            except BaseBody.DoesNotExist:
+                raise e
+        
     class Meta:
         verbose_name = _('body')
         verbose_name_plural = _('bodies')
