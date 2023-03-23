@@ -151,7 +151,7 @@ class BaseBody(models.Model):
 
     def __str__(self):
         return self.name
-
+    
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
 
         def get_child_instance(parent):

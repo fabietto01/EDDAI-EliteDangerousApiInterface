@@ -7,7 +7,7 @@ from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
 
 class EddnClient(object):
 
-    __log = logging.getLogger(__name__)
+    __log = logging.getLogger("django")
     __debug = settings.DEBUG
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
@@ -15,7 +15,7 @@ class EddnClient(object):
     __start = True
 
     def start(self):
-        while (settings.DEBUG == False) or self.__start:
+        while (self.__debug == False) or self.__start:
             self.__start = False
             try:
                 self.connect()

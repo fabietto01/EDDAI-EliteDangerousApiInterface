@@ -144,12 +144,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static-serve')
-#[BASE_DIR.parent / 'static-serve']
+STATIC_ROOT = BASE_DIR / 'static-serve'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'media-serve')
-#[BASE_DIR.parent / 'media-serve']
+MEDIA_ROOT = BASE_DIR / 'media-serve'
+
+# The backend to use for sending emails. For the list of available backends see Sending email.
+# https://docs.djangoproject.com/en/4.1/ref/settings/#std-setting-EMAIL_BACKEND
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
