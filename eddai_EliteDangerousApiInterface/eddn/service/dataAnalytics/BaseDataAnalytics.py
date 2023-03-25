@@ -8,7 +8,7 @@ class BaseDataAnalytics(object):
     classe base per l'analisi dei datti proveniente da eddn per poi dividerlo
     nei vari elaboratori
     """
-    __log = logging.getLogger(__name__)
+    __log = logging.getLogger("django")
 
     def __init__(self, data:dict=None, instance:DataLog=None) -> None:
         self.instance = instance
@@ -37,7 +37,7 @@ class BaseDataAnalytics(object):
         """
         raise NotImplementedError('`get_analyst()` must be implemented.')
 
-    def analyst_error(self, str:str=None, analyst:Serializer=None, debug:bool=False):
+    def analyst_error(self, str:str=None, analyst:Serializer=None):
         """
         chimma questa funzione quando qualcosa va storto cosi da salvare l'errore
         """
@@ -50,10 +50,22 @@ class BaseDataAnalytics(object):
                 error={"error": f"{str}"} if str is not None else analyst.errors if analyst else {},
                 schema=self.get_schema()
             )
-        if debug:
-            self.__log.debug(f"analyst debug -> {str if str else analyst.errors if analyst else 'unknown'}")
-        else:
-            self.__log.error(f"analyst error -> {str if str else analyst.errors if analyst else 'unknown'}")
+        self.__log.error(f"analyst error -> {str if str else analyst.errors if analyst else 'unknown'}")
+
+    def T(self):
+        try:
+            analyst = self.get_analyst()
+            if analyst.is_valid():
+                analyst.save()
+            else:
+                self.__log.error(f"analyst error -> {analyst.errors}")
+            return analyst
+        except NotSerializerError as e:
+            self.analyst_error(str=e, debug=True)
+            return None
+        except Exception as e:
+            self.analyst_error(str=e)
+            return None
         
     def analyst(self):
         """

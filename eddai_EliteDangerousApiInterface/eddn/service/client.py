@@ -36,15 +36,13 @@ class EddnClient(object):
         self.__log.info("created a socket")
         while True:
             try:
-                self.__log.info("Connecting to EDDN")
                 subscriber.connect(self.__rely)
+                self.__log.info("Connecting to EDDN")
                 self.receive(subscriber)
-                message = zlib.decompress(message)
-                message = simplejson.loads(message)
-                self.__log.info(f"Decoded message from EDDN broker: {message}")
+                self.__log.error(f"Disconecter from {self.__rely}")
             except Exception as e:
                 subscriber.disconnect(self.__rely)
-                self.__log.critical(f"Failed to connecting EDDN broker: {e}")
+                self.__log.critical(f"Failed to connecting EDDN broker", exc_info=e)
 
     def receive(self, subscriber:zmq.Socket):
         """
