@@ -1,34 +1,33 @@
 from eddn.models import DataLog
-from eddn.service.dataAnalytics.Erors import NotSerializerError
+from django.db import models
+from eddn.service.dataAnalytics.Erors import NotSerializerError, NotDataContentError
 import logging
-from rest_framework.serializers import Serializer
+from rest_framework.serializers import Serializer, ValidationError
+
 
 class BaseDataAnalytics(object):
-    """
-    classe base per l'analisi dei datti proveniente da eddn per poi dividerlo
-    nei vari elaboratori
-    """
-    __log = logging.getLogger("django")
 
-    def __init__(self, data:dict=None, instance:DataLog=None) -> None:
-        self.instance = instance
-        if self.instance is not None:
-            data = self.instance.data
-        self.data = data
-                
+    __log = logging.getLogger("django")
+    __regex = r"^https://eddn.edcd.io/schemas/(?P<schema>[a-z]{3,})/[1-9]"
+
+    def __init__(self, istance:DataLog, *args, **kwargs):
+        self.istance = istance
+        if not self.istance.schema:
+            import re
+            s = re.search(self.__regex, self.istance.data.get("$schemaRef", None))
+            self.istance.schema = s.group('schema')
+
     def get_message(self) -> dict:
         """
         ritorna il messagio all interno dei datti memorizzati nella classe
         """
-        return self.data.get("message")
-
+        data = self.istance.data
+        if not data:
+            raise NotDataContentError("data not found")
+        return data.get("message")
+    
     def get_schema(self) -> str:
-        """
-        ritorna il nome dello schema dei dati
-        """
-        s = self.data.get("$schemaRef", None)
-        s = s.replace("https://eddn.edcd.io/schemas/", "") if s else None
-        return s.split("/")[0] if s else ""
+        return self.istance.schema
 
     def get_analyst(self) -> Serializer:
         """
@@ -36,51 +35,23 @@ class BaseDataAnalytics(object):
         il tipo di dati passati
         """
         raise NotImplementedError('`get_analyst()` must be implemented.')
-
-    def analyst_error(self, str:str=None, analyst:Serializer=None):
-        """
-        chimma questa funzione quando qualcosa va storto cosi da salvare l'errore
-        """
-        if not self.instance is None:
-            self.instance.error = {"error": f"{str}"} if str is not None else analyst.errors if analyst else {}
-            self.instance.save(force_update=True)
-        else:
-            DataLog.objects.create(
-                data=self.data,
-                error={"error": f"{str}"} if str is not None else analyst.errors if analyst else {},
-                schema=self.get_schema()
-            )
-        self.__log.error(f"analyst error -> {str if str else analyst.errors if analyst else 'unknown'}")
-
-    def T(self):
-        try:
-            analyst = self.get_analyst()
-            if analyst.is_valid():
-                analyst.save()
-            else:
-                self.__log.error(f"analyst error -> {analyst.errors}")
-            return analyst
-        except NotSerializerError as e:
-            self.analyst_error(str=e, debug=True)
-            return None
-        except Exception as e:
-            self.analyst_error(str=e)
-            return None
-        
+    
     def analyst(self):
-        """
-        chiama questa funzione per ottenere l'elaboratore dei datti
-        """
         try:
-            analyst = self.get_analyst()
-            if analyst.is_valid():
-                analyst.save()
-            else:
-                self.analyst_error(analyst=analyst)
-            return analyst
+            _analyst = self.get_analyst()
+            _analyst.is_valid(raise_exception=True)
+            _analyst.save()
+            self.istance.error = None
+        except ValidationError as e:
+            self.__log.exception(f"error validating '{self.get_schema()}': %s", e)
+            self.istance.error = _analyst.errors
+            self.istance.save()
         except NotSerializerError as e:
-            self.analyst_error(str=e, debug=True)
-            return None
+            self.__log.debug(f"error in data analysis '{self.get_schema()}': %s", e)
+            self.istance.error = {"error": f"{e}"}
+            self.istance.save()
         except Exception as e:
-            self.analyst_error(str=e)
-            return None
+            self.__log.exception(f"generic error in data analysis '{self.get_schema()}': %s", e)
+            self.istance.error = {"error": f"{e}"}
+            self.istance.save()
+        return self.istance

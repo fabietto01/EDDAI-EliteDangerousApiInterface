@@ -2,8 +2,15 @@ import json
 from django.conf import settings
 import zlib, zmq, simplejson, logging
 import time
+from eddn.models import DataLog
 
 from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
+
+def process(istance:DataLog) -> DataLog:
+    if istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
+        analytic = JournalAnalytic(istance=istance)
+        istance = analytic.analyst()
+    return istance
 
 class EddnClient(object):
 
@@ -13,16 +20,21 @@ class EddnClient(object):
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS
     __start = True
+    __MaxRetry = 5
 
     def start(self):
-        while (self.__debug == False) or self.__start:
-            self.__start = False
+        retry = 0
+        while (self.__debug == True) or self.__start:
+            self.__start = (retry>=self.__MaxRetry)
+            retry += 1
             try:
                 self.connect()
             except Exception as e:
-                self.__log.critical(f"Failed to EDDN: {e}" + (" \nRetrying in 5 seconds..." if self.__debug else ""))
+                self.__log.critical(f"Failed to EDDN: %s", e , exc_info=True)
+                if self.__start:
+                    self.__log.info(f"Retry in 5 seconds...")
                 time.sleep(5000)
-        raise Exception(e)
+        raise e
 
     def connect(self):
         """
@@ -40,9 +52,9 @@ class EddnClient(object):
                 self.__log.info("Connecting to EDDN")
                 self.receive(subscriber)
                 self.__log.error(f"Disconecter from {self.__rely}")
-            except Exception as e:
+            except zmq.ZMQError as e:
                 subscriber.disconnect(self.__rely)
-                self.__log.critical(f"Failed to connecting EDDN broker", exc_info=e)
+                self.__log.critical(f"Failed to connecting EDDN broker: %s", e, exc_info=True)
 
     def receive(self, subscriber:zmq.Socket):
         """
@@ -65,12 +77,5 @@ class EddnClient(object):
             
             if dataJson['header']['softwareName'] in self.__authori_softwers:
                 self.__log.debug(f"Received message from EDDN broker: {dataJson}")
-                self.process(dataJson)
-
-    def process(self, data:json):
-        try:
-            if data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
-                analytic = JournalAnalytic(data=data)
-                analytic.analyst()
-        except Exception as e:
-            self.__log.critical(f"un errore da parte dei analisi dei dati: {e}")
+                istance = DataLog(data=dataJson)
+                process(istance)

@@ -49,7 +49,7 @@ class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):
         signalqsList = list(signalqs)
         signalList = [
             Signal(
-                planet=instance, type=SignalSignals.objects.get(name=signal.get('Type')), 
+                planet=instance, type=SignalSignals.objects.get(eddn=signal.get('Type')), 
                 count=signal.get('Count')
             ) for signal in self.signals
         ]

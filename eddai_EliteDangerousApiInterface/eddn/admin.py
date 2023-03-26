@@ -1,12 +1,10 @@
 from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
 
-import os
-from multiprocessing.pool import ThreadPool
-
 # Register your models here.
 from eddn.models import *
-from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
+
+from eddn.service.client import process
 
 @admin.register(DataLog)
 class DataLogAdmin(admin.ModelAdmin):
@@ -20,11 +18,11 @@ class DataLogAdmin(admin.ModelAdmin):
         successful = []
         unsuccessful = []
         for instance in list(queryset):
-            analytic, instance = self.process(instance)
-            if analytic != None and analytic.errors == {}:
-                successful.append(instance.pk)
-            else:
+            instance = process(instance)
+            if instance.error:
                 unsuccessful.append(instance.pk)
+            else:
+                successful.append(instance.pk)
         if successful:
             queryset.filter(pk__in=successful).delete()
             self.message_user(
@@ -42,14 +40,3 @@ class DataLogAdmin(admin.ModelAdmin):
                 },
                 messages.ERROR
             )
-
-
-    def process(self, instance:DataLog):
-        try:
-            if instance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
-                analytic = JournalAnalytic(instance=instance)
-                return  (analytic.analyst(), instance)
-        except Exception as e:
-            instance.error = {"error": f"{e}"}
-            instance.save(force_update=['error'])
-            return (None, instance)
