@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Any, Tuple
 from django.shortcuts import _get_queryset
-from django.core.exceptions import ObjectDoesNotExist
 
 from django.db import models
 

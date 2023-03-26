@@ -23,7 +23,6 @@ class DataLog(models.Model):
     def __str__(self) -> str:
         return str(self.schema)
 
-
     class Meta:
         verbose_name = _("data log")
         verbose_name_plural = _("data logs")
