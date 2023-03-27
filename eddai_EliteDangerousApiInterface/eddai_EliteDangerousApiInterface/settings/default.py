@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'ed_material',
     'ed_mining',
     'ed_exploration',
+    'ed_station',
     'eddn',
 
 
