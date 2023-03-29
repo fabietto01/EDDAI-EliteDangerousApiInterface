@@ -6,6 +6,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from ed_economy.models import Economy
 from ed_bgs.models import MinorFaction, MinorFactionInSystem
+from ed_station.models.StationType import StationType
+from ed_station.models.Service import Service
+from ed_station.models.ServiceInStation import ServiceInStation
 
 class Station(models.Model):
     """
@@ -35,19 +38,24 @@ class Station(models.Model):
         default=LandingPadChoices.NONE,
         verbose_name=_('landing pad')
     )
-    type = None
+    type = models.ForeignKey(
+        StationType, on_delete=models.PROTECT,
+        verbose_name=_('type'),
+        related_name='%(app_label)s_%(class)s_related',
+        related_query_name='%(app_label)s_%(class)ss'
+    )
 
     primaryEconomy = models.ForeignKey(
         Economy, on_delete=models.CASCADE,
         verbose_name=_('primary economy'),
-        related_name='%(app_label)s_%(class)s_related',
-        related_query_name='%(app_label)s_%(class)ss'
+        related_name='primary_%(app_label)s_%(class)s_related',
+        related_query_name='primary_%(app_label)s_%(class)ss'
     )
     secondaryEconomy = models.ForeignKey(
         Economy, on_delete=models.CASCADE,
         verbose_name=_('secondary economy'),
-        related_name='%(app_label)s_%(class)s_related',
-        related_query_name='%(app_label)s_%(class)ss'
+        related_name='secondary_%(app_label)s_%(class)s_related',
+        related_query_name='secondary_%(app_label)s_%(class)ss'
     )
     minorFaction = models.ForeignKey(
         MinorFaction, on_delete=models.CASCADE,
@@ -55,9 +63,11 @@ class Station(models.Model):
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
-
-    service = None
-
+    service = models.ManyToManyField(
+        Service, through=ServiceInStation,
+        through_fields=('station', 'service'),
+        verbose_name=_('service')
+    )
     distance = models.FloatField(
         verbose_name=_('distance'),
         help_text=_('distance from the stary center'),
@@ -103,8 +113,8 @@ class Station(models.Model):
             models.Index(fields=['system']),
             models.Index(fields=['type']),
             models.Index(fields=['landingPad']),
-            models.Index(fields=['_primaryEconomy']),
-            models.Index(fields=['_secondaryEconomy']),
+            models.Index(fields=['primaryEconomy']),
+            models.Index(fields=['secondaryEconomy']),
         ]
         constraints = [
             models.UniqueConstraint(fields=['name','system'], name='unique_station_in_system')
