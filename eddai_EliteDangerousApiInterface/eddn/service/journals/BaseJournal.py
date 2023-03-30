@@ -36,7 +36,7 @@ class BaseJournal(BaseSerializer):
     def update_or_create(self, validated_data:dict, update_function=None, create_function=None) -> System:
         sytsem, create = update_or_create_if_time(
             System, time=self.get_time(),
-            defaults=self.get_data_defaults(validated_data),
+            defaults=BaseJournal.get_data_defaults(self, validated_data),
             update_function=update_function,
             create_function=create_function,
             name=validated_data.get('StarSystem'),

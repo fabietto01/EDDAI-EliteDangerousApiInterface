@@ -24,7 +24,7 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
     model = Station
-    raw_id_fields = ("system",)
+    raw_id_fields = ("system","minorFaction")
     search_fields = ("name", 'pk','system__name', 'minorFaction__name')
     list_display = (
         'name','system','type','landingPad',

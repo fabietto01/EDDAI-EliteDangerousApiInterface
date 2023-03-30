@@ -19,10 +19,10 @@ class Station(models.Model):
         descrive i 3 tipi di pad di atterraggio presneti nel stazioni
         piccolo, medio e grande
         """
-        SMALL = 'S', _('Small')
-        MEDIUM = 'M', _('Medium')
-        LARGE = 'L', _('Large')
-        NONE = 'N', _('None')
+        Small = 'S', _('Small')
+        Medium = 'M', _('Medium')
+        Large = 'L', _('Large')
+        __empty__ = _('None')
 
     name = models.CharField(
         max_length=255, unique=True, verbose_name=_('name')
@@ -35,7 +35,7 @@ class Station(models.Model):
     )
     landingPad = models.CharField(
         max_length=1, choices=LandingPadChoices.choices,
-        default=LandingPadChoices.NONE,
+        null=True,
         verbose_name=_('landing pad')
     )
     type = models.ForeignKey(
@@ -44,7 +44,6 @@ class Station(models.Model):
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
-
     primaryEconomy = models.ForeignKey(
         Economy, on_delete=models.CASCADE,
         verbose_name=_('primary economy'),
