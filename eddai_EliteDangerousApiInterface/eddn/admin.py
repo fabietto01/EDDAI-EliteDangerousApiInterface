@@ -12,6 +12,9 @@ class DataLogAdmin(admin.ModelAdmin):
     list_display = ('schema', 'error','update')
     readonly_fields = ('data', 'schema', 'error', 'update')
     actions = ('re_processing',)
+    list_filter = (
+        'schema',
+    )
 
     @admin.action(description=_('data re-processing'))
     def re_processing(self, request, queryset):

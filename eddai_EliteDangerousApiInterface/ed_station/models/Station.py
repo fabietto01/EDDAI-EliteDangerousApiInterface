@@ -52,6 +52,7 @@ class Station(models.Model):
     )
     secondaryEconomy = models.ForeignKey(
         Economy, on_delete=models.CASCADE,
+        null=True, blank=True,
         verbose_name=_('secondary economy'),
         related_name='secondary_%(app_label)s_%(class)s_related',
         related_query_name='secondary_%(app_label)s_%(class)ss'

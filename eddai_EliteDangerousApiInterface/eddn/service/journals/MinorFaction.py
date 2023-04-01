@@ -20,12 +20,12 @@ class StateSerializer(serializers.Serializer):
     )
     Trend = None
 
-class MinorFactionInSystemSerializerBase(BaseSerializer):
+class BaseMinorFactionInSerializer(BaseSerializer):
     Name = serializers.CharField(
         min_length=1,
     )
 
-class MinorFactionInSystemSerializer(MinorFactionInSystemSerializerBase):
+class MinorFactionInSystemSerializer(BaseMinorFactionInSerializer):
     Allegiance = serializers.ChoiceField(
         choices=get_values_list_or_default(Faction, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )

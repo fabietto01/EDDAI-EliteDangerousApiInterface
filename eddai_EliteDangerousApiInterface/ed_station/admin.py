@@ -6,7 +6,7 @@ from ed_station.models import *
 
 class ServiceInStationInline(admin.TabularInline):
     model = ServiceInStation
-    raw_id_fields = ("station","service")
+    raw_id_fields = ("station",)
     extra = 0
 
 @admin.register(StationType)

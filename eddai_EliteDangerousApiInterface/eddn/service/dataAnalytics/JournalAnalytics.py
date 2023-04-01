@@ -6,6 +6,7 @@ from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
 from eddn.service.journals.scan.BaseScanSerializer import BaseScanSerializer
 from eddn.service.journals.scan import StarScanSerializer, PlanetScanSerializer
 from eddn.service.journals.SAASignalsFound import SAASignalsFoundHotspotSerializers, SAASignalsFoundSignalAndSampleSerializers
+from eddn.service.journals.Docked import DockedSerializer
 
 class JournalAnalytic(BaseDataAnalytics):
 
@@ -54,3 +55,7 @@ class JournalAnalytic(BaseDataAnalytics):
         if 'Ring' in data.get('BodyName', ''):
             return SAASignalsFoundHotspotSerializers(data=data)
         return SAASignalsFoundSignalAndSampleSerializers(data=data)
+    
+    def analyst_Docked(self):
+        data=self.get_message()
+        return DockedSerializer(data=data)

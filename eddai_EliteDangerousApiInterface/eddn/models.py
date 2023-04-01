@@ -7,6 +7,7 @@ from eddn.manager import EddnManager
 # Create your models here.
 
 class DataLog(models.Model):
+
     data = models.JSONField(
         verbose_name=_('data')
     )
@@ -55,6 +56,6 @@ class AbstractDataEDDN(models.Model):
     def eddn(self, value: str) -> None:
         self.__eddn = value
     eddn.fget.short_description = _('value for eddn')
-        
+
     class Meta:
         abstract = True
