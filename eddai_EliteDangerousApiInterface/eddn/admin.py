@@ -1,6 +1,8 @@
 from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
 
+from eddn.filters.eventFilter import EventFilter
+
 # Register your models here.
 from eddn.models import *
 
@@ -13,7 +15,7 @@ class DataLogAdmin(admin.ModelAdmin):
     readonly_fields = ('data', 'schema', 'error', 'update')
     actions = ('re_processing',)
     list_filter = (
-        'schema',
+        'schema', EventFilter
     )
 
     @admin.action(description=_('data re-processing'))

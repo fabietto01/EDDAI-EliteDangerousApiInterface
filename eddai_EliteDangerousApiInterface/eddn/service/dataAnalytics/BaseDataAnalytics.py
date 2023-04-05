@@ -1,7 +1,6 @@
-from eddn.models import DataLog
-from django.db import models
-from eddn.service.dataAnalytics.Erors import NotSerializerError, NotDataContentError
 import logging
+from eddn.models import DataLog
+from eddn.service.dataAnalytics.Erors import NotSerializerError, NotDataContentError
 from rest_framework.serializers import Serializer, ValidationError
 
 
