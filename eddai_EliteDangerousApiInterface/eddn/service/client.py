@@ -4,10 +4,14 @@ import time
 from eddn.models import DataLog
 
 from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
+from eddn.service.dataAnalytics.Commodity3 import Commodity3Analytic
 
 def process(istance:DataLog) -> DataLog:
     if istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
         analytic = JournalAnalytic(istance=istance)
+        istance = analytic.analyst()
+    elif istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/commodity/3":
+        analytic = Commodity3Analytic(istance=istance)
         istance = analytic.analyst()
     return istance
 

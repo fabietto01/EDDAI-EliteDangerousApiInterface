@@ -3,6 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from ed_station.models import *
+from ed_economy.admin import CommodityInStationInline
 
 class ServiceInStationInline(admin.TabularInline):
     model = ServiceInStation
@@ -33,5 +34,4 @@ class StationAdmin(admin.ModelAdmin):
     list_filter = (
         'landingPad','type','primaryEconomy','secondaryEconomy','service'
     )
-    inlines = [ServiceInStationInline]
-    
+    inlines = [ServiceInStationInline, CommodityInStationInline]

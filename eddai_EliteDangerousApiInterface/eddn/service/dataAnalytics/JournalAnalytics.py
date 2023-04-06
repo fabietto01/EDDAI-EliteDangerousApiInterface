@@ -3,7 +3,6 @@ from eddn.service.dataAnalytics.Erors import NotSerializerError
 from rest_framework.serializers import Serializer
 
 from eddn.service.journals.FSDJumpSerializer import FSDJumpSerializer
-from eddn.service.journals.scan.BaseScanSerializer import BaseScanSerializer
 from eddn.service.journals.scan import StarScanSerializer, PlanetScanSerializer
 from eddn.service.journals.SAASignalsFound import SAASignalsFoundHotspotSerializers, SAASignalsFoundSignalAndSampleSerializers
 from eddn.service.journals.Docked import DockedSerializer

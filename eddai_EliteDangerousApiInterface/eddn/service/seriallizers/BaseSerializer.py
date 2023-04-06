@@ -84,4 +84,3 @@ class BaseSerializer(serializers.Serializer):
         if validated_data:
             return validated_data.get('timestamp')
         return self.validated_data.get('timestamp')
-

@@ -9,6 +9,7 @@ from ed_bgs.models import MinorFaction, MinorFactionInSystem
 from ed_station.models.StationType import StationType
 from ed_station.models.Service import Service
 from ed_station.models.ServiceInStation import ServiceInStation
+from ed_economy.models import CommodityInStation, Commodity
 
 class Station(models.Model):
     """
@@ -67,6 +68,11 @@ class Station(models.Model):
         Service, through=ServiceInStation,
         through_fields=('station', 'service'),
         verbose_name=_('service')
+    )
+    commodity = models.ManyToManyField(
+        Commodity, through=CommodityInStation,
+        through_fields=('station', 'commodity'),
+        verbose_name=_('commodity')
     )
     distance = models.FloatField(
         verbose_name=_('distance'),
