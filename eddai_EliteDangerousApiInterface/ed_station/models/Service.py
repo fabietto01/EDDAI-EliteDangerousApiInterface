@@ -17,3 +17,4 @@ class Service(AbstractDataEDDN):
     class Meta:
         verbose_name = _('service')
         verbose_name_plural = _('services')
+        ordering = ['name']
