@@ -1,2 +1,0 @@
-from eddn.service.journals.scan.PlanetScanSerializer import PlanetScanSerializer
-from eddn.service.journals.scan.StarScanSerializer import StarScanSerializer

@@ -1,2 +1,0 @@
-from eddn.service.journals.SAASignalsFound.SAASignalsFoundHotspotSerializers import SAASignalsFoundHotspotSerializers
-from eddn.service.journals.SAASignalsFound.SAASignalsFoundSignalAndSampleSerializers import SAASignalsFoundSignalAndSampleSerializers

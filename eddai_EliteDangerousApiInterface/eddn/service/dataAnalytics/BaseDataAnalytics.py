@@ -42,7 +42,7 @@ class BaseDataAnalytics(object):
             _analyst.save()
             self.istance.error = None
         except ValidationError as e:
-            self.__log.exception(f"error validating '{self.get_schema()}': %s", e)
+            self.__log.exception(f"error validating '{self.get_schema()}': %s", _analyst.errors)
             self.istance.error = _analyst.errors
             self.istance.save()
         except NotSerializerError as e:
