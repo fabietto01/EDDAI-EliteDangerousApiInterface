@@ -25,3 +25,4 @@ class Commodity(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('commodity')
         verbose_name_plural = _('commodities')
+        ordering = ['name']

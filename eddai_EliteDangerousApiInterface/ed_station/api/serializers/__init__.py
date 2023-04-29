@@ -1,1 +1,2 @@
 from ed_station.api.serializers.ServiceSerializes import ServiceModelSerializes
+from ed_station.api.serializers.StationTypeSerializes import StationTypeModelSerializes

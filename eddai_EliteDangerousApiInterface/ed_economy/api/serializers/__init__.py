@@ -1,0 +1,1 @@
+from ed_economy.api.serializers.CommoditySerializes import CommodityModelSerializes

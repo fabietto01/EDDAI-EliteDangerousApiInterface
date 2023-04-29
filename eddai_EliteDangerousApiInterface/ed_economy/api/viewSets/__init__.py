@@ -1,0 +1,1 @@
+from ed_economy.api.viewSets.CommodityViewSets import CommodityViewSet

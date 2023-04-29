@@ -16,9 +16,10 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from ed_station.api.views import ServiceViewSet
+from ed_station.api.viewSets import ServiceViewSet, StationTypeViewSet
 
 router = DefaultRouter()
 router.register(r'service', ServiceViewSet, basename="service")
+router.register(r'stationtype', StationTypeViewSet, basename="stationtype")
 
 urlpatterns = router.urls

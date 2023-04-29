@@ -12,9 +12,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
 
-urlpatterns = [
-    path("station/", include("ed_station.urls")),
-    path("economy/", include("ed_economy.urls")),
-]
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from ed_economy.api.viewSets import CommodityViewSet
+
+router = DefaultRouter()
+router.register(r'commodity', CommodityViewSet, basename="commodity")
+
+urlpatterns = router.urls

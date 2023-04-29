@@ -34,7 +34,7 @@ class CommodityV3Serializer(BaseSerializer):
             "%Y-%m-%dT%H:%M:%SZ"
         ]
     )
-
+    
     def validate_systemName(self, value:str):
         """
         controlla che il sistema esista
