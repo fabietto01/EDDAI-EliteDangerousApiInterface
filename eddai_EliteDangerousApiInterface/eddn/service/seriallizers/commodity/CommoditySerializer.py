@@ -5,7 +5,7 @@ from ed_economy.models import Commodity
 
 from core.utility import get_values_list_or_default
 
-class CommoditySerializer(serializers.BaseSerializer):
+class CommoditySerializer(serializers.Serializer):
     name = serializers.ChoiceField(
         choices=get_values_list_or_default(Commodity, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )
