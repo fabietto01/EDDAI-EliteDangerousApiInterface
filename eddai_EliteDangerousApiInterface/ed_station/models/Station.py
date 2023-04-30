@@ -36,11 +36,12 @@ class Station(models.Model):
     )
     landingPad = models.CharField(
         max_length=1, choices=LandingPadChoices.choices,
-        null=True,
+        null=True, 
         verbose_name=_('landing pad')
     )
     type = models.ForeignKey(
         StationType, on_delete=models.PROTECT,
+        null=True,
         verbose_name=_('type'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
@@ -60,6 +61,7 @@ class Station(models.Model):
     )
     minorFaction = models.ForeignKey(
         MinorFaction, on_delete=models.CASCADE,
+        null=True, blank=True,
         verbose_name=_('Minor Faction'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
