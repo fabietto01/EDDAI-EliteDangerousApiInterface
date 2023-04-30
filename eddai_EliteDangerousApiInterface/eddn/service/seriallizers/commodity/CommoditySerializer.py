@@ -27,3 +27,6 @@ class CommoditySerializer(serializers.Serializer):
     demandBracket = serializers.IntegerField(
         min_value=0,
     )
+    meanPrice = serializers.IntegerField(
+        min_value=0,
+    )
