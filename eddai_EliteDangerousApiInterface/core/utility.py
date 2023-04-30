@@ -22,12 +22,15 @@ def equal_list_models(list1:list[models.Model], list2:list[models.Model], fields
             return False
     return True
 
-def in_list_models(instanze:models.Model, list:list[models.Model], fields_exclus:list[str]=['id','pk','updated']) -> bool:
+def in_list_models(instanze:models.Model, list:list[models.Model], fields_exclus:list[str]=['id','pk','updated'], fields_include:list[str]=[]) -> bool:
     """
     dato che la funzione __eq__ della classe models.Model ugualia solo per pk,
     ho creato questa funzione per verificare se una istanza è presente in una lista
     """
-    filds = [f.name for f in instanze._meta.get_fields() if not f.name in fields_exclus]
+    if fields_include:
+        filds = [f.name for f in instanze._meta.get_fields() if f.name in fields_include]
+    else:
+        filds = [f.name for f in instanze._meta.get_fields() if not f.name in fields_exclus]
     for index in range(len(list)):
         if isinstance(instanze, list[index].__class__):
             equal = True
