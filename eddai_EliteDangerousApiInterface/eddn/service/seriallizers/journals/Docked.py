@@ -51,10 +51,10 @@ class DockedSerializer(BaseJournal):
         faction_Name = attrs.get('StationFaction', {}).get('Name')
         system_Name = attrs.get('StarSystem')
         if len(economies) == 2:
-            if economies[0].get('Name') == economies[1].get('Name'):
-                raise serializers.ValidationError('Economies must be different')
+            if economies[0].get('Name', '') == economies[1].get('Name', ''):
+                raise serializers.ValidationError({'StationEconomies': 'Economies must be different'})
         if not MinorFactionInSystem.objects.filter(system__name=system_Name, minorFaction__name=faction_Name).exists():
-            raise serializers.ValidationError(f'the minor faction {faction_Name} is not present in the system {system_Name}')
+            raise serializers.ValidationError({'StationFaction':{'Name':f'the minor faction {faction_Name} is not present in the system {system_Name}'}})
         return super().validate(attrs)
 
     def set_data_defaults(self, validated_data: dict) -> dict:
