@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from eddn.service.seriallizers.journals.BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
-from django.utils.translation import gettext_lazy as _
 
 from eddn.service.seriallizers.customFields.CustomChoiceField import CustomChoiceField, LandingPadsChoiceField
 from eddn.service.seriallizers.journals.MinorFaction import BaseMinorFactionInSerializer
@@ -53,9 +52,9 @@ class DockedSerializer(BaseJournal):
         system_Name = attrs.get('StarSystem')
         if len(economies) == 2:
             if economies[0].get('Name') == economies[1].get('Name'):
-                raise serializers.ValidationError(_('Economies must be different'))
+                raise serializers.ValidationError('Economies must be different')
         if not MinorFactionInSystem.objects.filter(system__name=system_Name, minorFaction__name=faction_Name).exists():
-            raise serializers.ValidationError(_(f'the minor faction {faction_Name} is not present in the system {system_Name}'))
+            raise serializers.ValidationError(f'the minor faction {faction_Name} is not present in the system {system_Name}')
         return super().validate(attrs)
 
     def set_data_defaults(self, validated_data: dict) -> dict:
