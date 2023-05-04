@@ -17,11 +17,46 @@
       "django": true
     },
     {
+      "name": "Python: Celery Worker",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface",
+      "args": [
+        "celery",
+        "worker",
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker",
+        "-l", "info",
+        "-P", "eventlet",
+        "-c", "100"
+      ],
+    },
+    {
+      "name": "Python: Django Shell",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "args": [
+        "shell",
+        "--settings",
+        "eddai_EliteDangerousApiInterface.settings.dev"
+      ],
+      "django": true
+    },
+
+    {
       "name": "Python: Migrate",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/migrate.py",
       "args": ["--settings", "eddai_EliteDangerousApiInterface.settings.dev"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Django/Celery Worker",
+      "configurations": ["Python: Django", "Python: Celery Worker"],
+      "stopAll": true
     }
   ]
 }

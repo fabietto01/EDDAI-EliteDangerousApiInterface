@@ -249,3 +249,6 @@ AUTHORI_SED_SOFTWARS = [
     "RegulatedNoise",
     "RegulatedNoise__DJ"
 ]
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = 'amqp://ed_dev:mWuZHRsRJBnBWwCnAyEtkdWQhBWwUsVGWNmACuQq@204.216.215.43:5672/ed_dev'
