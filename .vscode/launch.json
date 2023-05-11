@@ -20,16 +20,39 @@
       "name": "Python: Celery Worker",
       "type": "python",
       "request": "launch",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
       "args": [
-        "celery",
-        "worker",
         "-A", "eddai_EliteDangerousApiInterface",
-        "worker",
-        "-l", "info",
-        "-P", "eventlet",
-        "-c", "100"
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "100",
+        "-n", "worker1@%h",
       ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
+    },
+    {
+      "name": "Python: Celery Worker EDDN",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "100",
+        "-n", "workerEDDN@%h",
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      },
     },
     {
       "name": "Python: Django Shell",
@@ -55,7 +78,7 @@
   "compounds": [
     {
       "name": "Django/Celery Worker",
-      "configurations": ["Python: Django", "Python: Celery Worker"],
+      "configurations": ["Python: Django", "Python: Celery Worker", "Python: Celery Worker EDDN"],
       "stopAll": true
     }
   ]

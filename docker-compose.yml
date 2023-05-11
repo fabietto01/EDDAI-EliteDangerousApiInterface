@@ -1,0 +1,26 @@
+version: "1"
+services:
+    rabbitmq:
+        container_name: ed_rabbit
+        image: rabbitmq:3.11.13-management
+        environment:
+            TZ: UTC
+        volumes:
+            - rabbitedvol:/var/lib/rabbitmq
+            - /etc/rabbitmq/ed_rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        restart: always
+    mysql:
+        container_name: ed_info
+        image: mysql:8
+        volumes:
+            - ed_info:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        restart: always
+
+volumes:
+    rabbitedvol:
+    ed_info:
