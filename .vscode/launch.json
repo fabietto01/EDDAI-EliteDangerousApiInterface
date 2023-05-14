@@ -14,14 +14,74 @@
         "--settings",
         "eddai_EliteDangerousApiInterface.settings.dev"
       ],
+      "django": true,
+    },
+    {
+      "name": "Python: Celery Worker",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "100",
+        "-n", "worker1@%h"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+    },
+    {
+      "name": "Python: Celery Worker EDDN",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "100",
+        "-n", "workerEDDN@%h",
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+    },
+    {
+      "name": "Python: Django Shell",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "args": [
+        "shell",
+        "--settings",
+        "eddai_EliteDangerousApiInterface.settings.dev"
+      ],
       "django": true
     },
+
     {
       "name": "Python: Migrate",
       "type": "python",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/migrate.py",
       "args": ["--settings", "eddai_EliteDangerousApiInterface.settings.dev"]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Django/Celery Worker",
+      "configurations": ["Python: Django", "Python: Celery Worker", "Python: Celery Worker EDDN"],
+      "stopAll": true
     }
   ]
 }
