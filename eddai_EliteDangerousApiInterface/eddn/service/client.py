@@ -1,7 +1,8 @@
 from django.conf import settings
-import zlib, zmq, simplejson, logging
+import zlib, zmq, json, logging
 import time
 from eddn.models import DataLog
+from celery import Task
 
 from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
 from eddn.service.dataAnalytics.Commodity3 import Commodity3Analytic
@@ -15,29 +16,28 @@ def process(istance:DataLog) -> DataLog:
         istance = analytic.analyst()
     return istance
 
-class EddnClient(object):
+class EddnClient(Task):
 
     __log = logging.getLogger("django")
     __debug = settings.DEBUG
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS
-    __start = True
-    __MaxRetry = 5
+    name="ServiceEDN"
+    retry=True
+    ignore_result=True
+    default_retry_delay=30
+    time_limit=0
 
-    def start(self):
-        retry = 0
-        while (self.__debug == True) or self.__start:
-            self.__start = (retry>=self.__MaxRetry)
-            retry += 1
-            try:
-                self.connect()
-            except Exception as e:
-                self.__log.critical(f"Failed to EDDN: %s", e , exc_info=True)
-                if self.__start:
-                    self.__log.info(f"Retry in 5 seconds...")
-                time.sleep(5000)
-        raise e
+    def run(self, *args, **kwargs):
+        self.connect()
+
+    def on_retry(self, exc, task_id, args, kwargs, einfo):
+        self.__log.critical(f"Failed to EDDN: %s", exc , exc_info=True)
+        self.__log.info(f"Retry in 5 seconds...")
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        self.__log.info(f"on_failure")
 
     def connect(self):
         """
@@ -74,7 +74,7 @@ class EddnClient(object):
             if dataDeCompress == False:
                 self.__log.error(f"Failed to decompress message")
             
-            dataJson = simplejson.loads(dataDeCompress)
+            dataJson = json.loads(dataDeCompress)
             if dataJson == False:
                 self.__log.error(f"Failed to decode message")
             

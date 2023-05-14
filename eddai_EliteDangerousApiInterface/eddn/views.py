@@ -16,7 +16,7 @@ from ed_system.tasks import test
 
 def startEddn(request):
     cl = EddnClient()
-    cl.start()
+    cl.run()
     return HttpResponse(status=400, reason='EDDN is not running')
 
 def startTest(request):
