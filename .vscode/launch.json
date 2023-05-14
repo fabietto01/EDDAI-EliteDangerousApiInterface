@@ -14,7 +14,7 @@
         "--settings",
         "eddai_EliteDangerousApiInterface.settings.dev"
       ],
-      "django": true
+      "django": true,
     },
     {
       "name": "Python: Celery Worker",
@@ -29,10 +29,11 @@
         "-l","Debug", 
         "-P", "gevent", 
         "-c", "100",
-        "-n", "worker1@%h",
+        "-n", "worker1@%h"
       ],
       "env": {
-        "PYTHONPATH": "${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
       },
     },
     {
@@ -51,7 +52,8 @@
         "-n", "workerEDDN@%h",
       ],
       "env": {
-        "PYTHONPATH": "${workspaceFolder}"
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
       },
     },
     {
