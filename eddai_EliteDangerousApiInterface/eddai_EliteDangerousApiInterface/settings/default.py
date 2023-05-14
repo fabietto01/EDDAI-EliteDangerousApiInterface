@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_4py7l5_0gkw%)htzx7g12&pp_v)&_fnv*z!=w4w+!p-u5mz8n'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -101,10 +101,10 @@ DATABASES = {
     },
     'ed_info':{
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ed_info-dev',
-        'USER': 'ed_info-dev-user',
-        'PASSWORD': 'vkWCRnO7$oOLCm^ZNd#P@1*Pgbch7wPAMgm3Knd1FrRD&SH5DS',
-        'HOST': '204.216.215.43',
+        'NAME': 'ed_info',
+        'USER': 'ed_info-user',
+        'PASSWORD': os.environ.get('DJANGO_DATABASES_ED_PASSWORD'),
+        'HOST': os.environ.get('DJANGO_DATABASES_ED_HOST', 'localhost'),
         'PORT': '3306',
     }
 }
@@ -254,11 +254,11 @@ AUTHORI_SED_SOFTWARS = [
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_BROKER_URL = 'amqp://ed_dev:mWuZHRsRJBnBWwCnAyEtkdWQhBWwUsVGWNmACuQq@localhost:5671/ed_dev'
+CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("CELERY_BROKER_HOST")}:5671/{os.environ.get("CELERY_BROKER_VHOST")}'
 CELERY_BROKER_USE_SSL = {
     'ssl_version': ssl.PROTOCOL_TLSv1_2,
-    'keyfile': BASE_DIR.parent / "rabbitmq_config" / "worker" / "private_key.pem",
-    'certfile': BASE_DIR.parent / "rabbitmq_config" / "worker" / "client_certificate.pem",
-    'ca_certs': BASE_DIR.parent / "CA" / "ca_certificate.pem",
+    'keyfile': os.environ.get("CELERY_SSL_KEYFILE"),
+    'certfile': os.environ.get("CELERY_SSL_CERTFILE"),
+    'ca_certs': os.environ.get("CELERY_SSL_CACERTFILE"),
     'cert_reqs': ssl.CERT_REQUIRED
 }
