@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import ssl
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -250,5 +251,14 @@ AUTHORI_SED_SOFTWARS = [
     "RegulatedNoise__DJ"
 ]
 
+#impostazioni per la gestione delle code di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_BROKER_URL = 'amqp://ed_dev:mWuZHRsRJBnBWwCnAyEtkdWQhBWwUsVGWNmACuQq@204.216.215.43:5672/ed_dev'
+CELERY_BROKER_URL = 'amqp://ed_dev:mWuZHRsRJBnBWwCnAyEtkdWQhBWwUsVGWNmACuQq@localhost:5671/ed_dev'
+CELERY_BROKER_USE_SSL = {
+    'ssl_version': ssl.PROTOCOL_TLSv1_2,
+    'keyfile': BASE_DIR.parent / "rabbitmq_config" / "worker" / "private_key.pem",
+    'certfile': BASE_DIR.parent / "rabbitmq_config" / "worker" / "client_certificate.pem",
+    'ca_certs': BASE_DIR.parent / "CA" / "ca_certificate.pem",
+    'cert_reqs': ssl.CERT_REQUIRED
+}

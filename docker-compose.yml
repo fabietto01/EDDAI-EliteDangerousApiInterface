@@ -1,20 +1,29 @@
-version: "1"
+version: "1.2"
 services:
     rabbitmq:
         container_name: ed_rabbit
         image: rabbitmq:3.11.13-management
         environment:
             TZ: UTC
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+            RABBITMQ_CONFIG_FILE: /etc/rabbitmq/rabbitmq.conf
         volumes:
             - rabbitedvol:/var/lib/rabbitmq
-            - /etc/rabbitmq/ed_rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+            - ${RABBITMQ_CONFIG_FILE}:/etc/rabbitmq/rabbitmq.conf
+            - ${RABBITMQ_SSL_CACERTFILE}:/etc/rabbitmq/ca_certificate.pem
+            - ${RABBITMQ_SSL_CERTFILE}:/etc/rabbitmq/server_certificate.pem
+            - ${RABBITMQ_SSL_KEYFILE}:/etc/rabbitmq/server_key.pem
         ports:
-            - "5672:5672"
-            - "15672:15672"
+            - "5671:5671"
+            - "15671:15671"
         restart: always
     mysql:
         container_name: ed_info
         image: mysql:8
+        environment:
+            TZ: UTC
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         volumes:
             - ed_info:/var/lib/mysql
         ports:
