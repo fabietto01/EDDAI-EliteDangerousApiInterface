@@ -23,7 +23,7 @@ class EddnClient(Task):
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS
-    name="ServiceEDN"
+    name="ServiceEDDN"
     retry=True
     ignore_result=True
     default_retry_delay=30
