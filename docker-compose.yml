@@ -1,4 +1,4 @@
-version: "1.2"
+version: "1.3"
 services:
     rabbitmq:
         container_name: ed_rabbit
@@ -18,18 +18,29 @@ services:
             - "5671:5671"
             - "15671:15671"
         restart: always
+    redis:
+        container_name: ed_redis_server
+        image: redis:6.2.12
+        environment:
+            TZ: UTC
+        volumes:
+            - redisvol:/data
+        ports:
+            - "6379:6379"
+        restart: always
     mysql:
-        container_name: ed_info
+        container_name: ed_database
         image: mysql:8
         environment:
             TZ: UTC
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         volumes:
-            - ed_info:/var/lib/mysql
+            - ed_database:/var/lib/mysql
         ports:
             - "3306:3306"
         restart: always
 
 volumes:
     rabbitedvol:
-    ed_info:
+    ed_database:
+    redisvol:
