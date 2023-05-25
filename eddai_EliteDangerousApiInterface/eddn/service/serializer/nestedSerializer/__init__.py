@@ -1,0 +1,3 @@
+from eddn.service.serializer.nestedSerializer.StateSerializer import StateSerializer
+from eddn.service.serializer.nestedSerializer.EconomySerializer import EconomySerializer
+from eddn.service.serializer.nestedSerializer.minorFaction import *

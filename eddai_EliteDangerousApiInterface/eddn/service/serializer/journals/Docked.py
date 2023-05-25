@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.journals.BaseJournal import BaseJournal
+from .BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
 
-from eddn.service.seriallizers.customFields.CustomChoiceField import CustomChoiceField, LandingPadsChoiceField
-from eddn.service.seriallizers.journals.MinorFaction import BaseMinorFactionInSerializer
+from ..customFields import LandingPadsChoiceField
+from ..nestedSerializer import BaseMinorFactionSerializer, EconomySerializer
 
 from ed_station.models import (
     Service, ServiceInStation, StationType,
@@ -17,11 +17,6 @@ from core.utility import (
     update_or_create_if_time, in_list_models, 
     get_values_list_or_default, get_or_none
 )
-
-class StationEconomiesSerializer(serializers.Serializer):
-    Name = CustomChoiceField(
-        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-    )
 
 class DockedSerializer(BaseJournal):
     LandingPads = LandingPadsChoiceField(
@@ -40,11 +35,11 @@ class DockedSerializer(BaseJournal):
         choices=get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
     )
     StationEconomies = serializers.ListField(
-        child=StationEconomiesSerializer(),
+        child=EconomySerializer(),
         min_length = 1,
         max_length = 2,
     )
-    StationFaction = BaseMinorFactionInSerializer()
+    StationFaction = BaseMinorFactionSerializer()
 
     def validate(self, attrs:dict):
         economies = attrs.get('StationEconomies', [])

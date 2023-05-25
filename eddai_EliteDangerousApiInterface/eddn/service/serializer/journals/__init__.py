@@ -1,0 +1,2 @@
+from eddn.service.serializer.journals.Docked import DockedSerializer
+from eddn.service.serializer.journals.FSDJumpSerializer import FSDJumpSerializer

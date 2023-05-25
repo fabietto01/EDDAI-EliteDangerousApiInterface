@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
 
-from eddn.service.seriallizers.journals.BaseJournal import BaseJournal
+from .BaseJournal import BaseJournal
 
-from eddn.service.seriallizers.customFields.CustomChoiceField import CustomChoiceField
-from eddn.service.seriallizers.journals.MinorFaction import MinorFactionInSystemSerializer, BaseMinorFactionInSerializer
+from ..customFields import CustomChoiceField
+from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
 
 from ed_system.models import System
 from ed_economy.models import Economy
@@ -40,7 +40,7 @@ class FSDJumpSerializer(BaseJournal):
         min_length=0,
         max_length=MinorFactionInSystem.MaxRelation,
     )
-    SystemFaction = BaseMinorFactionInSerializer(
+    SystemFaction = BaseMinorFactionSerializer(
         required=False,
     )
     Conflicts = None

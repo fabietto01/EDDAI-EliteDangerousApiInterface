@@ -1,11 +1,9 @@
 from django.conf import settings
 import zlib, zmq, json, logging
-import time
 from eddn.models import DataLog
 from celery import Task
 
-from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
-from eddn.service.dataAnalytics.Commodity3 import Commodity3Analytic
+from eddn.service.dataAnalytics import JournalAnalytic,  Commodity3Analytic
 
 def process(istance:DataLog) -> DataLog:
     if istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
@@ -23,7 +21,7 @@ class EddnClient(Task):
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS
-    name="ServiceEDN"
+    name="ServiceEDDN"
     retry=True
     ignore_result=True
     default_retry_delay=30
