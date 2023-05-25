@@ -1,6 +1,12 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.BaseSerializer import BaseSerializer
-from eddn.service.seriallizers.customFields.CustomChoiceField import HappinessChoiceField
+from django.db import OperationalError, ProgrammingError
+
+from eddn.service.serializer.nestedSerializer.minorFaction.BaseMinorFactionSerializer import BaseMinorFactionSerializer
+
+from core.utility import (
+    update_or_create_if_time, in_list_models, 
+    get_values_list_or_default, get_or_none
+)
 
 from ed_bgs.models import (
     Faction, Government, MinorFaction, 
@@ -8,24 +14,11 @@ from ed_bgs.models import (
     StateInMinorFaction
 )
 
-from core.utility import (
-    update_or_create_if_time, in_list_models, 
-    get_values_list_or_default, get_or_none
-)
-from django.db import OperationalError, ProgrammingError
+from eddn.service.serializer.customFields import HappinessChoiceField
+from eddn.service.serializer.nestedSerializer.StateSerializer import StateSerializer
 
-class StateSerializer(serializers.Serializer):
-    State = serializers.ChoiceField(
-        choices=get_values_list_or_default(State.objects.exclude(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-    )
-    Trend = None
 
-class BaseMinorFactionInSerializer(BaseSerializer):
-    Name = serializers.CharField(
-        min_length=1,
-    )
-
-class MinorFactionInSystemSerializer(BaseMinorFactionInSerializer):
+class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
     Allegiance = serializers.ChoiceField(
         choices=get_values_list_or_default(Faction, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
     )
@@ -167,4 +160,3 @@ class MinorFactionInSystemSerializer(BaseMinorFactionInSerializer):
             system=validated_data.get('system'), minorFaction=minorFaction,
         )
         return self.instance
-    

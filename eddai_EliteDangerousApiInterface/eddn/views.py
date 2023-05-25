@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.db.models import Count, F, Value
 
-from eddn.service.client import EddnClient
+from eddn.service import EddnClient
 
 from ed_body.models import BaseBody
 

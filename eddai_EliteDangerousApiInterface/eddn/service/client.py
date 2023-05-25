@@ -1,11 +1,9 @@
 from django.conf import settings
 import zlib, zmq, json, logging
-import time
 from eddn.models import DataLog
 from celery import Task
 
-from eddn.service.dataAnalytics.JournalAnalytics import JournalAnalytic
-from eddn.service.dataAnalytics.Commodity3 import Commodity3Analytic
+from eddn.service.dataAnalytics import JournalAnalytic,  Commodity3Analytic
 
 def process(istance:DataLog) -> DataLog:
     if istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":

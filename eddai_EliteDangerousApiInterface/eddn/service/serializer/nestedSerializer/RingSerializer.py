@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.BaseSerializer import BaseSerializer
+from .BaseSecondarySerializer import BaseNestedSerializer
 
-from eddn.service.seriallizers.customFields.CustomChoiceField import RingClassmChoiceField
+from ..customFields import RingClassmChoiceField
 
-from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
+from core.utility import update_or_create_if_time
 from ed_body.models import Ring
 
-class RingSerializer(BaseSerializer):
+class RingSerializer(BaseNestedSerializer):
 
     Name = serializers.CharField(
         max_length=255,

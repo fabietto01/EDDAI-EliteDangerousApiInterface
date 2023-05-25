@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ed_system.models import System
-from eddn.service.seriallizers.BaseSerializer import BaseSerializer
+from eddn.service.serializer.BaseSerializer import BaseSerializer
 
 from core.utility import update_or_create_if_time
 
