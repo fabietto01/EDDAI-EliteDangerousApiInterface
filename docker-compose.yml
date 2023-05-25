@@ -19,7 +19,7 @@ services:
             - "15671:15671"
         restart: always
     redis:
-        container_name: ed_redis_server
+        container_name: ed_redis_result
         image: redis:6.2.12
         environment:
             TZ: UTC
@@ -27,7 +27,6 @@ services:
             - redisvol:/data
         ports:
             - "6379:6379"
-        restart: always
     mysql:
         container_name: ed_database
         image: mysql:8

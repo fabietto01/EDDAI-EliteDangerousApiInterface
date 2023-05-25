@@ -99,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'default':{
+    'ed_info':{
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ed_info',
         'USER': 'ed_info-user',
