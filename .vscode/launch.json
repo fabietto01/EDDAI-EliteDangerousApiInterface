@@ -67,14 +67,6 @@
         "eddai_EliteDangerousApiInterface.settings.dev"
       ],
       "django": true
-    },
-
-    {
-      "name": "Python: Migrate",
-      "type": "python",
-      "request": "launch",
-      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/migrate.py",
-      "args": ["--settings", "eddai_EliteDangerousApiInterface.settings.dev"]
     }
   ],
   "compounds": [

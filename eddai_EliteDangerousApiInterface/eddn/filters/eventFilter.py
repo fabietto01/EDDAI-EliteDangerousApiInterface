@@ -13,6 +13,7 @@ class EventFilter(admin.SimpleListFilter):
             ('Scan', 'Scan'),
             ('SAASignalsFound', 'SAASignalsFound'),
             ('Docked', 'Docked'),
+            ('Location', 'Location'),
         )
 
     def queryset(self, request, queryset):

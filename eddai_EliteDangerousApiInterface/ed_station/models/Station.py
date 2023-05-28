@@ -48,6 +48,7 @@ class Station(models.Model):
     )
     primaryEconomy = models.ForeignKey(
         Economy, on_delete=models.CASCADE,
+        null=True,
         verbose_name=_('primary economy'),
         related_name='primary_%(app_label)s_%(class)s_related',
         related_query_name='primary_%(app_label)s_%(class)ss'

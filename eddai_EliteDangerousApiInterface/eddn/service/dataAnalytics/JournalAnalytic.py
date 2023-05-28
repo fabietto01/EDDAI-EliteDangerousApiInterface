@@ -2,10 +2,11 @@ from eddn.service.dataAnalytics.BaseDataAnalytics import BaseDataAnalytics
 from eddn.service.dataAnalytics.Erors import NotSerializerError
 from rest_framework.serializers import Serializer
 
-from eddn.service.serializer.journals.FSDJumpSerializer import FSDJumpSerializer
-from eddn.service.serializer.journals.scan import StarScanSerializer, PlanetScanSerializer
-from eddn.service.serializer.journals.SAASignalsFound import SAASignalsFoundHotspotSerializers, SAASignalsFoundSignalAndSampleSerializers
-from eddn.service.serializer.journals.Docked import DockedSerializer
+from eddn.service.serializer.journals import (
+    FSDJumpSerializer, StarScanSerializer, PlanetScanSerializer,
+    SAASignalsFoundHotspotSerializers, SAASignalsFoundSignalAndSampleSerializers,
+    DockedSerializer, LocationSerializer
+)
 
 class JournalAnalytic(BaseDataAnalytics):
 
@@ -58,3 +59,7 @@ class JournalAnalytic(BaseDataAnalytics):
     def analyst_Docked(self):
         data=self.get_message()
         return DockedSerializer(data=data)
+    
+    def analyst_Location(self):
+        data=self.get_message()
+        return LocationSerializer(data=data)
