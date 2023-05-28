@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.BaseSerializer import BaseSerializer
+from eddn.service.serializer.nestedSerializer.BaseSecondarySerializer import BaseNestedSerializer
 
 from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
 
-from ed_body.models import Planet, MaterialInPlanet
+from ed_body.models import MaterialInPlanet
 from ed_material.models.Material import Material
 
-class MaterialsSerializer(BaseSerializer):
+class MaterialsSerializer(BaseNestedSerializer):
     Name = serializers.ChoiceField(
         choices=[
             str(name).lower() for name in get_values_list_or_default(Material.objects.filter(type=Material.MaterialType.RAW.value), [], (OperationalError, ProgrammingError), 'name', flat=True)

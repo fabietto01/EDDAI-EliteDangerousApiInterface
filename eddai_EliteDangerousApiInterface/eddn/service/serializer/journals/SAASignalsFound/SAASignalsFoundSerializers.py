@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.journals.BaseJournal import BaseJournal
+from eddn.service.serializer.journals.BaseJournal import BaseJournal
 
 from core.utility import update_or_create_if_time
 

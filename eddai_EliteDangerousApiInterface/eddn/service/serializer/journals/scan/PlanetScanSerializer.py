@@ -1,16 +1,14 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.journals.scan.BaseScanSerializer import BaseScanSerializer
+from eddn.service.serializer.journals.scan.BaseScanSerializer import BaseScanSerializer
 
 from core.utility import get_values_list_or_default, get_or_none, in_list_models
 from django.db import OperationalError, ProgrammingError
-from eddn.service.seriallizers.customFields.CustomChoiceField import ReserveLevelChoiceField
+from eddn.service.serializer.customFields import ReserveLevelChoiceField
 
 from ed_body.models import Planet, AtmosphereType, PlanetType, Volcanism, MaterialInPlanet, AtmosphereComponentInPlanet, AtmosphereComponent
 from ed_material.models.Material import Material
 
-from eddn.service.seriallizers.journals.scan.MaterialsSerializer import MaterialsSerializer
-from eddn.service.seriallizers.journals.scan.AtmosphereComponentSerializer import AtmosphereComponentSerializer
-from eddn.service.seriallizers.journals.scan.CompositionSerializers import CompositionSerializers
+from eddn.service.serializer.journals.scan.nestedScan import MaterialsSerializer, AtmosphereComponentSerializer, CompositionSerializers
 
 class PlanetScanSerializer(BaseScanSerializer):
     

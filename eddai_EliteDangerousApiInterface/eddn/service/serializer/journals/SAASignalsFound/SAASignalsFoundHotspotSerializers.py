@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-from eddn.service.seriallizers.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
+from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
 from core.utility import  in_list_models, get_values_list_or_default, update_or_create_if_time
 

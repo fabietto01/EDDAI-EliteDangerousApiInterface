@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.BaseSerializer import BaseSerializer
-from eddn.service.seriallizers.commodity.CommoditySerializer import CommoditySerializer
-from eddn.service.seriallizers.commodity.EconomieSerializer import EconomieSerializer
+from eddn.service.serializer.BaseSerializer import BaseSerializer
+from eddn.service.serializer.commodity.CommoditySerializer import CommoditySerializer
+from eddn.service.serializer.commodity.EconomieSerializer import EconomieSerializer
 
 from ed_system.models import System
 from ed_station.models import Station

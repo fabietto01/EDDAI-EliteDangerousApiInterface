@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from eddn.service.seriallizers.BaseSerializer import BaseSerializer
+from eddn.service.serializer.nestedSerializer.BaseSecondarySerializer import BaseNestedSerializer
 
 from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
 
-from ed_body.models import Planet, AtmosphereComponentInPlanet, AtmosphereComponent
+from ed_body.models import AtmosphereComponentInPlanet, AtmosphereComponent
 
-class AtmosphereComponentSerializer(BaseSerializer):
+class AtmosphereComponentSerializer(BaseNestedSerializer):
     Name = serializers.ChoiceField(
         choices=get_values_list_or_default(AtmosphereComponent, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
     )
