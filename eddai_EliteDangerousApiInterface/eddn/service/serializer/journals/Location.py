@@ -10,6 +10,7 @@ from ed_station.models import (
     StationType, Station
 )
 
+from ed_body.models import Planet, Star
 from ed_economy.models import Economy
 from ed_system.models import System
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
@@ -118,6 +119,11 @@ class LocationSerializer(BaseJournal):
         return {
             'distance': validated_data.get('DistFromStarLS', None),
         }
+    
+    def set_data_defaults_stastion(self, validated_data: dict) -> dict:
+        return {
+            'type': get_or_none(StationType, eddn=validated_data.get('StationType', None)),
+        }
 
     def check_control_faction(self, instance:System):
         """
@@ -188,15 +194,16 @@ class LocationSerializer(BaseJournal):
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             name=validated_data.get('StarSystem'),
         )
+        __class = eval(validated_data.get('BodyType'))
         bodyInstance, bodycreate = update_or_create_if_time(
-            getattr('ed_body.models', self.BodyType), defaults=self.get_data_defaults(validated_data, self.set_data_defaults_body),
+            __class, defaults=self.get_data_defaults(validated_data, self.set_data_defaults_body),
             time=self.get_time(),
             system=systemInstance, name=validated_data.get('Body'), bodyID=validated_data.get('BodyID'), 
         )
         if validated_data.get('Docked', False):
             stationInstance, stationcreate = update_or_create_if_time(
-                Station, defaults={},
+                Station, defaults=self.get_data_defaults(validated_data, self.set_data_defaults_stastion),
                 time=self.get_time(),
-                system=systemInstance, name=validated_data.get('StationName'), type=validated_data.get('StationType'), 
+                system=systemInstance, name=validated_data.get('StationName') 
             )
         return systemInstance
