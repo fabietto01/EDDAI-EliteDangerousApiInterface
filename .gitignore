@@ -154,3 +154,5 @@ cython_debug/
 # certifications
 *.pem
 *.p12
+rabbitmq_config/
+mysql_config/

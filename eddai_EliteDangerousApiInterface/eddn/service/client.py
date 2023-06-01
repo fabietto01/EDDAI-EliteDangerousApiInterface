@@ -14,7 +14,13 @@ def process(istance:DataLog) -> DataLog:
         istance = analytic.analyst()
     return istance
 
+import time
+
 class EddnClient(Task):
+
+    def __init__(self) -> None:
+        super().__init__()
+
 
     __log = logging.getLogger("django")
     __debug = settings.DEBUG
@@ -22,13 +28,13 @@ class EddnClient(Task):
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS
     name="ServiceEDDN"
-    retry=True
-    ignore_result=True
+    max_retries = None
     default_retry_delay=30
-    time_limit=0
+    ignore_result=True
+    time_limit=None
 
     def run(self, *args, **kwargs):
-        self.connect()
+        self.test()
 
     def on_retry(self, exc, task_id, args, kwargs, einfo):
         self.__log.critical(f"Failed to EDDN: %s", exc , exc_info=True)
@@ -36,6 +42,10 @@ class EddnClient(Task):
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         self.__log.info(f"on_failure")
+
+    def test(self):
+        time.sleep(2)
+        1/0
 
     def connect(self):
         """

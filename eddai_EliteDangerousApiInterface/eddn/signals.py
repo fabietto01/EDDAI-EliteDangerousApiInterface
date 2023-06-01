@@ -5,4 +5,6 @@ from eddn.tasks import EddnClient
 @worker_ready.connect
 def at_start(sender:Consumer, **kwargs):
     if sender and str(sender.hostname).startswith('workerEDDN'):
-        EddnClient.apply_async(routing_key=sender.hostname, priority=9)
+        with sender.app.connection() as conn:
+            sender.app.send_task('ServiceEDDN', connection=conn,)
+            EddnClient.apply_async(connection=conn, priority=9)

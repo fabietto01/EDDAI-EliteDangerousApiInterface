@@ -1,8 +1,9 @@
-version: "1.3"
+version: "1.5"
 services:
     rabbitmq:
-        container_name: ed_rabbit
+        container_name: rabbitmq
         image: rabbitmq:3.11.13-management
+        hostname: rabbitmq
         environment:
             TZ: UTC
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
@@ -15,20 +16,22 @@ services:
             - ${RABBITMQ_SSL_CERTFILE}:/etc/rabbitmq/server_certificate.pem
             - ${RABBITMQ_SSL_KEYFILE}:/etc/rabbitmq/server_key.pem
         ports:
-            - "5671:5671"
-            - "15671:15671"
+            - "5672:5672"
+            - "15672:15672"
         restart: always
     redis:
-        container_name: ed_redis_result
+        container_name: redis
         image: redis:6.2.12
         environment:
             TZ: UTC
         volumes:
             - redisvol:/data
+            - ${REDIS_CONDING_FILE}:/usr/local/etc/redis/redis.conf
         ports:
             - "6379:6379"
+        restart: always
     mysql:
-        container_name: ed_database
+        container_name: mysql_db
         image: mysql:8
         environment:
             TZ: UTC

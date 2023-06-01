@@ -10,7 +10,7 @@ from ed_body.models import BaseBody, Star, StarLuminosity, StarType, Planet
 from ed_system.models import System 
 
 
-from ed_system.tasks import test
+from ed_system.tasks import test, add
 
 # Create your views here.
 
@@ -33,5 +33,7 @@ def startTest(request):
     #     },
     #     name='Test', system=System.objects.get(name='Sol')
     # )
-    test.delay()
-    return HttpResponse(status=200, reason='ok') 
+    t = test.delay()
+    task = add.delay(1, 2)
+    result = task.get()
+    return HttpResponse(result,status=200, reason='ok') 

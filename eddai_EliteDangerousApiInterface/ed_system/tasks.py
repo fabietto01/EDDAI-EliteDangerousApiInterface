@@ -23,3 +23,8 @@ def create_system():
 def test():
     time.sleep(10)
     print('test')
+
+@shared_task
+def add(x, y):
+    time.sleep(1)
+    return x + y

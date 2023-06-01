@@ -254,11 +254,6 @@ AUTHORI_SED_SOFTWARS = [
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_TIMEZONE = TIME_ZONE
-CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("CELERY_BROKER_HOST")}:5671/{os.environ.get("CELERY_BROKER_VHOST")}'
-CELERY_BROKER_USE_SSL = {
-    'ssl_version': ssl.PROTOCOL_TLSv1_2,
-    'keyfile': os.environ.get("CELERY_SSL_KEYFILE"),
-    'certfile': os.environ.get("CELERY_SSL_CERTFILE"),
-    'ca_certs': os.environ.get("CELERY_SSL_CACERTFILE"),
-    'cert_reqs': ssl.CERT_REQUIRED
-}
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("RABBITMQ_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
+CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("REDIS_HOST")}:{os.environ.get("REDIS_PORT")}/1'
