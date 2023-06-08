@@ -6,7 +6,7 @@ from eddn.filters.eventFilter import EventFilter
 # Register your models here.
 from eddn.models import *
 
-from eddn.service.client import process
+from eddn.service.dataAnalytics.utility import star_analytic
 
 @admin.register(DataLog)
 class DataLogAdmin(admin.ModelAdmin):
@@ -23,7 +23,7 @@ class DataLogAdmin(admin.ModelAdmin):
         successful = []
         unsuccessful = []
         for instance in list(queryset):
-            instance = process(instance)
+            instance = star_analytic(instance)
             if instance.error:
                 unsuccessful.append(instance.pk)
             else:

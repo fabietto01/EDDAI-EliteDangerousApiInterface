@@ -1,51 +1,37 @@
 from django.conf import settings
-import zlib, zmq, json, logging
+import zlib, zmq, json
 from eddn.models import DataLog
 from celery import Task
-
-from eddn.service.dataAnalytics import JournalAnalytic,  Commodity3Analytic
-
-def process(istance:DataLog) -> DataLog:
-    if istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
-        analytic = JournalAnalytic(istance=istance)
-        istance = analytic.analyst()
-    elif istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/commodity/3":
-        analytic = Commodity3Analytic(istance=istance)
-        istance = analytic.analyst()
-    return istance
-
-import time
+from celery.utils.log import get_task_logger
+from eddn.service.dataAnalytics.utility import star_analytic
 
 class EddnClient(Task):
 
-    def __init__(self) -> None:
-        super().__init__()
-
-
-    __log = logging.getLogger("django")
+    __log = get_task_logger(__name__)
     __debug = settings.DEBUG
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS
     name="ServiceEDDN"
+    
+    #https://docs.celeryq.dev/en/stable/userguide/tasks.html#retrying
+    autoretry_for = (Exception,)
     max_retries = None
-    default_retry_delay=30
-    ignore_result=True
+    retry_backoff = 5
+    retry_backoff_max = 30
+    retry_jitter = True
+
     time_limit=None
+    ignore_result = True
 
     def run(self, *args, **kwargs):
-        self.test()
+        self.connect()
 
-    def on_retry(self, exc, task_id, args, kwargs, einfo):
-        self.__log.critical(f"Failed to EDDN: %s", exc , exc_info=True)
-        self.__log.info(f"Retry in 5 seconds...")
+    def on_retry(self, *args, **kwargs):
+        self.__log.info(f"Retry in max {self.retry_backoff_max} seconds...")
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
-        self.__log.info(f"on_failure")
-
-    def test(self):
-        time.sleep(2)
-        1/0
+        self.__log.critical(f"Failed to EDDN: %s", exc , exc_info=True) #exc_info=True
 
     def connect(self):
         """
@@ -89,4 +75,4 @@ class EddnClient(Task):
             if dataJson['header']['softwareName'] in self.__authori_softwers:
                 self.__log.debug(f"Received message from EDDN broker: {dataJson}")
                 istance = DataLog(data=dataJson)
-                process(istance)
+                star_analytic(istance)
