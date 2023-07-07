@@ -8,4 +8,3 @@ class EddnConfig(AppConfig):
 
     def ready(self) -> None:
         import eddn.signals
-        return super().ready()

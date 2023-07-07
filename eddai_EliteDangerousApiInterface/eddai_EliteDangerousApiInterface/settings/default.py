@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 
     'core',
 
+    'django_service',
+
     'ed_core',
     'ed_system',
     'ed_economy',

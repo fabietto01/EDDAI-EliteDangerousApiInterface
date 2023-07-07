@@ -1,0 +1,24 @@
+try:
+    import django
+
+    if django.VERSION < (3, 2):
+        default_app_config = 'django_service.apps.DjangoServiceConfig'
+except ImportError: 
+    raise ImportError("Django is not installed. Please install Django and try again.")
+
+try:
+    import celery  
+
+    if locals().get("celery", None) is None:
+        raise ImportError("Celery is not instantiated. Please instantiated Celery and try again.")
+except ImportError:
+    raise ImportError("Celery is not installed. Please install Celery and try again.")
+
+__title__ = 'Django service'
+__version__ = '0.0.1'
+__author__ = 'Fabio Zorzetto'
+__license__ = None
+__copyright__ = None
+
+# Version synonym
+VERSION = __version__
