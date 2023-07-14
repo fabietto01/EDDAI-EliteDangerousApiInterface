@@ -1,10 +1,10 @@
+from celery.app import app_or_default
 from celery import Celery
 
-app:Celery = locals().get("app", None)
+app:Celery = app_or_default
 
-if not app is None:
 
-    @app.on_after_configure.connect
-    def setup_periodic_tasks(sender, *args, **kwargs):
-        x =1
-        pass
+
+@app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    x =1
