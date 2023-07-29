@@ -259,3 +259,11 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("RABBITMQ_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
 CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("REDIS_HOST")}:{os.environ.get("REDIS_PORT")}/1'
+
+import re
+
+CELERY_TASK_ROUTES = [
+    (re.compile(r'[A-z]{1,}(Claudione|claudione)$'), {'queue': 'claudio'}),
+]
+
+SERVICES_CELERY_APP = 'eddai_EliteDangerousApiInterface.celery.app'

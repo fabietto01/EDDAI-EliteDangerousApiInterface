@@ -20,4 +20,12 @@ def celery_check(app_configs, **kwargs):
                 id='django_service.E002',
             )
         )
+    if servis_settings.SERVICES_CELERY_APP is None:
+        errors.append(
+            Error(
+                'you must enter a celery app otherwise django servis is not able to work correctly',
+                hint=f'put {servis_settings.DJANGO_SERVICE_CELERY_NAMESPCAE}_APP in the configurations',
+                id='django_service.E003',
+            )
+        )
     return errors

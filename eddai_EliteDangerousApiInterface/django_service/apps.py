@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 from django.utils.translation import gettext_lazy as _
 
-
 class DjangoServiceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'django_service'
@@ -10,5 +9,3 @@ class DjangoServiceConfig(AppConfig):
     def ready(self):
         from .checks import celery_check
         from . import signals
-
-
