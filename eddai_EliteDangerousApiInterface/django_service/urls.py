@@ -16,9 +16,8 @@ Including another URLconf
 """
 from django.urls import path, include
 
-from eddn.views import startTest #startEddn
+from .views import manual_start
 
 urlpatterns = [
-    #path("start/", startEddn),
-    path("test/", startTest),
+    path("start/", manual_start),
 ]

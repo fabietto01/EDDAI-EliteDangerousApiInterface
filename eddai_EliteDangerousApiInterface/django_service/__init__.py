@@ -17,11 +17,3 @@ __version__ = '0.0.1'
 __author__ = 'Fabio Zorzetto'
 __license__ = None
 __copyright__ = None
-
-from celery import Celery
-from .utility import get_celery_app
-
-app:Celery = get_celery_app()
-
-# Version synonym
-VERSION = __version__

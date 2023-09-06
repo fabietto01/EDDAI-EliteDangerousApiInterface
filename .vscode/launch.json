@@ -17,7 +17,7 @@
       "django": true,
     },
     {
-      "name": "Python: Celery Worker",
+      "name": "Python: Celery Worker Tasck",
       "type": "python",
       "request": "launch",
       "console": "integratedTerminal",
@@ -29,27 +29,7 @@
         "-l","Debug", 
         "-P", "gevent", 
         "-c", "100",
-        "-n", "worker1@%h"
-      ],
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}",
-        "GEVENT_SUPPORT":"True"
-      },
-    },
-    {
-      "name": "Python: Celery Worker EDDN",
-      "type": "python",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "module": "celery",
-      "args": [
-        "-A", "eddai_EliteDangerousApiInterface",
-        "worker", 
-        "-l","Debug", 
-        "-P", "gevent", 
-        "-c", "100",
-        "-n", "workerEDDN@%h",
+        "-n", "workerTasck@%h"
       ],
       "env": {
         "PYTHONPATH": "${workspaceFolder}",
@@ -72,7 +52,7 @@
   "compounds": [
     {
       "name": "Django/Celery Worker",
-      "configurations": ["Python: Django", "Python: Celery Worker", "Python: Celery Worker EDDN"],
+      "configurations": ["Python: Django", "Python: Celery Worker Tasck"],
       "stopAll": true
     }
   ]

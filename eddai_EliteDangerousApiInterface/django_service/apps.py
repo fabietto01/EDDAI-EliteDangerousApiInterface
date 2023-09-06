@@ -8,4 +8,3 @@ class DjangoServiceConfig(AppConfig):
 
     def ready(self):
         from .checks import celery_check
-        from . import signals
