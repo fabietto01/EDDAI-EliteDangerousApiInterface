@@ -1,5 +1,6 @@
 from .celey import shared_service
 import time
+import random
 
 from celery.utils.log import get_task_logger
 
@@ -11,9 +12,8 @@ def test_service(self):
     x = 1
 
     while True:
-        time.sleep(1)
         logger.info("questo è la ripetizione %s, del tentativo %s ", x, self.request.retries)
-        if x == 5:
-            logger.info("lancio un eccezione")
-            raise Exception("test")
+        #if 1 == random.randint(1, 10):
+        #    logger.info("lancio un eccezione")
+        #    raise Exception("test")
         x += 1
