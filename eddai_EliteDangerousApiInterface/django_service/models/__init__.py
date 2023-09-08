@@ -1,2 +1,2 @@
-from .service import Service
-from .event import ServiceEvent
+from .Service import Service
+from .ServiceEvent import ServiceEvent

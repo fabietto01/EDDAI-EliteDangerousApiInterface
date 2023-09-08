@@ -37,6 +37,22 @@
       },
     },
     {
+      "name": "Python: Celery Worker Service",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "--app", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "--loglevel","Debug",
+        "--pool", "threads",	
+        "--concurrency", "8",
+        "--hostname", "workerService@%h"
+      ],
+    },
+    {
       "name": "Python: Django Shell",
       "type": "python",
       "request": "launch",

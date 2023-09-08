@@ -7,4 +7,5 @@ class DjangoServiceConfig(AppConfig):
     verbose_name  = _('Djnago manege service')
 
     def ready(self):
+        from . import services
         from .checks import celery_check
