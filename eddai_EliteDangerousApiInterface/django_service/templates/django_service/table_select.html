@@ -1,0 +1,41 @@
+{% with id=widget.attrs.id %}
+<div{% if id %} id="{{ id }}"{% endif %}{% if widget.attrs.class %} class="{{ widget.attrs.class }}"{% endif %}>
+  {% for group, options, index in widget.optgroups %}
+    {% if group %}
+    <div>
+      <label>{{ group }}</label>
+    {% endif %}
+    {% for option in options %}
+      <div>
+        {% include option.template_name with widget=option %}
+      </div>
+    {% endfor %}
+    {% if group %}
+      </div>
+    {% endif %}
+  {% endfor %}
+  
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>evento</th>
+        <th>date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td scope="row">start</td>
+        <td>oggi</td>
+      </tr>
+      <tr>
+        <td scope="row">errore</td>
+        <td>ieri</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+</div>
+{% endwith %}

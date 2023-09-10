@@ -1,2 +1,3 @@
-from .eventform import EventForm
-from .serviceform import ServiceForm
+from .EventForm import EventForm
+from .ServiceForm import ServiceForm
+from .Widget import *

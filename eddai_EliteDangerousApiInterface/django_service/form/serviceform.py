@@ -2,6 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from ..models import Service, ServiceEvent as Event
+from .Widget import TableSelect
 
 class ServiceForm(forms.ModelForm):
     
@@ -12,9 +13,10 @@ class ServiceForm(forms.ModelForm):
         )[:10]
 
     related_name = forms.ModelMultipleChoiceField(
-        queryset=None, widget=forms.SelectMultiple(attrs={'readonly':'readonly'}), 
+        queryset=None, widget=TableSelect(), 
         required=False, 
     )
+    #widget=SelectMultiple
 
     class Meta:
         model = Service
