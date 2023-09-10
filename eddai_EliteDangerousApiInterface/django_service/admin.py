@@ -29,6 +29,12 @@ class ServiceAdmin(admin.ModelAdmin):
     )
     form = ServiceForm
 
+#     def all_orders_of_this_customer(self, obj):
+#         return format_html(
+#  '<a  href="{0}?customer={1}">Orders list of this customer</a>&nbsp;',
+#             reverse('admin:customerapp_foodorder_changelist' ), obj.id
+#         )
+
 @admin.register(ServiceEvent)
 class EventAdmin(admin.ModelAdmin):
     list_display = (
