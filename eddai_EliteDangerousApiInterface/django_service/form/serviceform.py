@@ -13,7 +13,7 @@ class ServiceForm(forms.ModelForm):
         )[:10]
 
     related_name = forms.ModelMultipleChoiceField(
-        queryset=None, widget=TableSelect(), 
+        queryset=None, widget=TableSelect(fields=["event", "created"]), 
         required=False, 
     )
     #widget=SelectMultiple

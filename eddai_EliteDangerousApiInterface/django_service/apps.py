@@ -9,3 +9,4 @@ class DjangoServiceConfig(AppConfig):
     def ready(self):
         from . import services
         from .checks import celery_check
+        from . import templatetags
