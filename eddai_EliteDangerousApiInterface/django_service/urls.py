@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.urls import path, include
 
-from .views import manual_start, test
+from .views import manual_start, test, manual_stop
 
 urlpatterns = [
     path("start/", manual_start),
+    path("stop/<str:id_task>/", manual_stop),
     path("test/", test)
 ]
