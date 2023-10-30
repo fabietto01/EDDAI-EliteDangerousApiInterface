@@ -3,6 +3,7 @@ from django.contrib import admin
 from .ReadOnlyServiceEventInline import ReadOnlyServiceEventInline
 
 from ..models import Service
+from ..form import ServiceForm
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
@@ -27,3 +28,4 @@ class ServiceAdmin(admin.ModelAdmin):
         'routing_key'
     )
     inlines = [ReadOnlyServiceEventInline]
+    form = ServiceForm
