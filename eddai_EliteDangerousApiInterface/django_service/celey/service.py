@@ -6,7 +6,7 @@ from .request import ServiceRequest
 class Service(Task):
 
     log  = get_task_logger(__name__)
-    name = f"Service{__name__}"
+    name = f"Service_{__name__}"
     #https://docs.celeryq.dev/en/stable/userguide/tasks.html#retrying
     autoretry_for = (Exception,)
     max_retries = None
