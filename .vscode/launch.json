@@ -67,8 +67,8 @@
   ],
   "compounds": [
     {
-      "name": "Django/Celery Worker",
-      "configurations": ["Python: Django", "Python: Celery Worker Tasck"],
+      "name": "Django/Celery Worker Tasck and Service",
+      "configurations": ["Python: Django", "Python: Celery Worker Tasck", "Python: Celery Worker Service"],
       "stopAll": true
     }
   ]
