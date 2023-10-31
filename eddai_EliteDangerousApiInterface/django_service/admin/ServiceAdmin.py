@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from .ReadOnlyServiceEventInline import ReadOnlyServiceEventInline
 
@@ -29,3 +30,21 @@ class ServiceAdmin(admin.ModelAdmin):
     )
     inlines = [ReadOnlyServiceEventInline]
     form = ServiceForm
+    actions = [
+        'start_service',
+        'stop_service'
+    ]
+
+    def start_service(self, request, queryset):
+        """
+        Quista funzione permette di avviare un servizio,
+        dal panello di aministrazioine di django.
+        """
+        for service in queryset:
+            pass
+
+    def stop_service(self, request, queryset):
+        """
+        Quista funzione permette di fermare un servizio,
+        dal panello di aministrazioine di django.
+        """
