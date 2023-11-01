@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+import json
+
 # Create your models here.
 
 class Service(models.Model):
@@ -27,15 +29,15 @@ class Service(models.Model):
         max_length=1,
         choices=StatusChoices.choices
     )
-    args = models.TextField(
-        blank=True, default='[]',
+    args = models.JSONField(
+        blank=True, default=[],
         verbose_name=_('Positional Arguments'),
         help_text=_(
             'JSON encoded positional arguments '
             '(Example: ["arg1", "arg2"])'),
     )
-    kwargs = models.TextField(
-        blank=True, default='{}',
+    kwargs = models.JSONField(
+        blank=True, default={},
         verbose_name=_('Keyword Arguments'),
         help_text=_(
             'JSON encoded keyword arguments '
