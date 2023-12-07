@@ -10,11 +10,11 @@ class ServiceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs) -> None:
         super(ServiceForm, self).__init__(*args, **kwargs)
         app = get_app()
-        self.fields['task'].choices = [
+        self.fields['service'].choices = [
             (task_name, task_name) for task_name in get_servis_list(app)
         ]
 
-    task = forms.ChoiceField()
+    service = forms.ChoiceField()
 
     class Meta:
         model = Service

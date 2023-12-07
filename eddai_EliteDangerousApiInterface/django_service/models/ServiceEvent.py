@@ -5,9 +5,10 @@ class ServiceEvent(models.Model):
 
     class EventChoices(models.TextChoices):
         START = 'st', _("START")
-        STOP = 'sp', _("STOP") 
-        TRY = 't', _("TRY")
+        RUN = 'r', _("RUN")
+        STOP = 'sp', _("STOP")
         ERROR = 'e', _("ERROR")
+        CRASH = 'c', _("CRASH")
 
     service = models.ForeignKey(
         "django_service.Service", on_delete=models.CASCADE,

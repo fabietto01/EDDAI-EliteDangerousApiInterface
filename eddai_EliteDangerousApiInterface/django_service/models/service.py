@@ -1,43 +1,48 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-import json
+import uuid
 
 # Create your models here.
 
 class Service(models.Model):
     
-    class StatusChoices(models.TextChoices):
-        RUN = 'r', _("RUN")
-        STOP = 's', _("STOP") 
-        ERROR = 'e', _("ERROR")
+    class Status(models.IntegerChoices):
+        RUN = 10, _("RUN")
+        STOP = 20, _("STOP") 
+        ERROR = 30, _("ERROR")
         
         __empty__ = _("(Unknown)")
 
+    def _args_default (): return []
+
+    def _kwargs_default (): return {}
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(
         max_length=200, unique=True,
         verbose_name=_('Name'),
         help_text=_('Short Description For This Task'),
     )
-    task = models.CharField(
+    service = models.CharField(
         max_length=200, unique=True,
-        verbose_name=_('Task Name'),
-        help_text=_('The Name of the Celery Task that Should be Run.  '
+        verbose_name=_('Service Name'),
+        help_text=_('The Name of the Service that Should be Run.  '
                     '(Example: "proj.tasks.import_contacts")'),
     )
-    status = models.CharField(
-        max_length=1,
-        choices=StatusChoices.choices
+    status = models.PositiveSmallIntegerField(
+        choices=Status.choices,
+        default=Status.STOP,
     )
     args = models.JSONField(
-        blank=True, default=[],
+        blank=True, default=_args_default,
         verbose_name=_('Positional Arguments'),
         help_text=_(
             'JSON encoded positional arguments '
             '(Example: ["arg1", "arg2"])'),
     )
     kwargs = models.JSONField(
-        blank=True, default={},
+        blank=True, default=_kwargs_default,
         verbose_name=_('Keyword Arguments'),
         help_text=_(
             'JSON encoded keyword arguments '
