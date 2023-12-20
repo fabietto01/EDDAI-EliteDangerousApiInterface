@@ -1,25 +1,19 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from .Service import Service
+
 class ServiceEvent(models.Model):
 
-    class EventChoices(models.TextChoices):
-        START = 'st', _("START")
-        RUN = 'r', _("RUN")
-        STOP = 'sp', _("STOP")
-        ERROR = 'e', _("ERROR")
-        CRASH = 'c', _("CRASH")
-
     service = models.ForeignKey(
-        "django_service.Service", on_delete=models.CASCADE,
+        Service, on_delete=models.CASCADE,
         verbose_name=_("service"),
         related_name="events",
         related_query_name="event"
     )
-    event = models.CharField(
+    event = models.PositiveSmallIntegerField(
         verbose_name=_("event"),
-        max_length=2,
-        choices=EventChoices.choices,
+        choices=Service.StatusChoices.choices,
     )
     created = models.DateTimeField(
         verbose_name=_("created"),
@@ -27,7 +21,7 @@ class ServiceEvent(models.Model):
     )
 
     def __str__(self):
-        return f"{self.service} - { ServiceEvent.EventChoices(self.event).label}"
+        return f"{self.service} - { Service.StatusChoices(self.event).label}"
 
     class Meta:
         verbose_name = _("event")

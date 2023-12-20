@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -7,12 +8,13 @@ import uuid
 
 class Service(models.Model):
     
-    class Status(models.IntegerChoices):
+    class StatusChoices(models.IntegerChoices):
+        STARTING = 5, _("STARTING...")
         RUN = 10, _("RUN")
-        STOP = 20, _("STOP") 
-        ERROR = 30, _("ERROR")
-        
-        __empty__ = _("(Unknown)")
+        STOPING = 15, _("STOPING...")
+        STOP = 20, _("STOP")
+        ERROR = 25, _("ERROR")
+        CRASH = 30, _("CRASH")
 
     def _args_default (): return []
 
@@ -31,8 +33,8 @@ class Service(models.Model):
                     '(Example: "proj.tasks.import_contacts")'),
     )
     status = models.PositiveSmallIntegerField(
-        choices=Status.choices,
-        default=Status.STOP,
+        choices=StatusChoices.choices,
+        default=StatusChoices.STOP,
     )
     args = models.JSONField(
         blank=True, default=_args_default,
@@ -53,6 +55,18 @@ class Service(models.Model):
         verbose_name=_('Routing Key'),
         help_text=_('Override Routing Key for low-level AMQP routing'),
     )
+
+    def save(self, *args, **kwargs):
+        pre_save = self
+        super(Service, self).save(*args, **kwargs)
+        post_save = self
+        if pre_save.status != post_save.status:
+            pass
+
+
+
+
+
 
     def __str__(self):
         return self.name

@@ -15,21 +15,32 @@ app = get_app()
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = (
-        'name',
-        'service',
-        'status',
-        'args',
-        'kwargs',
-        'routing_key'
+        'name','service',
+        'status','args',
+        'kwargs','routing_key'
     )
     list_filter = (
-        'status',
-        'routing_key'
+        'status', 'routing_key'
     )
     search_fields = (
-        'name',
-        'status',
+        'name', 'status',
         'routing_key'
+    )
+    readonly_fields = (
+        'status',
+    )
+    fieldsets = (
+        (
+            None, {
+                'fields': ('name', 'service', 'status')
+            }
+        ),
+        (
+            'Advanced options', {
+                'classes': ('collapse',),
+                'fields': ('args', 'kwargs', 'routing_key')
+            }
+        )
     )
     inlines = [ReadOnlyServiceEventInline]
     form = ServiceForm
@@ -45,32 +56,26 @@ class ServiceAdmin(admin.ModelAdmin):
         dal panello di aministrazioine di django.
         """
         for service in queryset:
-            if service.status == service.Status.STOP:
-                tasck:AsyncResult = app.send_task(
-                    task_id=str(service.id),
-                    name=service.service,
-                    args=service.args,
-                    kwargs=service.kwargs,
-                    #routing_key=service.routing_key
-                )
-                service.status = Service.Status.RUN
+            try:
+                service.status = Service.StatusChoices.STARTING
                 service.save()
                 self.message_user(
                     request,
-                    _('service %(service)s started with id %(id)s') % {
+                    _('service %(service)s [%(id)s] starting...') % {
                         'service': service.name,
-                        'id': tasck.service
+                        'id': service.id
                     },
-                    messages.SUCCESS
+                    messages.INFO
                 )
-            else:
+            except Exception as ex:
                 self.message_user(
                     request,
-                    _('service %(service)s Already in state %(state)s ') % {
+                    _('service %(service)s [%(id)s] error: %(error)s') % {
                         'service': service.name,
-                        'state': service.status
+                        'id': service.id,
+                        'error': ex
                     },
-                    messages.WARNING
+                    messages.ERROR
                 )
 
     @admin.action(description=_('stop service'))
