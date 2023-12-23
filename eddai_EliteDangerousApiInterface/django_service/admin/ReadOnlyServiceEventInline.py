@@ -10,10 +10,12 @@ class ReadOnlyServiceEventInline(admin.TabularInline):
     fields = (
         'event',
         'created',
+        'meta'
     )
     readonly_fields = (
         'event',
         'created',
+        'meta'
     )
 
     def has_add_permission(self, request, obj=None):

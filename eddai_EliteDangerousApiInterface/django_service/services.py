@@ -24,15 +24,24 @@ def test_service(self):
 
 class _TestService(Service):
 
-    def run(self, *args, **kwargs):
-        x = 1
+    name = "django_service.services._TestService"
 
-        while True:
-            logger.info("questo è la ripetizione %s, del tentativo %s ", x, self.request.retries)
-            if 1 == random.randint(1, 10):
+    def run(self, max_retries:int, *args, **kwargs):
+        
+        ciclo = True
+        ciclo_namber = 1
+
+        while ciclo:
+            self.log.info(
+                f"Questo é il ciclo {ciclo_namber}, del tentativo {self.request.retries}, di {max_retries}"
+            )
+            if self.request.retries >= max_retries:
+                ciclo = False
+            elif 1 == random.randint(1, 5):
                 self.log.info("lancio un eccezione")
                 raise Exception("test")
-            x += 1
+            ciclo_namber += 1
             time.sleep(1)
+        self.log.info("ciclo finito")
 
 celery_app.register_task(_TestService)

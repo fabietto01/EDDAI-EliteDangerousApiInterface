@@ -2,6 +2,8 @@ from collections.abc import Iterable
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from ..conf import servis_settings
+
 import uuid
 
 # Create your models here.
@@ -20,6 +22,8 @@ class Service(models.Model):
 
     def _kwargs_default (): return {}
 
+    def _routing_key_default (): return servis_settings.SERVICE_DEFAULT_QUEUE
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(
         max_length=200, unique=True,
@@ -36,6 +40,7 @@ class Service(models.Model):
         choices=StatusChoices.choices,
         default=StatusChoices.STOP,
     )
+    _meta_status = None
     args = models.JSONField(
         blank=True, default=_args_default,
         verbose_name=_('Positional Arguments'),
@@ -51,26 +56,24 @@ class Service(models.Model):
             '(Example: {"argument": "value"})'),
     )
     routing_key = models.CharField(
-        max_length=200, blank=True, null=True, default=None,
+        max_length=200, blank=True, null=True, 
+        default=_routing_key_default,
         verbose_name=_('Routing Key'),
         help_text=_('Override Routing Key for low-level AMQP routing'),
     )
 
-    def save(self, *args, **kwargs):
-        pre_save = self
-        super(Service, self).save(*args, **kwargs)
-        post_save = self
-        if pre_save.status != post_save.status:
-            pass
-
-
-
-
-
-
     def __str__(self):
         return self.name
-
+    
+    @property
+    def get_meta_status(self):
+        return self._meta_status
+    
+    @get_meta_status.setter
+    def set_meta_status(self, value:str=None):
+        if value:
+            self._meta_status = str(value)
+    
     class Meta:
         verbose_name = _("service")
         verbose_name_plural = _("services")

@@ -15,6 +15,10 @@ class ServiceEvent(models.Model):
         verbose_name=_("event"),
         choices=Service.StatusChoices.choices,
     )
+    meta = models.TextField(
+        verbose_name=_("note"),
+        blank=True, null=True
+    )
     created = models.DateTimeField(
         verbose_name=_("created"),
         auto_now_add=True
@@ -22,6 +26,13 @@ class ServiceEvent(models.Model):
 
     def __str__(self):
         return f"{self.service} - { Service.StatusChoices(self.event).label}"
+    
+    @classmethod
+    def changed(cls, instance:Service, **kwargs):
+        cls.objects.create(
+            service=instance,
+            event=instance.status
+        )
 
     class Meta:
         verbose_name = _("event")

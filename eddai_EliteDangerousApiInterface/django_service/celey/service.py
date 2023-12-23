@@ -1,14 +1,10 @@
-from celery import Task
-from celery.utils.log import get_task_logger
-
-from ..models import ServiceEvent
-
+from .Task import DSTasck as Task
 from .request import ServiceRequest
+
+from ..models import Service as ServiceModel
 
 class Service(Task):
 
-    log  = get_task_logger(__name__)
-    name = f"{__name__}"
     #https://docs.celeryq.dev/en/stable/userguide/tasks.html#retrying
     autoretry_for = (Exception,)
     max_retries = None
@@ -19,21 +15,31 @@ class Service(Task):
     #https://docs.celeryq.dev/en/stable/userguide/tasks.html#requests-and-custom-requests
     Request = ServiceRequest
 
-    def before_start(self, task_id, args, kwargs):
-        self.update_state(state=ServiceEvent.EventChoices.RUN.label)
-        return super().before_start(task_id, args, kwargs)
+    def update_state(self, task_id=None, state:ServiceModel.StatusChoices=None, meta=None, **kwargs):
+        """
+        aggiorna lo statto del servizio sia nel modello che nel task
+        """
+        
+        if task_id is None:
+            task_id = self.request.id
+        
+        service = self._get_service(task_id)
+        service.status = state.value
+        service.set_meta_status = meta
+        service.save()
 
-    def run(self, *args, **kwargs):
-        return super().run(*args, **kwargs)
+        return super().update_state(task_id, state.label, meta, **kwargs)
+
+    def before_start(self, task_id, args, kwargs):
+        self.update_state(state=ServiceModel.StatusChoices.RUN)
     
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
-        self.update_state(state=ServiceEvent.EventChoices.STOP.label)
-        return super().after_return(status, retval, task_id, args, kwargs, einfo)
+        self.update_state(state=ServiceModel.StatusChoices.STOP)
     
     def on_retry(self, *args, **kwargs):
         _str = f"Retry in max {self.retry_backoff_max} seconds..."
         self.update_state(
-            state=ServiceEvent.EventChoices.ERROR.label,
+            state=ServiceModel.StatusChoices.ERROR,
             meta={"text": _str}
         )
         self.log.info(_str)
@@ -41,7 +47,7 @@ class Service(Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         _str = f"Service {self.name} failed: {exc}"
         self.update_state(
-            state=ServiceEvent.EventChoices.CRASH.label,
+            state=ServiceModel.StatusChoices.CRASH,
             meta={"text": _str}
         )
-        self.log.critical("Service failed" , exc_info=True) #exc_info=True
+        self.log.critical("Service failed" , exc_info=True)

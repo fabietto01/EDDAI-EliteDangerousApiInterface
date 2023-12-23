@@ -1,7 +1,10 @@
-#impostazioni per la gestione delle code di celery
-#https://docs.celeryq.dev/en/stable/userguide/routing.html
-SERVICE_RELARED_NAME = r'[A-z]{1,}(service|Service)$'
+#una regex per identificare i worker che gestiscono i servizi
+SERVICE_WORKER_NAME = r'^ServiceWorker.*$'
+
+SERVICE_DEFAULT_QUEUE = 'service'
 
 SERVICE_LOCK =  60 * 60 * 24 * 30 # 30 days
 
-SERVICE_QUEUE = None
+SERVICE_LIST = [
+    
+]

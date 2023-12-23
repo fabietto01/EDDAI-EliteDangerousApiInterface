@@ -1,11 +1,10 @@
 from django.contrib import admin, messages
+from django.http.request import HttpRequest
 from django.utils.translation import gettext_lazy as _
 from django.db.models import QuerySet
 
 from .ReadOnlyServiceEventInline import ReadOnlyServiceEventInline
 from ..celey.utility import get_app, get_control
-
-from celery.result import AsyncResult
 
 from ..models import Service
 from ..form import ServiceForm
@@ -84,8 +83,25 @@ class ServiceAdmin(admin.ModelAdmin):
         Quista funzione permette di fermare un servizio,
         dal panello di aministrazioine di django.
         """
-        control = get_control(app)
         for service in queryset:
-            control.revoke(str(service.id), terminate=True)
-            service.status = Service.Status.STOP
-            service.save()
+            try:
+                service.status = Service.StatusChoices.STOPING
+                service.save()
+                self.message_user(
+                    request,
+                    _('service %(service)s [%(id)s] stoping...') % {
+                        'service': service.name,
+                        'id': service.id
+                    },
+                    messages.INFO
+                )
+            except Exception as ex:
+                self.message_user(
+                    request,
+                    _('service %(service)s [%(id)s] error: %(error)s') % {
+                        'service': service.name,
+                        'id': service.id,
+                        'error': ex
+                    },
+                    messages.ERROR
+                )
