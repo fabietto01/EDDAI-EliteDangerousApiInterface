@@ -1,11 +1,11 @@
-from .celey import shared_service
+from .celery.Service.utility import shared_service
+from .celery.Service import Service
+from .celery import app
+
 import time
 import random
 
-from eddai_EliteDangerousApiInterface.celery import app as celery_app
 from celery.utils.log import get_task_logger
-from django_service.celey import Service
-
 
 logger = get_task_logger(__name__)
 
@@ -44,4 +44,4 @@ class _TestService(Service):
             time.sleep(1)
         self.log.info("ciclo finito")
 
-celery_app.register_task(_TestService)
+app.register_task(_TestService)

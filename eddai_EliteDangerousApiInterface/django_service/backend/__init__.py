@@ -7,11 +7,10 @@ import re
 
 from ..conf import servis_settings
 from ..models import Service
-from ..celey.utility import get_app
+from ..celery import app
 
 from .UpdateService import UpdateService
 
-app = get_app()
 app.register_task(UpdateService())
 
 @celeryd_init.connect

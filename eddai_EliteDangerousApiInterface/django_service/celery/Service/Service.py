@@ -1,9 +1,9 @@
-from .Task import DSTasck as Task
-from .Request import ServiceRequest
+from .BeseService import BeseService
+from ..Request import ServiceRequest
 
-from ..models import Service as ServiceModel
+from ...models import Service as ServiceModel
 
-class Service(Task):
+class Service(BeseService):
 
     #https://docs.celeryq.dev/en/stable/userguide/tasks.html#retrying
     autoretry_for = (Exception,)

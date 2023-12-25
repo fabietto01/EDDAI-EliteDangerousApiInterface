@@ -1,9 +1,9 @@
 from celery.result import AsyncResult
 
-from ..celey.Task import DSTasck as Task
+from ..celery.Service.BeseService import BeseService
 from ..models import Service as ServiceModel, ServiceEvent
 
-class UpdateService(Task):
+class UpdateService(BeseService):
 
     name = "djnago_service.backend.UpdateService"
 

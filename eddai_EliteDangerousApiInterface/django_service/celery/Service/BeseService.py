@@ -1,9 +1,9 @@
 from celery import Task
 from celery.utils.log import get_task_logger
 from logging import Logger
-from ..models import Service as ServiceModel
+from ...models import Service as ServiceModel
 
-class DSTasck(Task):
+class BeseService(Task):
     
     log:Logger  = get_task_logger('Service')
     name = f"{__name__}"
