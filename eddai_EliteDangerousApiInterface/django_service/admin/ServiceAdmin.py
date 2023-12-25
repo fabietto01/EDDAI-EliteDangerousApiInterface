@@ -4,12 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models import QuerySet
 
 from .ReadOnlyServiceEventInline import ReadOnlyServiceEventInline
-from ..celey.utility import get_app, get_control
 
 from ..models import Service
 from ..form import ServiceForm
-
-app = get_app()
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):

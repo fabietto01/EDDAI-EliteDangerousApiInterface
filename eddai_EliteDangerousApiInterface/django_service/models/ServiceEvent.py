@@ -25,7 +25,8 @@ class ServiceEvent(models.Model):
     )
 
     def __str__(self):
-        return f"{self.service} - { Service.StatusChoices(self.event).label}"
+        e = int(self.event)
+        return f"{self.service} - { Service.StatusChoices(e).label }"
     
     @classmethod
     def changed(cls, instance:Service, **kwargs):

@@ -1,7 +1,7 @@
 from celery import Celery
 from celery.app.control import Control, Inspect
 from celery import current_app
-from .service import Service
+from .Service import Service
 
 def get_app() -> Celery:
     return current_app

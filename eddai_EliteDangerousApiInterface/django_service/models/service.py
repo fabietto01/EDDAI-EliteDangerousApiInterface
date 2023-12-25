@@ -1,4 +1,3 @@
-from collections.abc import Iterable
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -15,6 +14,7 @@ class Service(models.Model):
         RUN = 10, _("RUN")
         STOPING = 15, _("STOPING...")
         STOP = 20, _("STOP")
+        RETRY = 22, _("RETRY")
         ERROR = 25, _("ERROR")
         CRASH = 30, _("CRASH")
 

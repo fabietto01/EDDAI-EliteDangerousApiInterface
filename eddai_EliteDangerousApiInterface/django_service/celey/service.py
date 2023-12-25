@@ -1,5 +1,5 @@
 from .Task import DSTasck as Task
-from .request import ServiceRequest
+from .Request import ServiceRequest
 
 from ..models import Service as ServiceModel
 
@@ -19,14 +19,16 @@ class Service(Task):
         """
         aggiorna lo statto del servizio sia nel modello che nel task
         """
-        
-        if task_id is None:
-            task_id = self.request.id
-        
-        service = self._get_service(task_id)
-        service.status = state.value
-        service.set_meta_status = meta
-        service.save()
+
+        if type(state) is type(ServiceModel.StatusChoices):
+
+            if task_id is None:
+                task_id = self.request.id
+            
+            service = self._get_service(task_id)
+            service.status = state.value
+            service.set_meta_status = meta
+            service.save()
 
         return super().update_state(task_id, state.label, meta, **kwargs)
 
@@ -39,8 +41,8 @@ class Service(Task):
     def on_retry(self, *args, **kwargs):
         _str = f"Retry in max {self.retry_backoff_max} seconds..."
         self.update_state(
-            state=ServiceModel.StatusChoices.ERROR,
-            meta={"text": _str}
+            state=ServiceModel.StatusChoices.RETRY,
+            meta={"retry": _str}
         )
         self.log.info(_str)
 
@@ -48,6 +50,6 @@ class Service(Task):
         _str = f"Service {self.name} failed: {exc}"
         self.update_state(
             state=ServiceModel.StatusChoices.CRASH,
-            meta={"text": _str}
+            meta={"exc": _str}
         )
         self.log.critical("Service failed" , exc_info=True)

@@ -4,7 +4,7 @@ import random
 
 from eddai_EliteDangerousApiInterface.celery import app as celery_app
 from celery.utils.log import get_task_logger
-from django_service.celey.service import Service
+from django_service.celey import Service
 
 
 logger = get_task_logger(__name__)
@@ -26,7 +26,7 @@ class _TestService(Service):
 
     name = "django_service.services._TestService"
 
-    def run(self, max_retries:int, *args, **kwargs):
+    def run(self, max_retries:int, max_random:int, *args, **kwargs):
         
         ciclo = True
         ciclo_namber = 1
@@ -37,7 +37,7 @@ class _TestService(Service):
             )
             if self.request.retries >= max_retries:
                 ciclo = False
-            elif 1 == random.randint(1, 5):
+            elif 1 == random.randint(1, max_random):
                 self.log.info("lancio un eccezione")
                 raise Exception("test")
             ciclo_namber += 1

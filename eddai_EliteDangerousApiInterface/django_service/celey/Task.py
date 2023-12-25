@@ -13,7 +13,6 @@ class DSTasck(Task):
     def _get_service(self, serialized_id) -> ServiceModel:
         return ServiceModel.objects.get(pk=serialized_id)
 
-
     def run(self, *args, **kwargs):
         """The body of the task executed by workers."""
         raise NotImplementedError('Tasks must define the run method.')
