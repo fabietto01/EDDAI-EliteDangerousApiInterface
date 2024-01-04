@@ -30,7 +30,7 @@
         "-l","Debug", 
         "-P", "gevent", 
         "-c", "100",
-        "-n", "workerTasck@%h"
+        "-n", "TasckWorker@%h"
       ],
       "env": {
         "PYTHONPATH": "${workspaceFolder}",
@@ -56,6 +56,20 @@
       "consoleTitle": "Python Debug Console Celery Service"
     },
     {
+      "name": "Python: Celery beat",
+      "type": "python",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "--app", "eddai_EliteDangerousApiInterface",
+        "beat", 
+        "--loglevel","Debug"
+      ],
+      "consoleTitle": "Python Debug Console Celery beat"
+    },
+    {
       "name": "Python: Django Shell",
       "type": "python",
       "request": "launch",
@@ -71,7 +85,7 @@
   "compounds": [
     {
       "name": "Django/Celery Worker Tasck and Service",
-      "configurations": ["Python: Django", "Python: Celery Worker Tasck", "Python: Celery Worker Service"],
+      "configurations": ["Python: Celery Worker Tasck", "Python: Celery Worker Service", "Python: Django", "Python: Celery beat"],
       "stopAll": true
     }
   ]

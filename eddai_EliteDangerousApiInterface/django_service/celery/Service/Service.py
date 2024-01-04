@@ -1,9 +1,10 @@
-from .Task import DSTasck as Task
-from .Request import ServiceRequest
+from .BeseService import BeseService
+from ..Request import ServiceRequest
 
-from ..models import Service as ServiceModel
+from ...models import Service as ServiceModel
+from django_service.models import Service
 
-class Service(Task):
+class Service(BeseService):
 
     #https://docs.celeryq.dev/en/stable/userguide/tasks.html#retrying
     autoretry_for = (Exception,)
@@ -20,7 +21,7 @@ class Service(Task):
         aggiorna lo statto del servizio sia nel modello che nel task
         """
 
-        if type(state) is type(ServiceModel.StatusChoices):
+        if type(state) is type(ServiceModel.StatusChoices.RUN):
 
             if task_id is None:
                 task_id = self.request.id
@@ -44,7 +45,7 @@ class Service(Task):
             state=ServiceModel.StatusChoices.RETRY,
             meta={"retry": _str}
         )
-        self.log.info(_str)
+        self.log.error(_str, exc_info=kwargs.get("exc", None))
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         _str = f"Service {self.name} failed: {exc}"
@@ -52,4 +53,4 @@ class Service(Task):
             state=ServiceModel.StatusChoices.CRASH,
             meta={"exc": _str}
         )
-        self.log.critical("Service failed" , exc_info=True)
+        self.log.critical("Service failed" , exc)

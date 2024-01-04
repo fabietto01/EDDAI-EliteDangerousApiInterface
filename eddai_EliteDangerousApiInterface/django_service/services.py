@@ -1,11 +1,11 @@
-from .celey import shared_service
+from .celery.Service.utility import shared_service
+from .celery.Service import Service
+from .celery import app
+
 import time
 import random
 
-from eddai_EliteDangerousApiInterface.celery import app as celery_app
 from celery.utils.log import get_task_logger
-from django_service.celey import Service
-
 
 logger = get_task_logger(__name__)
 
@@ -27,7 +27,6 @@ class _TestService(Service):
     name = "django_service.services._TestService"
 
     def run(self, max_retries:int, max_random:int, *args, **kwargs):
-        
         ciclo = True
         ciclo_namber = 1
 
@@ -39,9 +38,9 @@ class _TestService(Service):
                 ciclo = False
             elif 1 == random.randint(1, max_random):
                 self.log.info("lancio un eccezione")
-                raise Exception("test")
+                raise Exception("lancio un eccezione do Test")
             ciclo_namber += 1
             time.sleep(1)
         self.log.info("ciclo finito")
 
-celery_app.register_task(_TestService)
+app.register_task(_TestService)

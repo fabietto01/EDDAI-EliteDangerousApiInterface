@@ -1,47 +1,56 @@
 from celery.result import AsyncResult
 
-from ..celey.Task import DSTasck as Task
+from ..celery.Service.BeseService import BeseService
+from ..celery.utility import memcache_lock
 from ..models import Service as ServiceModel, ServiceEvent
 
-class UpdateService(Task):
+class UpdateService(BeseService):
 
     name = "djnago_service.backend.UpdateService"
 
     def run(self, serialized_id:int, *args, **kwargs):
-        """
-        gestisce il cambio di stato richiesto dal modello,
-        sara poi il servizio che si occupera di gestire il cambio di stato
-        """
 
-        service = self._get_service(serialized_id)
+        lock_id = f"{self.name}_{serialized_id}"
 
-        self.log.info(
-            f"UpdateService Start for {service.name}"
-        )
+        with memcache_lock(lock_id, self.app.oid, 60 * 10) as acquired:
+            if acquired:
+                service = self._get_service(serialized_id)
 
-        event, create = self.get_event(service)
-        
-        if create:
-            self.log.info(
-                f"A new event has been created for {service.name}"
-            )
-            return
-        
-        if event.event != service.status:
-
-            self.log.debug(
-                f"Update detected {service.name}"
-            )
-
-            self.create_event(service, **kwargs)
-
-            if service.status == ServiceModel.StatusChoices.STARTING:
-                async_result = self.start_service(service)
-            elif service.status == ServiceModel.StatusChoices.STOPING:
-                async_result = self.stop_service(service)
-            else:
                 self.log.info(
-                    f"Not Action for {service.name}"
+                    f"UpdateService Start for {service.name}"
+                )
+
+                event, create = self.get_event(service)
+                
+                if create:
+                    self.log.debug(
+                        f"A new event has been created for {service.name}"
+                    )
+                    return
+                
+                if event.event != service.status:
+
+                    self.log.debug(
+                        f"Update detected {service.name}"
+                    )
+
+                    self.create_event(service, **kwargs)
+
+                    if service.status == ServiceModel.StatusChoices.STARTING:
+                        async_result = self.start_service(service)
+                    elif service.status == ServiceModel.StatusChoices.STOPING:
+                        async_result = self.stop_service(service)
+                    else:
+                        self.log.debug(
+                            f"Not Action for {service.name}"
+                        )
+                else:
+                    self.log.debug(
+                        f"No Update detected for {service.name}"
+                    )
+
+                self.log.info(
+                    f"is UpdateService End for {service.name}"
                 )
 
     def get_event(self, service:ServiceModel) -> tuple[ServiceEvent, bool]:
