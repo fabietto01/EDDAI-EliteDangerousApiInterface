@@ -8,6 +8,8 @@ try:
 except ImportError:
     raise ImportError("Celery is not installed. Please install Celery and try again.")
 
+from . import backend
+
 if django.VERSION < (3, 2):
     default_app_config = 'django_service.apps.DjangoServiceConfig'
 
