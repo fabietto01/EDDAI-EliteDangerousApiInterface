@@ -6,7 +6,7 @@ from rest_framework.serializers import Serializer, ValidationError
 
 class BaseDataAnalytics(object):
 
-    __log = logging.getLogger("django")
+    __log = logging.getLogger("eddn")
     __regex = r"^https://eddn.edcd.io/schemas/(?P<schema>[a-z]{3,})/[1-9]"
 
     def __init__(self, istance:DataLog, *args, **kwargs):

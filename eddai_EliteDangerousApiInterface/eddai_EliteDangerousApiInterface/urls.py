@@ -21,6 +21,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     #path('elite_dangerous/', include("ed_core.urls")),
     path('eddn/', include('eddn.urls')),
-    path('services/', include('django_service.urls')),
     path("", include("ed_core.urls")),
 ]

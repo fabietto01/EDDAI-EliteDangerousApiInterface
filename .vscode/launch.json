@@ -6,7 +6,7 @@
   "configurations": [
     {
       "name": "Python: Django",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
       "args": [
@@ -18,8 +18,15 @@
       "consoleTitle": "Python Debug Django",
     },
     {
+      "name": "Python: Service eddn",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/eddn.py",
+      "consoleTitle": "Python Debug Service eddn",
+    },
+    {
       "name": "Python: Celery Worker Tasck",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
@@ -39,25 +46,8 @@
       "consoleTitle": "Python Debug Celery Tasck"
     },
     {
-      "name": "Python: Celery Worker Service",
-      "type": "python",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "module": "celery",
-      "args": [
-        "--app", "eddai_EliteDangerousApiInterface",
-        "worker", 
-        "--loglevel","Debug",
-        "--pool", "threads",	
-        "--concurrency", "8",
-        "--hostname", "ServiceWorker@%h"
-      ],
-      "consoleTitle": "Python Debug Console Celery Service"
-    },
-    {
       "name": "Python: Celery beat",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
@@ -71,7 +61,7 @@
     },
     {
       "name": "Python: Django Shell",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
       "args": [
@@ -84,8 +74,8 @@
   ],
   "compounds": [
     {
-      "name": "Django/Celery Worker Tasck and Service",
-      "configurations": ["Python: Celery Worker Tasck", "Python: Celery Worker Service", "Python: Django", "Python: Celery beat"],
+      "name": "Django/Celery Worker Tasck",
+      "configurations": ["Python: Celery Worker Tasck", "Python: Django", "Python: Celery beat"],
       "stopAll": true
     }
   ]

@@ -46,8 +46,6 @@ INSTALLED_APPS = [
 
     'core',
 
-    'django_service',
-
     'ed_core',
     'ed_system',
     'ed_economy',
@@ -225,6 +223,10 @@ LOGGING = {
         },
     },
     "loggers": {
+        "eddn":{
+            "handlers": ["console", "mail_admins"],
+            "level": "INFO",
+        },
         "django": {
             "handlers": ["console", "mail_admins"],
             "level": "INFO",
