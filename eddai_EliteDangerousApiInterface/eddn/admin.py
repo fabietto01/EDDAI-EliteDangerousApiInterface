@@ -1,6 +1,9 @@
 from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
 
+from celery import group
+from celery.result import GroupResult
+
 from eddn.filters.eventFilter import EventFilter
 
 # Register your models here.
@@ -20,14 +23,13 @@ class DataLogAdmin(admin.ModelAdmin):
 
     @admin.action(description=_('data re-processing'))
     def re_processing(self, request, queryset):
-        successful = []
-        unsuccessful = []
-        for instance in list(queryset):
-            instance = star_analytic(instance)
-            if instance.error:
-                unsuccessful.append(instance.pk)
-            else:
-                successful.append(instance.pk)
+        tasks = [star_analytic.s(instance) for instance in queryset]
+        job = group(tasks)
+        result:GroupResult = job.apply_async()
+
+        successful = [res.id for res in result.results if not res.result.error]
+        unsuccessful = [res.id for res in result.results if res.result.error]
+
         if successful:
             queryset.filter(pk__in=successful).delete()
             self.message_user(
