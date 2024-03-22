@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 import ssl
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -267,3 +268,9 @@ CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_EVENT_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['application/json', 'application/x-python-serialize']
+
+#impostazione per la gestione dei taask periodici di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
+CELERY_BEAT_SCHEDULE = {
+
+}

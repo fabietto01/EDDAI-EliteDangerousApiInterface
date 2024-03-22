@@ -1,0 +1,1 @@
+from .auto_analytic import auto_analytic
