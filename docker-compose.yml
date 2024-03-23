@@ -36,10 +36,9 @@ services:
         environment:
             TZ: UTC
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_HOME: /etc/mysql/my.cnf
         volumes:
             - ed_database:/var/lib/mysql
-            - ${MYSQL_CONFIG_FILE}:/etc/mysql/my.cnf
+            - ${MYSQL_CONFIG_FILE}:/etc/my.cnf
         ports:
             - "3306:3306"
         restart: always
