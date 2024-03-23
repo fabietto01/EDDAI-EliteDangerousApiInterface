@@ -19,3 +19,11 @@ CELERY_BROKER_USE_SSL = {
     'ca_certs': os.environ.get("CELERY_SSL_CACERTFILE"),
     'cert_reqs': ssl.CERT_REQUIRED
 }
+#impostazione per la gestione dei taask periodici di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
+CELERY_BEAT_SCHEDULE = {
+    "auto_re_analytic":{
+        "task": "auto_analytic",
+        "schedule": crontab(minute=0, hour=0)#crontab(minute=0, hour='*/3'),
+    }
+}

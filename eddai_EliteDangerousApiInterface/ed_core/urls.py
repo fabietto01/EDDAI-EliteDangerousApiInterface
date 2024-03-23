@@ -14,7 +14,10 @@ Including another URLconf
 """
 from django.urls import path, include
 
+from .views import redirect_to_admin
+
 urlpatterns = [
     path("station/", include("ed_station.urls")),
     path("economy/", include("ed_economy.urls")),
+    path("", redirect_to_admin),
 ]

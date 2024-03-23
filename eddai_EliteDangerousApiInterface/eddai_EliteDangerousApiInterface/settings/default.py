@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-import ssl
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -46,8 +45,6 @@ INSTALLED_APPS = [
 
     'core',
 
-    'django_service',
-
     'ed_core',
     'ed_system',
     'ed_economy',
@@ -58,8 +55,6 @@ INSTALLED_APPS = [
     'ed_exploration',
     'ed_station',
     'eddn',
-
-
 ]
 
 MIDDLEWARE = [
@@ -77,7 +72,10 @@ ROOT_URLCONF = 'eddai_EliteDangerousApiInterface.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'django_service/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -160,7 +158,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # La configurazione per il framework REST è tutta con namespace all'interno di una singola impostazione Django
@@ -224,6 +221,10 @@ LOGGING = {
         },
     },
     "loggers": {
+        "eddn":{
+            "handlers": ["console", "mail_admins"],
+            "level": "INFO",
+        },
         "django": {
             "handlers": ["console", "mail_admins"],
             "level": "INFO",
@@ -255,15 +256,18 @@ AUTHORI_SED_SOFTWARS = [
 
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
-CELERY_TIMEZONE = TIME_ZONE
-CELERY_ACCEPT_CONTENT = ['json']
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("RABBITMQ_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
 CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("REDIS_HOST")}:{os.environ.get("REDIS_PORT")}/1'
 
-import re
+#impostazioni per la gestione della serializzazione dei dati
+#https://docs.celeryq.dev/en/stable/userguide/calling.html#serializers
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_EVENT_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['application/json', 'application/x-python-serialize']
 
-CELERY_TASK_ROUTES = [
-    (re.compile(r'[A-z]{1,}(Claudione|claudione)$'), {'queue': 'claudio'}),
-]
+#impostazione per la gestione dei taask periodici di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
+CELERY_BEAT_SCHEDULE = {
 
-SERVICES_CELERY_APP = 'eddai_EliteDangerousApiInterface.celery.app'
+}

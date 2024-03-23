@@ -6,7 +6,7 @@
   "configurations": [
     {
       "name": "Python: Django",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
       "args": [
@@ -15,10 +15,18 @@
         "eddai_EliteDangerousApiInterface.settings.dev"
       ],
       "django": true,
+      "consoleTitle": "Python Debug Django",
     },
     {
-      "name": "Python: Celery Worker",
-      "type": "python",
+      "name": "Python: Service eddn",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/eddn.py",
+      "consoleTitle": "Python Debug Service eddn",
+    },
+    {
+      "name": "Python: Celery Worker Tasck",
+      "type": "debugpy",
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
@@ -28,37 +36,32 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "100",
-        "-n", "worker1@%h"
+        "-c", "200",
+        "-n", "TasckWorker@%h"
       ],
       "env": {
         "PYTHONPATH": "${workspaceFolder}",
         "GEVENT_SUPPORT":"True"
       },
+      "consoleTitle": "Python Debug Celery Tasck"
     },
     {
-      "name": "Python: Celery Worker EDDN",
-      "type": "python",
+      "name": "Python: Celery beat",
+      "type": "debugpy",
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
       "module": "celery",
       "args": [
-        "-A", "eddai_EliteDangerousApiInterface",
-        "worker", 
-        "-l","Debug", 
-        "-P", "gevent", 
-        "-c", "100",
-        "-n", "workerEDDN@%h",
+        "--app", "eddai_EliteDangerousApiInterface",
+        "beat", 
+        "--loglevel","Debug"
       ],
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}",
-        "GEVENT_SUPPORT":"True"
-      },
+      "consoleTitle": "Python Debug Console Celery beat"
     },
     {
       "name": "Python: Django Shell",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
       "args": [
@@ -71,8 +74,8 @@
   ],
   "compounds": [
     {
-      "name": "Django/Celery Worker",
-      "configurations": ["Python: Django", "Python: Celery Worker", "Python: Celery Worker EDDN"],
+      "name": "Django/Celery Worker Tasck",
+      "configurations": ["Python: Celery Worker Tasck", "Python: Django", "Python: Celery beat"],
       "stopAll": true
     }
   ]

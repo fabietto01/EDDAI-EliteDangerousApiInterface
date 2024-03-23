@@ -1,7 +1,9 @@
 from eddn.models import DataLog
-from eddn.service.dataAnalytics import JournalAnalytic,  Commodity3Analytic
+from eddn.service.dataAnalytics import JournalAnalytic, Commodity3Analytic
+from celery import shared_task
 
-def star_analytic(istance:DataLog) -> DataLog:
+@shared_task(name="star_analytic", bind=False)
+def star_analytic(istance:DataLog):
     if istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/journal/1":
         analytic = JournalAnalytic(istance=istance)
         istance = analytic.analyst()

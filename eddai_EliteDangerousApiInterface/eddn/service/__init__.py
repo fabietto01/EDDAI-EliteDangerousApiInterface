@@ -1,1 +1,1 @@
-from eddn.service.client import EddnClient
+from .client import EddnClient
