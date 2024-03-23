@@ -1,1 +1,1 @@
-from .CharField import CacheCharField
+from core.api.fields.ChoiceField import CacheChoiceField
