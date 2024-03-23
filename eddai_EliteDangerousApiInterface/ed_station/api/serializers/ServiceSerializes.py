@@ -9,3 +9,11 @@ class ServiceModelSerializes(serializers.ModelSerializer):
     class Meta:
         model = Service
         exclude = ['_eddn']
+
+class NestedServiceModelSerializes(serializers.ModelSerializer):
+    """
+    serializer dedicato alla visualizaione di servizzi
+    """
+    class Meta:
+        model = Service
+        exclude = ['_eddn', "description"]
