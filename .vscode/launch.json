@@ -36,7 +36,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "500",
+        "-c", "200",
         "-n", "TasckWorker@%h"
       ],
       "env": {
