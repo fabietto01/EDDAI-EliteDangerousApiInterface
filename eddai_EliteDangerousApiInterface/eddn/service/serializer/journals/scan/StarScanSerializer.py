@@ -2,9 +2,12 @@ from rest_framework import serializers
 from eddn.service.serializer.journals.scan.BaseScanSerializer import BaseScanSerializer
 
 from core.utility import get_values_list_or_default, get_or_none
+from core.api.fields import CacheChoiceField
 from django.db import OperationalError, ProgrammingError
 
 from ed_body.models import Star, StarLuminosity, StarType
+
+import uuid
 
 class StarScanSerializer(BaseScanSerializer):
     
@@ -14,12 +17,15 @@ class StarScanSerializer(BaseScanSerializer):
     Age_MY = serializers.FloatField(
         min_value=0,
     )
-    Luminosity = serializers.ChoiceField(
-        choices=get_values_list_or_default(StarLuminosity, [], (OperationalError, ProgrammingError), 'name', flat=True)
+    Luminosity = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(StarLuminosity, [], (OperationalError, ProgrammingError), 'name', flat=True),
+         cache_key=uuid.uuid4(),
     )
-    StarType = serializers.ChoiceField(
-        choices=get_values_list_or_default(StarType, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
+    StarType = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(StarType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+         cache_key=uuid.uuid4(),
     )
+
     StellarMass = serializers.FloatField(
         min_value=0,
     )

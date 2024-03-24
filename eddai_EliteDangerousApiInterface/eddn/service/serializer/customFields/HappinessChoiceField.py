@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from django_filters.filters import EMPTY_VALUES
+from core.api.fields import CacheChoiceField
 import re
 
-
-
-class HappinessChoiceField(serializers.ChoiceField):
+class HappinessChoiceField(CacheChoiceField):
     default_error_messages = {
         'invalid_choice': _('"{input}" is not a valid choice.'),
         'incorrect_format': _('"{input}" Incorrect format'),

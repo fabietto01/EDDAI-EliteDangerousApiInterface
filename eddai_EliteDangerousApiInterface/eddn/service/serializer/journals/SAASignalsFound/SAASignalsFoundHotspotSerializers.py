@@ -3,6 +3,7 @@ from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
 from core.utility import  in_list_models, get_values_list_or_default, update_or_create_if_time
+from core.api.fields import CacheChoiceField
 
 from ed_mining.models import HotspotSignals, HotSpot
 from ed_body.models import Ring
@@ -10,11 +11,13 @@ from ed_body.models import Ring
 from ed_body.models import BaseBody
 from ed_system.models import System
 
+import uuid
 import re
 
 class HotspotSerializers(serializers.Serializer):
-    Type = serializers.ChoiceField(
-        choices=get_values_list_or_default(HotspotSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    Type = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(HotspotSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
     )
     Count = serializers.IntegerField(
         min_value=0,
