@@ -3,22 +3,27 @@ from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
 from core.utility import  get_values_list_or_default, in_list_models, update_or_create_if_time
+from core.api.fields import CacheChoiceField
 
 from ed_exploration.models import Signal, SignalSignals, Sample, SampleSignals
 from ed_body.models import Planet
 from ed_system.models import System
 
+import uuid
+
 class SignalSerializers(serializers.Serializer):
-    Type = serializers.ChoiceField(
-        choices=get_values_list_or_default(SignalSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    Type = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(SignalSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
     )
     Count = serializers.IntegerField(
         min_value=0,
     )
 
 class SampleSerializers(serializers.Serializer):
-    Genus = serializers.ChoiceField(
-        choices=get_values_list_or_default(SampleSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    Genus = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(SampleSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
     )
 
 class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):

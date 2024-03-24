@@ -1,13 +1,16 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
+import uuid
 
 from ed_economy.models import Commodity
 
 from core.utility import get_values_list_or_default
+from core.api.fields import CacheChoiceField
 
 class CommoditySerializer(serializers.Serializer):
-    name = serializers.ChoiceField(
-        choices=get_values_list_or_default(Commodity, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    name = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(Commodity, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4()
     )
     buyPrice = serializers.IntegerField(
         min_value=0,

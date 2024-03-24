@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
+import uuid
 
 from ..customFields import LandingPadsChoiceField
 from ..nestedSerializer import BaseMinorFactionSerializer, EconomySerializer
@@ -13,6 +14,7 @@ from ed_economy.models import Economy
 from ed_bgs.models import MinorFaction, MinorFactionInSystem
 from ed_system.models import System
 
+from core.api.fields import CacheChoiceField
 from core.utility import (
     update_or_create_if_time, in_list_models, 
     get_values_list_or_default, get_or_none
@@ -25,8 +27,9 @@ class DockedSerializer(BaseJournal):
     StationName = serializers.CharField(
         min_length=1,
     )
-    StationType = serializers.ChoiceField(
-        choices=get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    StationType = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4()
     )
     DistFromStarLS = serializers.FloatField(
         min_value=0,
