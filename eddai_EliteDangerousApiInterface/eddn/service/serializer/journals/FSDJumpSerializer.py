@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
+import uuid
 
 from .BaseJournal import BaseJournal
 
-from ..customFields import CustomChoiceField
+from ..customFields import CustomChoiceField, CustomCacheChoiceField
 from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
 
 from ed_system.models import System
@@ -13,17 +14,21 @@ from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Pow
 from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
 
+from core.api.fields import CacheChoiceField
+
 class FSDJumpSerializer(BaseJournal):
     """
     sserializer dedicato alla lavorazione dei dati con scema journal e evento FSDJump
     """
-    SystemEconomy = CustomChoiceField(
-        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    SystemEconomy = CustomCacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
         required=False,
         allow_blank=True,
     )
-    SystemSecondEconomy = CustomChoiceField(
-        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    SystemSecondEconomy = CustomCacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
         required=False,
         allow_blank=True,
     )
@@ -45,15 +50,17 @@ class FSDJumpSerializer(BaseJournal):
     )
     Conflicts = None
     Powers = serializers.ListField(
-        child=serializers.ChoiceField(
-            choices=get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
+        child=CacheChoiceField(
+            fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
+            cache_key=uuid.uuid4(),
         ),
         required=False,
         min_length=0,
         max_length=PowerInSystem.MaxRelation,
     )
-    PowerplayState = serializers.ChoiceField(
-        choices=get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
+    PowerplayState = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
+        cache_key=uuid.uuid4(),
         required=False,
     )
 

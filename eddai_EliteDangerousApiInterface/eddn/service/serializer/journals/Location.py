@@ -1,16 +1,17 @@
 from rest_framework import serializers
 from .BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
-import importlib
+import uuid
 
-from ..customFields import CustomChoiceField
+from ..customFields import CustomChoiceField, CustomCacheChoiceField
 from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
+
+from core.api.fields import CacheChoiceField
 
 from ed_station.models import (
     StationType, Station
 )
 
-from ed_body.models import Planet, Star
 from ed_economy.models import Economy
 from ed_system.models import System
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
@@ -46,19 +47,22 @@ class LocationSerializer(BaseJournal):
         min_length=1,
         required=False,
     )
-    StationType = serializers.ChoiceField(
-        choices=get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    StationType = CacheChoiceField(
+        fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
         required=False,
     )
     #-------------------------------------------------------------------------------
     Population = serializers.IntegerField(
         min_value=0,
     )
-    SystemEconomy = CustomChoiceField(
-        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    SystemEconomy = CustomCacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
     )
-    SystemSecondEconomy = CustomChoiceField(
-        choices=get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    SystemSecondEconomy = CustomCacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        cache_key=uuid.uuid4(),
         required=False,
         allow_blank=True,
     )
@@ -76,16 +80,17 @@ class LocationSerializer(BaseJournal):
     )
     Conflicts = None
     Powers = serializers.ListField(
-        child=serializers.ChoiceField(
-            choices=get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
+        child=CacheChoiceField(
+            fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
+            cache_key=uuid.uuid4(),
         ),
         required=False,
         min_length=0,
         max_length=PowerInSystem.MaxRelation,
     )
-    PowerplayState = serializers.ChoiceField(
-        choices=get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        required=False,
+    PowerplayState = CacheChoiceField(
+        fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
+        cache_key=uuid.uuid4(),
     )
 
     def validate(self, attrs:dict):
