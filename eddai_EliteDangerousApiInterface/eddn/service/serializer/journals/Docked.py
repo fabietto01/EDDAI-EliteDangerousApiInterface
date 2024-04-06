@@ -34,8 +34,11 @@ class DockedSerializer(BaseJournal):
     DistFromStarLS = serializers.FloatField(
         min_value=0,
     )
-    StationServices = serializers.MultipleChoiceField(
-        choices=get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
+    StationServices = serializers.ListField(
+        child=CacheChoiceField(
+            fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+            cache_key=uuid.uuid4(),
+        )
     )
     StationEconomies = serializers.ListField(
         child=EconomySerializer(),
@@ -51,8 +54,9 @@ class DockedSerializer(BaseJournal):
         if len(economies) == 2:
             if economies[0].get('Name', '') == economies[1].get('Name', ''):
                 raise serializers.ValidationError({'StationEconomies': 'Economies must be different'})
-        if not MinorFactionInSystem.objects.filter(system__name=system_Name, minorFaction__name=faction_Name).exists():
-            raise serializers.ValidationError({'StationFaction':{'Name':f'the minor faction {faction_Name} is not present in the system {system_Name}'}})
+        if not ( attrs.get('StationType', '') == 'FleetCarrier' and faction_Name == 'FleetCarrier' ):
+            if not MinorFactionInSystem.objects.filter(system__name=system_Name, minorFaction__name=faction_Name).exists():
+                raise serializers.ValidationError({'StationFaction':{'Name':f'the minor faction {faction_Name} is not present in the system {system_Name}'}})
         return super().validate(attrs)
 
     def set_data_defaults(self, validated_data: dict) -> dict:

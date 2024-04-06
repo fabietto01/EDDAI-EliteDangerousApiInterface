@@ -5,7 +5,7 @@ from rest_framework.serializers import Serializer
 from eddn.service.serializer.journals import (
     FSDJumpSerializer, StarScanSerializer, PlanetScanSerializer,
     SAASignalsFoundHotspotSerializers, SAASignalsFoundSignalAndSampleSerializers,
-    DockedSerializer, LocationSerializer
+    DockedSerializer, LocationSerializer, CarrierJumpSerializer
 )
 
 class JournalAnalytic(BaseDataAnalytics):
@@ -27,6 +27,10 @@ class JournalAnalytic(BaseDataAnalytics):
             raise NotSerializerError(f"the service has not yet analyzed this event '{self.get_event()}'")
         else:
             return func()
+        
+    def analyst_Docked(self):
+        data=self.get_message()
+        return DockedSerializer(data=data)
 
     def analyst_FSDJump(self):
         data = self.get_message()
@@ -50,16 +54,22 @@ class JournalAnalytic(BaseDataAnalytics):
             f"the service with this '{self.get_event()}' event, is not able to scan bodies that have inside the name 'Ring'"
         )
 
+    def analyst_Location(self):
+        data=self.get_message()
+        return LocationSerializer(data=data)
+
     def analyst_SAASignalsFound(self):
         data=self.get_message()
         if 'Ring' in data.get('BodyName', ''):
             return SAASignalsFoundHotspotSerializers(data=data)
         return SAASignalsFoundSignalAndSampleSerializers(data=data)
     
-    def analyst_Docked(self):
+    def analyst_CarrierJump(self):
         data=self.get_message()
-        return DockedSerializer(data=data)
+        return CarrierJumpSerializer(data=data)
     
-    def analyst_Location(self):
+    def analyst_CodexEntry(self):
         data=self.get_message()
-        return LocationSerializer(data=data)
+        raise NotSerializerError(
+            f"the service with this '{self.get_event()}' event, is not able to analyze this event"
+        )

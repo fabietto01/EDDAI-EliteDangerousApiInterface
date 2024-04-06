@@ -10,4 +10,7 @@ def star_analytic(istance:DataLog):
     elif istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/commodity/3":
         analytic = Commodity3Analytic(istance=istance)
         istance = analytic.analyst()
+    else:
+        istance.error = "Schema not found"
+        istance.save()
     return istance

@@ -9,11 +9,14 @@ class EventFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return (
+            ('Docked', 'Docked'),
             ('FSDJump', 'FSDJump'),
             ('Scan', 'Scan'),
-            ('SAASignalsFound', 'SAASignalsFound'),
-            ('Docked', 'Docked'),
             ('Location', 'Location'),
+            ('SAASignalsFound', 'SAASignalsFound'),
+            ('CarrierJump', 'CarrierJump'),
+            ('CodexEntry', 'CodexEntry'),
+            
         )
 
     def queryset(self, request, queryset):
