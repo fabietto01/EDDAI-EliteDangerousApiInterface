@@ -1,7 +1,7 @@
 from django.conf import settings
 import zlib, zmq, json
 from eddn.models import DataLog
-from logging import getLogger
+import logging
 from eddn.service.dataAnalytics.utility import star_analytic
 
 class EddnClient:
@@ -20,7 +20,7 @@ class EddnClient:
         connect(): Connects to the EDDN broker and starts receiving messages.
         receive(subscriber: zmq.Socket): Receives messages from the EDDN broker and processes them.
     """
-    __log = getLogger('eddn')
+    __log = logging.getLogger('eddn')
     __debug = settings.DEBUG
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
