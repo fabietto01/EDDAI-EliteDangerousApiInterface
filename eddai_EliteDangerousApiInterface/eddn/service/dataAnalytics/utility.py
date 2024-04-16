@@ -1,3 +1,4 @@
+from django.conf import settings
 from eddn.models import DataLog
 from eddn.service.dataAnalytics import JournalAnalytic, Commodity3Analytic
 from celery import shared_task
@@ -10,7 +11,7 @@ def star_analytic(istance:DataLog):
     elif istance.data["$schemaRef"] == "https://eddn.edcd.io/schemas/commodity/3":
         analytic = Commodity3Analytic(istance=istance)
         istance = analytic.analyst()
-    else:
+    elif settings.DEBUG:
         istance.error = "Schema not found"
         istance.save()
     return istance

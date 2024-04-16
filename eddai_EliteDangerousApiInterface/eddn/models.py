@@ -20,6 +20,9 @@ class DataLog(models.Model):
     update = models.DateTimeField(
         verbose_name=_("update"), auto_now=True,
     )
+    creat_at = models.DateTimeField(
+        verbose_name=_("create at"), auto_now_add=True,
+    )
 
     def __str__(self) -> str:
         return str(self.schema)

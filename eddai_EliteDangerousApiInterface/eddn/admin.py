@@ -15,7 +15,8 @@ log = getLogger("django")
 class DataLogAdmin(admin.ModelAdmin):
     model = DataLog
     list_display = ('schema', 'error','update')
-    readonly_fields = ('data', 'schema', 'error', 'update')
+    readonly_fields = ('data', 'schema', 'error', 'update', 'creat_at')
+    search_fields = ('schema', 'error')
     actions = ('re_processing',)
     list_filter = (
         'schema', EventFilter

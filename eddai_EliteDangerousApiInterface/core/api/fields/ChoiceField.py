@@ -16,5 +16,5 @@ class CacheChoiceField(ChoiceField):
     """
 
     def __init__(self, fun_choices, cache_key:str, **kwargs):
-        choices = cache.get_or_set(cache_key, fun_choices(), 60*5)
+        choices = cache.get_or_set(cache_key, fun_choices(), 30)#60*5
         super().__init__(choices, **kwargs)
