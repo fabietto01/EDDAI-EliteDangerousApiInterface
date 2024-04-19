@@ -10,7 +10,6 @@ class EddnClient:
 
     Attributes:
         __log (Logger): The logger instance for logging messages.
-        __debug (bool): A flag indicating whether debug mode is enabled.
         __timeout (int): The timeout value for receiving messages from the EDDN broker.
         __rely (str): The address of the EDDN broker to connect to.
         __authori_softwers (list): A list of authorized software names.
@@ -21,7 +20,6 @@ class EddnClient:
         receive(subscriber: zmq.Socket): Receives messages from the EDDN broker and processes them.
     """
     __log = logging.getLogger('eddn')
-    __debug = settings.DEBUG
     __timeout = settings.EDDN_TIMEOUT
     __rely = settings.EDDN_RELY
     __authori_softwers = settings.AUTHORI_SED_SOFTWARS

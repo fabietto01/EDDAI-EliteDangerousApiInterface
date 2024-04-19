@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -204,7 +204,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "DEBUG",
             "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "django.console",
@@ -223,7 +223,7 @@ LOGGING = {
     "loggers": {
         "eddn":{
             "handlers": ["console", "mail_admins"],
-            "level": "INFO",
+            "level": "DEBUG",
         },
         "django": {
             "handlers": ["console", "mail_admins"],
