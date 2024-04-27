@@ -37,13 +37,58 @@
         "-l","Debug", 
         "-P", "gevent", 
         "-c", "200",
-        "-n", "TasckWorker@%h"
+        "-Q", "default",
+        "-n", "WorkerTasck@%h"
       ],
       "env": {
         "PYTHONPATH": "${workspaceFolder}",
         "GEVENT_SUPPORT":"True"
       },
-      "consoleTitle": "Python Debug Celery Tasck"
+      "consoleTitle": "Python Debug Worker Tasck"
+    },
+    {
+      "name": "Python: Celery Worker Admin",
+      "type": "debugpy",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "200",
+        "-Q", "admin",
+        "-n", "WorkerAdmin@%h"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+      "consoleTitle": "Python Debug Worker Admin"
+    },
+    {
+      "name": "Python: Celery Worker Eddn",
+      "type": "debugpy",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "200",
+        "-Q", "eddn",
+        "-n", "WorkerEddn@%h"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+      "consoleTitle": "Python Debug Worker Eddn"
     },
     {
       "name": "Python: Celery beat",
@@ -57,7 +102,7 @@
         "beat", 
         "--loglevel","Debug"
       ],
-      "consoleTitle": "Python Debug Console Celery beat"
+      "consoleTitle": "Python Debug Celery beat"
     },
     {
       "name": "Python: Django Shell",
@@ -74,8 +119,12 @@
   ],
   "compounds": [
     {
-      "name": "Django/Celery Worker Tasck",
-      "configurations": ["Python: Celery Worker Tasck", "Python: Django", "Python: Celery beat"],
+      "name": "Django/Celery Workers",
+      "configurations": [
+        "Python: Celery Worker Tasck", "Python: Celery Worker Admin",
+        "Python: Celery Worker Eddn", "Python: Celery beat",
+        "Python: Django"
+      ],
       "stopAll": true
     }
   ]

@@ -266,7 +266,32 @@ CELERY_RESULT_SERIALIZER = 'pickle'
 CELERY_EVENT_SERIALIZER = 'pickle'
 CELERY_ACCEPT_CONTENT = ['application/json', 'application/x-python-serialize']
 
-#impostazione per la gestione dei taask periodici di celery
+#impostazioni per la gestione delle code predefinata di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-task_default_queue
+CELERY_DEFAULT_QUEUE = 'default'
+
+#impostazione per la gestione delle code dei task di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-task_queues
+from kombu import Queue
+CELERY_TASK_QUEUES = (
+    Queue('eddn', routing_key='service.eddn.*'),
+    Queue('default', routing_key='task.#'),
+    Queue('admin', routing_key='admin.#'),
+)
+
+#impostazione per la gestione dei ruting dei tasck di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-routes
+CELERY_TASK_ROUTES = {
+    "service.eddn": {
+        "queue": "eddn",
+        "routing_key": "service.eddn",
+    },
+    "admin.*": {
+        "queue": "admin",
+    },
+}
+
+#impostazione per la gestione dei task periodici di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
 CELERY_BEAT_SCHEDULE = {
 

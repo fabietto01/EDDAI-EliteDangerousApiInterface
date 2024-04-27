@@ -77,4 +77,7 @@ class EddnClient:
             if dataJson['header']['softwareName'] in self.__authori_softwers:
                 self.__log.debug(f"Received message from EDDN broker: {dataJson}")
                 istance = DataLog(data=dataJson)
-                star_analytic.apply_async(kwargs={'istance':istance}, ignore_result=True)
+                star_analytic.apply_async(
+                    kwargs={'istance':istance}, ignore_result=True,
+                    queue="eddn"
+                )

@@ -27,7 +27,9 @@ class DataLogAdmin(admin.ModelAdmin):
         try:
             tasks = [star_analytic.s(instance) for instance in queryset]
             job = group(tasks)
-            result:GroupResult = job.apply_async()
+            result:GroupResult = job.apply_async(
+                queue="admin"
+            )
 
             result.get()
 
