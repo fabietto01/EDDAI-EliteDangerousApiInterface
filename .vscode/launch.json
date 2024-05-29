@@ -36,7 +36,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "200",
+        "-c", "400",
         "-Q", "default",
         "-n", "WorkerTasck@%h"
       ],
@@ -58,7 +58,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "200",
+        "-c", "400",
         "-Q", "admin",
         "-n", "WorkerAdmin@%h"
       ],
@@ -80,7 +80,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "200",
+        "-c", "400",
         "-Q", "eddn",
         "-n", "WorkerEddn@%h"
       ],

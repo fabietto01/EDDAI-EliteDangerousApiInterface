@@ -1,4 +1,4 @@
-from eddai_EliteDangerousApiInterface.settings.default import *
+from settings.default import *
 
 
 DEBUG = False
