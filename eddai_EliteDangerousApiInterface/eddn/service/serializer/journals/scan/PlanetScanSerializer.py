@@ -6,8 +6,8 @@ from core.api.fields import CacheChoiceField
 from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.customFields import ReserveLevelChoiceField
 
-from ed_body.models import Planet, AtmosphereType, PlanetType, Volcanism, MaterialInPlanet, AtmosphereComponentInPlanet, AtmosphereComponent
-from ed_material.models.Material import Material
+from ed_body.models import Planet, AtmosphereType, PlanetType, Volcanism, AtmosphereComponentInPlanet, AtmosphereComponent
+from ed_material.models import Material, MaterialInPlanet
 
 from eddn.service.serializer.journals.scan.nestedScan import MaterialsSerializer, AtmosphereComponentSerializer, CompositionSerializers
 

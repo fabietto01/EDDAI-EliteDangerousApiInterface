@@ -1,22 +1,18 @@
 from django.contrib import admin
 
+# Register your models here.
+
+from django.contrib import admin
+
 from ed_body.models import *
-from ed_body.forms.MaterialInPlanetForm import MaterialInPlanetForm
+
+from ed_mining.admin import RingInline
+from ed_material.admin import MaterialInPlanetInline
 from ed_exploration.admin import SignalInline, SampleInline
 
-class RingInline(admin.TabularInline):
-    model = Ring
-    raw_id_fields = ("body",)
-    extra = 0
 
 class AtmosphereComponentInPlanetInline(admin.TabularInline):
     model = AtmosphereComponentInPlanet
-    raw_id_fields = ("planet",)
-    extra = 0
-
-class MaterialInPlanetInline(admin.TabularInline):
-    form = MaterialInPlanetForm
-    model = MaterialInPlanet
     raw_id_fields = ("planet",)
     extra = 0
 
@@ -31,14 +27,6 @@ class StarTypeAdmin(admin.ModelAdmin):
     model = StarType
     list_display = ('name', 'note')
     search_fields = ('name', 'pk')
-
-@admin.register(Ring)
-class RingAdmin(admin.ModelAdmin):
-    model = Ring
-    list_display = ('name', 'body', "massMT", "ringType", "innerRad", "outerRad")
-    search_fields = ('name', 'pk', 'body__name')
-    list_filter = ('body', 'ringType')
-    raw_id_fields = ("body",)
 
 @admin.register(Star)
 class StarAdmin(admin.ModelAdmin):

@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from core.models import OwnerAndDateModels
+
 from ed_body.models.Planet import Planet
 from ed_exploration.models.SampleSignals import SampleSignals
 
-class Sample(models.Model):
+class Sample(OwnerAndDateModels):
     """
     classe model contente tutti i campioni di un pianeta
     """

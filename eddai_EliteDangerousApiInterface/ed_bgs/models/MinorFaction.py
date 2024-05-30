@@ -1,11 +1,13 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from ed_bgs.models.Faction import Faction, default_faction
+from core.models import OwnerAndDateModels
+
+from ed_bgs.models.Faction import Faction
 from ed_bgs.models.Government import Government
 
 
-class MinorFaction(models.Model):
+class MinorFaction(OwnerAndDateModels):
     """
     modello utilizato per memorizare le minori fazioni presenti in ED
     """
@@ -14,7 +16,7 @@ class MinorFaction(models.Model):
     )
     allegiance = models.ForeignKey(
         Faction, on_delete=models.PROTECT,
-        default=default_faction,
+        default=Faction.get_default,
         verbose_name=_('allegiance'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
@@ -30,9 +32,6 @@ class MinorFaction(models.Model):
         blank=True, null=True,
         verbose_name=_('description')
     )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
 
     def __str__(self) -> str:
         return str(self.name)
@@ -40,3 +39,7 @@ class MinorFaction(models.Model):
     class Meta:
         verbose_name = _('Minor Faction')
         verbose_name_plural = _('Minor Factions')
+        indexes = [
+            models.Index(fields=['allegiance'], name='idx_minor_faction_allegiance'),
+            models.Index(fields=['government'], name='idx_minor_faction_government'),
+        ]

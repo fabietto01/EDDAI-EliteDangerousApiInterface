@@ -7,11 +7,6 @@ from ed_body.models.AtmosphereType import AtmosphereType
 from ed_body.models.PlanetType import PlanetType
 from ed_body.models.Volcanism import Volcanism
 
-from django.core.exceptions import ValidationError
-from django.db import (
-    router,
-)
-
 class Planet(BaseBody):
     """
     modello per i pianeti

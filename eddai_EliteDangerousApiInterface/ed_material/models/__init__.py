@@ -1,1 +1,2 @@
 from ed_material.models.Material import Material
+from ed_material.models.MaterialInPlanet import MaterialInPlanet

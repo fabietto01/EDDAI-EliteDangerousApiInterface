@@ -2,10 +2,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from core.models import OwnerAndDateModels
+
 from ed_body.models.Planet import Planet
 from ed_body.models.AtmosphereComponent import AtmosphereComponent
 
-class AtmosphereComponentInPlanet(models.Model):
+class AtmosphereComponentInPlanet(OwnerAndDateModels):
     """
     modello per i componenti delle atmosfere
     """
@@ -36,5 +38,9 @@ class AtmosphereComponentInPlanet(models.Model):
         verbose_name = _('atmosphere component in planet')
         verbose_name_plural = _('atmosphere components in planets')
         indexes = [
-            models.Index(fields=['planet', 'atmosphere_component'], name='planet_atmo_component_idx'),
+            models.Index(fields=['planet'], name='planet_component_planet_idx'),
+            models.Index(fields=['atmosphere_component'], name='atmo_component_planet_idx'),
+        ]
+        constraints = [
+            models.UniqueConstraint(fields=['planet', 'atmosphere_component'], name='planet_atmo_component_uc'),
         ]

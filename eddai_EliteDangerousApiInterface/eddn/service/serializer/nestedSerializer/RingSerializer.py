@@ -4,7 +4,7 @@ from .BaseSecondarySerializer import BaseNestedSerializer
 from ..customFields import RingClassmChoiceField
 
 from core.utility import update_or_create_if_time
-from ed_body.models import Ring
+from ed_mining.models import Ring
 
 class RingSerializer(BaseNestedSerializer):
 

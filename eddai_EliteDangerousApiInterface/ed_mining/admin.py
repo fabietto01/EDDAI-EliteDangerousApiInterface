@@ -4,9 +4,14 @@ from django.contrib import admin
 
 from ed_mining.models import *
 
-@admin.register(HotspotSignals)
+class RingInline(admin.TabularInline):
+    model = Ring
+    raw_id_fields = ("body",)
+    extra = 0
+
+@admin.register(HotspotType)
 class HotspotSignalsAdmin(admin.ModelAdmin):
-    model = HotspotSignals
+    model = HotspotType
     search_fields = ("name","pk")
     list_display = ('name',)
 
@@ -17,3 +22,11 @@ class HotSpotAdmin(admin.ModelAdmin):
     search_fields = ("ring__name","pk")
     list_filter = ('type', )
     raw_id_fields = ("ring",)
+
+@admin.register(Ring)
+class RingAdmin(admin.ModelAdmin):
+    model = Ring
+    list_display = ('name', 'body', "massMT", "ringType", "innerRad", "outerRad")
+    search_fields = ('name', 'pk', 'body__name')
+    list_filter = ('body', 'ringType')
+    raw_id_fields = ("body",)

@@ -1,13 +1,12 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
+from core.models import OwnerAndDateModels
 
 from ed_system.models import System
 
-
-class BaseBody(models.Model):
+class BaseBody(OwnerAndDateModels):
     """
     modello di base per le informazioni dei corpi celesti
     presenti al interno del systema
@@ -131,9 +130,6 @@ class BaseBody(models.Model):
         verbose_name=_('rotation period'),
         help_text=_('rotation period of the body in seconds'),
         null=True, blank=True
-    )
-    updated = models.DateTimeField(
-        auto_now=True
     )
 
     @property

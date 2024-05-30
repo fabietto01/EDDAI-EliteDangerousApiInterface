@@ -12,6 +12,6 @@ def star_analytic(istance:DataLog):
         analytic = Commodity3Analytic(istance=istance)
         istance = analytic.analyst()
     elif settings.DEBUG:
-        istance.schema = "Schema not found"
+        istance.error = "Schema not found"
         istance.save()
     return istance

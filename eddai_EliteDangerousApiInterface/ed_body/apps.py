@@ -6,3 +6,4 @@ class EdBodyConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'ed_body'
     verbose_name = _("body")
+

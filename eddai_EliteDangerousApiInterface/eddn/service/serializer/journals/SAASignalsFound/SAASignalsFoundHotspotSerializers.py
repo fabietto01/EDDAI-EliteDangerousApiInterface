@@ -5,8 +5,7 @@ from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers
 from core.utility import  in_list_models, get_values_list_or_default, update_or_create_if_time
 from core.api.fields import CacheChoiceField
 
-from ed_mining.models import HotspotSignals, HotSpot
-from ed_body.models import Ring
+from ed_mining.models import HotspotType, HotSpot, Ring
 
 from ed_body.models import BaseBody
 from ed_system.models import System
@@ -16,7 +15,7 @@ import re
 
 class HotspotSerializers(serializers.Serializer):
     Type = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(HotspotSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+        fun_choices=lambda: get_values_list_or_default(HotspotType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
         cache_key=uuid.uuid4(),
     )
     Count = serializers.IntegerField(
@@ -49,7 +48,7 @@ class SAASignalsFoundHotspotSerializers(SAASignalsFoundSerializers):
         hostspotqsList = list(hostspotqs)
         hostspotList = [
             HotSpot(
-                ring=instance, type=HotspotSignals.objects.get(eddn=hostspot.get('Type')), 
+                ring=instance, type=HotspotType.objects.get(eddn=hostspot.get('Type')), 
                 count=hostspot.get('Count')
             ) for hostspot in self.signals
         ]
@@ -67,7 +66,7 @@ class SAASignalsFoundHotspotSerializers(SAASignalsFoundSerializers):
     def create_dipendent(self, instance):
         hostspotList = [
             HotSpot(
-                ring=instance, type=HotspotSignals.objects.get(eddn=hostspot.get('Type')), 
+                ring=instance, type=HotspotType.objects.get(eddn=hostspot.get('Type')), 
                 count=hostspot.get('Count')
             ) for hostspot in self.signals
         ]

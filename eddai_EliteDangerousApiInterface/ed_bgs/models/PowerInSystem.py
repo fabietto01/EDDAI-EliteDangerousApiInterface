@@ -1,40 +1,44 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django.core.exceptions import ValidationError
+from core.models import OwnerAndDateModels
+from ed_bgs.models import Power, PowerState
 
-class PowerInSystem(models.Model):
+class PowerInSystem(OwnerAndDateModels):
     """
     modelo corellato 1:1 con il modelo system contente le informazioni
     riguradanti le Power all interno del systema, avra una relazione n:n con
     il modello Power
     """
-    MaxRelation = 2
-    StateForMoreRellation = ('Contested')
-
-    system = models.OneToOneField(
+    system = models.ForeignKey(
         'ed_system.System', on_delete=models.CASCADE,
         verbose_name=_('system'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
-    powers = models.ManyToManyField(
-        'ed_bgs.Power', verbose_name=_('Powers'),
+    power = models.ForeignKey(
+        Power, on_delete=models.CASCADE,
+        verbose_name=_('Power'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
     state = models.ForeignKey(
-        'ed_bgs.PowerState', on_delete=models.PROTECT,
+        PowerState, on_delete=models.PROTECT,
         verbose_name=_('state'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
     )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
+
+    @property
+    def MaxRelation(self):
+        return 2
+    
+    @property
+    def StateForMoreRellation(self):
+        return ('Contested')
 
     def __str__(self) -> str: 
-        return str(self.state) + " by " + " and ".join([str(p.name) for p in self.powers.all()])
+        return f"{self.state} for {self.power} in {self.system}"
 
     class Meta:
         verbose_name = _('Power in System')
@@ -42,4 +46,9 @@ class PowerInSystem(models.Model):
         ordering = ('system',)
         indexes = [
             models.Index(fields=['state']),
+            models.Index(fields=['system']),
+            models.Index(fields=['power']),
+        ]
+        constraints = [
+            models.UniqueConstraint(fields=['system', 'power'], name='unique_power_in_system'),
         ]

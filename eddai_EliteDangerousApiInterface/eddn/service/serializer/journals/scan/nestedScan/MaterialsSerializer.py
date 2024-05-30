@@ -4,8 +4,7 @@ from eddn.service.serializer.nestedSerializer.BaseSecondarySerializer import Bas
 from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
 from django.db import OperationalError, ProgrammingError
 
-from ed_body.models import MaterialInPlanet
-from ed_material.models.Material import Material
+from ed_material.models import Material, MaterialInPlanet
 
 class MaterialsSerializer(BaseNestedSerializer):
     Name = serializers.ChoiceField(

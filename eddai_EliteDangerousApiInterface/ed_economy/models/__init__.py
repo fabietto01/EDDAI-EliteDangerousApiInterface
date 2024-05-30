@@ -1,3 +1,3 @@
-from ed_economy.models.Economy import Economy
-from ed_economy.models.Commodity import Commodity
-from ed_economy.models.CommodityInStation import CommodityInStation
+from .Commodity import Commodity
+from .Economy import Economy
+from .CommodityInStation import CommodityInStation
