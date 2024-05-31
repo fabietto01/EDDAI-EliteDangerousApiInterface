@@ -83,6 +83,7 @@ class BodyTestCase(TestCase):
                 instancePlanet = Planet.objects.create(
                     name = "test_create_children_planet",
                     system=self.istance_system,
+                    updated_by=self.istance_user,
                 )
             except Exception as e:
                 self.fail(e)

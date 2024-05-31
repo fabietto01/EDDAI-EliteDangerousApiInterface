@@ -179,9 +179,11 @@ class BaseBody(OwnerAndDateModels):
                 if parent and (not childList) and (not exist):
                     self.basebody_ptr = parent
                     self.basebody_ptr_id = parent.id
+                    if not self.created_by:
+                        self.created_by = parent.created_by
+                        self.created_by_id = parent.created_by.id
                     if not self.created_at:
                         self.created_at = parent.created_at
-                        self.created_at_id = parent.created_at.id
                     super().save(force_insert, force_update, using, update_fields)
                 else:
                     raise e
