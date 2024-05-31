@@ -107,6 +107,10 @@ DATABASES = {
         'PASSWORD': os.environ.get('MYSQL_USER_ED_INFO_PASSWORD', "vkWCRnO7$oOLCm^ZNd#P@1*Pgbch7wPAMgm3Knd1FrRD&SH5DS"),
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
         'PORT': '3306',
+        "TEST": {
+            "NAME": "test_ed_info_dev",
+            "DEPENDENCIES": [],
+        },
     }
 }
 

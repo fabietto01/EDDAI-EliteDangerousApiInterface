@@ -5,7 +5,8 @@ class EDInfoRouter:
     """
     route_app_labels = {
         "ed_system","ed_body","ed_bgs","ed_core","ed_economy","ed_station","eddn",'ed_material',
-        'ed_mining', 'ed_exploration', 'ed_station'
+        'ed_mining', 'ed_exploration', 'ed_station',
+        'users'
     }
 
     def db_for_read(self, model, **hints):
