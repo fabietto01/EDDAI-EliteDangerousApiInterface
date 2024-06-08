@@ -179,7 +179,11 @@ class BaseBody(OwnerAndDateModels):
                 if parent and (not childList) and (not exist):
                     self.basebody_ptr = parent
                     self.basebody_ptr_id = parent.id
-                    if not self.created_by:
+                    try:
+                        if not self.created_by:
+                            self.created_by = parent.created_by
+                            self.created_by_id = parent.created_by.id
+                    except BaseBody.created_by.RelatedObjectDoesNotExist:
                         self.created_by = parent.created_by
                         self.created_by_id = parent.created_by.id
                     if not self.created_at:

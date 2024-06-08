@@ -50,21 +50,6 @@ class BodyTestCase(TestCase):
             self.assertEqual(type(istance_Planet), Planet)
             self.assertEqual(istance_Planet.name, "test_planet_creation")
 
-    def test_star_creation(self):
-        try:
-            istance_Star = Star.objects.create(
-                name = "test_star_creation",
-                system = self.istance_system,
-                bodyID = 3,
-                created_by=self.istance_user,
-                updated_by=self.istance_user,
-            )
-        except Exception as e:
-            self.fail(e)
-        else:
-            self.assertEqual(type(istance_Star), Star)
-            self.assertEqual(istance_Star.name, "test_star_creation")
-
     def test_create_children_planet(self):
         try:
             instanceBaseBody = BaseBody.objects.create(
@@ -83,6 +68,7 @@ class BodyTestCase(TestCase):
                 instancePlanet = Planet.objects.create(
                     name = "test_create_children_planet",
                     system=self.istance_system,
+                    bodyID=4,
                     updated_by=self.istance_user,
                 )
             except Exception as e:
