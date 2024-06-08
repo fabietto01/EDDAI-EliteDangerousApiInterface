@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -117,6 +117,9 @@ DATABASES = {
 # Router per il database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database-routers
 DATABASE_ROUTERS = ["ed_core.router.EDInfoRouter"]
+
+# Database for the user model
+DATABASES_FOR_USERS_MODEL = ['ed_info']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
