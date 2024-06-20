@@ -1,9 +1,4 @@
-from typing import Any
 from django.contrib import admin
-from django.db.models.query import QuerySet
-from django.http import HttpRequest
-from django.http.response import HttpResponse
-from django_filters import filters
 
 from ed_bgs.models import *
 # Register your models here.
@@ -113,7 +108,7 @@ class FactionModelAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "name",
-                    "description",
+                    
                 )
             }
         ),
@@ -121,7 +116,7 @@ class FactionModelAdmin(admin.ModelAdmin):
             "eddn options",
             {
                 "classes": ("collapse",),
-                "fields": ("_eddn",)
+                "fields": ("_eddn","description",)
             }
         )
     ]
