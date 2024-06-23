@@ -85,9 +85,9 @@ class MinorFactionInSystemModelAdmin(admin.ModelAdmin):
         if not obj:
             form.base_fields['created_by'].initial = request.user
             form.base_fields['updated_by'].initial = request.user
-        if obj and not obj.updated_by:
+        else:
             form.base_fields['updated_by'].initial = request.user
-        return form
+        return form 
 
     def save_model(self, request, obj, form, change) -> None:
         if not obj.pk and not obj.created_by:
@@ -155,9 +155,9 @@ class MinorFactionModelAdmin(admin.ModelAdmin):
         if not obj:
             form.base_fields['created_by'].initial = request.user
             form.base_fields['updated_by'].initial = request.user
-        if obj and not obj.updated_by:
+        else:
             form.base_fields['updated_by'].initial = request.user
-        return form
+        return form 
 
     def save_model(self, request, obj, form, change) -> None:
         if not obj.pk and not obj.created_by:
@@ -179,7 +179,7 @@ class GovernmentModelAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "type",
-                    "description",
+                    
                 )
             }
         ),
@@ -187,7 +187,7 @@ class GovernmentModelAdmin(admin.ModelAdmin):
             "eddn options",
             {
                 "classes": ("collapse",),
-                "fields": ("_eddn",)
+                "fields": ("description","_eddn",)
             }
         )
     ]
@@ -205,7 +205,7 @@ class StateModelAdmin(admin.ModelAdmin):
                 "fields": (
                     "name",
                     "type",
-                    "description",
+                    
                 )
             }
         ),
@@ -213,7 +213,7 @@ class StateModelAdmin(admin.ModelAdmin):
             "eddn options",
             {
                 "classes": ("collapse",),
-                "fields": ("_eddn",)
+                "fields": ("description","_eddn",)
             }
         )
     ]
@@ -257,7 +257,7 @@ class PowerStateModelAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "name",
-                    "description",
+                    
                 )
             }
         ),
@@ -265,7 +265,7 @@ class PowerStateModelAdmin(admin.ModelAdmin):
             "eddn options",
             {
                 "classes": ("collapse",),
-                "fields": ("_eddn",)
+                "fields": ("description","_eddn",)
             }
         )
     ]
@@ -303,9 +303,9 @@ class PowerInSystemModelAdmin(admin.ModelAdmin):
         if not obj:
             form.base_fields['created_by'].initial = request.user
             form.base_fields['updated_by'].initial = request.user
-        if obj and not obj.updated_by:
+        else:
             form.base_fields['updated_by'].initial = request.user
-        return form
+        return form 
 
     def save_model(self, request, obj, form, change) -> None:
         if not obj.pk and not obj.created_by:

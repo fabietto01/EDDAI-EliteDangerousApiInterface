@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from core.models import OwnerAndDateModels
+from django.contrib import admin
 
 from ed_system.models import System
 
@@ -133,17 +134,18 @@ class BaseBody(OwnerAndDateModels):
     )
 
     @property
+    @admin.display(boolean=True, description=_('rotating'))
     def rotating(self) -> bool:
         return bool(self.axialTilt and self.rotationPeriod)
     rotating.fget.short_description = _('rotating') 
 
     @property
+    @admin.display(boolean=True, description=_('orbiting'))
     def orbiting(self) -> bool:
         return bool(
             self.eccentricity and self.orbitalInclination and 
             self.orbitalPeriod and self.periapsis and self.semiMajorAxis
         )
-    orbiting.fget.short_description = _('orbiting') 
 
     def __str__(self):
         return self.name

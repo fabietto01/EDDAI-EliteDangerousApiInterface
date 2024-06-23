@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.contrib import admin
+from django.db.models import Value
+from django.db.models.functions import Concat
 
 from core.models import OwnerAndDateModels
 
@@ -65,6 +68,7 @@ class System(OwnerAndDateModels):
     )
 
     @property
+    @admin.display(ordering=Concat("primaryEconomy", Value(" "), "secondaryEconomy"), description=_('economy'))
     def economy(self) -> list[Economy]:
         """
         ritorna l'economia della systema
@@ -74,7 +78,6 @@ class System(OwnerAndDateModels):
         elif self.secondaryEconomy == None:
             return [self.primaryEconomy]
         return [self.primaryEconomy, self.secondaryEconomy]
-    economy.fget.short_description = _('economy')  
 
     def clean(self) -> None:
         if self.conrollingFaction != None:
