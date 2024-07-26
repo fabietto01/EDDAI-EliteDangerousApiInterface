@@ -71,9 +71,9 @@ class PlanetScanSerializer(BaseScanSerializer):
     )
 
     def data_preparation(self, validated_data: dict) -> dict:
+        super().data_preparation(validated_data)
         self.materials_data:dict = validated_data.pop('Materials', None)
         self.atmosphereComposition_data:dict = validated_data.pop('AtmosphereComposition', None)
-        return BaseScanSerializer.data_preparation(self, validated_data)
 
     def update_atmosphereComposition(self, instance):
         atmosphereCompositionList = [
@@ -81,22 +81,22 @@ class PlanetScanSerializer(BaseScanSerializer):
                 atmosphere_component=AtmosphereComponent.objects.get(eddn=atmosphereComponent.get('Name')),
                 percent=atmosphereComponent.get('Percent'),
                 planet=instance,
+                created_by=self.agent, updated_by=self.agent
             ) for atmosphereComponent in self.atmosphereComposition_data
         ]
         atmosphereCompositionAddList = []
         atmosphereCompositionDeleteList = []
         atmosphereCompositionQs = AtmosphereComponentInPlanet.objects.filter(planet=instance)
-        atmosphereCompositionQSList = list(atmosphereCompositionQs)
         for atmosphereComponent in atmosphereCompositionList:
-            if not in_list_models(atmosphereComponent, atmosphereCompositionQSList):
+            if not in_list_models(atmosphereComponent, atmosphereCompositionQs):
                 atmosphereCompositionAddList.append(atmosphereComponent)
-        for atmosphereComponent in atmosphereCompositionQSList:
+        for atmosphereComponent in atmosphereCompositionQs:
             if not in_list_models(atmosphereComponent, atmosphereCompositionList):
-                atmosphereCompositionDeleteList.append(atmosphereComponent)
+                atmosphereCompositionDeleteList.append(atmosphereComponent.id)
         if atmosphereCompositionAddList:
             AtmosphereComponentInPlanet.objects.bulk_create(atmosphereCompositionAddList)
         if atmosphereCompositionDeleteList:
-            AtmosphereComponentInPlanet.objects.filter(id__in=[atmosphereComponent.id for atmosphereComponent in atmosphereCompositionDeleteList]).delete()
+            AtmosphereComponentInPlanet.objects.filter(id__in=atmosphereCompositionDeleteList).delete()
 
     def update_materials(self, instance):
         materialsList = [
@@ -104,25 +104,25 @@ class PlanetScanSerializer(BaseScanSerializer):
                 planet=instance, 
                 material=Material.objects.get(name=material.get('Name')),
                 percent=material.get('Percent'),
+                created_by=self.agent, updated_by=self.agent
             )  for material in self.materials_data
         ]
         materialsAddList = []
         materialsDeleteList = []
         materialQs = MaterialInPlanet.objects.filter(planet=instance)
-        materialQSList = list(materialQs)
         for material in materialsList:
-            if not in_list_models(material, materialQSList):
+            if not in_list_models(material, materialQs):
                 materialsAddList.append(material)
-        for material in materialQSList:
+        for material in materialQs:
             if not in_list_models(material, materialsList):
-                materialsDeleteList.append(material)
+                materialsDeleteList.append(material.id)
         if materialsAddList:
             MaterialInPlanet.objects.bulk_create(materialsAddList)
         if materialsDeleteList:
-            MaterialInPlanet.objects.filter(id__in=[material.id for material in materialsDeleteList]).delete()
+            MaterialInPlanet.objects.filter(id__in=materialsDeleteList).delete()
         
     def set_data_defaults(self, validated_data: dict) -> dict:
-        defaults = BaseScanSerializer.set_data_defaults(self, validated_data)
+        defaults = super().set_data_defaults(validated_data)
         composition:dict = validated_data.get('Composition', {})
         defaults.update({
             'atmosphereType': get_or_none(AtmosphereType, eddn=validated_data.get('AtmosphereType', None)),	
@@ -146,14 +146,14 @@ class PlanetScanSerializer(BaseScanSerializer):
             self.update_materials(instance)
         if self.atmosphereComposition_data:
             self.update_atmosphereComposition(instance)
-        BaseScanSerializer.create_dipendent(self, instance)
+        super().create_dipendent(instance)
 
     def update_dipendent(self, instance):
         if self.materials_data:
             self.update_materials(instance)
         if self.atmosphereComposition_data:
             self.update_atmosphereComposition(instance)
-        BaseScanSerializer.update_dipendent(self, instance)
+        super().update_dipendent(instance)
 
     class Meta:
         model = Planet

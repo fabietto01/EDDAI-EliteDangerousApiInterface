@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from eddn.service.serializer.journals.BaseJournal import BaseJournal
 
-from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
+from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none
 
 from eddn.service.serializer.nestedSerializer import RingSerializer
 from ed_system.models import System
@@ -115,14 +115,16 @@ class BaseScanSerializer(BaseJournal):
             self.update_ring(instance)
 
     def update_or_create(self, validated_data: dict, update_function=None, create_function=None):
-        system, create = update_or_create_if_time(
+        system, create = create_or_update_if_time(
             System, time=self.get_time(validated_data), defaults=self.get_data_defaults(validated_data, self.set_data_defaults_system),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             name=validated_data.get('StarSystem')
         )
         self.data_preparation(validated_data)
         ModelClass:BaseBody = self.Meta.model
-        body, create = update_or_create_if_time(
+        body, create = create_or_update_if_time(
             ModelClass,  time=self.get_time(validated_data), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             create_function=self.create_dipendent, update_function=self.update_dipendent,
             system=system, name=validated_data.get('BodyName'), bodyID=validated_data.get('BodyID')
         )

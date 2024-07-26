@@ -23,8 +23,8 @@ class MinorFactionInSystem(OwnerAndDateModels):
         null=True, blank=True
     )
 
-    @property
-    def MaxRelation(self):
+    @staticmethod
+    def MaxRelation():
         return 8
 
     def __str__(self) -> str:

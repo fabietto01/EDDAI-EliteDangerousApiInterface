@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from uuid import uuid4
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -268,6 +269,11 @@ AUTHORI_SED_SOFTWARS = [
     "RegulatedNoise",
     "RegulatedNoise__DJ"
 ]
+
+#impostazioni per la gestione dell'utente nominativa per il scrivere i datti su DB, da parte del servizio EDDN
+EDDN_USER_AGENT_CACHE_KEY = uuid4(),
+EDDN_USER_NAME_AGENT = os.environ.get('EDDN_USER_NAME_AGENT', "EDDN-Client")
+EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!123')
 
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html

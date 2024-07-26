@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
-from core.utility import  get_values_list_or_default, in_list_models, update_or_create_if_time
+from core.utility import  get_values_list_or_default, in_list_models, create_or_update_if_time
 from core.api.fields import CacheChoiceField
 
 from ed_exploration.models import Signal, SignalSignals, Sample, SampleSignals
@@ -46,46 +46,46 @@ class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):
 
     def update_dipendent_signals(self, instance):
         signalcreate:list[Signal] = []
-        signaldelete:list[Signal] = []
+        signaldelete:list[int] = []
         signalqs = Signal.objects.filter(planet=instance)
-        signalqsList = list(signalqs)
         signalList = [
             Signal(
                 planet=instance, type=SignalSignals.objects.get(eddn=signal.get('Type')), 
-                count=signal.get('Count')
+                count=signal.get('Count'),
+                created_by=self.agent, updated_by=self.agent
             ) for signal in self.signals
         ]
         for signal in signalList:
-            if not in_list_models(signal, signalqsList, ['id','pk','updated']):
+            if not in_list_models(signal, signalqs):
                 signalcreate.append(signal)
-        for signal in signalqsList:
-            if not in_list_models(signal, signalList, ['id','pk','updated']):
-                signaldelete.append(signal)
+        for signal in signalqs:
+            if not in_list_models(signal, signalList):
+                signaldelete.append(signal.pk)
         if signalcreate:
             Signal.objects.bulk_create(signalcreate)
         if signaldelete:
-            Signal.objects.filter(pk__in=[signal.pk for signal in signaldelete]).delete()
+            Signal.objects.filter(pk__in=signaldelete).delete()
 
     def update_dipendent_genuses(self, instance):
         samplecreate:list[Sample] = []
-        sampledelete:list[Sample] = []
+        sampledelete:list[int] = []
         sampleqs = Sample.objects.filter(planet=instance)
-        sampleqsList = list(sampleqs)
         sampleList = [
             Sample(
-                planet=instance, type=SampleSignals.objects.get(eddn=sample.get('Genus'))
+                planet=instance, type=SampleSignals.objects.get(eddn=sample.get('Genus')),
+                created_by=self.agent, updated_by=self.agent
             ) for sample in self.genuses
         ]
         for sample in sampleList:
-            if not in_list_models(sample, sampleqsList, ['id','pk','updated']):
+            if not in_list_models(sample, sampleqs):
                 samplecreate.append(sample)
-        for sample in sampleqsList:
-            if not in_list_models(sample, sampleList, ['id','pk','updated']):
-                sampledelete.append(sample)
+        for sample in sampleqs:
+            if not in_list_models(sample, sampleList):
+                sampledelete.append(sample.pk)
         if samplecreate:
             Sample.objects.bulk_create(samplecreate)
         if sampledelete:
-            Sample.objects.filter(pk__in=[sample.pk for sample in sampledelete]).delete()
+            Sample.objects.filter(pk__in=sampledelete).delete()
 
     def update_dipendent(self, instance):
         self.update_dipendent_signals(instance)
@@ -96,14 +96,16 @@ class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):
         signalcreate = [
             Signal(
                 planet=instance, type=SignalSignals.objects.get(eddn=signal.get('Type')), 
-                count=signal.get('Count')
+                count=signal.get('Count'),
+                created_by=self.agent, updated_by=self.agent
             ) for signal in self.signals
         ]
         Signal.objects.bulk_create(signalcreate)
         if self.genuses:
             samplecreate = [
                 Sample(
-                    planet=instance, type=SampleSignals.objects.get(eddn=sample.get('Genus'))
+                    planet=instance, type=SampleSignals.objects.get(eddn=sample.get('Genus')),
+                    created_by=self.agent, updated_by=self.agent
                 ) for sample in self.genuses
             ]
             Sample.objects.bulk_create(samplecreate)
@@ -113,9 +115,10 @@ class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):
         self.genuses = validated_data.get('Genuses', [])
 
     def update_or_create(self, validated_data: dict, *args, **kwargs):
-        systemInstance, create = update_or_create_if_time(
+        systemInstance, create = create_or_update_if_time(
             System, time=self.get_time(), 
             defaults=self.get_data_defaults(validated_data, self.set_data_defaults_system),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             name=validated_data.get('StarSystem')
         )
         return super().update_or_create(validated_data, system=systemInstance)

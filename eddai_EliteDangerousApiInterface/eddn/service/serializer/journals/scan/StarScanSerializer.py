@@ -35,7 +35,7 @@ class StarScanSerializer(BaseScanSerializer):
     )
 
     def set_data_defaults(self, validated_data: dict) -> dict:
-        defaults = BaseScanSerializer.set_data_defaults(self, validated_data)
+        defaults = super().set_data_defaults(validated_data)
         defaults.update({
             'absoluteMagnitude': validated_data.get('AbsoluteMagnitude'),
             'age': validated_data.get('Age_MY'),

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from eddn.service.serializer.journals.BaseJournal import BaseJournal
 
-from core.utility import update_or_create_if_time
+from core.utility import create_or_update_if_time
 
 
 class SAASignalsFoundSerializers(BaseJournal):
@@ -20,18 +20,19 @@ class SAASignalsFoundSerializers(BaseJournal):
         return super(SAASignalsFoundSerializers, self).set_data_defaults(validated_data)
 
     def update_dipendent(self, instance):
-        pass
+        raise NotImplementedError('update_dipendent must be implemented in child class')
 
     def create_dipendent(self, instance):
-        pass
+        raise NotImplementedError('create_dipendent must be implemented in child class')
 
     def data_preparation(self, validated_data: dict) -> dict:
         self.signals:list[dict] = validated_data.get('Signals', None)
 
     def update_or_create(self, validated_data: dict, *args, **kwargs):
         self.data_preparation(validated_data)
-        self.initial, create = update_or_create_if_time(
+        self.initial, create = create_or_update_if_time(
             self.Meta.model, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             create_function=self.create_dipendent, update_function=self.update_dipendent,
             name=validated_data.get('BodyName'), *args, **kwargs
         )

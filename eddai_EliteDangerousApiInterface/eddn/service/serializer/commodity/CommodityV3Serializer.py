@@ -7,7 +7,7 @@ from ed_system.models import System
 from ed_station.models import Station
 from ed_economy.models import Economy, Commodity, CommodityInStation
 
-from core.utility import update_or_create_if_time, in_list_models, get_or_none
+from core.utility import create_or_update_if_time, in_list_models, get_or_none
 
 class CommodityV3Serializer(BaseSerializer):
     """
@@ -167,7 +167,7 @@ class CommodityV3Serializer(BaseSerializer):
     def update_or_create(self, validated_data: dict):
         self.data_preparation(validated_data)
         system = System.objects.get(name=validated_data.get('systemName'))
-        self.instance, create = update_or_create_if_time(
+        self.instance, create = create_or_update_if_time(
             Station, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             name=validated_data.get('stationName'), system=system
