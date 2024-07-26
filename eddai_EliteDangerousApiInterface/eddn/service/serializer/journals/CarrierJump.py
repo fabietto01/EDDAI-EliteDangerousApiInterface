@@ -35,13 +35,13 @@ class CarrierJumpSerializer(BaseJournal):
     #-------------------------------------------------------------------------------
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key(),
         required=False,
         allow_blank=True,
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key(),
         required=False,
         allow_blank=True,
     )
@@ -59,13 +59,13 @@ class CarrierJumpSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=StationType.get_cache_key(),
     )
     StationFaction = BaseMinorFactionSerializer()
     StationServices = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Service.get_cache_key(),
         )
     )
     StationEconomies = serializers.ListField(

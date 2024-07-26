@@ -49,7 +49,7 @@ class LocationSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=StationType.get_cache_key(),
         required=False,
     )
     #-------------------------------------------------------------------------------
@@ -58,11 +58,11 @@ class LocationSerializer(BaseJournal):
     )
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key(),
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key(),
         required=False,
         allow_blank=True,
     )
@@ -82,7 +82,7 @@ class LocationSerializer(BaseJournal):
     Powers = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Power.get_cache_key(),
         ),
         required=False,
         min_length=0,
@@ -90,7 +90,7 @@ class LocationSerializer(BaseJournal):
     )
     PowerplayState = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=uuid.uuid4(),
+        cache_key=PowerState.get_cache_key(),
     )
 
     def validate(self, attrs:dict):
