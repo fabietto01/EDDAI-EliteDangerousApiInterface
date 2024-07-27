@@ -10,6 +10,6 @@ from ed_bgs.models import State
 class StateSerializer(serializers.Serializer):
     State = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(State.objects.exclude(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=State.get_cache_key(),
+        cache_key=State.get_cache_key()+"exclude_happiness",
     )
     Trend = None
