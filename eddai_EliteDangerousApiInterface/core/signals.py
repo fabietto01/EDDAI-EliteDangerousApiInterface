@@ -5,7 +5,9 @@ from .models.cacheModel import CacheModel
 def update_cache(sender:CacheModel, instance, **kwargs):
     cache_key = sender.get_cache_key()
     queryset = sender.objects.all()
-    cache.set(cache_key, queryset)
+    val = cache.get(cache_key)
+    if val:
+        cache.set(cache_key, queryset)
 
 for subclass in CacheModel.__subclasses__():
     post_save.connect(update_cache, sender=subclass)
