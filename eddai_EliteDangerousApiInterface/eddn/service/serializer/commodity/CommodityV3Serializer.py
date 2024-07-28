@@ -77,7 +77,8 @@ class CommodityV3Serializer(BaseSerializer):
         for commodity in self.commodities_data:
             commodities_name.append(commodity.get('name'))
             commodities.append({ 'name':commodity.get('name'), 'meanPrice':commodity.get('meanPrice')})
-        for commodity in cache.get_or_set(Commodity.get_cache_key(), Commodity.objects.all()):
+        querryset = cache.get_or_set(Commodity.get_cache_key(), Commodity.objects.all())
+        for commodity in querryset:
             if commodity.eddn in commodities_name:
                 commodity.meanPrice = get_meanPrice(commodity.eddn)
                 commodities_update.append(commodity)
