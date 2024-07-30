@@ -11,23 +11,21 @@ from ed_material.models import Material, MaterialInPlanet
 
 from eddn.service.serializer.journals.scan.nestedScan import MaterialsSerializer, AtmosphereComponentSerializer, CompositionSerializers
 
-import uuid
-
 class PlanetScanSerializer(BaseScanSerializer):
     
     AtmosphereType = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(AtmosphereType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=AtmosphereType.get_cache_key(),
+        cache_key=AtmosphereType.get_cache_key("eddn", flat=True),
         required=False,
     )
     PlanetClass = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PlanetType, [], (OperationalError, ProgrammingError), 'name', flat=True),
-        cache_key=PlanetType.get_cache_key(),
+        cache_key=PlanetType.get_cache_key("eddn", flat=True),
         required=False,
     )
     Volcanism = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Volcanism.get_cache_key(),
+        cache_key=Volcanism.get_cache_key("eddn", flat=True),
         allow_blank=True,
         required=False,
     )

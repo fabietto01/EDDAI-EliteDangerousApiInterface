@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from eddn.service.serializer.nestedSerializer.minorFaction.BaseMinorFactionSerializer import BaseMinorFactionSerializer
 
@@ -31,7 +30,7 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
     )
     Happiness = HappinessChoiceField(
         fun_choices=lambda: get_values_list_or_default(State.objects.filter(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=State.get_cache_key()+"filter_happiness",
+        cache_key=State.get_cache_key('eddn', "filter", flat=True, type=State.TypeChoices.HAPPINESS.value),
         allow_blank=True,
     )
     RecoveringStates = serializers.ListField(

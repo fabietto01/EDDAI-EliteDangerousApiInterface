@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from ..customFields import CustomChoiceField, CustomCacheChoiceField
 from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
@@ -12,6 +11,7 @@ from ed_station.models import (
     StationType, Station
 )
 
+from ed_body.models import Planet, Star
 from ed_economy.models import Economy
 from ed_system.models import System
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
@@ -49,7 +49,7 @@ class LocationSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=StationType.get_cache_key(),
+        cache_key=StationType.get_cache_key("eddn", flat=True),
         required=False,
     )
     #-------------------------------------------------------------------------------
@@ -58,11 +58,11 @@ class LocationSerializer(BaseJournal):
     )
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
@@ -82,7 +82,7 @@ class LocationSerializer(BaseJournal):
     Powers = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=Power.get_cache_key(),
+            cache_key=Power.get_cache_key("eddn", flat=True),
         ),
         required=False,
         min_length=0,
@@ -90,7 +90,7 @@ class LocationSerializer(BaseJournal):
     )
     PowerplayState = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=PowerState.get_cache_key(),
+        cache_key=PowerState.get_cache_key("eddn", flat=True),
     )
 
     def validate(self, attrs:dict):

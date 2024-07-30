@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from .BaseJournal import BaseJournal
 
@@ -35,13 +34,13 @@ class CarrierJumpSerializer(BaseJournal):
     #-------------------------------------------------------------------------------
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
@@ -59,13 +58,13 @@ class CarrierJumpSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=StationType.get_cache_key(),
+        cache_key=StationType.get_cache_key("eddn", flat=True),
     )
     StationFaction = BaseMinorFactionSerializer()
     StationServices = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=Service.get_cache_key(),
+            cache_key=Service.get_cache_key("eddn", flat=True),
         )
     )
     StationEconomies = serializers.ListField(

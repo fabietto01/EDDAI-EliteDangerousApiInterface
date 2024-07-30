@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from .BaseJournal import BaseJournal
 
@@ -20,13 +19,13 @@ class FSDJumpSerializer(BaseJournal):
     """
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
@@ -51,7 +50,7 @@ class FSDJumpSerializer(BaseJournal):
     Powers = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Power.get_cache_key("name", flat=True),
         ),
         required=False,
         min_length=0,
@@ -59,7 +58,7 @@ class FSDJumpSerializer(BaseJournal):
     )
     PowerplayState = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=uuid.uuid4(),
+        cache_key=PowerState.get_cache_key("eddn", 'name'),
         required=False,
     )
 
