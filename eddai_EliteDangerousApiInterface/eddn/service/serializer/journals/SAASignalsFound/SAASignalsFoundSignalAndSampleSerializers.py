@@ -14,7 +14,7 @@ import uuid
 class SignalSerializers(serializers.Serializer):
     Type = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(SignalSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=SignalSignals.get_cache_key(),
+        cache_key=uuid.uuid4(),
     )
     Count = serializers.IntegerField(
         min_value=0,
@@ -23,7 +23,7 @@ class SignalSerializers(serializers.Serializer):
 class SampleSerializers(serializers.Serializer):
     Genus = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(SampleSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=SampleSignals.get_cache_key(),
+        cache_key=uuid.uuid4(),
     )
 
 class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):

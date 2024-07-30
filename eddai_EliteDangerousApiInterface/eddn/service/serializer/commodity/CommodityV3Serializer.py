@@ -4,6 +4,8 @@ from eddn.service.serializer.BaseSerializer import BaseSerializer
 from eddn.service.serializer.commodity.CommoditySerializer import CommoditySerializer
 from eddn.service.serializer.commodity.EconomieSerializer import EconomieSerializer
 
+import uuid
+
 from ed_system.models import System
 from ed_station.models import Station
 from ed_economy.models import Economy, Commodity, CommodityInStation
@@ -77,13 +79,13 @@ class CommodityV3Serializer(BaseSerializer):
         for commodity in self.commodities_data:
             commodities_name.append(commodity.get('name'))
             commodities.append({ 'name':commodity.get('name'), 'meanPrice':commodity.get('meanPrice')})
-        querryset = cache.get_or_set(Commodity.get_cache_key(), Commodity.objects.all())
-        for commodity in querryset:
-            if commodity.eddn in commodities_name:
+        for commodity in Commodity.objects.all():
+            if commodity.eddn in commodities_name and commodity.updated_at < self.get_time():
                 commodity.meanPrice = get_meanPrice(commodity.eddn)
+                commodity.updated_at = self.agent
                 commodities_update.append(commodity)
         if commodities_update:
-            Commodity.objects.bulk_update(commodities_update, ['meanPrice'])
+            Commodity.objects.bulk_update(commodities_update, ['meanPrice', 'updated_at'])
 
     def create_commoditiesInstance(self, instance:Station):
         """

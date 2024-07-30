@@ -8,7 +8,7 @@ def main():
     This function sets up the Django environment, imports the EddnClient module,
     and connects to the EddnClient.
     """
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eddai_EliteDangerousApiInterface.settings.default')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eddai_EliteDangerousApiInterface.settings')
     
     try:
         import django

@@ -20,13 +20,13 @@ class FSDJumpSerializer(BaseJournal):
     """
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=uuid.uuid4(),
         required=False,
         allow_blank=True,
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key(),
+        cache_key=uuid.uuid4(),
         required=False,
         allow_blank=True,
     )

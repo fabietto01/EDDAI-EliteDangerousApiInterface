@@ -19,11 +19,11 @@ class StarScanSerializer(BaseScanSerializer):
     )
     Luminosity = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(StarLuminosity, [], (OperationalError, ProgrammingError), 'name', flat=True),
-         cache_key=StarLuminosity.get_cache_key(),
+         cache_key=uuid.uuid4(),
     )
     StarType = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(StarType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-         cache_key=StarType.get_cache_key(),
+         cache_key=uuid.uuid4(),
     )
 
     StellarMass = serializers.FloatField(

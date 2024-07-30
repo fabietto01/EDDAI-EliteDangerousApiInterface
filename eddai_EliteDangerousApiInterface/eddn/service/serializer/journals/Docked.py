@@ -29,7 +29,7 @@ class DockedSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=StationType.get_cache_key(),
+        cache_key=uuid.uuid4(),
     )
     DistFromStarLS = serializers.FloatField(
         min_value=0,
@@ -37,7 +37,7 @@ class DockedSerializer(BaseJournal):
     StationServices = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=Service.get_cache_key(),
+            cache_key=uuid.uuid4(),
         )
     )
     StationEconomies = serializers.ListField(
