@@ -17,17 +17,17 @@ class PlanetScanSerializer(BaseScanSerializer):
     
     AtmosphereType = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(AtmosphereType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=AtmosphereType.get_cache_key(),
         required=False,
     )
     PlanetClass = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PlanetType, [], (OperationalError, ProgrammingError), 'name', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=PlanetType.get_cache_key(),
         required=False,
     )
     Volcanism = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Volcanism.get_cache_key(),
         allow_blank=True,
         required=False,
     )

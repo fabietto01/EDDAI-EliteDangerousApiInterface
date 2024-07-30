@@ -2,9 +2,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
-from core.models import OwnerAndDateModels
+from core.models import CacheModel
 
-class Commodity(AbstractDataEDDN, OwnerAndDateModels, models.Model):
+class Commodity(AbstractDataEDDN, CacheModel, models.Model):
     """
     modello dedicatto alla gestione dei dati di una commodity
     """

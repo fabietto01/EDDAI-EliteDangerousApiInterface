@@ -2,8 +2,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
+from core.models import CacheModel
 
-class AtmosphereType(AbstractDataEDDN, models.Model):
+
+class AtmosphereType(AbstractDataEDDN, CacheModel, models.Model):
     """
     modello per la tipologia delle atmosfere
     """

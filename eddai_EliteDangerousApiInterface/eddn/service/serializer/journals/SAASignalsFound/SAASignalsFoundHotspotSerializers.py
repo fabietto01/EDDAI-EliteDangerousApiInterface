@@ -16,7 +16,7 @@ import re
 class HotspotSerializers(serializers.Serializer):
     Type = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(HotspotType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=HotspotType.get_cache_key(),
     )
     Count = serializers.IntegerField(
         min_value=0,

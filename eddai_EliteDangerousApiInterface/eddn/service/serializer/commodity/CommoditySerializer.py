@@ -10,7 +10,7 @@ from core.api.fields import CacheChoiceField
 class CommoditySerializer(serializers.Serializer):
     name = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Commodity, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Commodity.get_cache_key(),
     )
     buyPrice = serializers.IntegerField(
         min_value=0,
