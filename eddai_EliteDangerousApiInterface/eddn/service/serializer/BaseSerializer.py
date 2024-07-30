@@ -1,7 +1,26 @@
-from rest_framework import serializers
+from typing import Callable
 from datetime import datetime
 
+from django.conf import settings
+from django.core.cache import cache
+from django.contrib.auth import authenticate
+
+from rest_framework import serializers
+
+from users.models import User
+
 class BaseSerializer(serializers.Serializer):
+
+    _agent = None
+
+    @property
+    def agent(self) -> User:
+        """
+        restituisce l'utente utilizzato per inviare il datto
+        """
+        if not self._agent:
+            self._agent = self.get_user_agent()
+        return self._agent
 
     def save(self, **kwargs):
         assert hasattr(self, '_errors'), (
@@ -50,6 +69,20 @@ class BaseSerializer(serializers.Serializer):
         una istanza, questo medodo vine chiamato da  get_data_defaults()
         """
         raise NotImplementedError('`set_data_defaults()` must be implemented.')
+    
+    def set_data_defaults_create(self, validated_data:dict) -> dict:
+        """
+        utiliza questo metodo per definire i datti di default utilizatti per creare se non presente
+        una istanza, questo medodo vine chiamato da  get_data_defaults_create()
+        """
+        raise NotImplementedError('`set_data_defaults_create()` must be implemented.')
+    
+    def set_data_defaults_update(self, validated_data:dict) -> dict:
+        """
+        utiliza questo metodo per definire i datti di default utilizatti per aggiornare se presente
+        una istanza, questo medodo vine chiamato da  get_data_defaults_update()
+        """
+        raise NotImplementedError('`set_data_defaults_update()` must be implemented.')
 
     def data_preparation(self, validated_data:dict) -> dict:
         """
@@ -57,7 +90,7 @@ class BaseSerializer(serializers.Serializer):
         """
         raise NotImplementedError('`data_preparation()` must be implemented.')
     
-    def clean_data_defaults(self, default_data:dict) -> dict:
+    def _clean_data_defaults(self, default_data:dict) -> dict:
         """
         ripulisce i datti di default togniaendo i datti che sono impostatti su none
         """
@@ -66,16 +99,73 @@ class BaseSerializer(serializers.Serializer):
                 del default_data[key]
         return default_data
 
-    def get_data_defaults(self, validated_data:dict, fuction=None) -> dict:
-        """
-        chiama questo medodo per restituire i default data
-        """
-        if fuction:
-            default_data = fuction(validated_data)
-        else: 
-            default_data = self.set_data_defaults(validated_data)
-        default_data = self.clean_data_defaults(default_data)
+    def _get_data_defaults(self, validated_data:dict, function:Callable[[dict], dict]) -> dict:
+        default_data = function(validated_data)
+        default_data = self._clean_data_defaults(default_data)
         return default_data
+    
+    def get_data_defaults(self, validated_data:dict, function:Callable[[dict], dict]=None) -> dict:
+            """
+            Returns the data with default values applied.
+
+            Args:
+                validated_data (dict): The validated data.
+                function (function, optional): The function to set default values. Defaults to None.
+
+            Returns:
+                dict: The data with default values applied.
+            """
+            if not function:
+                function = self.set_data_defaults
+            return self._get_data_defaults(validated_data, function)
+
+    def get_data_defaults_create(self, *args, **kwargs) -> dict:
+        """
+        Returns a dictionary containing default data for creating a new object.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+                validated_data (dict): The validated data for creating the object.
+                function (function): The function to set data defaults.
+
+        Returns:
+            dict: A dictionary containing default data for creating a new object.
+        """
+        validated_data: dict = kwargs.get('validated_data', None)
+        if validated_data:
+            var_function:Callable[[dict], dict] = kwargs.get('function', None)
+            if not var_function:
+                var_function = self.set_data_defaults_create
+            return self._get_data_defaults(validated_data, var_function)
+        return {
+            'created_by': self.agent,
+            'updated_by': self.agent
+        }
+    
+    def get_data_defaults_update(self, *args, **kwargs) -> dict:
+        """
+        Returns a dictionary containing default data for updating records.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+                validated_data (dict): The validated data to be updated.
+                function (function): The function to be used for setting data defaults.
+
+        Returns:
+            dict: A dictionary containing default data for updating records.
+
+        """
+        validated_data: dict = kwargs.get('validated_data', None)
+        if validated_data:
+            var_function: Callable[[dict], dict] = kwargs.get('function', None)
+            if not var_function:
+                var_function = self.set_data_defaults_update
+            return self._get_data_defaults(validated_data, var_function)
+        return {
+            'updated_by': self.agent
+        }
 
     def get_time(self, validated_data:dict = None) -> datetime:
         """
@@ -84,3 +174,17 @@ class BaseSerializer(serializers.Serializer):
         if validated_data:
             return validated_data.get('timestamp')
         return self.validated_data.get('timestamp')
+
+    @staticmethod
+    def get_user_agent() -> str:
+        """
+        restituisce il user agent utilizzato per inviare il datto
+        """
+        return cache.get_or_set(
+            settings.EDDN_USER_AGENT_CACHE_KEY,
+            lambda: authenticate(
+                username=settings.EDDN_USER_NAME_AGENT,
+                password=settings.EDDN_USER_PASSWORD_AGENT
+            )
+        )
+

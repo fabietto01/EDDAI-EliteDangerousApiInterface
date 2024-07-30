@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from .BaseJournal import BaseJournal
 
@@ -13,7 +12,7 @@ from ed_economy.models import Economy
 from ed_system.models import System
 from ed_body.models import Planet, Star
 
-from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none, in_list_models
+from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none, in_list_models
 from core.api.fields import CacheChoiceField
 
 class CarrierJumpSerializer(BaseJournal):
@@ -35,13 +34,13 @@ class CarrierJumpSerializer(BaseJournal):
     #-------------------------------------------------------------------------------
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
@@ -59,13 +58,13 @@ class CarrierJumpSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=StationType.get_cache_key("eddn", flat=True),
     )
     StationFaction = BaseMinorFactionSerializer()
     StationServices = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Service.get_cache_key("eddn", flat=True),
         )
     )
     StationEconomies = serializers.ListField(
@@ -119,7 +118,8 @@ class CarrierJumpSerializer(BaseJournal):
         if self.services_in_station:
             services = [
                 ServiceInStation(
-                    station=instance, service=Service.objects.get(eddn=service)
+                    station=instance, service=Service.objects.get(eddn=service),
+                    created_by=self.agent, updated_by=self.agent
                 ) for service in self.services_in_station
             ]
             ServiceInStation.objects.bulk_create(services)
@@ -129,17 +129,17 @@ class CarrierJumpSerializer(BaseJournal):
             servicecreate:list[ServiceInStation] = []
             servicedelete:list[ServiceInStation] = []
             serviceqs = ServiceInStation.objects.filter(station=instance)
-            serviceqsList = list(serviceqs)
             serviceList = [
                 ServiceInStation(
-                    station=instance, service=Service.objects.get(eddn=service)
+                    station=instance, service=Service.objects.get(eddn=service),
+                    created_by=self.agent, updated_by=self.agent
                 ) for service in self.services_in_station
             ]
             for service in serviceList:
-                if not in_list_models(service, serviceqsList, ['id','pk','updated','created']):
+                if not in_list_models(service, serviceqs):
                     servicecreate.append(service)
-            for service in serviceqsList:
-                if not in_list_models(service, serviceList, ['id','pk','updated','created']):
+            for service in serviceqs:
+                if not in_list_models(service, serviceList):
                     servicedelete.append(service)
             if servicecreate:
                 ServiceInStation.objects.bulk_create(servicecreate)
@@ -148,8 +148,9 @@ class CarrierJumpSerializer(BaseJournal):
     
     def update_or_create(self, validated_data: dict, update_function=None, create_function=None) -> System:
         self.data_preparation(validated_data)
-        system, create = update_or_create_if_time(
+        system, create = create_or_update_if_time(
             System, time=self.get_time(), defaults=self.get_data_defaults(validated_data, self.set_data_defaults_system),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             name=validated_data.get('StarSystem'),
         )
         ModelClass = None
@@ -157,12 +158,14 @@ class CarrierJumpSerializer(BaseJournal):
             ModelClass = Planet
         elif validated_data.get('BodyType') == 'Star':
             ModelClass = Star
-        body, create = update_or_create_if_time(
+        body, create = create_or_update_if_time(
             ModelClass, time=self.get_time(), defaults={},
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             system=system, name=validated_data.get('Body'), bodyID=validated_data.get('BodyID')
         )
-        self.instance, create = update_or_create_if_time(
+        self.instance, create = create_or_update_if_time(
             Station, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             system=system, name=validated_data.get('StationName'),
         )

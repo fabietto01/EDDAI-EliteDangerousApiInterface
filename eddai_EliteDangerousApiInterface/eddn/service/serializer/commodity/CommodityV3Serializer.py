@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from rest_framework import serializers
 from eddn.service.serializer.BaseSerializer import BaseSerializer
 from eddn.service.serializer.commodity.CommoditySerializer import CommoditySerializer
@@ -7,7 +8,7 @@ from ed_system.models import System
 from ed_station.models import Station
 from ed_economy.models import Economy, Commodity, CommodityInStation
 
-from core.utility import update_or_create_if_time, in_list_models, get_or_none
+from core.utility import create_or_update_if_time, in_list_models, get_or_none
 
 class CommodityV3Serializer(BaseSerializer):
     """
@@ -76,7 +77,8 @@ class CommodityV3Serializer(BaseSerializer):
         for commodity in self.commodities_data:
             commodities_name.append(commodity.get('name'))
             commodities.append({ 'name':commodity.get('name'), 'meanPrice':commodity.get('meanPrice')})
-        for commodity in list(Commodity.objects.all()):
+        querryset = cache.get_or_set(Commodity.get_cache_key(), Commodity.objects.all())
+        for commodity in querryset:
             if commodity.eddn in commodities_name:
                 commodity.meanPrice = get_meanPrice(commodity.eddn)
                 commodities_update.append(commodity)
@@ -98,6 +100,7 @@ class CommodityV3Serializer(BaseSerializer):
                 sellPrice=commodity.get('sellPrice'),
                 demand=commodity.get('demand'),
                 demandBracket=commodity.get('demandBracket'),
+                created_by=self.agent, updated_by=self.agent
             ) for commodity in self.commodities_data
         ]
         if commodities:
@@ -123,7 +126,6 @@ class CommodityV3Serializer(BaseSerializer):
         commoditiesUpdate:list[CommodityInStation] = []
         commoditiesDelete:list[CommodityInStation] = []
         commoditiesqs = CommodityInStation.objects.filter(station=instance)
-        commoditiesqsList = list(commoditiesqs)
         commoditiesList = [
             CommodityInStation(
                 station=instance, commodity=Commodity.objects.get(eddn=commodity.get('name')),
@@ -131,12 +133,13 @@ class CommodityV3Serializer(BaseSerializer):
                 inStock=commodity.get('stock'), stockBracket=commodity.get('stockBracket'),
                 sellPrice=commodity.get('sellPrice'),
                 demand=commodity.get('demand'),demandBracket=commodity.get('demandBracket'),
+                created_by=self.agent, updated_by=self.agent
             ) for commodity in self.commodities_data
         ]
         for commodity in commoditiesList:
-            if not in_list_models(commodity, commoditiesqsList, fields_include=['commodity']):
+            if not in_list_models(commodity, commoditiesqs, fields_include=['commodity']):
                 commoditiesCreate.append(commodity)                
-        for commodity in commoditiesqsList:
+        for commodity in commoditiesqs:
             if not in_list_models(commodity, commoditiesList, fields_include=['commodity']):
                 commoditiesDelete.append(commodity.commodity)
             else:
@@ -167,8 +170,9 @@ class CommodityV3Serializer(BaseSerializer):
     def update_or_create(self, validated_data: dict):
         self.data_preparation(validated_data)
         system = System.objects.get(name=validated_data.get('systemName'))
-        self.instance, create = update_or_create_if_time(
+        self.instance, create = create_or_update_if_time(
             Station, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             name=validated_data.get('stationName'), system=system
         )

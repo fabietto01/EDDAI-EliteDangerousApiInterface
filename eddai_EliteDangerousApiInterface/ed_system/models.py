@@ -1,14 +1,18 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.contrib import admin
+from django.db.models import Value
+from django.db.models.functions import Concat
 
-# Create your models here.
+from core.models import OwnerAndDateModels
+
 
 from ed_economy.models import Economy
 from ed_bgs.models.MinorFaction import MinorFaction
 from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
 
-class System(models.Model):
+class System(OwnerAndDateModels):
     """
     modello deditatto al salvatagio dei dati generici riguardanti i sistemmi dati mode:
     nome, coordinata x, coordinata y, coordinata z, descrizione, data aggiornamento
@@ -60,14 +64,11 @@ class System(models.Model):
         related_query_name='%(app_label)s_%(class)ss_controlling'
     )
     description = models.TextField(
-        blank=True, null=True,
-        verbose_name=_('description')
-    )
-    updated = models.DateTimeField(
-        auto_now=True
+        blank=True, null=True
     )
 
     @property
+    @admin.display(ordering=Concat("primaryEconomy", Value(" "), "secondaryEconomy"), description=_('economy'))
     def economy(self) -> list[Economy]:
         """
         ritorna l'economia della systema
@@ -77,11 +78,8 @@ class System(models.Model):
         elif self.secondaryEconomy == None:
             return [self.primaryEconomy]
         return [self.primaryEconomy, self.secondaryEconomy]
-    economy.fget.short_description = _('economy')  
 
     def clean(self) -> None:
-        if System.objects.filter(x=self.x, y=self.y, z=self.z).exclude(pk=self.pk).exists():
-            raise ValidationError(_('a system with these coordinates already exists'))
         if self.conrollingFaction != None:
             if not MinorFactionInSystem.objects.filter(system=self, minorFaction=self.conrollingFaction).exists():
                 raise ValidationError(_('the controlling faction is not present in the system'))

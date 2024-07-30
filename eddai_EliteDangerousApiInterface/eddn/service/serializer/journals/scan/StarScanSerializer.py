@@ -7,8 +7,6 @@ from django.db import OperationalError, ProgrammingError
 
 from ed_body.models import Star, StarLuminosity, StarType
 
-import uuid
-
 class StarScanSerializer(BaseScanSerializer):
     
     AbsoluteMagnitude = serializers.FloatField(
@@ -19,11 +17,11 @@ class StarScanSerializer(BaseScanSerializer):
     )
     Luminosity = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(StarLuminosity, [], (OperationalError, ProgrammingError), 'name', flat=True),
-         cache_key=uuid.uuid4(),
+         cache_key=StarLuminosity.get_cache_key("eddn", flat=True),
     )
     StarType = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(StarType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-         cache_key=uuid.uuid4(),
+         cache_key=StarType.get_cache_key("eddn", flat=True),
     )
 
     StellarMass = serializers.FloatField(
@@ -35,7 +33,7 @@ class StarScanSerializer(BaseScanSerializer):
     )
 
     def set_data_defaults(self, validated_data: dict) -> dict:
-        defaults = BaseScanSerializer.set_data_defaults(self, validated_data)
+        defaults = super().set_data_defaults(validated_data)
         defaults.update({
             'absoluteMagnitude': validated_data.get('AbsoluteMagnitude'),
             'age': validated_data.get('Age_MY'),

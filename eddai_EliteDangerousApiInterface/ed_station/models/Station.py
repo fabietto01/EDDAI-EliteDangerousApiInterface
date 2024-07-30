@@ -1,17 +1,23 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.contrib import admin
+from django.db.models import Value
+from django.db.models.functions import Concat
 
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
+
+from core.models import OwnerAndDateModels
 
 from ed_economy.models import Economy
 from ed_bgs.models import MinorFaction, MinorFactionInSystem
-from ed_station.models.StationType import StationType
-from ed_station.models.Service import Service
-from ed_station.models.ServiceInStation import ServiceInStation
-from ed_economy.models import CommodityInStation, Commodity
+from .StationType import StationType
+from .Service import Service
+from .ServiceInStation import ServiceInStation
+from ed_economy.models import Commodity
+from ed_economy.models import CommodityInStation
 
-class Station(models.Model):
+class Station(OwnerAndDateModels):
     """
     modello utilizato per memorizzare tutte le stazioni presenti nel gioco
     """
@@ -85,12 +91,6 @@ class Station(models.Model):
         ],
         null=True
     )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
-    created = models.DateTimeField(
-        auto_now_add=True
-    )
 
     def __str__(self) -> str:
         return self.name
@@ -104,6 +104,7 @@ class Station(models.Model):
         super().clean()
     
     @property
+    @admin.display(ordering=Concat("primaryEconomy", Value(" "), "secondaryEconomy"), description=_('economy'))
     def economy(self) -> list[Economy]:
         """
         ritorna l'economia della systema
@@ -113,7 +114,6 @@ class Station(models.Model):
         elif self.secondaryEconomy == None:
             return [self.primaryEconomy]
         return [self.primaryEconomy, self.secondaryEconomy]
-    economy.fget.short_description = _('economy')
 
     class Meta:
         verbose_name = _('station')

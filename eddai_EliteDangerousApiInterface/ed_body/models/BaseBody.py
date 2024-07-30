@@ -1,13 +1,13 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
+from core.models import OwnerAndDateModels
+from django.contrib import admin
 
 from ed_system.models import System
 
-
-class BaseBody(models.Model):
+class BaseBody(OwnerAndDateModels):
     """
     modello di base per le informazioni dei corpi celesti
     presenti al interno del systema
@@ -132,22 +132,20 @@ class BaseBody(models.Model):
         help_text=_('rotation period of the body in seconds'),
         null=True, blank=True
     )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
 
     @property
+    @admin.display(boolean=True, description=_('rotating'))
     def rotating(self) -> bool:
         return bool(self.axialTilt and self.rotationPeriod)
     rotating.fget.short_description = _('rotating') 
 
     @property
+    @admin.display(boolean=True, description=_('orbiting'))
     def orbiting(self) -> bool:
         return bool(
             self.eccentricity and self.orbitalInclination and 
             self.orbitalPeriod and self.periapsis and self.semiMajorAxis
         )
-    orbiting.fget.short_description = _('orbiting') 
 
     def __str__(self):
         return self.name
@@ -183,6 +181,15 @@ class BaseBody(models.Model):
                 if parent and (not childList) and (not exist):
                     self.basebody_ptr = parent
                     self.basebody_ptr_id = parent.id
+                    try:
+                        if not self.created_by:
+                            self.created_by = parent.created_by
+                            self.created_by_id = parent.created_by.id
+                    except BaseBody.created_by.RelatedObjectDoesNotExist:
+                        self.created_by = parent.created_by
+                        self.created_by_id = parent.created_by.id
+                    if not self.created_at:
+                        self.created_at = parent.created_at
                     super().save(force_insert, force_update, using, update_fields)
                 else:
                     raise e

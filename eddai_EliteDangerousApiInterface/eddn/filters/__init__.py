@@ -1,1 +1,0 @@
-from eddn.filters.eventFilter import EventFilter

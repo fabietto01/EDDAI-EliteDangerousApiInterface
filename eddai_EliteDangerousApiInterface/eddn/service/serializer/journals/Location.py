@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from ..customFields import CustomChoiceField, CustomCacheChoiceField
 from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
@@ -12,13 +11,14 @@ from ed_station.models import (
     StationType, Station
 )
 
+from ed_body.models import Planet, Star
 from ed_economy.models import Economy
 from ed_system.models import System
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
 
 from core.utility import (
     get_values_list_or_default,
-    get_or_none, update_or_create_if_time
+    get_or_none, create_or_update_if_time, in_list_models
 )
 
 class LocationSerializer(BaseJournal):
@@ -49,7 +49,7 @@ class LocationSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=StationType.get_cache_key("eddn", flat=True),
         required=False,
     )
     #-------------------------------------------------------------------------------
@@ -58,11 +58,11 @@ class LocationSerializer(BaseJournal):
     )
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
@@ -76,21 +76,21 @@ class LocationSerializer(BaseJournal):
         child=MinorFactionInSystemSerializer(),
         required=False,
         min_length=0,
-        max_length=MinorFactionInSystem.MaxRelation,
+        max_length=MinorFactionInSystem.MaxRelation(),
     )
     Conflicts = None
     Powers = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Power.get_cache_key("eddn", flat=True),
         ),
         required=False,
         min_length=0,
-        max_length=PowerInSystem.MaxRelation,
+        max_length=PowerInSystem.MaxRelation(),
     )
     PowerplayState = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=uuid.uuid4(),
+        cache_key=PowerState.get_cache_key("eddn", flat=True),
     )
 
     def validate(self, attrs:dict):
@@ -107,7 +107,7 @@ class LocationSerializer(BaseJournal):
         return super().validate(attrs)
     
     def set_data_defaults(self, validated_data: dict) -> dict:
-        defaults = BaseJournal.set_data_defaults(self, validated_data)
+        defaults = super().set_data_defaults(validated_data)
         defaults.update(
             {
                 "primaryEconomy": get_or_none(Economy, eddn=validated_data.get('SystemEconomy', None)),
@@ -138,6 +138,7 @@ class LocationSerializer(BaseJournal):
             minorfaction = MinorFaction.objects.get(name=self.control_faction.get('Name'))
             if not instance.conrollingFaction == minorfaction:
                 instance.conrollingFaction = minorfaction
+                instance.updated_by = self.agent
                 instance.save(force_update=['conrollingFaction'])
 
     def update_minor_faction(self, instance):
@@ -148,31 +149,45 @@ class LocationSerializer(BaseJournal):
                     system=instance, timestamp=self.get_time()
                 )
     
-    def create_power(self, instance:PowerState):
-        power = self.powers_data.get('Powers', [])
-        for p in power:
-            instance.powers.add(Power.objects.get(name=p))
+    def create_PowerInSystem(self, instance:System):
+        Powers = self.powers_data.get('Powers', [])
+        PowerplayState = self.powers_data.get('PowerplayState', None)
+        if Powers and PowerplayState:
+            serviceList = [
+                PowerInSystem(
+                    system=instance, 
+                    power=Power.objects.get(name=power), 
+                    state=PowerState.objects.get(eddn=PowerplayState),
+                    created_by=self.agent, updated_by=self.agent
+                ) for power in Powers
+            ]
+            PowerInSystem.objects.bulk_create(serviceList)
 
-    def update_power(self, instance):
-        powerqsList = list(instance.powers.all())
-        powerList = [Power.objects.get(name=p) for p in self.powers_data.get('Powers', [])]
-        for power in powerqsList:
-            if not power in powerList:
-                instance.powers.remove(power)
-        for power in powerList:
-            if not power in powerqsList:
-                instance.powers.add(power)
-
-    def update_PowerInSystem(self, instance):
-        if self.powers_data.get('Powers', []) and self.powers_data.get('PowerplayState', None):
-            defaults = {
-                'state': PowerState.objects.get(eddn=self.powers_data.get('PowerplayState', None)),
-            }
-            powerInstanceqs, create = update_or_create_if_time(
-                PowerInSystem, time=self.get_time(), defaults=defaults,
-                update_function=self.update_power, create_function=self.create_power, 
-                system=instance
-            )
+    def update_PowerInSystem(self, instance:System):
+        Powers = self.powers_data.get('Powers', [])
+        PowerplayState = self.powers_data.get('PowerplayState', None)
+        if Powers and PowerplayState:
+            powerinsystem_create:list[PowerInSystem] = []
+            powerinsystem_delete:list[PowerInSystem] = []
+            powerinsystemqs = PowerInSystem.objects.filter(system=instance)
+            powerinsystemList = [
+                PowerInSystem(
+                    system=instance, 
+                    power=Power.objects.get(name=power), 
+                    state=PowerState.objects.get(eddn=PowerplayState),
+                    created_by=self.agent, updated_by=self.agent
+                ) for power in Powers
+            ]
+            for power in powerinsystemList:
+                if not in_list_models(power, powerinsystemqs):
+                    powerinsystem_create.append(power)
+            for power in powerinsystemqs:
+                if not in_list_models(power, powerinsystemList):
+                    powerinsystem_delete.append(power.id)
+            if powerinsystem_create:
+                PowerInSystem.objects.bulk_create(powerinsystem_create)
+            if powerinsystem_delete:
+                PowerInSystem.objects.filter(id__in=powerinsystem_delete).delete()
 
     def data_preparation(self, validated_data: dict) -> dict:
         self.factions_data:dict = validated_data.pop("Factions", [])
@@ -194,20 +209,23 @@ class LocationSerializer(BaseJournal):
 
     def update_or_create(self, validated_data: dict) -> System:
         self.data_preparation(validated_data)
-        systemInstance, systemcreate = update_or_create_if_time(
+        systemInstance, systemcreate = create_or_update_if_time(
             System, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             name=validated_data.get('StarSystem'),
         )
         __class = eval(validated_data.get('BodyType'))
-        bodyInstance, bodycreate = update_or_create_if_time(
+        bodyInstance, bodycreate = create_or_update_if_time(
             __class, defaults=self.get_data_defaults(validated_data, self.set_data_defaults_body),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             time=self.get_time(),
             system=systemInstance, name=validated_data.get('Body'), bodyID=validated_data.get('BodyID'), 
         )
         if validated_data.get('Docked', False):
-            stationInstance, stationcreate = update_or_create_if_time(
+            stationInstance, stationcreate = create_or_update_if_time(
                 Station, defaults=self.get_data_defaults(validated_data, self.set_data_defaults_stastion),
+                defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
                 time=self.get_time(),
                 system=systemInstance, name=validated_data.get('StationName') 
             )

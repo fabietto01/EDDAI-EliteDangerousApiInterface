@@ -3,14 +3,16 @@ from django.utils.translation import gettext_lazy as _
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from ed_body.models import Ring
-from ed_mining.models.HotspotSignals import HotspotSignals
+from core.models import OwnerAndDateModels
 
-class HotSpot(models.Model):
+from .Ring import Ring
+from .HotspotType import HotspotType
+
+class HotSpot(OwnerAndDateModels):
     """
     """
     type = models.ForeignKey(
-        HotspotSignals, models.PROTECT,
+        HotspotType, models.PROTECT,
         verbose_name=_('type'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
@@ -27,9 +29,6 @@ class HotSpot(models.Model):
         validators=[
             MinValueValidator(0, _('the count cannot be less than 0'))
         ],
-    )
-    updated = models.DateTimeField(
-        auto_now=True
     )
     
     def __str__(self):

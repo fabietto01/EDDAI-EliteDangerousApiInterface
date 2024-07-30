@@ -2,7 +2,7 @@ from rest_framework import serializers
 from ed_system.models import System
 from eddn.service.serializer.BaseSerializer import BaseSerializer
 
-from core.utility import update_or_create_if_time
+from core.utility import create_or_update_if_time
 
 class BaseJournal(BaseSerializer):
     StarPos = serializers.ListField(
@@ -34,7 +34,7 @@ class BaseJournal(BaseSerializer):
         }
 
     def update_or_create(self, validated_data:dict, update_function=None, create_function=None) -> System:
-        sytsem, create = update_or_create_if_time(
+        sytsem, create = create_or_update_if_time(
             System, time=self.get_time(),
             defaults=self.get_data_defaults(validated_data),
             update_function=update_function,

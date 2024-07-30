@@ -1,11 +1,10 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from eddn.service.serializer.nestedSerializer.minorFaction.BaseMinorFactionSerializer import BaseMinorFactionSerializer
 
 from core.utility import (
-    update_or_create_if_time, in_list_models, 
+    create_or_update_if_time, in_list_models, 
     get_values_list_or_default, get_or_none
 )
 
@@ -31,7 +30,7 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
     )
     Happiness = HappinessChoiceField(
         fun_choices=lambda: get_values_list_or_default(State.objects.filter(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=State.get_cache_key('eddn', "filter", flat=True, type=State.TypeChoices.HAPPINESS.value),
         allow_blank=True,
     )
     RecoveringStates = serializers.ListField(
@@ -140,7 +139,10 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
                 )
 
     def get_state_instance(self, instance:MinorFactionInSystem, state:State, phase:str=StateInMinorFaction.PhaseChoices.ACTIVE.value) -> StateInMinorFaction:
-        return StateInMinorFaction(minorFaction=instance, state=state, phase=phase)
+        return StateInMinorFaction(
+            minorFaction=instance, state=state, 
+            phase=phase, created_by=self.agent, updated_by=self.agent
+        )
 
     def create_dipendent(self, instance):
         self.create_state(instance)
@@ -149,15 +151,17 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
         self.update_state(instance)
 
     def update_or_create(self, validated_data: dict):
-        minorFaction, create = update_or_create_if_time(
-            MinorFaction, time=self.get_time(validated_data), 
+        minorFaction, create = create_or_update_if_time(
+            MinorFaction, time=self.get_time(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(), 
             defaults=self.get_data_defaults(validated_data, self.set_data_defaults_minorFaction),
             name=validated_data.get('Name'),
         )
         self.data_preparation(validated_data)
-        self.instance, create = update_or_create_if_time(
+        self.instance, create = create_or_update_if_time(
             MinorFactionInSystem, time=self.get_time(validated_data), 
             defaults=self.get_data_defaults(validated_data, self.set_data_defaults_MinorFactionInSystem),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             create_function=self.create_dipendent, update_function=self.update_dipendent,
             system=validated_data.get('system'), minorFaction=minorFaction,
         )

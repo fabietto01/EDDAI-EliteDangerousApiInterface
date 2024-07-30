@@ -73,10 +73,12 @@ class EddnClient:
             dataJson = json.loads(dataDeCompress)
             if dataJson == False:
                 self.__log.error(f"Failed to decode message")
-            
+
+            self.__log.debug(f"Received and decompressed message: {dataJson}")
+
             if dataJson['header']['softwareName'] in self.__authori_softwers:
-                self.__log.debug(f"Received message from EDDN broker: {dataJson}")
                 istance = DataLog(data=dataJson)
+                self.__log.info(f"Send message to worker: {istance}")
                 star_analytic.apply_async(
                     kwargs={'istance':istance}, ignore_result=True,
                     queue="eddn"

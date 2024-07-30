@@ -34,14 +34,6 @@ class JournalAnalytic(BaseDataAnalytics):
 
     def analyst_FSDJump(self):
         data = self.get_message()
-        for attr, value in data.items():
-            if attr == "Factions":
-                for faction in value:
-                    for attr2, value2 in faction.items():
-                        if attr2 in ('HomeSystem', 'SquadronFaction'):
-                            dwadadawd= 3
-            elif attr == "Conflicts":
-                dadwad = 3
         return FSDJumpSerializer(data=data)
 
     def analyst_Scan(self):

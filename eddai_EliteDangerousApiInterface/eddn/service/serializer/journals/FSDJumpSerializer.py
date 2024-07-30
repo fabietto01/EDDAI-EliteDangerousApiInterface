@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from .BaseJournal import BaseJournal
 
@@ -11,7 +10,7 @@ from ed_system.models import System
 from ed_economy.models import Economy
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
 
-from core.utility import update_or_create_if_time, get_values_list_or_default, get_or_none
+from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none, in_list_models
 from core.api.fields import CacheChoiceField
 
 class FSDJumpSerializer(BaseJournal):
@@ -20,13 +19,13 @@ class FSDJumpSerializer(BaseJournal):
     """
     SystemEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
     SystemSecondEconomy = CustomCacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4(),
+        cache_key=Economy.get_cache_key("eddn", flat=True),
         required=False,
         allow_blank=True,
     )
@@ -41,36 +40,37 @@ class FSDJumpSerializer(BaseJournal):
         child=MinorFactionInSystemSerializer(),
         required=False,
         min_length=0,
-        max_length=MinorFactionInSystem.MaxRelation,
+        max_length=MinorFactionInSystem.MaxRelation(),
     )
     SystemFaction = BaseMinorFactionSerializer(
         required=False,
     )
+    #DEV: da implementare
     Conflicts = None
     Powers = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Power.get_cache_key("name", flat=True),
         ),
         required=False,
         min_length=0,
-        max_length=PowerInSystem.MaxRelation,
+        max_length=PowerInSystem.MaxRelation(),
     )
     PowerplayState = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=uuid.uuid4(),
+        cache_key=PowerState.get_cache_key("eddn", 'name'),
         required=False,
     )
 
     def validate(self, attrs):
         power = attrs.get('Powers', [])
         if power:
-            state = self.fields['PowerplayState'].choices.get(attrs.get('PowerplayState', None), None)
-            if state in PowerInSystem.StateForMoreRellation and len(power) < 2:
+            state = attrs.get('PowerplayState', None)
+            if state == PowerInSystem.StateForMoreRellation().eddn and len(power) < 1:
                 raise serializers.ValidationError(
                     f'PowerplayState {state} require more than one power'
                 )
-            elif not state in PowerInSystem.StateForMoreRellation and len(power) > 1:
+            elif state != PowerInSystem.StateForMoreRellation().eddn and len(power) != 1:
                 raise serializers.ValidationError(
                     f'PowerplayState {state} require only one power'
                 )
@@ -98,6 +98,7 @@ class FSDJumpSerializer(BaseJournal):
             minorfaction = MinorFaction.objects.get(name=self.control_faction.get('Name'))
             if not instance.conrollingFaction == minorfaction:
                 instance.conrollingFaction = minorfaction
+                instance.updated_by = self.agent
                 instance.save(force_update=['conrollingFaction'])
             
     def update_minor_faction(self, instance):
@@ -108,31 +109,45 @@ class FSDJumpSerializer(BaseJournal):
                     system=instance, timestamp=self.get_time()
                 )
 
-    def create_power(self, instance:PowerState):
-        power = self.powers_data.get('Powers', [])
-        for p in power:
-            instance.powers.add(Power.objects.get(name=p))
+    def create_PowerInSystem(self, instance:System):
+        Powers = self.powers_data.get('Powers', [])
+        PowerplayState = self.powers_data.get('PowerplayState', None)
+        if Powers and PowerplayState:
+            serviceList = [
+                PowerInSystem(
+                    system=instance, 
+                    power=Power.objects.get(name=power), 
+                    state=PowerState.objects.get(eddn=PowerplayState),
+                    created_by=self.agent, updated_by=self.agent
+                ) for power in Powers
+            ]
+            PowerInSystem.objects.bulk_create(serviceList)
 
-    def update_power(self, instance):
-        powerqsList = list(instance.powers.all())
-        powerList = [Power.objects.get(name=p) for p in self.powers_data.get('Powers', [])]
-        for power in powerqsList:
-            if not power in powerList:
-                instance.powers.remove(power)
-        for power in powerList:
-            if not power in powerqsList:
-                instance.powers.add(power)
-    
-    def update_PowerInSystem(self, instance):
-        if self.powers_data.get('Powers', []) and self.powers_data.get('PowerplayState', None):
-            defaults = {
-                'state': PowerState.objects.get(eddn=self.powers_data.get('PowerplayState', None)),
-            }
-            powerInstanceqs, create = update_or_create_if_time(
-                PowerInSystem, time=self.get_time(), defaults=defaults,
-                update_function=self.update_power, create_function=self.create_power, 
-                system=instance
-            )
+    def update_PowerInSystem(self, instance:System):
+        Powers = self.powers_data.get('Powers', [])
+        PowerplayState = self.powers_data.get('PowerplayState', None)
+        if Powers and PowerplayState:
+            powerinsystem_create:list[PowerInSystem] = []
+            powerinsystem_delete:list[PowerInSystem] = []
+            powerinsystemqs = PowerInSystem.objects.filter(system=instance)
+            powerinsystemList = [
+                PowerInSystem(
+                    system=instance, 
+                    power=Power.objects.get(name=power), 
+                    state=PowerState.objects.get(eddn=PowerplayState),
+                    created_by=self.agent, updated_by=self.agent
+                ) for power in Powers
+            ]
+            for power in powerinsystemList:
+                if not in_list_models(power, powerinsystemqs):
+                    powerinsystem_create.append(power)
+            for power in powerinsystemqs:
+                if not in_list_models(power, powerinsystemList):
+                    powerinsystem_delete.append(power.id)
+            if powerinsystem_create:
+                PowerInSystem.objects.bulk_create(powerinsystem_create)
+            if powerinsystem_delete:
+                PowerInSystem.objects.filter(id__in=powerinsystem_delete).delete()
 
     def data_preparation(self, validated_data: dict) -> dict:
         self.factions_data:dict = validated_data.pop("Factions", [])
@@ -145,7 +160,7 @@ class FSDJumpSerializer(BaseJournal):
     def create_dipendent(self, instance):
         self.update_minor_faction(instance)
         self.check_control_faction(instance)
-        self.update_PowerInSystem(instance)
+        self.create_PowerInSystem(instance)
 
     def update_dipendent(self, instance):
         self.update_minor_faction(instance)
@@ -154,8 +169,9 @@ class FSDJumpSerializer(BaseJournal):
 
     def update_or_create(self, validated_data: dict) -> System:
         self.data_preparation(validated_data)
-        self.instance, create = update_or_create_if_time(
+        self.instance, create = create_or_update_if_time(
             System, time=self.get_time(), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             name=validated_data.get('StarSystem'),
         )

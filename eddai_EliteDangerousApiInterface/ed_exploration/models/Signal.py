@@ -3,10 +3,12 @@ from django.utils.translation import gettext_lazy as _
 
 from django.core.validators import MinValueValidator
 
+from core.models import OwnerAndDateModels
+
 from ed_body.models.Planet import Planet
 from ed_exploration.models.SignalSignals import SignalSignals
 
-class Signal(models.Model):
+class Signal(OwnerAndDateModels):
     """
     classe model contente tutti i segnali di un pianeta
     """

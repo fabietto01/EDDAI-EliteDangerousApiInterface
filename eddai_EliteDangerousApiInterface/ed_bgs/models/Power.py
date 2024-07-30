@@ -2,13 +2,14 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from ed_bgs.models.Faction import Faction
+from core.models import CacheModel
 
-class Power(models.Model):
+class Power(CacheModel, models.Model):
     
     name = models.CharField(
         max_length=255, unique=True, verbose_name=_('name')
     )
-    headquarter = models.ForeignKey(
+    headquarter = models.OneToOneField(
         'ed_system.System', on_delete=models.PROTECT,
         verbose_name=_('headquarter'),
         related_name='%(app_label)s_%(class)s_related',
@@ -32,9 +33,3 @@ class Power(models.Model):
         verbose_name = _('Power')
         verbose_name_plural = _('Powers')
         ordering = ('name',)
-        indexes = [
-            models.Index(fields=['name','allegiance']),
-        ]
-        constraints = [
-            models.UniqueConstraint(fields=['name','headquarter'], name='unique_power_name_and_headquarter'),
-        ]

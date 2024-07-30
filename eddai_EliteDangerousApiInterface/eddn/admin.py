@@ -1,26 +1,37 @@
 from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
+
 from logging import getLogger
 
 from celery import group
-from celery.result import GroupResult, AsyncResult
+from celery.result import GroupResult
 
-from eddn.filters.eventFilter import EventFilter
-from eddn.models import *
+from eddn.models import DataLog
 from eddn.service.dataAnalytics.utility import star_analytic
 
 log = getLogger("django")
 
 @admin.register(DataLog)
-class DataLogAdmin(admin.ModelAdmin):
+class DataLogModelAdmin(admin.ModelAdmin):
     model = DataLog
-    list_display = ('schema', 'error','update')
-    readonly_fields = ('data', 'schema', 'error', 'update', 'creat_at')
-    search_fields = ('schema', 'error')
-    actions = ('re_processing',)
-    list_filter = (
-        'schema', EventFilter
-    )
+    search_fields = ("schema","error")
+    list_display = ("schema", "error", "update", "creat_at")
+    list_display_links = ("schema",)
+    readonly_fields = ("creat_at", "update", "error")
+    list_filter = ("schema","error")
+    fieldsets = [
+        (None, {
+            "fields": (
+                "schema",
+                "data",
+                "error",
+            )
+        }),
+        ("Date", {
+            "fields": ("creat_at", "update")
+        })
+    ]
+    actions = ['re_processing']
 
     @admin.action(description=_('data re-processing'))
     def re_processing(self, request, queryset):

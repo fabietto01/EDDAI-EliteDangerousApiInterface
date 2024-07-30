@@ -18,6 +18,19 @@
       "consoleTitle": "Python Debug Django",
     },
     {
+      "name": "Python: Django Shell",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "args": [
+        "shell",
+        "--settings",
+        "eddai_EliteDangerousApiInterface.settings.dev"
+      ],
+      "django": true,
+      "consoleTitle": "Python Debug Django",
+    },
+    {
       "name": "Python: Service eddn",
       "type": "debugpy",
       "request": "launch",
@@ -36,7 +49,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "200",
+        "-c", "100",
         "-Q", "default",
         "-n", "WorkerTasck@%h"
       ],
@@ -58,7 +71,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "200",
+        "-c", "100",
         "-Q", "admin",
         "-n", "WorkerAdmin@%h"
       ],
@@ -80,7 +93,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "200",
+        "-c", "100",
         "-Q", "eddn",
         "-n", "WorkerEddn@%h"
       ],

@@ -15,6 +15,6 @@ class CacheChoiceField(ChoiceField):
     :param kwargs: Additional keyword arguments to pass to the `ChoiceField` constructor.
     """
 
-    def __init__(self, fun_choices, cache_key:str, **kwargs):
-        choices = cache.get_or_set(cache_key, fun_choices(), 30)#60*5
+    def __init__(self, fun_choices, cache_key:str, timeout:int=60*5,  **kwargs):
+        choices = cache.get_or_set(cache_key, fun_choices(), timeout)
         super().__init__(choices, **kwargs)

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .BaseJournal import BaseJournal
 from django.db import OperationalError, ProgrammingError
-import uuid
 
 from ..customFields import LandingPadsChoiceField
 from ..nestedSerializer import BaseMinorFactionSerializer, EconomySerializer
@@ -16,7 +15,7 @@ from ed_system.models import System
 
 from core.api.fields import CacheChoiceField
 from core.utility import (
-    update_or_create_if_time, in_list_models, 
+    create_or_update_if_time, in_list_models, 
     get_values_list_or_default, get_or_none
 )
 
@@ -29,7 +28,7 @@ class DockedSerializer(BaseJournal):
     )
     StationType = CacheChoiceField(
         fun_choices=lambda: get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=uuid.uuid4()
+        cache_key=StationType.get_cache_key("eddn", flat=True),
     )
     DistFromStarLS = serializers.FloatField(
         min_value=0,
@@ -37,7 +36,7 @@ class DockedSerializer(BaseJournal):
     StationServices = serializers.ListField(
         child=CacheChoiceField(
             fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=uuid.uuid4(),
+            cache_key=Service.get_cache_key("eddn", flat=True),
         )
     )
     StationEconomies = serializers.ListField(
@@ -80,7 +79,8 @@ class DockedSerializer(BaseJournal):
         if self.services_in_station:
             services = [
                 ServiceInStation(
-                    station=instance, service=Service.objects.get(eddn=service)
+                    station=instance, service=Service.objects.get(eddn=service),
+                    created_by=self.agent, updated_by=self.agent
                 ) for service in self.services_in_station
             ]
             ServiceInStation.objects.bulk_create(services)
@@ -90,33 +90,35 @@ class DockedSerializer(BaseJournal):
             servicecreate:list[ServiceInStation] = []
             servicedelete:list[ServiceInStation] = []
             serviceqs = ServiceInStation.objects.filter(station=instance)
-            serviceqsList = list(serviceqs)
             serviceList = [
                 ServiceInStation(
-                    station=instance, service=Service.objects.get(eddn=service)
+                    station=instance, service=Service.objects.get(eddn=service),
+                    created_by=self.agent, updated_by=self.agent
                 ) for service in self.services_in_station
             ]
             for service in serviceList:
-                if not in_list_models(service, serviceqsList, ['id','pk','updated','created']):
+                if not in_list_models(service, serviceqs):
                     servicecreate.append(service)
-            for service in serviceqsList:
-                if not in_list_models(service, serviceList, ['id','pk','updated','created']):
-                    servicedelete.append(service)
+            for service in serviceqs:
+                if not in_list_models(service, serviceList):
+                    servicedelete.append(service.id)
             if servicecreate:
                 ServiceInStation.objects.bulk_create(servicecreate)
             if servicedelete:
-                ServiceInStation.objects.filter(id__in=[s.id for s in servicedelete]).delete()
+                ServiceInStation.objects.filter(id__in=servicedelete).delete()
 
     def update_or_create(self, validated_data: dict):
         self.data_preparation(validated_data)
-        system, created = update_or_create_if_time(
+        system, created = create_or_update_if_time(
             System, time=self.get_time(),
             defaults=self.get_data_defaults(validated_data, self.set_data_defaults_system),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             name=validated_data.get('StarSystem')
         )
-        self.initial, created = update_or_create_if_time(
+        self.initial, created = create_or_update_if_time(
             Station, time=self.get_time(), 
             defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             update_function=self.update_dipendent, create_function=self.create_dipendent,
             system=system, name=validated_data.get('StationName'),
         )

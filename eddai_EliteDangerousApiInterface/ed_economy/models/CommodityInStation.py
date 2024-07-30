@@ -1,7 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-class CommodityInStation(models.Model):
+from core.models import OwnerAndDateModels
+
+from .Commodity import Commodity
+
+class CommodityInStation(OwnerAndDateModels):
     """
     modello utilizato per salvare la relazione tra le commodity e
     le stanzione che condengono talle commodity
@@ -13,7 +17,7 @@ class CommodityInStation(models.Model):
         related_query_name='%(app_label)s_%(class)ss'
     )
     commodity = models.ForeignKey(
-        'ed_economy.Commodity', on_delete=models.CASCADE,
+        Commodity, on_delete=models.CASCADE,
         verbose_name=_('commodity'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
@@ -47,12 +51,6 @@ class CommodityInStation(models.Model):
         verbose_name=_('demand bracket'),
         default=0,
         help_text=_('the demand bracket of the commodity')
-    )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
-    created = models.DateTimeField(
-        auto_now_add=True
     )
 
     def __str__(self) -> str:

@@ -3,8 +3,8 @@ from .BaseSecondarySerializer import BaseNestedSerializer
 
 from ..customFields import RingClassmChoiceField
 
-from core.utility import update_or_create_if_time
-from ed_body.models import Ring
+from core.utility import create_or_update_if_time
+from ed_mining.models import Ring
 
 class RingSerializer(BaseNestedSerializer):
 
@@ -33,8 +33,9 @@ class RingSerializer(BaseNestedSerializer):
         }
 
     def update_or_create(self, validated_data: dict) -> Ring:
-        ring, created = update_or_create_if_time(
+        ring, created = create_or_update_if_time(
             Ring, time=self.get_time(validated_data), defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(), defaults_update=self.get_data_defaults_update(),
             body=validated_data.get('body'), name=validated_data.get('Name')
         )
         return ring

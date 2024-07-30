@@ -1,5 +1,5 @@
-from eddai_EliteDangerousApiInterface.settings.default import *
-
+from .default import *
+import ssl
 
 DEBUG = False
 

@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from core.models import OwnerAndDateModels
 
-class ServiceInStation(models.Model):
+class ServiceInStation(OwnerAndDateModels):
+
     station = models.ForeignKey(
         'ed_station.Station', on_delete=models.CASCADE,
         verbose_name=_('station'),
@@ -14,12 +16,6 @@ class ServiceInStation(models.Model):
         verbose_name=_('service'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
-    )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
-    created = models.DateTimeField(
-        auto_now_add=True
     )
 
     def __str__(self):

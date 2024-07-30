@@ -1,40 +1,53 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django.core.exceptions import ValidationError
+from core.models import OwnerAndDateModels
+from ed_bgs.models import Power, PowerState
 
-class PowerInSystem(models.Model):
-    """
-    modelo corellato 1:1 con il modelo system contente le informazioni
-    riguradanti le Power all interno del systema, avra una relazione n:n con
-    il modello Power
-    """
-    MaxRelation = 2
-    StateForMoreRellation = ('Contested')
+from core.utility import  get_or_none
 
-    system = models.OneToOneField(
+class PowerInSystem(OwnerAndDateModels):
+    """
+    Represents the relationship between a power, a system, and its state.
+    """
+    system = models.ForeignKey(
         'ed_system.System', on_delete=models.CASCADE,
         verbose_name=_('system'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
-    powers = models.ManyToManyField(
-        'ed_bgs.Power', verbose_name=_('Powers'),
+    power = models.ForeignKey(
+        Power, on_delete=models.CASCADE,
+        verbose_name=_('Power'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
     state = models.ForeignKey(
-        'ed_bgs.PowerState', on_delete=models.PROTECT,
+        PowerState, on_delete=models.PROTECT,
         verbose_name=_('state'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
     )
-    updated = models.DateTimeField(
-        auto_now=True
-    )
+
+    @staticmethod
+    def MaxRelation():
+        """
+        Returns the maximum relation value.
+        """
+        return 2
+
+    @staticmethod
+    def StateForMoreRellation() -> PowerState:
+        """
+        Returns the PowerState object for more relation.
+        """
+        return get_or_none(PowerState, name='Contested')
 
     def __str__(self) -> str: 
-        return str(self.state) + " by " + " and ".join([str(p.name) for p in self.powers.all()])
+        """
+        Returns a string representation of the PowerInSystem object.
+        """
+        return f"{self.power} in {self.system}"
 
     class Meta:
         verbose_name = _('Power in System')
@@ -42,4 +55,5 @@ class PowerInSystem(models.Model):
         ordering = ('system',)
         indexes = [
             models.Index(fields=['state']),
+            models.Index(fields=['power'])
         ]
