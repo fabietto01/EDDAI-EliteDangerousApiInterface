@@ -1,4 +1,4 @@
-version: "1.5"
+version: "2.0"
 services:
     rabbitmq:
         container_name: rabbitmq
@@ -42,8 +42,23 @@ services:
         ports:
             - "3306:3306"
         restart: always
+    postgis:
+        container_name: postgis
+        image: postgis/postgis:16-3.4
+        environment:
+            TZ: UTC
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        volumes:
+            - postgisvol:/var/lib/postgresql/data
+            - ${POSTGIS_CONFIG_FILE}:/etc/postgresql/postgresql.conf
+        ports:
+            - "5432:5432"
+        restart: always
 
 volumes:
     rabbitedvol:
     ed_database:
     redisvol:
+    postgisvol:

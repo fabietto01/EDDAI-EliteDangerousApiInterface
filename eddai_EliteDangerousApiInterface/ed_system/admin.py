@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from django.utils.translation import gettext_lazy as _
 
 from ed_system.models import System
@@ -18,7 +18,7 @@ class SystemAdmin(admin.ModelAdmin):
         (None, {
             "fields": (
                 "name",
-                ("x", "y", "z"),
+                ("coordinate"),
                 "population",
                 "security",
                 ("primaryEconomy", "secondaryEconomy"),

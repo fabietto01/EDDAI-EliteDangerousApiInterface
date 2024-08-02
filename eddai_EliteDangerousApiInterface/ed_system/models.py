@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib import admin
@@ -7,12 +7,11 @@ from django.db.models.functions import Concat
 
 from core.models import OwnerAndDateModels
 
-
 from ed_economy.models import Economy
 from ed_bgs.models.MinorFaction import MinorFaction
 from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
 
-class System(OwnerAndDateModels):
+class System(OwnerAndDateModels, models.Model):
     """
     modello deditatto al salvatagio dei dati generici riguardanti i sistemmi dati mode:
     nome, coordinata x, coordinata y, coordinata z, descrizione, data aggiornamento
@@ -29,15 +28,23 @@ class System(OwnerAndDateModels):
     name = models.CharField(
         max_length=100, unique=True, verbose_name=_('name')
     )
-    x = models.FloatField(
-        verbose_name=_('x coordinates'),
+    coordinate = models.PointField(
+        dim=3, srid=4979,
+        verbose_name=_('coordinate'),
+        unique=True,
     )
-    y = models.FloatField(
-        verbose_name=_('y coordinates'),
-    )
-    z = models.FloatField(
-        verbose_name=_('z coordinates'),
-    )
+    # x = models.FloatField(
+    #     verbose_name=_('x coordinates'),
+    # )
+    # y = models.FloatField(
+    #     verbose_name=_('y coordinates'),
+    # )
+    # z = models.FloatField(
+    #     verbose_name=_('z coordinates'),
+    # )
+    x = None
+    y = None
+    z = None
     security = models.CharField(
         verbose_name=_('security'), max_length=1, 
         choices=SecurityChoices.choices, blank=True, null=True
@@ -91,10 +98,7 @@ class System(OwnerAndDateModels):
         verbose_name = _('System')
         verbose_name_plural = _('Systems')
         constraints = [
-            models.UniqueConstraint(
-                fields=['x','y',"z"], 
-                name='unique_system_coordinates',
-            )
+            
         ]
         indexes = [
             models.Index(fields=['primaryEconomy', 'secondaryEconomy'], name='system_economy_idx'),
