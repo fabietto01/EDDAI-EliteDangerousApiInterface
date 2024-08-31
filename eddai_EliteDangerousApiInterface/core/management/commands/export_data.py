@@ -110,8 +110,11 @@ class Command(BaseCommand):
 
         """
         serializer = serializers.get_serializer(format_label)
-        with open(output, 'x') as file:
-            serializer().serialize(all_objects, stream=file)   
+        try:
+            with open(output, 'x') as file:
+                serializer().serialize(all_objects, stream=file)
+        except FileExistsError:
+            raise CommandError(f"File {output} already exists")
 
     def handle(self, *args, **options):
         self.stdout.write("Starting export...")
