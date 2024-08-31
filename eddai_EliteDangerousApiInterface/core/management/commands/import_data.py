@@ -3,6 +3,17 @@ from django.core import serializers
 from django.apps import apps
 
 class Command(BaseCommand):
+    """
+    Import data into the database.
+    Args:
+        input (str): The name of the file to import data from.
+        format (str): The format of the input data. Choices are 'json' or 'xml'. Default is 'json'.
+    Raises:
+        FileNotFoundError: If the input file is not found.
+        CommandError: If there is an error deserializing the data or any other exception occurs.
+    Returns:
+        None
+    """
     help = 'Import data into the database'
 
     def add_arguments(self, parser):

@@ -5,6 +5,23 @@ from django.apps import apps
 from datetime import datetime
 
 class Command(BaseCommand):
+    """
+    Export data from the database.
+    Args:
+        -a, --app (str): The name of the app to export data from. Default is None.
+        -m, --model (str): The name of the model to export data from. Default is None.
+        -o, --output (str): The name of the file to output the data to. Default is "exported_data_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.json".
+        -f, --format (str): The format of the output data. Choices are 'json' or 'xml'. Default is 'json'.
+    Methods:
+        - add_arguments(parser): Adds command line arguments to the parser.
+        - _get_apps(): Returns a list of all app labels.
+        - _get_models(app_label): Returns a list of model names for a given app label.
+        - _get_model(all_objects, app_label, model_name): Retrieves all objects from a specific model and app.
+        - write_to_file(all_objects, output, format_label): Writes the serialized data to a file.
+        - handle(*args, **options): Handles the command execution.
+    Raises:
+        - CommandError: If the provided app or model name is not found.
+    """
     help = 'Export data from the database'
 
     def add_arguments(self, parser):
@@ -30,12 +47,28 @@ class Command(BaseCommand):
         )
 
     def _get_apps(self) -> list[str]:
+        """
+        Returns a list of labels for all installed Django apps.
+
+        Returns:
+            list[str]: A list of labels for all installed Django apps.
+        """
         list_of_apps = []
         for app in apps.get_app_configs():
             list_of_apps.append(app.label)
         return list_of_apps
     
     def _get_models(self, app_label:str):
+        """
+        Get the models of a specific app.
+
+        Parameters:
+        - app_label (str): The label of the app.
+
+        Returns:
+        - list: A list of model names.
+
+        """
         app_models = []
         for model in apps.get_app_config(app_label).get_models():
             if model._meta:
@@ -43,6 +76,20 @@ class Command(BaseCommand):
         return app_models
 
     def _get_model(self, all_objects:list, app_label:str, model_name:str):
+        """
+        Retrieves a model object based on the provided app label and model name.
+
+        Args:
+            all_objects (list): A list to store the retrieved model objects.
+            app_label (str): The label of the Django app where the model is defined.
+            model_name (str): The name of the model to retrieve.
+
+        Raises:
+            CommandError: If the specified model is not found in the given app.
+
+        Returns:
+            None
+        """
         try:
             model_class = apps.get_model(app_label, model_name)
             all_objects.extend(model_class.objects.all())
@@ -50,6 +97,18 @@ class Command(BaseCommand):
             raise CommandError(f"Model {model_name} not found in app {app_label}")
         
     def write_to_file(self, all_objects:list, output:str, format_label:str):
+        """
+        Write the serialized data of the given objects to a file.
+
+        Args:
+            all_objects (list): A list of objects to be serialized.
+            output (str): The path to the output file.
+            format_label (str): The label specifying the serialization format.
+
+        Raises:
+            FileExistsError: If the output file already exists.
+
+        """
         serializer = serializers.get_serializer(format_label)
         with open(output, 'x') as file:
             serializer().serialize(all_objects, stream=file)   
