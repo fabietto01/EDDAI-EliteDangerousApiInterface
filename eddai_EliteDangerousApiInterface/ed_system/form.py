@@ -8,5 +8,5 @@ class SystemModelForm(forms.ModelForm):
         model = System
         fields = '__all__'
         widgets = {
-            'coordinate': Point3DWidget
+            'coordinate': Point3DWidget,
         }

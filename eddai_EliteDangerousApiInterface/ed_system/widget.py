@@ -1,8 +1,20 @@
-from django.forms import MultiWidget, NumberInput
+from django.forms import MultiWidget, NumberInput, ValidationError
 from django.contrib.gis.geos import Point
 from typing import Type
 
 class Point3DWidget(MultiWidget):
+    """
+    A widget for inputting 3D points.
+    Args:
+        attrs (dict, optional): Additional attributes for the widget. Defaults to None.
+    Methods:
+        __init__(self, attrs: dict = None) -> None:
+            Initializes the Point3DWidget.
+        decompress(self, value: Point) -> Type[float]:
+            Decompresses the value of the widget.
+        value_from_datadict(self, data, files, name) -> Point:
+            Retrieves the value of the widget from the data dictionary.
+    """
     
     def __init__(self, attrs:dict = None ) -> None:
         if not attrs:
@@ -20,5 +32,9 @@ class Point3DWidget(MultiWidget):
         return [None, None, None]
     
     def value_from_datadict(self, data, files, name) -> Point:
-        x, y, z, = map(float, super().value_from_datadict(data, files, name))
-        return Point(x, y, z,)
+        try:
+            x, y, z, = map(float, super().value_from_datadict(data, files, name))
+        except ValueError as e:
+            raise ValidationError(e)
+        else:
+            return Point(x, y, z)
