@@ -1,0 +1,1398 @@
+[
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 1,
+        "fields": {
+            "name": "0",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 2,
+        "fields": {
+            "name": "I",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 3,
+        "fields": {
+            "name": "Ia0",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 4,
+        "fields": {
+            "name": "Ia",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 5,
+        "fields": {
+            "name": "Ib",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 6,
+        "fields": {
+            "name": "Iab",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 7,
+        "fields": {
+            "name": "II",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 8,
+        "fields": {
+            "name": "IIa",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 9,
+        "fields": {
+            "name": "IIab",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 10,
+        "fields": {
+            "name": "IIb",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 11,
+        "fields": {
+            "name": "III",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 12,
+        "fields": {
+            "name": "IIIa",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 13,
+        "fields": {
+            "name": "IIIab",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 14,
+        "fields": {
+            "name": "IIIb",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 15,
+        "fields": {
+            "name": "IV",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 16,
+        "fields": {
+            "name": "IVa",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 17,
+        "fields": {
+            "name": "IVab",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 18,
+        "fields": {
+            "name": "IVb",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 19,
+        "fields": {
+            "name": "V",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 20,
+        "fields": {
+            "name": "Va",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 21,
+        "fields": {
+            "name": "Vab",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 22,
+        "fields": {
+            "name": "Vb",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 23,
+        "fields": {
+            "name": "Vz",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 24,
+        "fields": {
+            "name": "VI",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.starluminosity",
+        "pk": 25,
+        "fields": {
+            "name": "VII",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 1,
+        "fields": {
+            "_eddn": null,
+            "name": "O",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 2,
+        "fields": {
+            "_eddn": null,
+            "name": "B",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 3,
+        "fields": {
+            "_eddn": null,
+            "name": "A",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 4,
+        "fields": {
+            "_eddn": null,
+            "name": "F",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 5,
+        "fields": {
+            "_eddn": null,
+            "name": "G",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 6,
+        "fields": {
+            "_eddn": null,
+            "name": "K",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 7,
+        "fields": {
+            "_eddn": null,
+            "name": "M",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 8,
+        "fields": {
+            "_eddn": null,
+            "name": "L",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 9,
+        "fields": {
+            "_eddn": null,
+            "name": "T",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 10,
+        "fields": {
+            "_eddn": null,
+            "name": "Y",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 11,
+        "fields": {
+            "_eddn": null,
+            "name": "UN",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 12,
+        "fields": {
+            "_eddn": null,
+            "name": "UNA",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 13,
+        "fields": {
+            "_eddn": null,
+            "name": "TTS",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 14,
+        "fields": {
+            "_eddn": null,
+            "name": "WO",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 15,
+        "fields": {
+            "_eddn": null,
+            "name": "wc",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 16,
+        "fields": {
+            "_eddn": null,
+            "name": "WN",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 17,
+        "fields": {
+            "_eddn": null,
+            "name": "WNC",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 18,
+        "fields": {
+            "_eddn": null,
+            "name": "DC",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 19,
+        "fields": {
+            "_eddn": null,
+            "name": "DA",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 20,
+        "fields": {
+            "_eddn": "M_RedGiant",
+            "name": "M Red Giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 21,
+        "fields": {
+            "_eddn": null,
+            "name": "N",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 22,
+        "fields": {
+            "_eddn": null,
+            "name": "S",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 23,
+        "fields": {
+            "_eddn": null,
+            "name": "CN",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 24,
+        "fields": {
+            "_eddn": null,
+            "name": "DQ",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 25,
+        "fields": {
+            "_eddn": null,
+            "name": "D",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 26,
+        "fields": {
+            "_eddn": null,
+            "name": "DAB",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 27,
+        "fields": {
+            "_eddn": null,
+            "name": "DBV",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 28,
+        "fields": {
+            "_eddn": null,
+            "name": "H",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 29,
+        "fields": {
+            "_eddn": null,
+            "name": "AeBe",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 32,
+        "fields": {
+            "_eddn": null,
+            "name": "DCV",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 33,
+        "fields": {
+            "_eddn": "K_OrangeGiant",
+            "name": "K OrangeGiant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 38,
+        "fields": {
+            "_eddn": null,
+            "name": "MS",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 39,
+        "fields": {
+            "_eddn": null,
+            "name": "DB",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.startype",
+        "pk": 40,
+        "fields": {
+            "_eddn": "A_BlueWhiteSuperGiant",
+            "name": "A Blue White Super Giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 1,
+        "fields": {
+            "_eddn": "None",
+            "name": "No atmosphere",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 2,
+        "fields": {
+            "_eddn": null,
+            "name": "Suitable for water-based life",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 3,
+        "fields": {
+            "_eddn": "AmmoniaAndOxygen",
+            "name": "Ammonia and oxygen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 4,
+        "fields": {
+            "_eddn": null,
+            "name": "Ammonia",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 5,
+        "fields": {
+            "_eddn": null,
+            "name": "Water",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 6,
+        "fields": {
+            "_eddn": "CarbonDioxide",
+            "name": "Carbon dioxide",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 7,
+        "fields": {
+            "_eddn": "SulphurDioxide",
+            "name": "Sulphur dioxide",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 8,
+        "fields": {
+            "_eddn": null,
+            "name": "Nitrogen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 9,
+        "fields": {
+            "_eddn": "WaterRich",
+            "name": "Water-rich",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 10,
+        "fields": {
+            "_eddn": "MethaneRich",
+            "name": "Methane-rich",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 11,
+        "fields": {
+            "_eddn": "AmmoniaRich",
+            "name": "Ammonia-rich",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 12,
+        "fields": {
+            "_eddn": "CarbonDioxideRich",
+            "name": "Carbon dioxide-rich",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 13,
+        "fields": {
+            "_eddn": null,
+            "name": "Methane",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 14,
+        "fields": {
+            "_eddn": null,
+            "name": "Helium",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 15,
+        "fields": {
+            "_eddn": "SilicateVapour",
+            "name": "Silicate vapour",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 16,
+        "fields": {
+            "_eddn": "MetallicVapour",
+            "name": "Metallic vapour",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 17,
+        "fields": {
+            "_eddn": "NeonRich",
+            "name": "Neon-rich",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 18,
+        "fields": {
+            "_eddn": "ArgonRich",
+            "name": "Argon-rich",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 19,
+        "fields": {
+            "_eddn": null,
+            "name": "Neon",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 20,
+        "fields": {
+            "_eddn": null,
+            "name": "Argon",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 21,
+        "fields": {
+            "_eddn": null,
+            "name": "Oxygen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 22,
+        "fields": {
+            "_eddn": "AmmoniaOxygen",
+            "name": "Ammonia Oxygen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospheretype",
+        "pk": 23,
+        "fields": {
+            "_eddn": "EarthLike",
+            "name": "Earth Like",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 1,
+        "fields": {
+            "_eddn": "Hydrogen",
+            "name": "Hydrogen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 2,
+        "fields": {
+            "_eddn": "Helium",
+            "name": "Helium",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 3,
+        "fields": {
+            "_eddn": "Argon",
+            "name": "Argon",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 4,
+        "fields": {
+            "_eddn": "CarbonDioxide",
+            "name": "Carbon Dioxide",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 5,
+        "fields": {
+            "_eddn": "Nitrogen",
+            "name": "Nitrogen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 6,
+        "fields": {
+            "_eddn": "Silicates",
+            "name": "Silicates",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 7,
+        "fields": {
+            "_eddn": "Iron",
+            "name": "Iron",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 8,
+        "fields": {
+            "_eddn": "Methane",
+            "name": "Methane",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 9,
+        "fields": {
+            "_eddn": "Oxygen",
+            "name": "Oxygen",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 10,
+        "fields": {
+            "_eddn": "SulphurDioxide",
+            "name": "Sulphur Dioxide",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 11,
+        "fields": {
+            "_eddn": "Neon",
+            "name": "Neon",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 12,
+        "fields": {
+            "_eddn": "Water",
+            "name": "Water",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponent",
+        "pk": 13,
+        "fields": {
+            "_eddn": "Ammonia",
+            "name": "Ammonia",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 1,
+        "fields": {
+            "name": "Metal rich body",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 2,
+        "fields": {
+            "name": "High metal content body",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 3,
+        "fields": {
+            "name": "Rocky body",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 4,
+        "fields": {
+            "name": "Icy body",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 5,
+        "fields": {
+            "name": "Rocky ice body",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 6,
+        "fields": {
+            "name": "Earthlike body",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 7,
+        "fields": {
+            "name": "Water world",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 8,
+        "fields": {
+            "name": "Ammonia world",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 9,
+        "fields": {
+            "name": "Water giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 10,
+        "fields": {
+            "name": "Water giant with life",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 11,
+        "fields": {
+            "name": "Gas giant with water based life",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 12,
+        "fields": {
+            "name": "Gas giant with ammonia based life",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 13,
+        "fields": {
+            "name": "Sudarsky class I gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 14,
+        "fields": {
+            "name": "Sudarsky class II gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 15,
+        "fields": {
+            "name": "Sudarsky class III gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 16,
+        "fields": {
+            "name": "Sudarsky class IV gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 17,
+        "fields": {
+            "name": "Sudarsky class V gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 18,
+        "fields": {
+            "name": "Helium rich gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.planettype",
+        "pk": 19,
+        "fields": {
+            "name": "Helium gas giant",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 1,
+        "fields": {
+            "_eddn": "minor water magma volcanism",
+            "name": "Minor Water Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 2,
+        "fields": {
+            "_eddn": "major water magma volcanism",
+            "name": "Major Water Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 3,
+        "fields": {
+            "_eddn": "minor sulphur dioxide magma volcanism",
+            "name": "Minor Sulphur Dioxide Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 4,
+        "fields": {
+            "_eddn": "minor ammonia magma volcanism",
+            "name": "Minor Ammonia Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 5,
+        "fields": {
+            "_eddn": "minor methane magma volcanism",
+            "name": "Minor Methane Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 6,
+        "fields": {
+            "_eddn": "minor nitrogen magma volcanism",
+            "name": "Minor Nitrogen Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 7,
+        "fields": {
+            "_eddn": "minor silicate magma volcanism",
+            "name": "Minor Silicate Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 8,
+        "fields": {
+            "_eddn": "minor metallic magma volcanism",
+            "name": "Minor Metallic Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 9,
+        "fields": {
+            "_eddn": "minor water geysers volcanism",
+            "name": "Minor Water Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 10,
+        "fields": {
+            "_eddn": "minor carbon dioxide geysers volcanism",
+            "name": "Minor Carbon Dioxide Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 11,
+        "fields": {
+            "_eddn": "minor ammonia geysers volcanism",
+            "name": "Minor Ammonia Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 12,
+        "fields": {
+            "_eddn": "minor methane geysers volcanism",
+            "name": "Minor Methane Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 13,
+        "fields": {
+            "_eddn": "minor nitrogen geysers volcanism",
+            "name": "Minor Nitrogen Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 14,
+        "fields": {
+            "_eddn": "minor helium geysers volcanism",
+            "name": "Minor Helium Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 15,
+        "fields": {
+            "_eddn": "minor silicate vapour geysers volcanism",
+            "name": "Minor Silicate Vapour Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 16,
+        "fields": {
+            "_eddn": "major silicate vapour geysers volcanism",
+            "name": "Major Silicate Vapour Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 17,
+        "fields": {
+            "_eddn": "major sulphur dioxide magma volcanism",
+            "name": "Major Sulphur Dioxide Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 18,
+        "fields": {
+            "_eddn": "major ammonia magma volcanism",
+            "name": "Major Ammonia Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 19,
+        "fields": {
+            "_eddn": "major methane magma volcanism",
+            "name": "Major Methane Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 20,
+        "fields": {
+            "_eddn": "major nitrogen magma volcanism",
+            "name": "Major Nitrogen Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 21,
+        "fields": {
+            "_eddn": "major silicate magma volcanism",
+            "name": "Major Silicate Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 22,
+        "fields": {
+            "_eddn": "major metallic magma volcanism",
+            "name": "Major Metallic Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 23,
+        "fields": {
+            "_eddn": "major water geysers volcanism",
+            "name": "Major Water Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 24,
+        "fields": {
+            "_eddn": "major carbon dioxide geysers volcanism",
+            "name": "Major Carbon Dioxide Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 25,
+        "fields": {
+            "_eddn": "major ammonia geysers volcanism",
+            "name": "Major Ammonia Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 26,
+        "fields": {
+            "_eddn": "major methane geysers volcanism",
+            "name": "Major Methane Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 27,
+        "fields": {
+            "_eddn": "major nitrogen geysers volcanism",
+            "name": "Major Nitrogen Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 28,
+        "fields": {
+            "_eddn": "major helium geysers volcanism",
+            "name": "Major Helium Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 29,
+        "fields": {
+            "_eddn": "water magma volcanism",
+            "name": "Water Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 30,
+        "fields": {
+            "_eddn": "sulphur dioxide magma volcanism",
+            "name": "Sulphur Dioxide Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 31,
+        "fields": {
+            "_eddn": "ammonia magma volcanism",
+            "name": "Ammonia Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 32,
+        "fields": {
+            "_eddn": "methane magma volcanism",
+            "name": "Methane Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 33,
+        "fields": {
+            "_eddn": "nitrogen magma volcanism",
+            "name": "Nitrogen Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 34,
+        "fields": {
+            "_eddn": "silicate magma volcanism",
+            "name": "Silicate Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 35,
+        "fields": {
+            "_eddn": "metallic magma volcanism",
+            "name": "Metallic Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 36,
+        "fields": {
+            "_eddn": "water geysers volcanism",
+            "name": "Water Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 37,
+        "fields": {
+            "_eddn": "carbon dioxide geysers volcanism",
+            "name": "Carbon Dioxide Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 38,
+        "fields": {
+            "_eddn": "ammonia geysers volcanism",
+            "name": "Ammonia Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 39,
+        "fields": {
+            "_eddn": "methane geysers volcanism",
+            "name": "Methane Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 40,
+        "fields": {
+            "_eddn": "nitrogen geysers volcanism",
+            "name": "Nitrogen Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 41,
+        "fields": {
+            "_eddn": "helium geysers volcanism",
+            "name": "Helium Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 42,
+        "fields": {
+            "_eddn": "silicate vapour geysers volcanism",
+            "name": "Silicate Vapour Geysers volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 43,
+        "fields": {
+            "_eddn": "minor rocky magma volcanism",
+            "name": "Minor Rocky Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 44,
+        "fields": {
+            "_eddn": "rocky magma volcanism",
+            "name": "Rocky Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 45,
+        "fields": {
+            "_eddn": "major rocky magma volcanism",
+            "name": "Major Rocky Magma volcanism",
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_body.volcanism",
+        "pk": 46,
+        "fields": {
+            "_eddn": "",
+            "name": "No volcanism",
+            "note": ""
+        }
+    }
+]

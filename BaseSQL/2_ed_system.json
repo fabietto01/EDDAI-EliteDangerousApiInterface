@@ -1,0 +1,200 @@
+[
+    {
+        "model": "ed_system.system",
+        "pk": 1,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Synteini",
+            "security": "M",
+            "population": 12756306529,
+            "primaryEconomy": null,
+            "secondaryEconomy": null,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (51.78125 -76.40625 28.71875)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 2,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-07-30T11:59:13.942Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Rhea",
+            "security": "H",
+            "population": 12958908273,
+            "primaryEconomy": 5,
+            "secondaryEconomy": 7,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (58.125 22.59375 -28.59375)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 3,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Achenar",
+            "security": "H",
+            "population": 16380054761,
+            "primaryEconomy": 2,
+            "secondaryEconomy": null,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (67.5 -119.46875 24.84375)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 4,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-07-30T18:05:38.868Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Cemiess",
+            "security": "H",
+            "population": 10000000000,
+            "primaryEconomy": 2,
+            "secondaryEconomy": 10,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (66.0625 -105.34375 27.09375)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 5,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Harma",
+            "security": "A",
+            "population": 27790025,
+            "primaryEconomy": 3,
+            "secondaryEconomy": null,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (-99.25 -100.96875 20.40625)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 6,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Eotienses",
+            "security": "H",
+            "population": 6467401235,
+            "primaryEconomy": 5,
+            "secondaryEconomy": null,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (49.5 -104.03125 6.3125)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 7,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Diso",
+            "security": "M",
+            "population": 4100025331,
+            "primaryEconomy": 1,
+            "secondaryEconomy": null,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (72.15625 48.75 70.75)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 8,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Sirius",
+            "security": "H",
+            "population": 2501068,
+            "primaryEconomy": 3,
+            "secondaryEconomy": null,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (6.25 -1.28125 -5.75)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 10,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-07-30T18:24:04.991Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Euryale",
+            "security": "M",
+            "population": 640082,
+            "primaryEconomy": 4,
+            "secondaryEconomy": 9,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (35.375 -68.96875 24.8125)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 11,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-07-30T11:30:18.214Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Sol",
+            "security": "H",
+            "population": 22780919531,
+            "primaryEconomy": 2,
+            "secondaryEconomy": 8,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (0.0 0.0 0.0)"
+        }
+    },
+    {
+        "model": "ed_system.system",
+        "pk": 12,
+        "fields": {
+            "created_at": "2024-06-09T08:57:19.937Z",
+            "updated_at": "2024-06-09T08:57:19.937Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Polevnic",
+            "security": "M",
+            "population": 1066000000,
+            "primaryEconomy": 1,
+            "secondaryEconomy": 3,
+            "conrollingFaction": null,
+            "description": "",
+            "coordinate": "SRID=4979;POINT Z (-79.91 -87.47 -33.53)"
+        }
+    }
+]

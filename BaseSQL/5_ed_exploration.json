@@ -1,0 +1,146 @@
+[
+    {
+        "model": "ed_exploration.signalsignals",
+        "pk": 1,
+        "fields": {
+            "_eddn": "$SAA_SignalType_Biological;",
+            "name": "Biological"
+        }
+    },
+    {
+        "model": "ed_exploration.signalsignals",
+        "pk": 2,
+        "fields": {
+            "_eddn": "$SAA_SignalType_Guardian;",
+            "name": "Guardian"
+        }
+    },
+    {
+        "model": "ed_exploration.signalsignals",
+        "pk": 3,
+        "fields": {
+            "_eddn": "$SAA_SignalType_Geological;",
+            "name": "Geological"
+        }
+    },
+    {
+        "model": "ed_exploration.signalsignals",
+        "pk": 4,
+        "fields": {
+            "_eddn": "$SAA_SignalType_Human;",
+            "name": "Human"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 1,
+        "fields": {
+            "_eddn": "$Codex_Ent_Brancae_Name;",
+            "name": "Brancae"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 2,
+        "fields": {
+            "_eddn": "$Codex_Ent_Bacterial_Genus_Name;",
+            "name": "Bacterial"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 3,
+        "fields": {
+            "_eddn": "$Codex_Ent_Tubus_Genus_Name;",
+            "name": "Tubus"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 4,
+        "fields": {
+            "_eddn": "$Codex_Ent_Shrubs_Genus_Name;",
+            "name": "Shrubs"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 5,
+        "fields": {
+            "_eddn": "$Codex_Ent_Tussocks_Genus_Name;",
+            "name": "Tussocks"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 6,
+        "fields": {
+            "_eddn": "$Codex_Ent_Cactoid_Genus_Name;",
+            "name": "Cactoid"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 7,
+        "fields": {
+            "_eddn": "$Codex_Ent_Conchas_Genus_Name;",
+            "name": "Conchas"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 8,
+        "fields": {
+            "_eddn": "$Codex_Ent_Fungoids_Genus_Name;",
+            "name": "Fungoids"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 9,
+        "fields": {
+            "_eddn": "$Codex_Ent_Osseus_Genus_Name;",
+            "name": "Osseus"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 10,
+        "fields": {
+            "_eddn": "$Codex_Ent_Recepta_Genus_Name;",
+            "name": "Recepta"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 11,
+        "fields": {
+            "_eddn": "$Codex_Ent_Fonticulus_Genus_Name;",
+            "name": "Fonticulus"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 12,
+        "fields": {
+            "_eddn": "$Codex_Ent_Ground_Struct_Ice_Name;",
+            "name": "Ground"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 13,
+        "fields": {
+            "_eddn": "$Codex_Ent_Cone_Name;",
+            "name": "Cone"
+        }
+    },
+    {
+        "model": "ed_exploration.samplesignals",
+        "pk": 14,
+        "fields": {
+            "_eddn": "$Codex_Ent_Stratum_Genus_Name;",
+            "name": "Stratum"
+        }
+    }
+]
