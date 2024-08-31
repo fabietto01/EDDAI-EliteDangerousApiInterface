@@ -52,10 +52,10 @@ services:
             POSTGRES_DB: ${POSTGRES_DB}
         volumes:
             - postgisvol:/var/lib/postgresql/data
-            - ${POSTGIS_CONFIG_FILE}:/etc/postgresql/postgresql.conf
         ports:
             - "5432:5432"
         restart: always
+        command: postgres -c 'max_connections=5000' -c 'shared_buffers=250MB'
 
 volumes:
     rabbitedvol:

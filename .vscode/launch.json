@@ -59,7 +59,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "100",
+        "-c", "200",
         "-Q", "admin",
         "-n", "WorkerAdmin@%h"
       ],
@@ -81,7 +81,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "100",
+        "-c", "200",
         "-Q", "eddn",
         "-n", "WorkerEddn@%h"
       ],
