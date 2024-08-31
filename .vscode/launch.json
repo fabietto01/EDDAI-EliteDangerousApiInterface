@@ -18,19 +18,6 @@
       "consoleTitle": "Python Debug Django",
     },
     {
-      "name": "Python: Django Shell",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
-      "args": [
-        "shell",
-        "--settings",
-        "eddai_EliteDangerousApiInterface.settings.dev"
-      ],
-      "django": true,
-      "consoleTitle": "Python Debug Django",
-    },
-    {
       "name": "Python: Service eddn",
       "type": "debugpy",
       "request": "launch",
