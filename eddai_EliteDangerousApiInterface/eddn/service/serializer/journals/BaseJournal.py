@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ed_system.models import System
 from eddn.service.serializer.BaseSerializer import BaseSerializer
+from django.contrib.gis.geos import Point
 
 from core.utility import create_or_update_if_time
 
@@ -26,11 +27,9 @@ class BaseJournal(BaseSerializer):
         raise NotImplementedError
 
     def set_data_defaults(self, validated_data:dict) -> dict:
-        x,y,z = validated_data.get('StarPos')
+        x,y,z = map(float, validated_data.get('StarPos'))
         return {
-            "x": x,
-            "y": y,
-            "z": z,
+            "coordinate": Point(x, y, z),
         }
 
     def update_or_create(self, validated_data:dict, update_function=None, create_function=None) -> System:

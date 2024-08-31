@@ -33,18 +33,6 @@ class System(OwnerAndDateModels, models.Model):
         verbose_name=_('coordinate'),
         unique=True,
     )
-    # x = models.FloatField(
-    #     verbose_name=_('x coordinates'),
-    # )
-    # y = models.FloatField(
-    #     verbose_name=_('y coordinates'),
-    # )
-    # z = models.FloatField(
-    #     verbose_name=_('z coordinates'),
-    # )
-    x = None
-    y = None
-    z = None
     security = models.CharField(
         verbose_name=_('security'), max_length=1, 
         choices=SecurityChoices.choices, blank=True, null=True
