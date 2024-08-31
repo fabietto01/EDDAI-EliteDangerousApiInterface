@@ -38,6 +38,7 @@ class Command(BaseCommand):
             
             with open(input_file, 'r') as file:
                 for obj in serializers.deserialize(format_label, file):
+                    self.stdout.write(f"Importing {obj.object}")
                     obj.save()
 
         except FileNotFoundError:
@@ -46,3 +47,5 @@ class Command(BaseCommand):
             raise CommandError(f"Error deserializing data: {e}")
         except Exception as e:
             raise CommandError(f"An error occurred: {e}")
+        else:
+            self.stdout.write("Import complete")
