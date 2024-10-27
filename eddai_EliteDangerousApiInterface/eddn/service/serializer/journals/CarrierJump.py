@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from django.db import OperationalError, ProgrammingError
 
 from .BaseJournal import BaseJournal
 
-from ..customFields import CustomCacheChoiceField, CustomChoiceField
+from ..customFields import CustomChoiceField, CustomCacheSlugRelatedField
 from ..nestedSerializer import BaseMinorFactionSerializer, EconomySerializer
 
 from ed_station.models import StationType, Service, Station, ServiceInStation
@@ -13,7 +12,7 @@ from ed_system.models import System
 from ed_body.models import Planet, Star
 
 from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none, in_list_models
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 
 class CarrierJumpSerializer(BaseJournal):
     """
@@ -32,17 +31,17 @@ class CarrierJumpSerializer(BaseJournal):
         ]
     )
     #-------------------------------------------------------------------------------
-    SystemEconomy = CustomCacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key("eddn", flat=True),
+    SystemEconomy = CustomCacheSlugRelatedField(
+        queryset=Economy.objects.all(),
+        slug_field='eddn',
         required=False,
-        allow_blank=True,
+        allow_null=True,
     )
-    SystemSecondEconomy = CustomCacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key("eddn", flat=True),
+    SystemSecondEconomy = CustomCacheSlugRelatedField(
+        queryset=Economy.objects.all(),
+        slug_field='eddn',
         required=False,
-        allow_blank=True,
+        allow_null=True,
     )
     SystemSecurity = CustomChoiceField(
         choices=[sc.lower() for sc in System.SecurityChoices.names],
@@ -56,16 +55,15 @@ class CarrierJumpSerializer(BaseJournal):
     StationName = serializers.CharField(
         min_length=1,
     )
-    StationType = CacheChoiceField(
-        fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=StationType.get_cache_key("eddn", flat=True),
+    StationType = CacheSlugRelatedField(
+        queryset=StationType.objects.all(),
+        slug_field='eddn',
     )
     StationFaction = BaseMinorFactionSerializer()
-    StationServices = serializers.ListField(
-        child=CacheChoiceField(
-            fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=Service.get_cache_key("eddn", flat=True),
-        )
+    StationServices = CacheSlugRelatedField(
+        queryset=Service.objects.all(),
+        slug_field='eddn',
+        many=True,
     )
     StationEconomies = serializers.ListField(
         child=EconomySerializer(),

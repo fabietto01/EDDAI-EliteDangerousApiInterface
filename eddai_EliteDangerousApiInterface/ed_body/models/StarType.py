@@ -2,9 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
-from core.models import CacheModel
 
-class StarType(AbstractDataEDDN, CacheModel, models.Model):
+class StarType(AbstractDataEDDN,  models.Model):
     """
     modello per la tipologia delle stelle
     """

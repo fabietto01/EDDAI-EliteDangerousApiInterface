@@ -1,9 +1,8 @@
 from rest_framework import serializers
-from django.db import OperationalError, ProgrammingError
 
 from .BaseJournal import BaseJournal
 
-from ..customFields import CustomChoiceField, CustomCacheChoiceField
+from ..customFields import CustomChoiceField, CustomCacheSlugRelatedField
 from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
 
 from ed_system.models import System
@@ -11,23 +10,23 @@ from ed_economy.models import Economy
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
 
 from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none, in_list_models
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 
 class FSDJumpSerializer(BaseJournal):
     """
     sserializer dedicato alla lavorazione dei dati con scema journal e evento FSDJump
     """
-    SystemEconomy = CustomCacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key("eddn", flat=True),
+    SystemEconomy = CustomCacheSlugRelatedField(
+        queryset=Economy.objects.all(),
+        slug_field='eddn',
         required=False,
-        allow_blank=True,
+        allow_null=True,
     )
-    SystemSecondEconomy = CustomCacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key("eddn", flat=True),
+    SystemSecondEconomy = CustomCacheSlugRelatedField(
+        queryset=Economy.objects.all(),
+        slug_field='eddn',
         required=False,
-        allow_blank=True,
+        allow_null=True,
     )
     SystemSecurity = CustomChoiceField(
         choices=[sc.lower() for sc in System.SecurityChoices.names],
@@ -48,17 +47,17 @@ class FSDJumpSerializer(BaseJournal):
     #DEV: da implementare
     Conflicts = None
     Powers = serializers.ListField(
-        child=CacheChoiceField(
-            fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=Power.get_cache_key("name", flat=True),
+        child=CacheSlugRelatedField(
+            queryset=Power.objects.all(),
+            slug_field='name'
         ),
         required=False,
         min_length=0,
         max_length=PowerInSystem.MaxRelation(),
     )
-    PowerplayState = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=PowerState.get_cache_key("eddn", 'name'),
+    PowerplayState = CacheSlugRelatedField(
+        queryset=PowerState.objects.all(),
+        slug_field='eddn',
         required=False,
     )
 

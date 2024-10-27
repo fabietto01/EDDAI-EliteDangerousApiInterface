@@ -1,17 +1,17 @@
-from rest_framework import serializers
+from django.db.models import Model
 from django.utils.translation import gettext_lazy as _
 from django_filters.filters import EMPTY_VALUES
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 import re
 
-class HappinessChoiceField(CacheChoiceField):
+class HappinessCacheSlugRelatedField(CacheSlugRelatedField):
     default_error_messages = {
         'invalid_choice': _('"{input}" is not a valid choice.'),
         'incorrect_format': _('"{input}" Incorrect format'),
         'state_phase': _('"{input}" is not a valid phase state'),
     }
 
-    def to_internal_value(self, data):
+    def to_internal_value(self, data) -> dict[Model, int]:
         if data.__class__ != dict:
             if data == '' and self.allow_blank:
                 return ''
@@ -30,13 +30,8 @@ class HappinessChoiceField(CacheChoiceField):
         
         try:
             return {
-                'State': self.choice_strings_to_values[str(happi)],
+                'State': super().to_internal_value(happi),
                 'StatePhase': statePhase,
             }
         except KeyError:
             self.fail('invalid_choice', input=happi)
-
-    def to_representation(self, value):
-        if value in EMPTY_VALUES:
-            return value
-        return f"$Faction_{value.get('State')}Band{value.get('StatePhase')};"

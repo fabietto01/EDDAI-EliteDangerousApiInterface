@@ -2,7 +2,7 @@ from rest_framework import serializers
 from eddn.service.serializer.journals.scan.BaseScanSerializer import BaseScanSerializer
 
 from core.utility import get_values_list_or_default, get_or_none, in_list_models
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.customFields import ReserveLevelChoiceField
 
@@ -13,20 +13,20 @@ from eddn.service.serializer.journals.scan.nestedScan import MaterialsSerializer
 
 class PlanetScanSerializer(BaseScanSerializer):
     
-    AtmosphereType = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(AtmosphereType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=AtmosphereType.get_cache_key("eddn", flat=True),
+    AtmosphereType = CacheSlugRelatedField(
+        queryset=AtmosphereType.objects.all(),
+        slug_field='eddn',
         required=False,
     )
-    PlanetClass = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(PlanetType, [], (OperationalError, ProgrammingError), 'name', flat=True),
-        cache_key=PlanetType.get_cache_key("eddn", flat=True),
+    PlanetClass = CacheSlugRelatedField(
+        queryset=PlanetType.objects.all(),
+        slug_field='name',
         required=False,
     )
-    Volcanism = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Volcanism, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Volcanism.get_cache_key("eddn", flat=True),
-        allow_blank=True,
+    Volcanism = CacheSlugRelatedField(
+        queryset=Volcanism.objects.all(),
+        slug_field='eddn',
+        allow_null=True,
         required=False,
     )
     TerraformState = serializers.ChoiceField(

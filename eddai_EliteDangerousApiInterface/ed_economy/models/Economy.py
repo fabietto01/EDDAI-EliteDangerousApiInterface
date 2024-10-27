@@ -3,9 +3,8 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
-from core.models import CacheModel
 
-class Economy(AbstractDataEDDN, CacheModel, models.Model):
+class Economy(AbstractDataEDDN, models.Model):
 
     name = models.CharField(
         max_length=100, unique=True, verbose_name=_('name')

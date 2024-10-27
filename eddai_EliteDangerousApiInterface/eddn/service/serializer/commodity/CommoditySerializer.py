@@ -4,12 +4,12 @@ from django.db import OperationalError, ProgrammingError
 from ed_economy.models import Commodity
 
 from core.utility import get_values_list_or_default
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 
 class CommoditySerializer(serializers.Serializer):
-    name = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Commodity, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Commodity.get_cache_key("eddn", flat=True),
+    name = CacheSlugRelatedField(
+        queryset=Commodity.objects.all(),
+        slug_field='eddn',
     )
     buyPrice = serializers.IntegerField(
         min_value=0,
