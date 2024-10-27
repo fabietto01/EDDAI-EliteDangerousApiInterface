@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib import admin
 
 from django.utils.translation import gettext_lazy as _
@@ -25,7 +26,7 @@ class DataLog(models.Model):
     )
 
     def __str__(self) -> str:
-        return str(self.schema)
+        return str(self.schema) or str(self.data)
 
     class Meta:
         verbose_name = _("data log")
@@ -41,7 +42,7 @@ class AbstractDataEDDN(models.Model):
         max_length=255, verbose_name=_('name')
     )
     _eddn = models.CharField(
-        max_length=100, unique=True, 
+        max_length=100, 
         blank=True, null=True
     )
 
@@ -58,5 +59,13 @@ class AbstractDataEDDN(models.Model):
     def eddn(self, value: str) -> None:
         self.__eddn = value
 
+    def clean(self) -> None:
+        super().clean()
+        if self._eddn != None:
+            if self.__class__.objects.filter(_eddn=self._eddn).exclude(pk=self.pk).exists():
+                raise ValidationError(
+                    {'eddn': _('This value is already in use')}
+                )
+            
     class Meta:
         abstract = True
