@@ -16,6 +16,7 @@
       ],
       "django": true,
       "consoleTitle": "Python Debug Django",
+      "envFile": "${workspaceFolder}/.env"
     },
     {
       "name": "Python: Service eddn",
@@ -36,7 +37,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "100",
+        "-c", "50",
         "-Q", "default",
         "-n", "WorkerTasck@%h"
       ],
@@ -58,7 +59,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "100",
+        "-c", "50",
         "-Q", "admin",
         "-n", "WorkerAdmin@%h"
       ],
@@ -80,7 +81,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "100",
+        "-c", "50",
         "-Q", "eddn",
         "-n", "WorkerEddn@%h"
       ],

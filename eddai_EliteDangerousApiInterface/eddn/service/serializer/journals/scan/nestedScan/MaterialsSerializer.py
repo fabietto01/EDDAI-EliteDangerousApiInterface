@@ -8,9 +8,7 @@ from ed_material.models import Material, MaterialInPlanet
 
 class MaterialsSerializer(BaseNestedSerializer):
     Name = serializers.ChoiceField(
-        choices=[
-            str(name).lower() for name in get_values_list_or_default(Material.objects.filter(type=Material.MaterialType.RAW.value), [], (OperationalError, ProgrammingError), 'name', flat=True)
-        ]
+        choices=get_values_list_or_default(Material.objects.filter(type=Material.MaterialType.RAW.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True)
     )
     Percent = serializers.FloatField(
         min_value=0,

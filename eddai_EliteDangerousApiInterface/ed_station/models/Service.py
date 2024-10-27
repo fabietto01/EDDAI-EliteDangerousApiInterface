@@ -2,9 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
-from core.models.cacheModel import CacheModel
 
-class Service(AbstractDataEDDN, CacheModel, models.Model):
+class Service(AbstractDataEDDN,  models.Model):
     name = models.CharField(
         max_length=100, unique=True, verbose_name=_('name')
     )

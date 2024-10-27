@@ -1,9 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.models import CacheModel
-
-class StarLuminosity(CacheModel, models.Model):
+class StarLuminosity(models.Model):
     """
     modello per la luminosita' delle stelle
     """

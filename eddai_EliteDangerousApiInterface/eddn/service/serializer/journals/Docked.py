@@ -13,7 +13,7 @@ from ed_economy.models import Economy
 from ed_bgs.models import MinorFaction, MinorFactionInSystem
 from ed_system.models import System
 
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 from core.utility import (
     create_or_update_if_time, in_list_models, 
     get_values_list_or_default, get_or_none
@@ -26,18 +26,17 @@ class DockedSerializer(BaseJournal):
     StationName = serializers.CharField(
         min_length=1,
     )
-    StationType = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=StationType.get_cache_key("eddn", flat=True),
+    StationType = CacheSlugRelatedField(
+        queryset=StationType.objects.all(),
+        slug_field='eddn',
     )
     DistFromStarLS = serializers.FloatField(
         min_value=0,
     )
-    StationServices = serializers.ListField(
-        child=CacheChoiceField(
-            fun_choices=lambda:get_values_list_or_default(Service, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-            cache_key=Service.get_cache_key("eddn", flat=True),
-        )
+    StationServices = CacheSlugRelatedField(
+        queryset=Service.objects.all(),
+        slug_field='eddn',
+        many=True,
     )
     StationEconomies = serializers.ListField(
         child=EconomySerializer(),

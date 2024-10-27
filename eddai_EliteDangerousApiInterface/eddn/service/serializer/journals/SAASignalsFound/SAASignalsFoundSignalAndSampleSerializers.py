@@ -1,27 +1,26 @@
 from rest_framework import serializers
-from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
-from core.utility import  get_values_list_or_default, in_list_models, create_or_update_if_time
-from core.api.fields import CacheChoiceField
+from core.utility import  in_list_models, create_or_update_if_time
+from core.api.fields import CacheSlugRelatedField
 
 from ed_exploration.models import Signal, SignalSignals, Sample, SampleSignals
 from ed_body.models import Planet
 from ed_system.models import System
 
 class SignalSerializers(serializers.Serializer):
-    Type = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(SignalSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=SignalSignals.get_cache_key("eddn", flat=True),
+    Type = CacheSlugRelatedField(
+        queryset=SignalSignals.objects.all(),
+        slug_field='eddn',
     )
     Count = serializers.IntegerField(
         min_value=0,
     )
 
 class SampleSerializers(serializers.Serializer):
-    Genus = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(SampleSignals, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=SampleSignals.get_cache_key("eddn", flat=True),
+    Genus = CacheSlugRelatedField(
+        queryset=SampleSignals.objects.all(),
+        slug_field='eddn',
     )
 
 class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):
@@ -34,7 +33,6 @@ class SAASignalsFoundSignalAndSampleSerializers(SAASignalsFoundSerializers):
     Genuses = serializers.ListField(
         child=SampleSerializers(),
         required=False,
-        min_length=1
     )
 
     def set_data_defaults(self, validated_data: dict) -> dict:

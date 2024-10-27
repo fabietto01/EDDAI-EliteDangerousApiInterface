@@ -14,7 +14,7 @@ from ed_bgs.models import (
     StateInMinorFaction
 )
 
-from eddn.service.serializer.customFields import HappinessChoiceField
+from eddn.service.serializer.customFields import HappinessCacheSlugRelatedField
 from eddn.service.serializer.nestedSerializer.StateSerializer import StateSerializer
 
 
@@ -28,10 +28,10 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
     Influence = serializers.FloatField(
         min_value=0, max_value=1,
     )
-    Happiness = HappinessChoiceField(
-        fun_choices=lambda: get_values_list_or_default(State.objects.filter(type=State.TypeChoices.HAPPINESS.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=State.get_cache_key('eddn', "filter", flat=True, type=State.TypeChoices.HAPPINESS.value),
-        allow_blank=True,
+    Happiness = HappinessCacheSlugRelatedField(
+        queryset=State.objects.filter(type=State.TypeChoices.HAPPINESS.value),
+        slug_field='eddn',
+        allow_null=True,
     )
     RecoveringStates = serializers.ListField(
         child=StateSerializer(),
@@ -107,7 +107,7 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
             list.append(
                 self.get_state_instance(
                     instance=instance, 
-                    state=State.objects.get(eddn=self.stato_data.get('Happiness', {}).get('State'))
+                    state=self.stato_data.get('Happiness', {}).get('State')
                 )
             )
         if self.stato_data.get('RecoveringStates', []):

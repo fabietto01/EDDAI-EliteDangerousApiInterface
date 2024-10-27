@@ -1,13 +1,15 @@
-from django.contrib import admin
+from django.contrib.gis import admin
 from django.utils.translation import gettext_lazy as _
 
 from ed_system.models import System
+from ed_system.form import SystemModelForm
 
 from ed_station.admin import StationTabularInline
 
 @admin.register(System)
 class SystemAdmin(admin.ModelAdmin):
     model = System
+    form = SystemModelForm
     search_fields = ("name","pk")
     list_display = ("name", "security","population", "economy", "conrollingFaction", "updated_at", "created_at")
     list_display_links = ("name",)
@@ -18,7 +20,7 @@ class SystemAdmin(admin.ModelAdmin):
         (None, {
             "fields": (
                 "name",
-                ("x", "y", "z"),
+                ("coordinate"),
                 "population",
                 "security",
                 ("primaryEconomy", "secondaryEconomy"),

@@ -15,10 +15,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='system',
-            options={'verbose_name': 'System', 'verbose_name_plural': 'Systems'},
-        ),
         migrations.AddField(
             model_name='system',
             name='conrollingFaction',
@@ -45,9 +41,5 @@ class Migration(migrations.Migration):
         migrations.AddIndex(
             model_name='system',
             index=models.Index(fields=['security'], name='system_security_idx'),
-        ),
-        migrations.AddConstraint(
-            model_name='system',
-            constraint=models.UniqueConstraint(fields=('x', 'y', 'z'), name='unique_system_coordinates'),
-        ),
+        )
     ]

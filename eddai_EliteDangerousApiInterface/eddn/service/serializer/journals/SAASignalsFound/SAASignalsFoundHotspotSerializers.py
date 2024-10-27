@@ -3,7 +3,7 @@ from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
 from core.utility import  in_list_models, get_values_list_or_default, create_or_update_if_time
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 
 from ed_mining.models import HotspotType, HotSpot, Ring
 
@@ -12,9 +12,9 @@ from ed_system.models import System
 import re
 
 class HotspotSerializers(serializers.Serializer):
-    Type = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(HotspotType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=HotspotType.get_cache_key("eddn", flat=True),
+    Type = CacheSlugRelatedField(
+        queryset=HotspotType.objects.all(),
+        slug_field='eddn',
     )
     Count = serializers.IntegerField(
         min_value=0,

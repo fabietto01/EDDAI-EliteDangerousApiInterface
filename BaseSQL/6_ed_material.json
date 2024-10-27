@@ -1,0 +1,310 @@
+[
+    {
+        "model": "ed_material.material",
+        "pk": 1,
+        "fields": {
+            "_eddn": "antimony",
+            "name": "Antimony",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 2,
+        "fields": {
+            "_eddn": "arsenic",
+            "name": "Arsenic",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 3,
+        "fields": {
+            "_eddn": "boron",
+            "name": "Boron",
+            "type": "ra",
+            "grade": 1,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 4,
+        "fields": {
+            "_eddn": "cadmium",
+            "name": "Cadmium",
+            "type": "ra",
+            "grade": 3,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 5,
+        "fields": {
+            "_eddn": "carbon",
+            "name": "Carbon",
+            "type": "ra",
+            "grade": 1,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 6,
+        "fields": {
+            "_eddn": "chromium",
+            "name": "Chromium",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 7,
+        "fields": {
+            "_eddn": "germanium",
+            "name": "Germanium",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 8,
+        "fields": {
+            "_eddn": "iron",
+            "name": "Iron",
+            "type": "ra",
+            "grade": 1,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 9,
+        "fields": {
+            "_eddn": "lead",
+            "name": "Lead",
+            "type": "ra",
+            "grade": 5,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 10,
+        "fields": {
+            "_eddn": "manganese",
+            "name": "Manganese",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 11,
+        "fields": {
+            "_eddn": "mercury",
+            "name": "Mercury",
+            "type": "ra",
+            "grade": 3,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 12,
+        "fields": {
+            "_eddn": "molybdenum",
+            "name": "Molybdenum",
+            "type": "ra",
+            "grade": 3,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 13,
+        "fields": {
+            "_eddn": "nickel",
+            "name": "Nickel",
+            "type": "ra",
+            "grade": 5,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 14,
+        "fields": {
+            "_eddn": "niobium",
+            "name": "Niobium",
+            "type": "ra",
+            "grade": 3,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 15,
+        "fields": {
+            "_eddn": "phosphorus",
+            "name": "Phosphorus",
+            "type": "ra",
+            "grade": 5,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 16,
+        "fields": {
+            "_eddn": "polonium",
+            "name": "Polonium",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 17,
+        "fields": {
+            "_eddn": "rhenium",
+            "name": "Rhenium",
+            "type": "ra",
+            "grade": 5,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 18,
+        "fields": {
+            "_eddn": "ruthenium",
+            "name": "Ruthenium",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 19,
+        "fields": {
+            "_eddn": "selenium",
+            "name": "Selenium",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 20,
+        "fields": {
+            "_eddn": "sulphur",
+            "name": "Sulphur",
+            "type": "ra",
+            "grade": 5,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 21,
+        "fields": {
+            "_eddn": "technetium",
+            "name": "Technetium",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 22,
+        "fields": {
+            "_eddn": "tellurium",
+            "name": "Tellurium",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 23,
+        "fields": {
+            "_eddn": "tin",
+            "name": "Tin",
+            "type": "ra",
+            "grade": 3,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 24,
+        "fields": {
+            "_eddn": "tungsten",
+            "name": "Tungsten",
+            "type": "ra",
+            "grade": 3,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 25,
+        "fields": {
+            "_eddn": "vanadium",
+            "name": "Vanadium",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 26,
+        "fields": {
+            "_eddn": "yttrium",
+            "name": "Yttrium",
+            "type": "ra",
+            "grade": 4,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 27,
+        "fields": {
+            "_eddn": "zinc",
+            "name": "Zinc",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    },
+    {
+        "model": "ed_material.material",
+        "pk": 28,
+        "fields": {
+            "_eddn": "zirconium",
+            "name": "Zirconium",
+            "type": "ra",
+            "grade": 2,
+            "note": ""
+        }
+    }
+]

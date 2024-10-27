@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis', 
 
     'rest_framework', #pip install djangorestframework
     'rest_framework.authtoken', #per il login con token
@@ -53,7 +54,6 @@ INSTALLED_APPS = [
     'ed_body',
     'ed_mining',
     'ed_exploration',
-
     'ed_bgs',
     'ed_station',
     'ed_economy',
@@ -102,18 +102,37 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     },
     'ed_info':{
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ed_info_new_dev',
-        'USER': 'ed_info-user',
-        'PASSWORD': os.environ.get('MYSQL_USER_ED_INFO_PASSWORD', "vkWCRnO7$oOLCm^ZNd#P@1*Pgbch7wPAMgm3Knd1FrRD&SH5DS"),
-        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'PORT': '3306',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'ed_info',
+        'USER':  'postgres',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', "123"),
+        'HOST': os.environ.get('POSTGIS_HOST', 'localhost'),
+        'PORT': '5432',
         "TEST": {
             "NAME": "test_ed_info_dev",
             "DEPENDENCIES": [],
         },
     }
 }
+
+# setting per la gestione della geolocalizzazione
+# https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
+# GDAL_LIBRARY_PATH = os.environ.get(
+#     'DJNAGO_SETTINGS_GDAL_LIBRARY_PATH', 
+#     r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\geos_c.dll'
+# )
+
+GDAL_LIBRARY_PATH = r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\gdal.dll'
+GEOS_LIBRARY_PATH = r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\geos_c.dll'
+
+# GDAL_LIBRARY_PATH = os.environ.get(
+#     'DJNAGO_SETTINGS_GDAL_LIBRARY_PATH',
+#     r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\gdal.dll'
+# )
+# GEOS_LIBRARY_PATH = os.environ.get(
+#     'DJNAGO_SETTINGS_GEOS_LIBRARY_PATH',
+#      r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\geos_c.dll'
+# )
 
 # Router per il database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database-routers

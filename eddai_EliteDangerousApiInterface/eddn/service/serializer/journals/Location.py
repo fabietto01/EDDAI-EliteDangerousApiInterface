@@ -1,17 +1,15 @@
 from rest_framework import serializers
 from .BaseJournal import BaseJournal
-from django.db import OperationalError, ProgrammingError
 
-from ..customFields import CustomChoiceField, CustomCacheChoiceField
+from ..customFields import CustomChoiceField, CustomCacheSlugRelatedField
 from ..nestedSerializer import MinorFactionInSystemSerializer, BaseMinorFactionSerializer
 
-from core.api.fields import CacheChoiceField
+from core.api.fields import CacheSlugRelatedField
 
 from ed_station.models import (
     StationType, Station
 )
 
-from ed_body.models import Planet, Star
 from ed_economy.models import Economy
 from ed_system.models import System
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
@@ -47,24 +45,24 @@ class LocationSerializer(BaseJournal):
         min_length=1,
         required=False,
     )
-    StationType = CacheChoiceField(
-        fun_choices=lambda:get_values_list_or_default(StationType, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=StationType.get_cache_key("eddn", flat=True),
+    StationType = CacheSlugRelatedField(
+        queryset=StationType.objects.all(),
+        slug_field='eddn',
         required=False,
     )
     #-------------------------------------------------------------------------------
     Population = serializers.IntegerField(
         min_value=0,
     )
-    SystemEconomy = CustomCacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key("eddn", flat=True),
+    SystemEconomy = CustomCacheSlugRelatedField(
+        queryset=Economy.objects.all(),
+        slug_field='eddn',
     )
-    SystemSecondEconomy = CustomCacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(Economy, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
-        cache_key=Economy.get_cache_key("eddn", flat=True),
+    SystemSecondEconomy = CustomCacheSlugRelatedField(
+        queryset=Economy.objects.all(),
+        slug_field='eddn',
         required=False,
-        allow_blank=True,
+        allow_null=True,
     )
     SystemSecurity = CustomChoiceField(
         choices=[sc.lower() for sc in System.SecurityChoices.names],
@@ -80,17 +78,17 @@ class LocationSerializer(BaseJournal):
     )
     Conflicts = None
     Powers = serializers.ListField(
-        child=CacheChoiceField(
-            fun_choices=lambda: get_values_list_or_default(Power, [], (OperationalError, ProgrammingError), 'name', flat=True),
-            cache_key=Power.get_cache_key("eddn", flat=True),
+        child=CacheSlugRelatedField(
+            queryset=Power.objects.all(),
+            slug_field='eddn',
         ),
         required=False,
         min_length=0,
         max_length=PowerInSystem.MaxRelation(),
     )
-    PowerplayState = CacheChoiceField(
-        fun_choices=lambda: get_values_list_or_default(PowerState, [], (OperationalError, ProgrammingError), 'eddn', 'name'),
-        cache_key=PowerState.get_cache_key("eddn", flat=True),
+    PowerplayState = CacheSlugRelatedField(
+        queryset=PowerState.objects.all(),
+        slug_field='eddn',
     )
 
     def validate(self, attrs:dict):

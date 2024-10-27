@@ -1,23 +1,20 @@
 from rest_framework import serializers
-from django.utils.translation import gettext_lazy as _
-from django_filters.filters import EMPTY_VALUES
-import re
+from .BaseCustinField import BaseCustomField
 
-from core.api.fields import CacheChoiceField
+from enum import Enum
 
-class CustomChoiceField(serializers.ChoiceField):
+class CustomChoiceField(serializers.ChoiceField, BaseCustomField):
+    
+    def run_validation(self, data):
+        data = BaseCustomField._to_internal_value(self, data)
+        return super().run_validation(data)
     
     def to_internal_value(self, data):
-        if not data in EMPTY_VALUES:
-            reg = re.findall(r'_([a-zA-Z]{1,});$', data)
-            data = str(reg[0]) if reg else ''
-            data = data if data != 'None' else ''
-        return super().to_internal_value(data)
-
-class CustomCacheChoiceField(CustomChoiceField, CacheChoiceField):
-
-    def __init__(self, fun_choices, cache_key:str, **kwargs):
-        super().__init__(fun_choices, cache_key, **kwargs)
-
-    def to_internal_value(self, data):
-        return super().to_internal_value(data)
+        if data == '' and self.allow_blank:
+            return ''
+        if isinstance(data, Enum) and str(data) != str(data.value):
+            data = data.value
+        try:
+            return self.choice_strings_to_values[str(data)]
+        except KeyError:
+            self.fail('invalid_choice', input=data)

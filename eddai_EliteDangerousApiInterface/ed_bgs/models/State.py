@@ -2,9 +2,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from eddn.models import AbstractDataEDDN
-from core.models import CacheModel
 
-class State(AbstractDataEDDN, CacheModel, models.Model):
+class State(AbstractDataEDDN, models.Model):
     """
     modello utilizato per memorizzare tutti i tipi di stati per le minori fazioni
     """

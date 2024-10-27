@@ -1,1 +1,1 @@
-from core.api.fields.ChoiceField import CacheChoiceField
+from core.api.fields.CacheSlugRelatedField import CacheSlugRelatedField

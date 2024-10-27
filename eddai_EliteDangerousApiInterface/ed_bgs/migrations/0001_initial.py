@@ -206,15 +206,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name='powerinsystem',
-            index=models.Index(fields=['system'], name='ed_bgs_powe_system__b03e72_idx'),
-        ),
-        migrations.AddIndex(
-            model_name='powerinsystem',
             index=models.Index(fields=['power'], name='ed_bgs_powe_power_i_ce9042_idx'),
-        ),
-        migrations.AddConstraint(
-            model_name='powerinsystem',
-            constraint=models.UniqueConstraint(fields=('system', 'power'), name='unique_power_in_system'),
         ),
         migrations.AddIndex(
             model_name='stateinminorfaction',
