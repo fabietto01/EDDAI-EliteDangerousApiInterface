@@ -1,6 +1,8 @@
-"""igs_service URL Configuration
+"""
+URL configuration for eddai_EliteDangerousApiInterface project.
+
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -13,7 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from .venws import SystemViewSet
+
+router = DefaultRouter()
+router.register(r'systems', SystemViewSet)
 
 urlpatterns = [
-    path('v1/', include('ed_core.api.urls')),
+    path('', include(router.urls)),
 ]

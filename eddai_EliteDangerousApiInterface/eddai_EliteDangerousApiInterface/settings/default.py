@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'rest_framework', #pip install djangorestframework
     'rest_framework.authtoken', #per il login con token
+    'rest_framework_gis', #pip install djangorestframework-gis
     'django_filters', #pip install django-filter
 
     'users',
