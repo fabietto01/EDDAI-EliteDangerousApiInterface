@@ -3,13 +3,14 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-from django.contrib.gis.db.models.functions import Distance
-from core.Bechekd.Distance3D import Distance3D
+from django.db.models.expressions import RawSQL
+from django.db.models import FloatField
 
 from .serializers.SystemSerializer import SystemSerializer, SystemDistanceSerializer
 from .filters import SystemFilterSet
 
 from ed_system.models import System
+
 
 class SystemViewSet(viewsets.ModelViewSet):
     """
@@ -38,8 +39,16 @@ class SystemViewSet(viewsets.ModelViewSet):
         url_path='from-system', url_name='from-system'
     )
     def from_system(self, request:Request, pk:int=None):
-        system = self.get_object()
-        qs = System.objects.annotate(distance=Distance3D('coordinate', system.coordinate)).order_by('distance')
+        system:System = self.get_object()
+        #qs = System.objects.annotate(distance=Distance('coordinate', system.coordinate)).order_by('distance')
+        x, y, z, srid = system.coordinate.x, system.coordinate.y, system.coordinate.z, system.coordinate.srid
+        qs = System.objects.annotate(
+            distance=RawSQL(
+                "ST_3DDistance(coordinate, ST_GeomFromText('POINT(%s %s %s)', %s))",
+                (x, y, z, srid),
+                output_field=FloatField()
+            )
+        ).order_by('distance')
         page = self.paginate_queryset(qs)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

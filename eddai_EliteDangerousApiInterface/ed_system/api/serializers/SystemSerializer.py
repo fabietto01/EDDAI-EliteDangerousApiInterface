@@ -22,5 +22,5 @@ class SystemDistanceSerializer(SystemSerializer):
         """
         restutuiser il campo distanza calcolato nella querry
         """
-        return instance.distance.m
+        return instance.distance
     
