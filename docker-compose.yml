@@ -30,18 +30,6 @@ services:
         ports:
             - "6379:6379"
         restart: always
-    mysql:
-        container_name: mysql_db
-        image: mysql:8
-        environment:
-            TZ: UTC
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-        volumes:
-            - ed_database:/var/lib/mysql
-            - ${MYSQL_CONFIG_FILE}:/etc/my.cnf
-        ports:
-            - "3306:3306"
-        restart: always
     postgis:
         container_name: postgis
         image: postgis/postgis:16-3.4
