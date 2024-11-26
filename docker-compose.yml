@@ -47,6 +47,5 @@ services:
 
 volumes:
     rabbitedvol:
-    ed_database:
     redisvol:
     postgisvol:
