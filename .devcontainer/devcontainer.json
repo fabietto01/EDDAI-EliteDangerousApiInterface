@@ -1,16 +1,26 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
 {
-	"name": "Existing Dockerfile",
+	"name": "eddia-devcontainer",
 	"build": {
-		// Sets the run context to one level up instead of the .devcontainer folder.
 		"context": "..",
-		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-		"dockerfile": "../Dockerfile"
+		"dockerfile": "Dockerfile"
 	},
-	"features": {
-		"ghcr.io/devcontainers/features/conda:1": {},
-		"ghcr.io/devcontainers/features/python:1": {}
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.vscode-pylance",
+				"ms-python.debugpy",
+				"ms-python.python",
+				"snappify.snappify",
+				"esbenp.prettier-vscode",
+				"ms-vsliveshare.vsliveshare",
+				"ms-python.isort",
+				"VisualStudioExptTeam.intellicode-api-usage-examples",
+				"kisstkondoros.vscode-gutter-preview",
+				"mhutchie.git-graph",
+				"dzhavat.bracket-pair-toggler",
+				"qwtel.sqlite-viewer"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.

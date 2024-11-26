@@ -7,6 +7,7 @@ dependencies:
   - gdal=3.9.1
   - proj=9.4.1
   - python=3.11.9
+  - psycopg2=2.9.9
   - pip:
       - celery==5.4.0
       - django==5.0
@@ -16,4 +17,5 @@ dependencies:
       - gevent==24.2.1
       - redis==5.0.4
       - pyzmq==26.0.3
+      - psycopg==3.2.1
 prefix: eddai

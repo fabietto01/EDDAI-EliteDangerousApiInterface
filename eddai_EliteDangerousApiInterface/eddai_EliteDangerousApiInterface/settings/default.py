@@ -118,22 +118,8 @@ DATABASES = {
 
 # setting per la gestione della geolocalizzazione
 # https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
-# GDAL_LIBRARY_PATH = os.environ.get(
-#     'DJNAGO_SETTINGS_GDAL_LIBRARY_PATH', 
-#     r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\geos_c.dll'
-# )
-
-GDAL_LIBRARY_PATH = r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\gdal.dll'
-GEOS_LIBRARY_PATH = r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\geos_c.dll'
-
-# GDAL_LIBRARY_PATH = os.environ.get(
-#     'DJNAGO_SETTINGS_GDAL_LIBRARY_PATH',
-#     r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\gdal.dll'
-# )
-# GEOS_LIBRARY_PATH = os.environ.get(
-#     'DJNAGO_SETTINGS_GEOS_LIBRARY_PATH',
-#      r'c:\Users\fabio\Documents\GitHub\EDDAI-EliteDangerousApiInterface\.conda\Library\bin\geos_c.dll'
-# )
+GDAL_LIBRARY_PATH = r'/opt/conda/lib/libgdal.so'
+GEOS_LIBRARY_PATH = r'/opt/conda/lib/libgeos_c.so'
 
 # Router per il database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database-routers

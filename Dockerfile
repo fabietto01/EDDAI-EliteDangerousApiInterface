@@ -1,5 +1,5 @@
 # Usa un'immagine base di conda
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:latest
 
 # Imposta la directory di lavoro
 WORKDIR /app
