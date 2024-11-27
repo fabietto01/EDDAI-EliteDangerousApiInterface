@@ -19,33 +19,60 @@ services:
             - "5672:5672"
             - "15672:15672"
         restart: always
-    redis:
-        container_name: redis
+    redis_result_backend:
+        container_name: redis_result_backend
         image: redis:6.2.12
         environment:
             TZ: UTC
+            REDIS_PASSWORD: ${REDIS_RESULT_BACKEND_PASSWORD}
         volumes:
-            - redisvol:/data
-            - ${REDIS_CONDING_FILE}:/usr/local/etc/redis/redis.conf
+            - redisresultbackendvol:/data
         ports:
             - "6379:6379"
+        restart: always
+    redis_cache:
+        container_name: redis_cache
+        image: redis:6.2.12
+        environment:
+            TZ: UTC
+            REDIS_PASSWORD: ${REDIS_CACHE_PASSWORD}
+        volumes:
+            - rediscachevol:/data
+        ports:
+            - "6380:6379"
         restart: always
     postgis:
         container_name: postgis
         image: postgis/postgis:16-3.4
         environment:
             TZ: UTC
-            POSTGRES_USER: ${POSTGRES_USER}
-            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGIS_USER}
+            POSTGRES_PASSWORD: ${POSTGIS_PASSWORD}
+            POSTGRES_DB: ${POSTGIS_DB}
         volumes:
             - postgisvol:/var/lib/postgresql/data
         ports:
             - "5432:5432"
         restart: always
         command: postgres -c 'max_connections=5000' -c 'shared_buffers=250MB'
+    postgressql:
+        container_name: postgressql
+        image: postgres
+        environment:
+            TZ: UTC
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        volumes:
+            - postgresvol:/var/lib/postgresql/data
+        ports:
+            - "5433:5432"
+        restart: always
+        command: postgres -c 'max_connections=5000' -c 'shared_buffers=250MB'
 
 volumes:
     rabbitedvol:
-    redisvol:
+    redisresultbackendvol:
+    rediscachevol:
     postgisvol:
+    postgresvol:

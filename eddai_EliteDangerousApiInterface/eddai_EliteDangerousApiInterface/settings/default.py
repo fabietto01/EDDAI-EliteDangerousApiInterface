@@ -99,20 +99,37 @@ WSGI_APPLICATION = 'eddai_EliteDangerousApiInterface.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "ed_user",
+        "USER": "postgres",
+        "PASSWORD": os.environ.get('POSTGRES_PASSWORD', "123"),
+        "HOST": os.environ.get('POSTGRES_HOST', 'localhost'),
+        "PORT": os.environ.get('POSTGRES_PORT', '5433'),
+        "TEST": {
+            "NAME": "test_ed_user_dev",
+            "DEPENDENCIES": [],
+        },
     },
     'ed_info':{
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ed_info',
         'USER':  'postgres',
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', "123"),
+        'PASSWORD': os.environ.get('POSTGIS_PASSWORD', "123"),
         'HOST': os.environ.get('POSTGIS_HOST', 'localhost'),
-        'PORT': '5432',
+        'PORT': os.environ.get('POSTGIS_PORT', '5432'),
         "TEST": {
             "NAME": "test_ed_info_dev",
             "DEPENDENCIES": [],
         },
+    }
+}
+
+# Caches
+# https://docs.djangoproject.com/en/5.1/ref/settings/#caches
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://{os.environ.get('REDIS_CACHE_PASSWORD', '123')}@127.0.0.1:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
     }
 }
 
@@ -284,7 +301,7 @@ EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("RABBITMQ_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
-CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("REDIS_HOST")}:{os.environ.get("REDIS_PORT")}/1'
+CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("REDIS_RESULT_BACKEND_PASSWORD", "123")}@{os.environ.get("REDIS_RESULT_BACKEND_HOST")}:{os.environ.get("REDIS_RESULT_BACKEND_PORT")}'
 
 #impostazioni per la gestione della serializzazione dei dati
 #https://docs.celeryq.dev/en/stable/userguide/calling.html#serializers
