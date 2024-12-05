@@ -8,13 +8,8 @@ services:
             TZ: UTC
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
             RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-            RABBITMQ_CONFIG_FILE: /etc/rabbitmq/rabbitmq.conf
         volumes:
             - rabbitedvol:/var/lib/rabbitmq
-            - ${RABBITMQ_CONFIG_FILE}:/etc/rabbitmq/rabbitmq.conf
-            - ${RABBITMQ_SSL_CACERTFILE}:/etc/rabbitmq/ca_certificate.pem
-            - ${RABBITMQ_SSL_CERTFILE}:/etc/rabbitmq/server_certificate.pem
-            - ${RABBITMQ_SSL_KEYFILE}:/etc/rabbitmq/server_key.pem
         ports:
             - "5672:5672"
             - "15672:15672"
@@ -24,7 +19,7 @@ services:
         image: redis:6.2.12
         environment:
             TZ: UTC
-            REDIS_PASSWORD: ${REDIS_RESULT_BACKEND_PASSWORD}
+        command: redis-server --requirepass ${REDIS_RESULT_BACKEND_PASSWORD}
         volumes:
             - redisresultbackendvol:/data
         ports:
@@ -35,7 +30,7 @@ services:
         image: redis:6.2.12
         environment:
             TZ: UTC
-            REDIS_PASSWORD: ${REDIS_CACHE_PASSWORD}
+        command: redis-server --requirepass ${REDIS_CACHE_PASSWORD}
         volumes:
             - rediscachevol:/data
         ports:
