@@ -1,57 +1,33 @@
 from rest_framework import viewsets
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter
 
-from django.db.models.expressions import RawSQL
-from django.db.models import FloatField
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers.SystemSerializer import SystemSerializer, SystemDistanceSerializer
 from .filters import SystemFilterSet
 
 from ed_system.models import System
 
-
 class SystemViewSet(viewsets.ModelViewSet):
     """
-    SystemViewSet is a viewset for handling System objects.
+    SystemViewSet is a viewset for handling CRUD operations on the System model.
     Attributes:
-        queryset (QuerySet): The queryset of System objects.
-        serializer_class (Serializer): The serializer class for System objects.
-        filterset_class (FilterSet): The filter set class for filtering System objects.
+        queryset (QuerySet): A queryset of all System objects.
+        filterset_class (type): The filter set class used for filtering the queryset.
+        filter_backends (list): A list of filter backends used for filtering and searching.
+        search_fields (list): A list of fields that can be searched.
     Methods:
-        from_system(request: Request, pk: int = None):
-            Handles GET requests to retrieve systems ordered by their distance from a specified system.
-            Annotates each system with its distance from the specified system and orders them by distance.
-            Supports pagination if applicable.
-            Args:
-                request (Request): The HTTP request object.
-                pk (int, optional): The primary key of the system. Defaults to None.
-            Returns:
-                Response: A paginated response or a list of serialized systems ordered by distance.
+        get_serializer_class(self):
+            Returns the appropriate serializer class based on the request query parameters.
+            If 'order_by_system' is present in the query parameters, returns SystemDistanceSerializer.
+            Otherwise, returns SystemSerializer.
     """
     queryset = System.objects.all()
-    serializer_class = SystemSerializer
     filterset_class = SystemFilterSet
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    search_fields = ['name']
 
-    @action(
-        detail=True, methods=['get'], serializer_class=SystemDistanceSerializer,
-        url_path='from-system', url_name='from-system'
-    )
-    def from_system(self, request:Request, pk:int=None):
-        system:System = self.get_object()
-        #qs = System.objects.annotate(distance=Distance('coordinate', system.coordinate)).order_by('distance')
-        x, y, z, srid = system.coordinate.x, system.coordinate.y, system.coordinate.z, system.coordinate.srid
-        qs = System.objects.annotate(
-            distance=RawSQL(
-                "ST_3DDistance(coordinate, ST_GeomFromText('POINT(%s %s %s)', %s))",
-                (x, y, z, srid),
-                output_field=FloatField()
-            )
-        ).order_by('distance')
-        page = self.paginate_queryset(qs)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)    
-        serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.request.query_params.get('order_by_system'):
+            return SystemDistanceSerializer
+        return SystemSerializer

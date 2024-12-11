@@ -1,4 +1,3 @@
-from os import read
 from rest_framework import serializers
 from ed_system.models import System
 
@@ -23,4 +22,3 @@ class SystemDistanceSerializer(SystemSerializer):
         restutuiser il campo distanza calcolato nella querry
         """
         return instance.distance
-    

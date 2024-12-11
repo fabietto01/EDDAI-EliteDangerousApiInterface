@@ -129,7 +129,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('REDIS_CACHE_PASSWORD', '123')}@127.0.0.1:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
+        "LOCATION": f"redis://:{os.environ.get('REDIS_CACHE_PASSWORD', '123')}@{os.environ.get('REDIS_CACHE_HOST', 'localhost')}:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
     }
 }
 
@@ -211,7 +211,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
 }
 
 # Struttura dati contenente informazioni di configurazione. 
@@ -301,7 +303,7 @@ EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("RABBITMQ_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
-CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("REDIS_RESULT_BACKEND_PASSWORD", "123")}@{os.environ.get("REDIS_RESULT_BACKEND_HOST")}:{os.environ.get("REDIS_RESULT_BACKEND_PORT")}'
+CELERY_RESULT_BACKEND =  F'redis://:{os.environ.get("REDIS_RESULT_BACKEND_PASSWORD", "123")}@{os.environ.get("REDIS_RESULT_BACKEND_HOST")}:{os.environ.get("REDIS_RESULT_BACKEND_PORT")}'
 
 #impostazioni per la gestione della serializzazione dei dati
 #https://docs.celeryq.dev/en/stable/userguide/calling.html#serializers
