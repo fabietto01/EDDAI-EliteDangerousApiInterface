@@ -1,6 +1,6 @@
-from rest_framework import viewsets
-from rest_framework.filters import SearchFilter
+from core.api.viewsets import OwnerAndDateModelViewSet
 
+from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers.SystemSerializer import SystemSerializer, SystemDistanceSerializer
@@ -8,7 +8,7 @@ from .filters import SystemFilterSet
 
 from ed_system.models import System
 
-class SystemViewSet(viewsets.ModelViewSet):
+class SystemViewSet(OwnerAndDateModelViewSet):
     """
     SystemViewSet is a viewset for handling CRUD operations on the System model.
     Attributes:

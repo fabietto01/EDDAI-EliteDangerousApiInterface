@@ -1,8 +1,8 @@
 import django_filters
 from ed_system.models import System
+from django.db.models import F
 
-from django.db.models.expressions import RawSQL
-from django.db.models import FloatField
+from ed_core.functions import Distanza3D
 
 class SystemFilterSet(django_filters.FilterSet):
     """
@@ -11,14 +11,12 @@ class SystemFilterSet(django_filters.FilterSet):
     @staticmethod
     def filter_by_system(queryset, name, value):
         system:System = System.objects.get(id=value)
-        x, y, z, srid = system.coordinate.x, system.coordinate.y, system.coordinate.z, system.coordinate.srid
         return queryset.annotate(
-            distance=RawSQL(
-                "ST_3DDistance(coordinate, ST_GeomFromText('POINT(%s %s %s)', %s))",
-                (x, y, z, srid),
-                output_field=FloatField()
+            distance_st=Distanza3D(
+                F('coordinate'),
+                point=system.coordinate
             )
-        ).order_by('distance')
+        ).order_by('distance_st')
 
     order_by_system = django_filters.NumberFilter(
         method='filter_by_system',

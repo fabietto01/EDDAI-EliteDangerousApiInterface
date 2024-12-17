@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from ed_system.models import System
 
+from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
+
 class SystemSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -13,12 +15,5 @@ class SystemSerializer(serializers.ModelSerializer):
         }
         fields = "__all__"
 
-class SystemDistanceSerializer(SystemSerializer):
-    
-    distance = serializers.SerializerMethodField(read_only=True)
-
-    def get_distance(self, instance:System):
-        """
-        restutuiser il campo distanza calcolato nella querry
-        """
-        return instance.distance
+class SystemDistanceSerializer(SystemSerializer, DistanceSerializer):
+    pass

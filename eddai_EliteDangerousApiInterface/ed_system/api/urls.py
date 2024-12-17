@@ -19,9 +19,7 @@ from rest_framework.routers import DefaultRouter
 
 from .venws import SystemViewSet
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r'systems', SystemViewSet)
 
-urlpatterns = [
-    path('', include(router.urls)),
-]
+urlpatterns = router.urls
