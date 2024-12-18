@@ -7,18 +7,15 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-python.vscode-pylance",
 				"ms-python.debugpy",
 				"ms-python.python",
+				"ms-python.vscode-pylance",
 				"snappify.snappify",
 				"esbenp.prettier-vscode",
-				"ms-vsliveshare.vsliveshare",
-				"ms-python.isort",
-				"VisualStudioExptTeam.intellicode-api-usage-examples",
-				"kisstkondoros.vscode-gutter-preview",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
 				"mhutchie.git-graph",
-				"dzhavat.bracket-pair-toggler",
-				"qwtel.sqlite-viewer"
+				"dzhavat.bracket-pair-toggler"
 			]
 		}
 	}
