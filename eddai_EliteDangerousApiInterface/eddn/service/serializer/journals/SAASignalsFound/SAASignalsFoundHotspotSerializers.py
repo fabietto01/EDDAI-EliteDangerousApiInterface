@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.journals.SAASignalsFound.SAASignalsFoundSerializers import SAASignalsFoundSerializers
 
-from core.utility import  in_list_models, get_values_list_or_default, create_or_update_if_time
+from core.utility import  in_list_models, create_or_update_if_time
 from core.api.fields import CacheSlugRelatedField
 
 from ed_mining.models import HotspotType, HotSpot, Ring

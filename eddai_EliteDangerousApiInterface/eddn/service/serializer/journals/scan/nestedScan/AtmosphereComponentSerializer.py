@@ -1,14 +1,15 @@
 from rest_framework import serializers
 from eddn.service.serializer.nestedSerializer.BaseSecondarySerializer import BaseNestedSerializer
 
-from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none
-from django.db import OperationalError, ProgrammingError
+from core.utility import create_or_update_if_time, get_or_none
 
+from core.api.fields import CacheSlugRelatedField
 from ed_body.models import AtmosphereComponentInPlanet, AtmosphereComponent
 
 class AtmosphereComponentSerializer(BaseNestedSerializer):
-    Name = serializers.ChoiceField(
-        choices=get_values_list_or_default(AtmosphereComponent, [], (OperationalError, ProgrammingError), 'eddn', flat=True)
+    Name = CacheSlugRelatedField(
+        queryset=AtmosphereComponent.objects.all(),
+        slug_field='eddn',
     )
     Percent = serializers.FloatField(
         min_value=0,

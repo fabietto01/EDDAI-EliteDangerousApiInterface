@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from eddn.service.serializer.journals.scan.BaseScanSerializer import BaseScanSerializer
 
-from core.utility import get_values_list_or_default, get_or_none, in_list_models
+from core.utility import get_or_none, in_list_models
 from core.api.fields import CacheSlugRelatedField
-from django.db import OperationalError, ProgrammingError
 from eddn.service.serializer.customFields import ReserveLevelChoiceField
 
 from ed_body.models import Planet, AtmosphereType, PlanetType, Volcanism, AtmosphereComponentInPlanet, AtmosphereComponent

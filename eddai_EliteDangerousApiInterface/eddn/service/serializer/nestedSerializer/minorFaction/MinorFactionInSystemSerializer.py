@@ -5,8 +5,9 @@ from eddn.service.serializer.nestedSerializer.minorFaction.BaseMinorFactionSeria
 
 from core.utility import (
     create_or_update_if_time, in_list_models, 
-    get_values_list_or_default, get_or_none
+    get_or_none
 )
+from core.api.fields import CacheSlugRelatedField
 
 from ed_bgs.models import (
     Faction, Government, MinorFaction, 
@@ -19,11 +20,13 @@ from eddn.service.serializer.nestedSerializer.StateSerializer import StateSerial
 
 
 class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
-    Allegiance = serializers.ChoiceField(
-        choices=get_values_list_or_default(Faction, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    Allegiance = CacheSlugRelatedField(
+        queryset=Faction.objects.all(),
+        slug_field='eddn',
     )
-    Government = serializers.ChoiceField(
-        choices=get_values_list_or_default(Government, [], (OperationalError, ProgrammingError), 'eddn', flat=True),
+    Government = CacheSlugRelatedField(
+        queryset=Government.objects.all(),
+        slug_field='eddn',
     )
     Influence = serializers.FloatField(
         min_value=0, max_value=1,

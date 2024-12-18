@@ -1,14 +1,15 @@
 from rest_framework import serializers
 from eddn.service.serializer.nestedSerializer.BaseSecondarySerializer import BaseNestedSerializer
 
-from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none
-from django.db import OperationalError, ProgrammingError
+from core.utility import create_or_update_if_time
+from core.api.fields import CacheSlugRelatedField
 
 from ed_material.models import Material, MaterialInPlanet
 
 class MaterialsSerializer(BaseNestedSerializer):
-    Name = serializers.ChoiceField(
-        choices=get_values_list_or_default(Material.objects.filter(type=Material.MaterialType.RAW.value), [], (OperationalError, ProgrammingError), 'eddn', flat=True)
+    Name = CacheSlugRelatedField(
+        queryset=Material.objects.filter(type=Material.MaterialType.RAW.value),
+        slug_field='eddn',
     )
     Percent = serializers.FloatField(
         min_value=0,

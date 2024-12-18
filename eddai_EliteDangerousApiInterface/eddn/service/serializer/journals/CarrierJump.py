@@ -11,7 +11,7 @@ from ed_economy.models import Economy
 from ed_system.models import System
 from ed_body.models import Planet, Star
 
-from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none, in_list_models
+from core.utility import create_or_update_if_time, get_or_none, in_list_models
 from core.api.fields import CacheSlugRelatedField
 
 class CarrierJumpSerializer(BaseJournal):

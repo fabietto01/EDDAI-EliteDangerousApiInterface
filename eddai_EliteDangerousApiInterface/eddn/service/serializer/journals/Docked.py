@@ -16,7 +16,7 @@ from ed_system.models import System
 from core.api.fields import CacheSlugRelatedField
 from core.utility import (
     create_or_update_if_time, in_list_models, 
-    get_values_list_or_default, get_or_none
+    get_or_none
 )
 
 class DockedSerializer(BaseJournal):

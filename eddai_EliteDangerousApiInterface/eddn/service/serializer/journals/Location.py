@@ -15,7 +15,6 @@ from ed_system.models import System
 from ed_bgs.models import MinorFactionInSystem, MinorFaction, PowerInSystem, Power, PowerState
 
 from core.utility import (
-    get_values_list_or_default,
     get_or_none, create_or_update_if_time, in_list_models
 )
 

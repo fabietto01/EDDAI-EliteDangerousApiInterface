@@ -5,5 +5,4 @@ from django.forms import ModelForm
 class OwnerModelsForm(ModelForm):
     
     class Meta:
-        model = OwnerModels
         exlude = ['created_by', 'updated_by']

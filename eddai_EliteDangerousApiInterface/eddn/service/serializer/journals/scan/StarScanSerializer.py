@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from eddn.service.serializer.journals.scan.BaseScanSerializer import BaseScanSerializer
 
-from core.utility import get_values_list_or_default, get_or_none
+from core.utility import get_or_none
 from core.api.fields import CacheSlugRelatedField
-from django.db import OperationalError, ProgrammingError
 
 from ed_body.models import Star, StarLuminosity, StarType
 

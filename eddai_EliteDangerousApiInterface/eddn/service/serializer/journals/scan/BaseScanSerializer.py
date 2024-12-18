@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from eddn.service.serializer.journals.BaseJournal import BaseJournal
 
-from core.utility import create_or_update_if_time, get_values_list_or_default, get_or_none
+from core.utility import create_or_update_if_time
 
 from eddn.service.serializer.nestedSerializer import RingSerializer
 from ed_system.models import System
