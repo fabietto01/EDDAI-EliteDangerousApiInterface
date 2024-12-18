@@ -20,7 +20,7 @@ class UserTestCase(TestCase):
         istance:User = User.objects.create_user(
             username="test_delete_user",
         )
-        istance.delete()
+        User.objects.filter(username="test_delete_user").delete()
         self.assertFalse(User.objects.filter(username="test_delete_user").exists(), f"User {istance.username} exists")
     
     def test_create_user_in_all_dbs(self):

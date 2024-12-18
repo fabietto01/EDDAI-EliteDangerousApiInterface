@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.gis.geos import Point
 
 from ed_body.models import Planet, Star, BaseBody
 from ed_system.models import System
@@ -15,7 +16,7 @@ class BodyTestCase(TestCase):
         )
         cls.istance_system = System.objects.create(
             name = "Test",
-            x=0, z=0, y=0,
+            coordinate = Point(0,0,0),
             created_by=cls.istance_user,
             updated_by=cls.istance_user,
         )
