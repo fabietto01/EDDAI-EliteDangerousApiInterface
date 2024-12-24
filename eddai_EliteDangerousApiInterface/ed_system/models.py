@@ -13,8 +13,26 @@ from ed_bgs.models.MinorFactionInSystem import MinorFactionInSystem
 
 class System(OwnerAndDateModels, models.Model):
     """
-    modello deditatto al salvatagio dei dati generici riguardanti i sistemmi dati mode:
-    nome, coordinata x, coordinata y, coordinata z, descrizione, data aggiornamento
+        Represents a system in the Elite Dangerous universe.
+        Attributes:
+            name (CharField): The name of the system, unique and with a maximum length of 100 characters.
+            coordinate (PointField): The 3D coordinates of the system, unique and using SRID 4979.
+            security (CharField): The security level of the system, with choices defined in SecurityChoices.
+            population (PositiveBigIntegerField): The population of the system, defaulting to 0.
+            primaryEconomy (ForeignKey): The primary economy of the system, related to the Economy model.
+            secondaryEconomy (ForeignKey): The secondary economy of the system, related to the Economy model.
+            conrollingFaction (ForeignKey): The controlling faction of the system, related to the MinorFaction model.
+            description (TextField): A textual description of the system, optional.
+        Properties:
+            economy (list[Economy]): Returns a list of the system's economies, combining primary and secondary economies.
+        Methods:
+            clean(): Validates that the controlling faction is present in the system.
+            __str__(): Returns the name of the system.
+        Meta:
+            verbose_name (str): Human-readable name for the model.
+            verbose_name_plural (str): Human-readable plural name for the model.
+            constraints (list): List of constraints for the model.
+            indexes (list): List of indexes for the model fields.
     """
     class SecurityChoices(models.TextChoices):
         """
@@ -66,7 +84,15 @@ class System(OwnerAndDateModels, models.Model):
     @admin.display(ordering=Concat("primaryEconomy", Value(" "), "secondaryEconomy"), description=_('economy'))
     def economy(self) -> list[Economy]:
         """
-        ritorna l'economia della systema
+        Property that returns a list of economies for the system.
+
+        This property combines the primary and secondary economies into a single list.
+        If both primary and secondary economies are None, it returns None.
+        If only the secondary economy is None, it returns a list containing only the primary economy.
+        Otherwise, it returns a list containing both the primary and secondary economies.
+
+        Returns:
+            list[Economy] or None: A list of economies or None if both economies are not set.
         """
         if self.primaryEconomy == None and self.secondaryEconomy == None:
             return None
@@ -78,6 +104,23 @@ class System(OwnerAndDateModels, models.Model):
         if self.conrollingFaction != None:
             if not MinorFactionInSystem.objects.filter(system=self, minorFaction=self.conrollingFaction).exists():
                 raise ValidationError(_('the controlling faction is not present in the system'))
+
+    @staticmethod
+    def get_distance(by, to) -> float:
+        """
+        Calculate the distance between two systems using the database via Distanza3D.
+            Args:
+                by (System): The system from which the distance is calculated.
+                to (System): The system to which the distance is calculated.
+            Returns:
+                float: The distance between the two systems.
+        """
+        from ed_core.functions import Distanza3D
+        from django.db.models import F
+
+        return System.objects.filter(id=to.id).annotate(
+            distance=Distanza3D(F('coordinate'), point=by.coordinate)
+        ).values_list('distance', flat=True).first()
 
     def __str__(self):
         return self.name
