@@ -11,7 +11,7 @@ dependencies:
   - libarchive=3.7.7
   - pip:
       - celery==5.4.0
-      - django==5.1
+      - django==5.1.1
       - django-filter==24.2
       - djangorestframework==3.15.1
       - djangorestframework-gis==1.1

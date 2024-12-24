@@ -37,7 +37,7 @@ services:
             - "6380:6379"
         restart: always
     postgis:
-        container_name: postgis
+        container_name: postGIS
         image: postgis/postgis:16-3.4
         environment:
             TZ: UTC
@@ -51,7 +51,7 @@ services:
         restart: always
         command: postgres -c 'max_connections=5000' -c 'shared_buffers=250MB'
     postgressql:
-        container_name: postgressql
+        container_name: postgres
         image: postgres
         environment:
             TZ: UTC

@@ -99,18 +99,6 @@ WSGI_APPLICATION = 'eddai_EliteDangerousApiInterface.wsgi.application'
 
 DATABASES = {
     'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "ed_user",
-        "USER": "postgres",
-        "PASSWORD": os.environ.get('POSTGRES_PASSWORD', "123"),
-        "HOST": os.environ.get('POSTGRES_HOST', 'localhost'),
-        "PORT": os.environ.get('POSTGRES_PORT', '5433'),
-        "TEST": {
-            "NAME": "test_ed_user_dev",
-            "DEPENDENCIES": [],
-        },
-    },
-    'ed_info':{
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ed_info',
         'USER':  'postgres',
@@ -118,10 +106,22 @@ DATABASES = {
         'HOST': os.environ.get('POSTGIS_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGIS_PORT', '5432'),
         "TEST": {
-            "NAME": "test_ed_info_dev",
+            "NAME": "ed_info_test",
             "DEPENDENCIES": [],
         },
-    }
+    },
+    # 'users': {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": "ed_user",
+    #     "USER": "postgres",
+    #     "PASSWORD": os.environ.get('POSTGRES_PASSWORD', "123"),
+    #     "HOST": os.environ.get('POSTGRES_HOST', 'localhost'),
+    #     "PORT": os.environ.get('POSTGRES_PORT', '5433'),
+    #     "TEST": {
+    #         "NAME": "ed_user_test",
+    #         "DEPENDENCIES": [],
+    #     },
+    # }
 }
 
 # Caches
@@ -140,10 +140,7 @@ GEOS_LIBRARY_PATH = r'/opt/conda/lib/libgeos_c.so'
 
 # Router per il database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database-routers
-DATABASE_ROUTERS = ["ed_core.router.EDInfoRouter"]
-
-# Database for the user model
-DATABASES_FOR_USERS_MODEL = ['ed_info']
+DATABASE_ROUTERS = []
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
