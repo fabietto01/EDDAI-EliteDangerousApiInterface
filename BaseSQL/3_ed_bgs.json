@@ -1,642 +1,570 @@
 [
     {
-        "model": "ed_bgs.faction",
-        "pk": 1,
-        "fields": {
-            "_eddn": null,
-            "name": "Independent",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.faction",
-        "pk": 2,
-        "fields": {
-            "_eddn": null,
-            "name": "Guardian",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.faction",
-        "pk": 3,
-        "fields": {
-            "_eddn": null,
-            "name": "Pilots Federation",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.faction",
-        "pk": 4,
-        "fields": {
-            "_eddn": null,
-            "name": "Thargoid",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.faction",
-        "pk": 5,
-        "fields": {
-            "_eddn": null,
-            "name": "Alliance",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.faction",
-        "pk": 6,
-        "fields": {
-            "_eddn": null,
-            "name": "Empire",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.faction",
-        "pk": 7,
-        "fields": {
-            "_eddn": null,
-            "name": "Federation",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 1,
-        "fields": {
-            "_eddn": null,
-            "name": "Anarchy",
-            "type": "A",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 2,
-        "fields": {
-            "_eddn": null,
-            "name": "Dictatorship",
-            "type": "C",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 3,
-        "fields": {
-            "_eddn": null,
-            "name": "Feudal",
-            "type": "C",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 4,
-        "fields": {
-            "_eddn": null,
-            "name": "Patronage",
-            "type": "C",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 5,
-        "fields": {
-            "_eddn": "PrisonColony",
-            "name": "Prison Colony",
-            "type": "C",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 6,
-        "fields": {
-            "_eddn": null,
-            "name": "Theocracy",
-            "type": "C",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 7,
-        "fields": {
-            "_eddn": null,
-            "name": "Corporation",
-            "type": "P",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 8,
-        "fields": {
-            "_eddn": null,
-            "name": "Confederacy",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 9,
-        "fields": {
-            "_eddn": null,
-            "name": "Corporate",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 10,
-        "fields": {
-            "_eddn": null,
-            "name": "Democracy",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 11,
-        "fields": {
-            "_eddn": null,
-            "name": "Cooperative",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.government",
-        "pk": 12,
-        "fields": {
-            "_eddn": null,
-            "name": "Communism",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 23,
-        "fields": {
-            "_eddn": null,
-            "name": "Blight",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 9,
-        "fields": {
-            "_eddn": null,
-            "name": "Boom",
-            "type": "E",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 7,
-        "fields": {
-            "_eddn": null,
-            "name": "Bust",
-            "type": "E",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 24,
-        "fields": {
-            "_eddn": "CivilLiberty",
-            "name": "Civil Liberty",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 12,
-        "fields": {
-            "_eddn": "CivilUnrest",
-            "name": "Civil Unrest",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 22,
-        "fields": {
-            "_eddn": "CivilWar",
-            "name": "Civil War",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 1,
-        "fields": {
-            "_eddn": null,
-            "name": "despondent",
-            "type": "H",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 3,
-        "fields": {
-            "_eddn": null,
-            "name": "Discontented",
-            "type": "H",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 17,
-        "fields": {
-            "_eddn": null,
-            "name": "Drought",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 5,
-        "fields": {
-            "_eddn": null,
-            "name": "Elated",
-            "type": "H",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 18,
-        "fields": {
-            "_eddn": "Election",
-            "name": "Elections",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 16,
-        "fields": {
-            "_eddn": null,
-            "name": "Expansion",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 6,
-        "fields": {
-            "_eddn": null,
-            "name": "Famine",
-            "type": "E",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 4,
-        "fields": {
-            "_eddn": "Happiness",
-            "name": "Happy",
-            "type": "H",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 19,
-        "fields": {
-            "_eddn": "InfrastructureFailure",
-            "name": "Infrastructure Failure",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 10,
-        "fields": {
-            "_eddn": null,
-            "name": "Investment",
-            "type": "E",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 11,
-        "fields": {
-            "_eddn": null,
-            "name": "Lockdown",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 27,
-        "fields": {
-            "_eddn": "NaturalDisaster",
-            "name": "Natural Disaster",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 8,
-        "fields": {
-            "_eddn": null,
-            "name": "None",
-            "type": "E",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 13,
-        "fields": {
-            "_eddn": null,
-            "name": "None",
-            "type": "S",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 21,
-        "fields": {
-            "_eddn": null,
-            "name": "Outbreak",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 14,
-        "fields": {
-            "_eddn": "PirateAttack",
-            "name": "Pirate Attack",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 15,
-        "fields": {
-            "_eddn": "PublicHoliday",
-            "name": "Public Holiday",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 25,
-        "fields": {
-            "_eddn": null,
-            "name": "Retreat",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 26,
-        "fields": {
-            "_eddn": "Terrorism",
-            "name": "Terrorist Attack",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 2,
-        "fields": {
-            "_eddn": null,
-            "name": "Unhappy",
-            "type": "H",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.state",
-        "pk": 20,
-        "fields": {
-            "_eddn": null,
-            "name": "War",
-            "type": "O",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 3,
-        "fields": {
-            "name": "A. Lavigny-Duval",
-            "headquarter": 3,
-            "allegiance": 6,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 4,
-        "fields": {
-            "name": "Aisling Duval",
-            "headquarter": 4,
-            "allegiance": 6,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 5,
-        "fields": {
-            "name": "Archon Delaine",
-            "headquarter": 5,
-            "allegiance": 1,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 6,
-        "fields": {
-            "name": "Denton Patreus",
-            "headquarter": 6,
-            "allegiance": 6,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 7,
-        "fields": {
-            "name": "Edmund Mahon",
-            "headquarter": 7,
-            "allegiance": 5,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 2,
-        "fields": {
-            "name": "Felicia Winters",
-            "headquarter": 2,
-            "allegiance": 7,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 8,
-        "fields": {
-            "name": "Li Yong-Rui",
-            "headquarter": 8,
-            "allegiance": 1,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 12,
-        "fields": {
-            "name": "Pranav Antal",
-            "headquarter": 12,
-            "allegiance": 1,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 10,
-        "fields": {
-            "name": "Yuri Grom",
-            "headquarter": 10,
-            "allegiance": 1,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 11,
-        "fields": {
-            "name": "Zachary Hudson",
-            "headquarter": 11,
-            "allegiance": 7,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.power",
-        "pk": 1,
-        "fields": {
-            "name": "Zemina Torval",
-            "headquarter": 1,
-            "allegiance": 6,
-            "note": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 4,
-        "fields": {
-            "_eddn": null,
-            "name": "Contested",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 3,
-        "fields": {
-            "_eddn": null,
-            "name": "Controlled",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 5,
-        "fields": {
-            "_eddn": null,
-            "name": "Exploited",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 1,
-        "fields": {
-            "_eddn": "HomeSystem",
-            "name": "Home System",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 7,
-        "fields": {
-            "_eddn": "InPrepareRadius",
-            "name": "In Prepare Radius",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 6,
-        "fields": {
-            "_eddn": null,
-            "name": "Prepared",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.powerstate",
-        "pk": 2,
-        "fields": {
-            "_eddn": null,
-            "name": "Turmoil",
-            "description": ""
-        }
-    },
-    {
-        "model": "ed_bgs.minorfaction",
-        "pk": 1,
-        "fields": {
-            "created_at": "2024-07-06T15:18:33.241Z",
-            "updated_at": "2024-07-06T15:18:33.241Z",
-            "created_by": 1,
-            "updated_by": 1,
-            "name": "FleetCarrier",
-            "allegiance": 1,
-            "government": 9,
-            "description": ""
-        }
+      "model": "ed_bgs.faction",
+      "pk": 1,
+      "fields": { "_eddn": null, "name": "Independent", "description": "" }
+    },
+    {
+      "model": "ed_bgs.faction",
+      "pk": 2,
+      "fields": { "_eddn": null, "name": "Guardian", "description": "" }
+    },
+    {
+      "model": "ed_bgs.faction",
+      "pk": 3,
+      "fields": { "_eddn": null, "name": "Pilots Federation", "description": "" }
+    },
+    {
+      "model": "ed_bgs.faction",
+      "pk": 4,
+      "fields": { "_eddn": null, "name": "Thargoid", "description": "" }
+    },
+    {
+      "model": "ed_bgs.faction",
+      "pk": 5,
+      "fields": { "_eddn": null, "name": "Alliance", "description": "" }
+    },
+    {
+      "model": "ed_bgs.faction",
+      "pk": 6,
+      "fields": { "_eddn": null, "name": "Empire", "description": "" }
+    },
+    {
+      "model": "ed_bgs.faction",
+      "pk": 7,
+      "fields": { "_eddn": null, "name": "Federation", "description": "" }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 1,
+      "fields": {
+        "_eddn": null,
+        "name": "Anarchy",
+        "type": "A",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 2,
+      "fields": {
+        "_eddn": null,
+        "name": "Dictatorship",
+        "type": "C",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 3,
+      "fields": {
+        "_eddn": null,
+        "name": "Feudal",
+        "type": "C",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 4,
+      "fields": {
+        "_eddn": null,
+        "name": "Patronage",
+        "type": "C",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 5,
+      "fields": {
+        "_eddn": "PrisonColony",
+        "name": "Prison Colony",
+        "type": "C",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 6,
+      "fields": {
+        "_eddn": null,
+        "name": "Theocracy",
+        "type": "C",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 7,
+      "fields": {
+        "_eddn": null,
+        "name": "Corporation",
+        "type": "P",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 8,
+      "fields": {
+        "_eddn": null,
+        "name": "Confederacy",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 9,
+      "fields": {
+        "_eddn": null,
+        "name": "Corporate",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 10,
+      "fields": {
+        "_eddn": null,
+        "name": "Democracy",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 11,
+      "fields": {
+        "_eddn": null,
+        "name": "Cooperative",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.government",
+      "pk": 12,
+      "fields": {
+        "_eddn": null,
+        "name": "Communism",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.minorfaction",
+      "pk": 1,
+      "fields": {
+        "created_at": "2024-07-06T15:18:33.241Z",
+        "updated_at": "2024-07-06T15:18:33.241Z",
+        "created_by": 1,
+        "updated_by": 1,
+        "name": "FleetCarrier",
+        "allegiance": 1,
+        "government": 9,
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 23,
+      "fields": {
+        "_eddn": null,
+        "name": "Blight",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 9,
+      "fields": { "_eddn": null, "name": "Boom", "type": "E", "description": "" }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 7,
+      "fields": { "_eddn": null, "name": "Bust", "type": "E", "description": "" }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 24,
+      "fields": {
+        "_eddn": "CivilLiberty",
+        "name": "Civil Liberty",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 12,
+      "fields": {
+        "_eddn": "CivilUnrest",
+        "name": "Civil Unrest",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 22,
+      "fields": {
+        "_eddn": "CivilWar",
+        "name": "Civil War",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 1,
+      "fields": {
+        "_eddn": null,
+        "name": "despondent",
+        "type": "H",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 3,
+      "fields": {
+        "_eddn": null,
+        "name": "Discontented",
+        "type": "H",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 17,
+      "fields": {
+        "_eddn": null,
+        "name": "Drought",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 5,
+      "fields": {
+        "_eddn": null,
+        "name": "Elated",
+        "type": "H",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 18,
+      "fields": {
+        "_eddn": "Election",
+        "name": "Elections",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 16,
+      "fields": {
+        "_eddn": null,
+        "name": "Expansion",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 6,
+      "fields": {
+        "_eddn": null,
+        "name": "Famine",
+        "type": "E",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 4,
+      "fields": {
+        "_eddn": "Happiness",
+        "name": "Happy",
+        "type": "H",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 19,
+      "fields": {
+        "_eddn": "InfrastructureFailure",
+        "name": "Infrastructure Failure",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 10,
+      "fields": {
+        "_eddn": null,
+        "name": "Investment",
+        "type": "E",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 11,
+      "fields": {
+        "_eddn": null,
+        "name": "Lockdown",
+        "type": "S",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 27,
+      "fields": {
+        "_eddn": "NaturalDisaster",
+        "name": "Natural Disaster",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 8,
+      "fields": { "_eddn": null, "name": "None", "type": "E", "description": "" }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 13,
+      "fields": { "_eddn": null, "name": "None", "type": "S", "description": "" }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 21,
+      "fields": {
+        "_eddn": null,
+        "name": "Outbreak",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 14,
+      "fields": {
+        "_eddn": "PirateAttack",
+        "name": "Pirate Attack",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 15,
+      "fields": {
+        "_eddn": "PublicHoliday",
+        "name": "Public Holiday",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 25,
+      "fields": {
+        "_eddn": null,
+        "name": "Retreat",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 26,
+      "fields": {
+        "_eddn": "Terrorism",
+        "name": "Terrorist Attack",
+        "type": "O",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 2,
+      "fields": {
+        "_eddn": null,
+        "name": "Unhappy",
+        "type": "H",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.state",
+      "pk": 20,
+      "fields": { "_eddn": null, "name": "War", "type": "O", "description": "" }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 4,
+      "fields": {
+        "name": "Aisling Duval",
+        "headquarter": 4,
+        "allegiance": 6,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 3,
+      "fields": {
+        "name": "A. Lavigny-Duval",
+        "headquarter": 3,
+        "allegiance": 6,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 5,
+      "fields": {
+        "name": "Archon Delaine",
+        "headquarter": 5,
+        "allegiance": 1,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 6,
+      "fields": {
+        "name": "Denton Patreus",
+        "headquarter": 6,
+        "allegiance": 6,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 7,
+      "fields": {
+        "name": "Edmund Mahon",
+        "headquarter": 7,
+        "allegiance": 5,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 2,
+      "fields": {
+        "name": "Felicia Winters",
+        "headquarter": 2,
+        "allegiance": 7,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 11,
+      "fields": {
+        "name": "Jerome Archer",
+        "headquarter": 9,
+        "allegiance": 7,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 8,
+      "fields": {
+        "name": "Li Yong-Rui",
+        "headquarter": 8,
+        "allegiance": 1,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 12,
+      "fields": {
+        "name": "Pranav Antal",
+        "headquarter": 12,
+        "allegiance": 1,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 10,
+      "fields": {
+        "name": "Yuri Grom",
+        "headquarter": 10,
+        "allegiance": 1,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.power",
+      "pk": 1,
+      "fields": {
+        "name": "Zemina Torval",
+        "headquarter": 1,
+        "allegiance": 6,
+        "note": ""
+      }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 4,
+      "fields": { "_eddn": null, "name": "Contested", "description": "" }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 3,
+      "fields": { "_eddn": null, "name": "Controlled", "description": "" }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 5,
+      "fields": { "_eddn": null, "name": "Exploited", "description": "" }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 1,
+      "fields": {
+        "_eddn": "HomeSystem",
+        "name": "Home System",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 7,
+      "fields": {
+        "_eddn": "InPrepareRadius",
+        "name": "In Prepare Radius",
+        "description": ""
+      }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 6,
+      "fields": { "_eddn": null, "name": "Prepared", "description": "" }
+    },
+    {
+      "model": "ed_bgs.powerstate",
+      "pk": 2,
+      "fields": { "_eddn": null, "name": "Turmoil", "description": "" }
     }
-]
+  ]
+  
