@@ -17,3 +17,9 @@ class SystemSerializer(serializers.ModelSerializer):
 
 class SystemDistanceSerializer(SystemSerializer, DistanceSerializer):
     pass
+
+
+class SystemBasicInformation(SystemSerializer):
+
+    class Meta(SystemSerializer.Meta):
+        fields = ['id', 'name']
