@@ -176,15 +176,17 @@ class BaseSerializer(serializers.Serializer):
         return self.validated_data.get('timestamp')
 
     @staticmethod
-    def get_user_agent() -> str:
+    def get_user_agent() -> User:
         """
         restituisce il user agent utilizzato per inviare il datto
         """
-        return cache.get_or_set(
+        user = cache.get_or_set(
             settings.EDDN_USER_AGENT_CACHE_KEY,
             lambda: authenticate(
                 username=settings.EDDN_USER_NAME_AGENT,
                 password=settings.EDDN_USER_PASSWORD_AGENT
             )
         )
-
+        if isinstance(user, User):
+            return user
+        raise ValueError('User not found')
