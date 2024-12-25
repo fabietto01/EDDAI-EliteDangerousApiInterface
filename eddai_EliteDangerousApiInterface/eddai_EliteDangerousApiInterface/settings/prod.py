@@ -1,5 +1,5 @@
 from .default import *
-import ssl
+from celery.schedules import crontab
 
 DEBUG = False
 
@@ -9,16 +9,6 @@ ALLOWED_HOSTS = ['*']
 # https://docs.djangoproject.com/en/4.1/ref/settings/#admins
 ADMINS = [("Fabio Zorzetto", "fabio.zorzetto.01@gmail.com")]
 
-
-#impostazioni per la gestione delle code di celery
-#https://docs.celeryq.dev/en/stable/userguide/configuration.html#broker-use-ssl
-CELERY_BROKER_USE_SSL = {
-    'ssl_version': ssl.PROTOCOL_TLSv1_2,
-    'keyfile': os.environ.get("CELERY_SSL_KEYFILE"),
-    'certfile': os.environ.get("CELERY_SSL_CERTFILE"),
-    'ca_certs': os.environ.get("CELERY_SSL_CACERTFILE"),
-    'cert_reqs': ssl.CERT_REQUIRED
-}
 #impostazione per la gestione dei taask periodici di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
 CELERY_BEAT_SCHEDULE = {
@@ -27,3 +17,13 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute=0, hour=0)#crontab(minute=0, hour='*/3'),
     }
 }
+
+# The backend to use for sending emails. For the list of available backends see Sending email.
+# https://docs.djangoproject.com/en/4.1/ref/settings/#std-setting-EMAIL_BACKEND
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('DJANGO_EMAIL_PORT', 587)
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.environ.get('DJANGO_DEFAULT_FROM_EMAIL')

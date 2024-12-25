@@ -11,8 +11,8 @@ def auto_analytic():
     tasks = [star_analytic.s(instance) for instance in queryset]
     job = group(tasks)
     result:GroupResult = job.apply_async()
-
-    successful = [res.id for res in result.results if not res.result.error]
+    result.get()
+    successful = [res.result.id for res in result.results if not res.result.error and res.status == 'SUCCESS']
 
     if successful:
         queryset.filter(pk__in=successful).delete()

@@ -109,19 +109,7 @@ DATABASES = {
             "NAME": "ed_info_test",
             "DEPENDENCIES": [],
         },
-    },
-    # 'users': {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": "ed_user",
-    #     "USER": "postgres",
-    #     "PASSWORD": os.environ.get('POSTGRES_PASSWORD', "123"),
-    #     "HOST": os.environ.get('POSTGRES_HOST', 'localhost'),
-    #     "PORT": os.environ.get('POSTGRES_PORT', '5433'),
-    #     "TEST": {
-    #         "NAME": "ed_user_test",
-    #         "DEPENDENCIES": [],
-    #     },
-    # }
+    }
 }
 
 # Caches
