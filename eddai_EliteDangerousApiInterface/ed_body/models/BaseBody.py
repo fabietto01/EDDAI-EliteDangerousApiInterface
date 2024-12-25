@@ -3,10 +3,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 from core.models import OwnerAndDateModels
-from django.contrib import admin
 
-from django.db.models import Q, F
-
+from django.db.models import Q
 from ed_system.models import System
 
 class BaseBody(OwnerAndDateModels):
