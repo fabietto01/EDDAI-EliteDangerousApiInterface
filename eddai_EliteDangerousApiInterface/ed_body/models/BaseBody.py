@@ -5,6 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from core.models import OwnerAndDateModels
 from django.contrib import admin
 
+from django.db.models import Q, F
+
 from ed_system.models import System
 
 class BaseBody(OwnerAndDateModels):
@@ -132,29 +134,54 @@ class BaseBody(OwnerAndDateModels):
         help_text=_('rotation period of the body in seconds'),
         null=True, blank=True
     )
-
-    @property
-    @admin.display(boolean=True, description=_('rotating'))
-    def rotating(self) -> bool:
-        return bool(self.axialTilt and self.rotationPeriod)
-    rotating.fget.short_description = _('rotating') 
-
-    @property
-    @admin.display(boolean=True, description=_('orbiting'))
-    def orbiting(self) -> bool:
-        return bool(
-            self.eccentricity and self.orbitalInclination and 
-            self.orbitalPeriod and self.periapsis and self.semiMajorAxis
-        )
+    rotating = models.GeneratedField(
+        verbose_name=_('rotating'),
+        expression=Q(axialTilt__isnull=False) & Q(rotationPeriod__isnull=False),
+        output_field=models.BooleanField(),
+        db_persist=True,
+    )
+    orbiting = models.GeneratedField(
+        verbose_name=_('orbiting'),
+        expression=Q(eccentricity__isnull=False) & Q(orbitalInclination__isnull=False) & 
+                   Q(orbitalPeriod__isnull=False) & Q(periapsis__isnull=False) & 
+                   Q(semiMajorAxis__isnull=False),
+        output_field=models.BooleanField(),
+        db_persist=True,
+    )
 
     def __str__(self):
         return self.name
     
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """
+        Saves the current instance of the model. If validation fails, attempts to find a parent instance
+        with the same name and system, and associates the current instance with the parent.
+        Args:
+            force_insert (bool): Whether to force an SQL INSERT. Defaults to False.
+            force_update (bool): Whether to force an SQL UPDATE. Defaults to False.
+            using (str): The database alias to use. Defaults to None.
+            update_fields (list): A list of fields to update. Defaults to None.
+        Raises:
+            ValidationError: If validation fails and no suitable parent instance is found.
+        Returns:
+            None
+        """
 
-        def get_child_instance(parent):
+        def get_child_instance(parent:BaseBody):
             """
-            get the child instance of the parent
+            Retrieve child instances of a given parent instance.
+
+            This method iterates over the fields of the parent instance to find related child instances
+            that are linked via one-to-one relationships. It collects these child instances in a list
+            and checks if an instance of the same class as the parent exists.
+
+            Args:
+                parent (BaseBody): The parent instance from which to retrieve child instances.
+
+            Returns:
+                tuple: A tuple containing:
+                    - childList (list): A list of child instances related to the parent.
+                    - exist (bool): A boolean indicating whether an instance of the same class as the parent exists.
             """
             childList = []
             exist = False
