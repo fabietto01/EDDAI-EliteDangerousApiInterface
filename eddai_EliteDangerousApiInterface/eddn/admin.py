@@ -48,7 +48,7 @@ class DataLogModelAdmin(admin.ModelAdmin):
 
             successful = [res.result.id for res in result.results if not res.result.error and res.status == 'SUCCESS']
             unsuccessful = [res.result.id for res in result.results if res.result.error or res.status == 'FAILURE']
-            peding = [res.result.id for res in result.results if res.status == 'PENDING']
+            pending = [res.result.id for res in result.results if res.status == 'PENDING']
 
             if successful:
                 queryset.filter(pk__in=successful).delete()
@@ -67,11 +67,11 @@ class DataLogModelAdmin(admin.ModelAdmin):
                     },
                     messages.ERROR
                 )
-            if peding:
+            if pending:
                 self.message_user(
                     request,
                     _('pending re-processing of %(count)d data') % {
-                        'count': len(peding)
+                        'count': len(pending)
                     },
                     messages.WARNING
                 )

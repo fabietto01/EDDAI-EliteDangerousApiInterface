@@ -1,52 +1,74 @@
 version: "2.0"
+x-common-config: &default-config
+  build: ./eddai_EliteDangerousApiInterface
+  environment:
+  - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+  - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+  - DJANGO_EMAIL_HOST=${DJANGO_EMAIL_HOST}
+  - DJANGO_EMAIL_HOST_USER=${DJANGO_EMAIL_HOST_USER}
+  - DJANGO_DEFAULT_FROM_EMAIL=${DJANGO_DEFAULT_FROM_EMAIL}
+  - DJANGO_EMAIL_HOST_PASSWORD=${DJANGO_EMAIL_HOST_PASSWORD}
+  - DJANGO_EMAIL_PORT=${DJANGO_EMAIL_PORT}
+  - DJANGO_CACHES_HOST=${DJANGO_CACHES_HOST}
+  - DJANGO_CACHES_PASSWORD=${DJANGO_CACHES_PASSWORD}
+  - DJANGO_CACHES_PORT=${DJANGO_CACHES_PORT}
+  - CELERY_BROKER_HOST=${CELERY_BROKER_HOST}
+  - CELERY_BROKER_USER=${CELERY_BROKER_USER}
+  - CELERY_BROKER_PASSWORD=${CELERY_BROKER_PASSWORD}
+  - CELERY_BROKER_VHOST=${CELERY_BROKER_VHOST}
+  - CELERY_RESULT_BACKEND_HOST=${CELERY_RESULT_BACKEND_HOST}
+  - CELERY_RESULT_BACKEND_PASSWORD=${CELERY_RESULT_BACKEND_PASSWORD}
+  - CELERY_RESULT_BACKEND_PORT=${CELERY_RESULT_BACKEND_PORT}
+  - EDDN_USER_NAME_AGENT=${EDDN_USER_NAME_AGENT}
+  - EDDN_USER_PASSWORD_AGENT=${EDDN_USER_PASSWORD_AGENT}
+  - POSTGIS_HOST=${POSTGIS_HOST}
+  - POSTGIS_USER=${POSTGIS_USER}
+  - POSTGIS_PASSWORD=${POSTGIS_PASSWORD}
+  - POSTGIS_DB=${POSTGIS_DB}
+
 services:
   django:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *default-config
     container_name: django
-    command: gunicorn eddai.asgi:application --bind
+    command: python -m gunicorn eddai_EliteDangerousApiInterface.wsgi:application -b :8080
     volumes:
-      - .:/code
+      - static_volume:/app/static-server
+      - media_volume:/app/media-server
     ports:
-      - "8000:8000"
+      - "8080:8080"
   celery_worker_task:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *default-config
     container_name: celery_worker_task
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q task -n WorkerTasck@%h -P gevent -c 100
-    volumes:
-      - .:/code
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent -c 100 -Q default -n WorkerTasck@%h
   celery_worker_admin:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *default-config
     container_name: celery_worker_admin
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q admin -n WorkerAdmin@%h -P gevent -c 100
-    volumes:
-      - .:/code
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent -c 100 -Q admin -n WorkerAdmin@%h
   celery_worker_eddn:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *default-config
     container_name: celery_worker_eddn
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q eddn -n WorkerEddn@%h -P gevent -c 100
-    volumes:
-      - .:/code
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent -c 100 -Q eddn -n WorkerEddn@%h
   celery_beat:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *default-config
     container_name: celery_beat
     command: celery -A eddai_EliteDangerousApiInterface beat -l info
-    volumes:
-      - .:/code
   eddn:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    <<: *default-config
     container_name: eddn
-    command: python eddn
+    command: python eddn.py
+    depends_on:
+      - celery_worker_eddn
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"
     volumes:
-      - .:/code
+      - static_volume:/app/static-server
+      - media_volume:/app/media-server
+    depends_on:
+      - django
+
+volumes:
+  static_volume:
+  media_volume:

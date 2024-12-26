@@ -101,7 +101,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'ed_info',
-        'USER':  'postgres',
+        'USER':  os.environ.get('POSTGIS_USER', "postgres"),
         'PASSWORD': os.environ.get('POSTGIS_PASSWORD', "123"),
         'HOST': os.environ.get('POSTGIS_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGIS_PORT', '5432'),
@@ -117,7 +117,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://:{os.environ.get('REDIS_CACHE_PASSWORD', '123')}@{os.environ.get('REDIS_CACHE_HOST', 'localhost')}:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
+        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
     }
 }
 
@@ -163,12 +163,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static-serve'
+STATIC_ROOT = BASE_DIR / 'static-server'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media-serve'
+MEDIA_ROOT = BASE_DIR / 'media-server'
 
 # The backend to use for sending emails. For the list of available backends see Sending email.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#std-setting-EMAIL_BACKEND
@@ -176,7 +175,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
@@ -245,10 +243,15 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
+        "mail_eddn_admins": {
+            "level": "CRITICAL",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+        },
     },
     "loggers": {
         "eddn":{
-            "handlers": ["console", "mail_admins"],
+            "handlers": ["console", "mail_eddn_admins"],
             "level": "INFO",
         },
         "django": {
@@ -287,8 +290,8 @@ EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!
 
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
-CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("RABBITMQ_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
-CELERY_RESULT_BACKEND =  F'redis://:{os.environ.get("REDIS_RESULT_BACKEND_PASSWORD", "123")}@{os.environ.get("REDIS_RESULT_BACKEND_HOST")}:{os.environ.get("REDIS_RESULT_BACKEND_PORT")}'
+CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("CELERY_BROKER_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
+CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("CELERY_RESULT_BACKEND_HOST")}:{os.environ.get("CELERY_RESULT_BACKEND_PORT")}'
 
 #impostazioni per la gestione della serializzazione dei dati
 #https://docs.celeryq.dev/en/stable/userguide/calling.html#serializers
