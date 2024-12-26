@@ -13,3 +13,6 @@ SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 
 # Copia il codice del progetto
 COPY ./eddai_EliteDangerousApiInterface/ .
+
+# espone la porta 8000
+EXPOSE 8000
