@@ -13,9 +13,3 @@ SHELL ["conda", "run", "-n", "myenv", "/bin/bash", "-c"]
 
 # Copia il codice del progetto
 COPY ./eddai_EliteDangerousApiInterface/ .
-
-# Espone la porta su cui Django sarà in esecuzione
-EXPOSE 8000
-
-# Comando per avviare il server Django
-CMD ["conda", "run", "--no-capture-output", "-n", "myenv", "python", "manage.py", "runserver", "0.0.0.0:8000"]

@@ -49,7 +49,7 @@ services:
         ports:
             - "5432:5432"
         restart: always
-        command: postgres -c 'max_connections=5000' -c 'shared_buffers=250MB'
+        command: postgres -c 'max_connections=10000' -c 'shared_buffers=250MB'
     postgressql:
         container_name: postgres
         image: postgres
@@ -63,7 +63,93 @@ services:
         ports:
             - "5433:5432"
         restart: always
-        command: postgres -c 'max_connections=5000' -c 'shared_buffers=250MB'
+        command: postgres -c 'max_connections=10000' -c 'shared_buffers=250MB'
+    django:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: django
+        command: gunicorn eddai.asgi:application --bind
+        volumes:
+            - .:/code
+        ports:
+            - "8000:8000"
+        depends_on:
+            - rabbitmq
+            - redis_result_backend
+            - redis_cache
+            - postgis
+            - postgressql
+    celery_worker_task:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: celery_worker_task
+        command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q task -n WorkerTasck@%h -P gevent -c 100
+        volumes:
+            - .:/code
+        depends_on:
+            - rabbitmq
+            - redis_result_backend
+            - redis_cache
+            - postgis
+            - postgressql
+    celery_worker_admin:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: celery_worker_admin
+        command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q admin -n WorkerAdmin@%h -P gevent -c 100
+        volumes:
+            - .:/code
+        depends_on:
+            - rabbitmq
+            - redis_result_backend
+            - redis_cache
+            - postgis
+            - postgressql
+    celery_worker_eddn:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: celery_worker_eddn
+        command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q eddn -n WorkerEddn@%h -P gevent -c 100
+        volumes:
+            - .:/code
+        depends_on:
+            - rabbitmq
+            - redis_result_backend
+            - redis_cache
+            - postgis
+            - postgressql
+    celery_beat:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: celery_beat
+        command: celery -A eddai_EliteDangerousApiInterface beat -l info
+        volumes:
+            - .:/code
+        depends_on:
+            - rabbitmq
+            - redis_result_backend
+            - redis_cache
+            - postgis
+            - postgressql
+    eddn:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: eddn
+        command: python eddn
+        volumes:
+            - .:/code
+        depends_on:
+            - rabbitmq
+            - redis_result_backend
+            - redis_cache
+            - postgis
+            - postgressql
 
 volumes:
     rabbitedvol:

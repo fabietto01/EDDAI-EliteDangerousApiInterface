@@ -19,4 +19,5 @@ dependencies:
       - redis==5.0.4
       - pyzmq==26.0.3
       - psycopg==3.2.1
+      - unicorn==2.1.1
 prefix: eddai
