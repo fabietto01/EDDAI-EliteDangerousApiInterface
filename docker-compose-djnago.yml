@@ -1,0 +1,52 @@
+version: "2.0"
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django
+    command: gunicorn eddai.asgi:application --bind
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+  celery_worker_task:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker_task
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q task -n WorkerTasck@%h -P gevent -c 100
+    volumes:
+      - .:/code
+  celery_worker_admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker_admin
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q admin -n WorkerAdmin@%h -P gevent -c 100
+    volumes:
+      - .:/code
+  celery_worker_eddn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_worker_eddn
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -Q eddn -n WorkerEddn@%h -P gevent -c 100
+    volumes:
+      - .:/code
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery_beat
+    command: celery -A eddai_EliteDangerousApiInterface beat -l info
+    volumes:
+      - .:/code
+  eddn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eddn
+    command: python eddn
+    volumes:
+      - .:/code
