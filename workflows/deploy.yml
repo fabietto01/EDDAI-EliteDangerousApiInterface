@@ -1,0 +1,17 @@
+name: dajgo-deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: dajgo-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start deployment
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: ls

@@ -1,0 +1,1 @@
+from eddn.service.serializer.commodity.CommodityV3Serializer import CommodityV3Serializer

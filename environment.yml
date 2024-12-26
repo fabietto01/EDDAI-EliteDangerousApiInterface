@@ -1,0 +1,23 @@
+name: eddai
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - geos=3.12.2
+  - gdal=3.9.1
+  - proj=9.4.1
+  - python=3.11.9
+  - psycopg2=2.9.9
+  - libarchive=3.7.7
+  - pip:
+      - celery==5.4.0
+      - django==5.1.1
+      - django-filter==24.2
+      - djangorestframework==3.15.1
+      - djangorestframework-gis==1.1
+      - gevent==24.2.1
+      - redis==5.0.4
+      - pyzmq==26.0.3
+      - psycopg==3.2.1
+      - unicorn==2.1.1
+prefix: eddai

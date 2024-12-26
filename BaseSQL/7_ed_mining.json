@@ -1,0 +1,114 @@
+[
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 1,
+        "fields": {
+            "_eddn": null,
+            "name": "Alexandrite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 2,
+        "fields": {
+            "_eddn": null,
+            "name": "Benitoite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 3,
+        "fields": {
+            "_eddn": null,
+            "name": "Bromellite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 4,
+        "fields": {
+            "_eddn": null,
+            "name": "Grandidierite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 5,
+        "fields": {
+            "_eddn": "LowTemperatureDiamond",
+            "name": "Low Temperature Diamond"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 6,
+        "fields": {
+            "_eddn": null,
+            "name": "Monazite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 7,
+        "fields": {
+            "_eddn": null,
+            "name": "Musgravite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 8,
+        "fields": {
+            "_eddn": null,
+            "name": "Opal"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 9,
+        "fields": {
+            "_eddn": null,
+            "name": "Painite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 10,
+        "fields": {
+            "_eddn": null,
+            "name": "Platinum"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 11,
+        "fields": {
+            "_eddn": null,
+            "name": "Rhodplumsite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 12,
+        "fields": {
+            "_eddn": null,
+            "name": "Rutile"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 13,
+        "fields": {
+            "_eddn": null,
+            "name": "Serendibite"
+        }
+    },
+    {
+        "model": "ed_mining.hotspottype",
+        "pk": 14,
+        "fields": {
+            "_eddn": "tritium",
+            "name": "Tritium"
+        }
+    }
+]

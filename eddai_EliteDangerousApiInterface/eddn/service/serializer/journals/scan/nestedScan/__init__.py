@@ -1,0 +1,3 @@
+from eddn.service.serializer.journals.scan.nestedScan.MaterialsSerializer import MaterialsSerializer
+from eddn.service.serializer.journals.scan.nestedScan.AtmosphereComponentSerializer import AtmosphereComponentSerializer
+from eddn.service.serializer.journals.scan.nestedScan.CompositionSerializers import CompositionSerializers

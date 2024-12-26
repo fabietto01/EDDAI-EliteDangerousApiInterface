@@ -1,0 +1,7 @@
+from eddn.service.serializer.customFields.BaseCustinField import BaseCustomField
+from eddn.service.serializer.customFields.CustomCacheSlugRelatedField import CustomCacheSlugRelatedField
+from  eddn.service.serializer.customFields.LandingPadsChoiceField import LandingPadsChoiceField
+from  eddn.service.serializer.customFields.ReserveLevelChoiceField import ReserveLevelChoiceField
+from  eddn.service.serializer.customFields.RingClassmChoiceField import RingClassmChoiceField
+from  eddn.service.serializer.customFields.HappinessCacheSlugRelatedField import HappinessCacheSlugRelatedField
+from  eddn.service.serializer.customFields.CustomChoiceField import CustomChoiceField

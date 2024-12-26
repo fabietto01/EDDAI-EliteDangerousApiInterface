@@ -1,0 +1,434 @@
+[
+    {
+        "model": "ed_station.service",
+        "pk": 27,
+        "fields": {
+            "_eddn": null,
+            "name": "apexinterstellar",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 2,
+        "fields": {
+            "_eddn": null,
+            "name": "autodock",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 24,
+        "fields": {
+            "_eddn": null,
+            "name": "bartender",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 31,
+        "fields": {
+            "_eddn": null,
+            "name": "blackmarket",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 33,
+        "fields": {
+            "_eddn": null,
+            "name": "carrierfuel",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 32,
+        "fields": {
+            "_eddn": null,
+            "name": "carriermanagement",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 37,
+        "fields": {
+            "_eddn": null,
+            "name": "carriervendor",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 3,
+        "fields": {
+            "_eddn": null,
+            "name": "commodities",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 4,
+        "fields": {
+            "_eddn": null,
+            "name": "contacts",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 8,
+        "fields": {
+            "_eddn": null,
+            "name": "crewlounge",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 1,
+        "fields": {
+            "_eddn": null,
+            "name": "dock",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 14,
+        "fields": {
+            "_eddn": null,
+            "name": "engineer",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 5,
+        "fields": {
+            "_eddn": null,
+            "name": "exploration",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 29,
+        "fields": {
+            "_eddn": null,
+            "name": "facilitator",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 16,
+        "fields": {
+            "_eddn": null,
+            "name": "flightcontroller",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 28,
+        "fields": {
+            "_eddn": null,
+            "name": "frontlinesolutions",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 22,
+        "fields": {
+            "_eddn": null,
+            "name": "livery",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 36,
+        "fields": {
+            "_eddn": null,
+            "name": "materialtrader",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 6,
+        "fields": {
+            "_eddn": null,
+            "name": "missions",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 15,
+        "fields": {
+            "_eddn": null,
+            "name": "missionsgenerated",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 38,
+        "fields": {
+            "_eddn": null,
+            "name": "modulepacks",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 30,
+        "fields": {
+            "_eddn": null,
+            "name": "ondockmission",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 7,
+        "fields": {
+            "_eddn": null,
+            "name": "outfitting",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 26,
+        "fields": {
+            "_eddn": null,
+            "name": "pioneersupplies",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 18,
+        "fields": {
+            "_eddn": null,
+            "name": "powerplay",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 9,
+        "fields": {
+            "_eddn": null,
+            "name": "rearm",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 10,
+        "fields": {
+            "_eddn": null,
+            "name": "refuel",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 11,
+        "fields": {
+            "_eddn": null,
+            "name": "repair",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 19,
+        "fields": {
+            "_eddn": null,
+            "name": "searchrescue",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 12,
+        "fields": {
+            "_eddn": null,
+            "name": "shipyard",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 21,
+        "fields": {
+            "_eddn": null,
+            "name": "shop",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 23,
+        "fields": {
+            "_eddn": null,
+            "name": "socialspace",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 20,
+        "fields": {
+            "_eddn": null,
+            "name": "stationMenu",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 17,
+        "fields": {
+            "_eddn": null,
+            "name": "stationoperations",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 35,
+        "fields": {
+            "_eddn": null,
+            "name": "techBroker",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 13,
+        "fields": {
+            "_eddn": null,
+            "name": "tuning",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 25,
+        "fields": {
+            "_eddn": null,
+            "name": "vistagenomics",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 34,
+        "fields": {
+            "_eddn": null,
+            "name": "voucherredemption",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 1,
+        "fields": {
+            "_eddn": "FleetCarrier",
+            "name": "Fleet Carrier",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 2,
+        "fields": {
+            "_eddn": "OnFootSettlement",
+            "name": "On Foot Settlement",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 3,
+        "fields": {
+            "_eddn": null,
+            "name": "Coriolis",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 4,
+        "fields": {
+            "_eddn": null,
+            "name": "Outpost",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 5,
+        "fields": {
+            "_eddn": null,
+            "name": "Orbis",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 6,
+        "fields": {
+            "_eddn": "CraterOutpost",
+            "name": "Crater Outpost",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 7,
+        "fields": {
+            "_eddn": "Ocellus",
+            "name": "Ocellus",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 8,
+        "fields": {
+            "_eddn": "AsteroidBase",
+            "name": "Asteroid Base",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 9,
+        "fields": {
+            "_eddn": "CraterPort",
+            "name": "Crater Port",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 10,
+        "fields": {
+            "_eddn": "MegaShip",
+            "name": "Mega Ship",
+            "description": ""
+        }
+    }
+]

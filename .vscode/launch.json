@@ -1,0 +1,132 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Django",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "args": [
+        "runserver",
+        "--settings",
+        "eddai_EliteDangerousApiInterface.settings.dev"
+      ],
+      "django": true,
+      "consoleTitle": "Python Debug Django",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "Python: Service eddn",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/eddn.py",
+      "consoleTitle": "Python Debug Service eddn",
+    },
+    {
+      "name": "Python: Celery Worker Tasck",
+      "type": "debugpy",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "50",
+        "-Q", "default",
+        "-n", "WorkerTasck@%h"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+      "consoleTitle": "Python Debug Worker Tasck"
+    },
+    {
+      "name": "Python: Celery Worker Admin",
+      "type": "debugpy",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "50",
+        "-Q", "admin",
+        "-n", "WorkerAdmin@%h"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+      "consoleTitle": "Python Debug Worker Admin"
+    },
+    {
+      "name": "Python: Celery Worker Eddn",
+      "type": "debugpy",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "-A", "eddai_EliteDangerousApiInterface",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "-c", "50",
+        "-Q", "eddn",
+        "-n", "WorkerEddn@%h"
+      ],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "GEVENT_SUPPORT":"True"
+      },
+      "consoleTitle": "Python Debug Worker Eddn"
+    },
+    {
+      "name": "Python: Celery beat",
+      "type": "debugpy",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "module": "celery",
+      "args": [
+        "--app", "eddai_EliteDangerousApiInterface",
+        "beat", 
+        "--loglevel","Debug"
+      ],
+      "consoleTitle": "Python Debug Celery beat"
+    },
+    {
+      "name": "Python: Django Shell",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "args": [
+        "shell",
+        "--settings",
+        "eddai_EliteDangerousApiInterface.settings.dev"
+      ],
+      "django": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Django/Celery Workers",
+      "configurations": [
+        "Python: Celery Worker Tasck", "Python: Celery Worker Admin",
+        "Python: Celery Worker Eddn", "Python: Celery beat",
+        "Python: Django"
+      ],
+      "stopAll": true
+    }
+  ]
+}
