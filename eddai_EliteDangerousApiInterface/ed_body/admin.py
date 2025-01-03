@@ -182,13 +182,13 @@ class PlanetTypeAdmin(admin.ModelAdmin):
 class AtmosphereComponentAdmin(admin.ModelAdmin):
     model = AtmosphereComponent
     list_display = ('name', 'note')
-    search_fields = ('name', 'pk',)
+    search_fields = ('name', 'pk','_eddn')
     fieldsets = (
         (None, {
             'fields': ('name',)
         }),
         (_('Advanced options'), {
-            'fields': ('note',),
+            'fields': ('note','_eddn'),
             'classes': ('collapse',)
         }),
     )
