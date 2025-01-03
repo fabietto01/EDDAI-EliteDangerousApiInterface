@@ -16,7 +16,7 @@ class StarScanSerializer(BaseScanSerializer):
     )
     Luminosity = CacheSlugRelatedField(
         queryset=StarLuminosity.objects.all(),
-        slug_field='eddn',
+        slug_field='name',
     )
     StarType = CacheSlugRelatedField(
         queryset=StarType.objects.all(),
