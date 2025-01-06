@@ -5,6 +5,7 @@ git pull --rebase origin main
 
 # Rebuild the Docker image
 docker build --file eddai_EliteDangerousApiInterface/Dockerfile -t eddaielitedangerousapiinterface:latest "eddai_EliteDangerousApiInterface"
+# docker run --env-file .env --rm eddaielitedangerousapiinterface:latest python manage.py loaddata economy system bgs exploration material mining station
 
 # Apply the latest migrations
 docker run --env-file .env --rm eddaielitedangerousapiinterface:latest python manage.py migrate
