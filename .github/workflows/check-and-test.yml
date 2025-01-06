@@ -23,9 +23,10 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker build --file eddai_EliteDangerousApiInterface/Dockerfile -t eddaielitedangerousapiinterface:latest "eddai_EliteDangerousApiInterface" 
       - name: Run database flush
         run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py flush --no-input
-      - uses: actions/checkout@v4
       - name: Run database migrations
         run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py migrate
       - name: Run tests
