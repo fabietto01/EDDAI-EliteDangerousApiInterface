@@ -1,0 +1,19 @@
+name: check and test
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker build --file eddai_EliteDangerousApiInterface\Dockerfile -t eddaielitedangerousapiinterface:latest "eddai_EliteDangerousApiInterface" 
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Django tests
+        run: docker run --rm eddaielitedangerousapiinterface:latest python manage.py test

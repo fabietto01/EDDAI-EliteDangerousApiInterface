@@ -169,6 +169,19 @@ STATIC_ROOT = BASE_DIR / 'static-server'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media-server'
 
+# Directory where Django will look for fixtures
+# https://docs.djangoproject.com/en/5.1/ref/settings/#fixture-dirs
+# FIXTURE_DIRS = [
+#     BASE_DIR / 'ed_economy/fixtures',
+#     BASE_DIR / 'ed_system/fixtures',
+#     BASE_DIR / 'ed_bgs/fixtures',
+#     BASE_DIR / 'ed_body/fixtures',
+#     BASE_DIR / 'ed_exploration/fixtures',
+#     BASE_DIR / 'ed_material/fixtures',
+#     BASE_DIR / 'ed_mining/fixtures',
+#     BASE_DIR / 'ed_station/fixtures',
+# ]
+
 # The backend to use for sending emails. For the list of available backends see Sending email.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#std-setting-EMAIL_BACKEND
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -176,7 +189,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # Custom user model
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
