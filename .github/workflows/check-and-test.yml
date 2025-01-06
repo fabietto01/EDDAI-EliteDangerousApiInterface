@@ -24,27 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run database flush
-        run: docker run --rm \
-        --network host \
-        -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 \
-        -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test \
-        -e POSTGIS_USER=test_user \
-        -e POSTGIS_PASSWORD=test_password \
-        eddaielitedangerousapiinterface:latest python manage.py flush --no-input
+        run: docker run --rm --network host -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py flush --no-input
       - uses: actions/checkout@v4
       - name: Run database migrations
-        run: docker run --rm \
-        --network host \
-        -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 \
-        -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test \
-        -e POSTGIS_USER=test_user \
-        -e POSTGIS_PASSWORD=test_password \
-        eddaielitedangerousapiinterface:latest python manage.py migrate
+        run: docker run --rm --network host -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py migrate
       - name: Run tests
-        run: docker run --rm \
-        --network host \
-        -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 \
-        -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test \
-        -e POSTGIS_USER=test_user \
-        -e POSTGIS_PASSWORD=test_password \
-        eddaielitedangerousapiinterface:latest python manage.py test
+        run: docker run --rm --network host -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py test
