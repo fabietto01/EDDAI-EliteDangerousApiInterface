@@ -13,7 +13,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: build
+    services:
+      db:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_DB: ed_info
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
     steps:
       - uses: actions/checkout@v4
       - name: Run Django tests
-        run: docker run --rm eddaielitedangerousapiinterface:latest python manage.py test
+        run: docker run --rm \
+        --network host \
+        -e DJANGO_SECRET_KEY=on_5vt@hm3k#d*00&jy9sp%esjf$n#6%5fio$cu+(%tpji0@15 \
+        -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test \
+        -e POSTGIS_USER=test_user \
+        -e POSTGIS_PASSWORD=test_password \
+
+        eddaielitedangerousapiinterface:latest python manage.py test
