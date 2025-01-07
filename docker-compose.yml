@@ -1,4 +1,3 @@
-version: "2.0"
 x-common-config: &default-config
   build: ./eddai_EliteDangerousApiInterface
   environment:
