@@ -22,6 +22,7 @@ x-common-config: &default-config
   - POSTGIS_USER=${POSTGIS_USER}
   - POSTGIS_PASSWORD=${POSTGIS_PASSWORD}
   - POSTGIS_DB=${POSTGIS_DB}
+  restart: always
 
 services:
   django:
