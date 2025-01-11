@@ -1,8 +1,7 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.filters import SearchFilter
-from django_filters.rest_framework import DjangoFilterBackend
 
-from ..serializers import AtmosphereComponentSerializer
+from ..serializers import AtmosphereComponentSerializer, CompactedAtmosphereComponentSerializer
 
 from ed_body.models import AtmosphereComponent
 
@@ -16,8 +15,11 @@ class AtmosphereComponentViewSet(ReadOnlyModelViewSet):
         search_fields (list): A list of fields that can be searched.
     """
     queryset = AtmosphereComponent.objects.all()
-    filterset_class = None
-    filter_backends = [SearchFilter, DjangoFilterBackend]
-    search_fields = ['name']
-    
     serializer_class = AtmosphereComponentSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CompactedAtmosphereComponentSerializer
+        return super().get_serializer_class()
