@@ -1,10 +1,12 @@
 from core.api.viewsets import OwnerAndDateModelViewSet
+from django.utils.translation import gettext_lazy as _
+
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import BaseBodySerializer, StarSerializer, PlanetSerializer
+from ..serializers import BaseBodySerializer, StarSerializer, PlanetSerializer
 
-from ed_body.models import BaseBody, Star, Planet
+from ed_body.models import BaseBody
 
 class BaseBodyViewSet(OwnerAndDateModelViewSet):
     """
@@ -27,16 +29,16 @@ class BaseBodyViewSet(OwnerAndDateModelViewSet):
 
     def get_serializer_class(self) -> BaseBodySerializer:
         if self.action == 'retrieve':
-            if hasattr(self.istance, 'planet'):
+            if hasattr(self.instance, 'planet'):
                 return PlanetSerializer
-            if hasattr(self.istance, 'star'):
+            if hasattr(self.instance, 'star'):
                 return StarSerializer
         return BaseBodySerializer
     
     def get_object(self):
         obj = super().get_object()
         if self.action == 'retrieve':
-            self.istance = obj
+            self.instance = obj
             if hasattr(obj, 'planet'):
                 return obj.planet
             if hasattr(obj, 'star'):

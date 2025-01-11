@@ -1,1 +1,3 @@
 from .baseBodySerializer import BaseBodySerializer, StarSerializer, PlanetSerializer
+from .atmosphereComponentSerializer import AtmosphereComponentSerializer
+from .atmosphereComponentInPlanet import CompactedAtmosphereComponentInPlanetSerializer, AtmosphereComponentInPlanetSerializer
