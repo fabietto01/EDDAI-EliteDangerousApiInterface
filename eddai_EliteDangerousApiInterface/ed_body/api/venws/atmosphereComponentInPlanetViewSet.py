@@ -15,6 +15,30 @@ from ed_body.models import AtmosphereComponentInPlanet
 from ..serializers import AtmosphereComponentInPlanetSerializer
 
 class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
+    """
+    ViewSet for managing atmosphere components in a planet.
+    This ViewSet provides CRUD operations for atmosphere components associated with a specific planet.
+    It includes custom methods for adding multiple atmosphere components at once.
+    Attributes:
+        queryset (QuerySet): The queryset for retrieving atmosphere components.
+        serializer_class (Serializer): The serializer class for atmosphere components.
+        filterset_class (FilterSet): The filter set class for atmosphere components.
+        filter_backends (list): The list of filter backends for the ViewSet.
+        search_fields (list): The list of fields to search in the atmosphere components.
+    Methods:
+        get_queryset(self):
+            Retrieves the queryset filtered by the specified planet.
+        get_serializer_context(self):
+            Adds the planet primary key to the serializer context.
+        perform_create(self, serializer):
+            Saves a new atmosphere component with the created_by and updated_by fields set to the current user.
+        perform_update(self, serializer):
+            Updates an existing atmosphere component with the updated_by field set to the current user.
+        multiple_add_atmosphere_components(self, request, planet_pk=None, pk=None):
+            Adds multiple atmosphere components to a specified planet.
+            Validates the incoming data using a serializer and saves the components if valid.
+            Returns appropriate responses based on the success or failure of the operation.
+    """
 
     queryset = AtmosphereComponentInPlanet.objects.all()
     serializer_class = AtmosphereComponentInPlanetSerializer
@@ -55,6 +79,23 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
         url_path="add"
     )
     def multiple_add_atmosphere_components(self, request, planet_pk=None, pk=None) -> None:
+        """
+        Adds multiple atmosphere components to a planet.
+
+        This method handles the addition of multiple atmosphere components to a specified planet.
+        It validates the incoming data using a serializer and saves the components if valid.
+        If the components already exist, it returns a 400 Bad Request response.
+        If any other error occurs, it returns a 500 Internal Server Error response.
+        If the queryset does not exist, it returns a 404 Not Found response.
+
+        Args:
+            request (Request): The HTTP request object containing the data to be added.
+            planet_pk (int, optional): The primary key of the planet to which the components are to be added. Defaults to None.
+            pk (int, optional): The primary key of the atmosphere component. Defaults to None.
+
+        Returns:
+            Response: A DRF Response object with the appropriate status code and data.
+        """
         queryset = self.get_queryset()
         if queryset.exists():
             try:
