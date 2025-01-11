@@ -4,13 +4,16 @@ from django.db.models import Sum
 from ed_body.models import AtmosphereComponentInPlanet, AtmosphereComponent
 
 class ListCompactedAtmosphereComponentInPlanetSerializer(serializers.ListSerializer):
+    """
+    ListCompactedAtmosphereComponentInPlanetSerializer is used to increase the efficiency of data insertion 
+    regarding the composition of a planet's atmosphere. This serializer leverages Django's bulk_create method 
+    to insert multiple AtmosphereComponentInPlanet instances in a single query, improving performance 
+    when handling large datasets.
+    """
     
     def create(self, validated_data):
         atmosphereComponent = [AtmosphereComponentInPlanet(**item) for item in validated_data]
         return AtmosphereComponentInPlanet.objects.bulk_create(atmosphereComponent)
-    
-    def update(self, instance, validated_data):
-        pass
 
 class CompactedAtmosphereComponentInPlanetSerializer(serializers.ModelSerializer):
     """
