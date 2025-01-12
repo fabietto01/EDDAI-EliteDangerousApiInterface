@@ -37,7 +37,8 @@ class CompactedAtmosphereComponentInPlanetSerializer(serializers.ModelSerializer
             if queryset.aggregate(Sum('percent', default=0))['percent__sum'] + attrs['percent'] > 100:
                 raise serializers.ValidationError('the sum of the percent for the planet cannot be greater than 100')
         except KeyError:
-            raise serializers.ValidationError('planet_pk is required') 
+            from rest_framework import status
+            raise serializers.ValidationError('An internal server error occurred', code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return attrs
 
     class Meta:
