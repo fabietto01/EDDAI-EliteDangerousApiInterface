@@ -30,7 +30,7 @@ class CompactedAtmosphereComponentInPlanetSerializer(serializers.ModelSerializer
 
     def validate(self, attrs):
         try:
-            planet_pk:int = self.context.get('planet_pk')
+            planet_pk:int = self.context['planet_pk']
             queryset = AtmosphereComponentInPlanet.objects.filter(planet_id=planet_pk)
             if self.instance:
                 queryset = queryset.exclude(pk=self.instance.pk)
