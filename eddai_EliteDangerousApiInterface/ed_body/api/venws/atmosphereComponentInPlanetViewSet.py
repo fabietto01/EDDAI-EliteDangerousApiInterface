@@ -114,6 +114,10 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
                         serializer.data,
                         status=status.HTTP_201_CREATED
                     )
+                return Response(
+                    serializer.errors,
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             except IntegrityError as e:
                 if 'planet_atmo_component_uc' in str(e):
                     return Response(
