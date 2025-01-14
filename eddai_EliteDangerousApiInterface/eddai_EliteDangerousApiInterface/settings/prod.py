@@ -5,6 +5,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+
+
 # Un elenco di tutte le persone che ricevono notifiche di errore del codice. 
 # https://docs.djangoproject.com/en/4.1/ref/settings/#admins
 ADMINS = [("Fabio Zorzetto", "fabio.zorzetto.01@gmail.com")]
@@ -27,3 +29,13 @@ EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.environ.get('DJANGO_EMAIL_PORT', 587)
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DJANGO_DEFAULT_FROM_EMAIL')
+
+# The URL where requests are redirected for login, especially when using the login_required() decorator.
+#https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-failure-view
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+
+# A list of strings representing the host/domain names that this Django site can serve.
+# https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://eddai.italiangamingsystem.it'
+]
