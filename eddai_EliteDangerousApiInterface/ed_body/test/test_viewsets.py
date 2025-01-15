@@ -183,6 +183,26 @@ class AtmosphereTypeViewSetAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
 class AtmosphereComponentInPlanetViewSetAPITestCase(APITestCase):
+    """
+    Test suite for the AtmosphereComponentInPlanetViewSet viewset.
+    Classes:
+        AtmosphereComponentInPlanetViewSetAPITestCase(APITestCase): Test suite for the AtmosphereComponentInPlanetViewSet viewset.
+    Methods:
+        test_get_list_atmosphere_components_in_planet(self):
+            Tests the GET method for retrieving a list of atmosphere components in a planet.
+        test_search_atmosphere_component_in_planet(self):
+            Tests the GET method for searching for an atmosphere component in a planet.
+        test_retrieve_atmosphere_component_in_planet(self):
+            Tests the GET method for retrieving a single atmosphere component in a planet.
+        test_delete_atmosphere_component_in_planet(self):
+            Tests the DELETE method for deleting an atmosphere component in a planet.
+        test_post_atmosphere_component_in_planet(self):
+            Tests the POST method for creating a new atmosphere component in a planet.
+        test_put_atmosphere_component_in_planet(self):
+            Tests the PUT method for updating an atmosphere component in a planet.
+        test_multiple_add_atmosphere_components(self):
+            Tests the POST method for adding multiple atmosphere components in a planet.
+    """
 
     fixtures = ['user', 'economy', 'system', 'body']
 
