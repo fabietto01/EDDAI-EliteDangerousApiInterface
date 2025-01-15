@@ -23,3 +23,4 @@ class AtmosphereComponent(AbstractDataEDDN):
     class Meta:
         verbose_name = _('atmosphere component')
         verbose_name_plural = _('atmosphere components')
+        ordering = ['name']
