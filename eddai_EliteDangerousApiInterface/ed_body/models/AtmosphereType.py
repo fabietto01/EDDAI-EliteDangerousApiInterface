@@ -23,3 +23,4 @@ class AtmosphereType(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('atmosphere type')
         verbose_name_plural = _('atmosphere types')
+        ordering = ['name']
