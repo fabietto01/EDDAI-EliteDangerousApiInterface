@@ -17,9 +17,15 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .venws import BaseBodyViewSet
+from .venws import (
+    BaseBodyViewSet, AtmosphereComponentViewSet, AtmosphereComponentInPlanetViewSet,
+    AtmosphereTypeViewSet
+)
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'body', BaseBodyViewSet)
+router.register(r'body/(?P<planet_pk>\d+)/atmosphere-component', AtmosphereComponentInPlanetViewSet)
+router.register(r'atmosphere-component', AtmosphereComponentViewSet)
+router.register(r'atmosphere-type', AtmosphereTypeViewSet)
 
 urlpatterns = router.urls

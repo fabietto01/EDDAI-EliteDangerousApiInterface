@@ -116,6 +116,19 @@
         "eddai_EliteDangerousApiInterface.settings.dev"
       ],
       "django": true
+    },
+    {
+      "name": "Python: Django Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "envFile": "${workspaceFolder}/.env",
+      "program": "manage.py",
+      "args": [
+        "test",
+      ],
+      "django": true,
+      "consoleTitle": "Python Debug Django Tests"
     }
   ],
   "compounds": [

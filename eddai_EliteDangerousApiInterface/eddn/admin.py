@@ -37,9 +37,8 @@ class DataLogModelAdmin(admin.ModelAdmin):
 
     @admin.action(description=_('data re-processing'))
     def re_processing(self, request, queryset):
-        try:
-            tasks = [star_analytic.s(instance) for instance in queryset]
-            job = group(tasks)
+        try:    
+            job = group(star_analytic.s(instance) for instance in queryset)
             result:GroupResult = job.apply_async(
                 queue="admin"
             )

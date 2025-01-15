@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -9,7 +10,20 @@ from ed_body.models.AtmosphereComponent import AtmosphereComponent
 
 class AtmosphereComponentInPlanet(OwnerAndDateModels):
     """
-    modello per i componenti delle atmosfere
+    Represents the relationship between a planet and its atmosphere components, 
+    including the percentage of each component in the planet's atmosphere.
+    Attributes:
+        planet (ForeignKey): A reference to the Planet model, indicating which planet this atmosphere component belongs to.
+        atmosphere_component (ForeignKey): A reference to the AtmosphereComponent model, indicating the specific component of the atmosphere.
+        percent (FloatField): The percentage of this atmosphere component in the planet's atmosphere.
+    Methods:
+        __str__(): Returns the name of the atmosphere component.
+        clean(): Validates that the sum of 'percent' for the planet in the database does not exceed 100.
+    Meta:
+        verbose_name (str): Human-readable name for the object.
+        verbose_name_plural (str): Human-readable plural name for the object.
+        indexes (list): Database indexes for the model.
+        constraints (list): Database constraints for the model.
     """
     planet = models.ForeignKey(
         Planet, models.CASCADE,
@@ -33,6 +47,20 @@ class AtmosphereComponentInPlanet(OwnerAndDateModels):
 
     def __str__(self) -> str:
         return f'{self.atmosphere_component.name}'
+    
+    def clean(self):
+        """
+        Checks that the sum of 'percent' for the planet in the database is <= 100
+        """
+        if self.__class__.objects.filter(planet=self.planet).aggregate(models.Sum('percent', default=0))['percent__sum'] + self.percent > self.max_percent():
+            raise ValidationError(_(f'the sum of the percent for the planet cannot be greater than {self.max_percent()}'))
+
+    @staticmethod
+    def max_percent() -> int:
+        """
+        Returns the maximum value for the 'percent' field.
+        """
+        return 100
 
     class Meta:
         verbose_name = _('atmosphere component in planet')
@@ -44,3 +72,4 @@ class AtmosphereComponentInPlanet(OwnerAndDateModels):
         constraints = [
             models.UniqueConstraint(fields=['planet', 'atmosphere_component'], name='planet_atmo_component_uc'),
         ]
+        ordering = ['pk']

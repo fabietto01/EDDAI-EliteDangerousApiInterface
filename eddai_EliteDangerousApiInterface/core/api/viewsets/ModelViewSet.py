@@ -1,4 +1,4 @@
-from core.models import OwnerAndDateModels
+from rest_framework.serializers import BaseSerializer
 from rest_framework.viewsets import ModelViewSet
 
 class OwnerAndDateModelViewSet(ModelViewSet):
@@ -13,14 +13,14 @@ class OwnerAndDateModelViewSet(ModelViewSet):
             Saves the serializer with the updated_by field set to the current user.
     """
     
-    def perform_create(self, serializer:OwnerAndDateModels):
+    def perform_create(self, serializer:BaseSerializer):
         user = self.request.user
         serializer.save(
             created_by=user,
             updated_by=user
         )
     
-    def perform_update(self, serializer:OwnerAndDateModels):
+    def perform_update(self, serializer:BaseSerializer):
         user = self.request.user
         serializer.save(
             updated_by=user
