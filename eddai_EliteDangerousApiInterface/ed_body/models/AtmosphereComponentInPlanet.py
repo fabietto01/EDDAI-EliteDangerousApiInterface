@@ -52,8 +52,15 @@ class AtmosphereComponentInPlanet(OwnerAndDateModels):
         """
         Checks that the sum of 'percent' for the planet in the database is <= 100
         """
-        if self.__class__.objects.filter(planet=self.planet).aggregate(models.Sum('percent', default=0))['percent__sum'] + self.percent > 100:
-            raise ValidationError(_('the sum of the percent for the planet cannot be greater than 100'))
+        if self.__class__.objects.filter(planet=self.planet).aggregate(models.Sum('percent', default=0))['percent__sum'] + self.percent > self.max_percent():
+            raise ValidationError(_(f'the sum of the percent for the planet cannot be greater than {self.max_percent()}'))
+
+    @staticmethod
+    def max_percent() -> int:
+        """
+        Returns the maximum value for the 'percent' field.
+        """
+        return 100
 
     class Meta:
         verbose_name = _('atmosphere component in planet')
@@ -65,3 +72,4 @@ class AtmosphereComponentInPlanet(OwnerAndDateModels):
         constraints = [
             models.UniqueConstraint(fields=['planet', 'atmosphere_component'], name='planet_atmo_component_uc'),
         ]
+        ordering = ['pk']

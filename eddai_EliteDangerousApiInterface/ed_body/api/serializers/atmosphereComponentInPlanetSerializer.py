@@ -11,6 +11,17 @@ class ListCompactedAtmosphereComponentInPlanetSerializer(serializers.ListSeriali
     when handling large datasets.
     """
     
+    def validate(self, attrs):
+        try:
+            planet_pk:int = self.context['planet_pk']
+            queryset = AtmosphereComponentInPlanet.objects.filter(planet_id=planet_pk)
+            percent = sum([item['percent'] for item in attrs])
+            if queryset.aggregate(Sum('percent', default=0))['percent__sum'] + percent > AtmosphereComponentInPlanet.max_percent():
+                raise serializers.ValidationError(f'the sum of the percent for the planet cannot be greater than {AtmosphereComponentInPlanet.max_percent()}')
+        except KeyError:
+            from rest_framework import status
+            raise serializers.ValidationError('An internal server error occurred', code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return attrs
     def create(self, validated_data):
         atmosphereComponent = [AtmosphereComponentInPlanet(**item) for item in validated_data]
         return AtmosphereComponentInPlanet.objects.bulk_create(atmosphereComponent)
@@ -34,8 +45,8 @@ class CompactedAtmosphereComponentInPlanetSerializer(serializers.ModelSerializer
             queryset = AtmosphereComponentInPlanet.objects.filter(planet_id=planet_pk)
             if self.instance:
                 queryset = queryset.exclude(pk=self.instance.pk)
-            if queryset.aggregate(Sum('percent', default=0))['percent__sum'] + attrs['percent'] > 100:
-                raise serializers.ValidationError('the sum of the percent for the planet cannot be greater than 100')
+            if queryset.aggregate(Sum('percent', default=0))['percent__sum'] + attrs['percent'] > AtmosphereComponentInPlanet.max_percent():
+                raise serializers.ValidationError(f'the sum of the percent for the planet cannot be greater than {AtmosphereComponentInPlanet.max_percent()}')
         except KeyError:
             from rest_framework import status
             raise serializers.ValidationError('An internal server error occurred', code=status.HTTP_500_INTERNAL_SERVER_ERROR)

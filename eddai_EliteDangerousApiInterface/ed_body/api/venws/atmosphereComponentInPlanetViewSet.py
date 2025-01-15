@@ -2,6 +2,7 @@ from core.api.viewsets import OwnerAndDateModelViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.serializers import ModelSerializer
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.translation import gettext_lazy as _
 
 from http import HTTPMethod
 from rest_framework.response import Response
@@ -10,7 +11,7 @@ from rest_framework import status
 from django.db.utils import IntegrityError
 
 
-from ed_body.models import AtmosphereComponentInPlanet
+from ed_body.models import AtmosphereComponentInPlanet, Planet
 
 from ..serializers import AtmosphereComponentInPlanetSerializer
 
@@ -44,7 +45,7 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
     serializer_class = AtmosphereComponentInPlanetSerializer
     filterset_class = None
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    search_fields = ['name']
+    search_fields = ['atmosphere_component__name']
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -75,7 +76,7 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
     @action(
         detail=False,
         methods=[HTTPMethod.POST],
-        url_name="atmosphere-component-multiple-add",
+        url_name="multiple-add",
         url_path="add"
     )
     def multiple_add_atmosphere_components(self, request, planet_pk=None, pk=None) -> None:
@@ -96,8 +97,7 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
         Returns:
             Response: A DRF Response object with the appropriate status code and data.
         """
-        queryset = self.get_queryset()
-        if queryset.exists():
+        if Planet.objects.filter(pk=planet_pk).exists():
             try:
                 serializer:ModelSerializer = self.get_serializer(
                     data=request.data,
@@ -132,6 +132,7 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
         return  Response(
+            {'detail': _('The specified planet does not exist.')},
             status=status.HTTP_404_NOT_FOUND
         )
     
