@@ -1,4 +1,5 @@
 x-common-config: &default-config
+  pull_policy: always
   build: ./eddai_EliteDangerousApiInterface
   environment:
   - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
