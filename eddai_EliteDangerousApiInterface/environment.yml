@@ -20,4 +20,5 @@ dependencies:
       - pyzmq==26.0.3
       - psycopg==3.2.1
       - gunicorn==23.0.0
+      - django-celery-beat==2.7.0
 prefix: edda

@@ -92,7 +92,8 @@
       "args": [
         "--app", "eddai_EliteDangerousApiInterface",
         "beat", 
-        "--loglevel","Debug"
+        "--loglevel","Debug",
+        "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"
       ],
       "consoleTitle": "Python Debug Celery beat"
     },

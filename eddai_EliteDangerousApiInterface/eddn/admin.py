@@ -15,9 +15,9 @@ log = getLogger("django")
 class DataLogModelAdmin(admin.ModelAdmin):
     model = DataLog
     search_fields = ("schema","error")
-    list_display = ("pk","schema", "error", "update", "creat_at")
+    list_display = ("pk","schema", "error", "updated_at", "created_at")
     list_display_links = ("pk", "schema")
-    readonly_fields = ("creat_at", "update", "error")
+    readonly_fields = ("created_at", "updated_at", "error")
     list_filter = (
         ("schema",admin.AllValuesFieldListFilter),  
     )
@@ -30,7 +30,7 @@ class DataLogModelAdmin(admin.ModelAdmin):
             )
         }),
         ("Date", {
-            "fields": ("creat_at", "update")
+            "fields": ("created_at", "updated_at")
         })
     ]
     actions = ['re_processing']
