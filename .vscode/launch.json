@@ -11,8 +11,6 @@
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
       "args": [
         "runserver",
-        "--settings",
-        "eddai_EliteDangerousApiInterface.settings.dev"
       ],
       "django": true,
       "consoleTitle": "Python Debug Django",
@@ -23,6 +21,7 @@
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/eddn.py",
+      "envFile": "${workspaceFolder}/.env",
       "consoleTitle": "Python Debug Service eddn",
     },
     {
@@ -31,6 +30,7 @@
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "envFile": "${workspaceFolder}/.env",
       "module": "celery",
       "args": [
         "-A", "eddai_EliteDangerousApiInterface",
@@ -41,10 +41,6 @@
         "-Q", "default",
         "-n", "WorkerTasck@%h"
       ],
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}",
-        "GEVENT_SUPPORT":"True"
-      },
       "consoleTitle": "Python Debug Worker Tasck"
     },
     {
@@ -53,6 +49,7 @@
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "envFile": "${workspaceFolder}/.env",
       "module": "celery",
       "args": [
         "-A", "eddai_EliteDangerousApiInterface",
@@ -63,10 +60,6 @@
         "-Q", "admin",
         "-n", "WorkerAdmin@%h"
       ],
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}",
-        "GEVENT_SUPPORT":"True"
-      },
       "consoleTitle": "Python Debug Worker Admin"
     },
     {
@@ -75,6 +68,7 @@
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "envFile": "${workspaceFolder}/.env",
       "module": "celery",
       "args": [
         "-A", "eddai_EliteDangerousApiInterface",
@@ -85,10 +79,6 @@
         "-Q", "eddn",
         "-n", "WorkerEddn@%h"
       ],
-      "env": {
-        "PYTHONPATH": "${workspaceFolder}",
-        "GEVENT_SUPPORT":"True"
-      },
       "consoleTitle": "Python Debug Worker Eddn"
     },
     {
@@ -97,6 +87,7 @@
       "request": "launch",
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
+      "envFile": "${workspaceFolder}/.env",
       "module": "celery",
       "args": [
         "--app", "eddai_EliteDangerousApiInterface",
@@ -110,10 +101,9 @@
       "type": "debugpy",
       "request": "launch",
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "envFile": "${workspaceFolder}/.env",
       "args": [
         "shell",
-        "--settings",
-        "eddai_EliteDangerousApiInterface.settings.dev"
       ],
       "django": true
     },

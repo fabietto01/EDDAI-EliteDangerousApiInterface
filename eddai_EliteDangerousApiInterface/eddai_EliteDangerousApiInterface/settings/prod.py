@@ -28,6 +28,14 @@ EMAIL_PORT = os.environ.get('DJANGO_EMAIL_PORT', 587)
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.environ.get('DJANGO_DEFAULT_FROM_EMAIL')
 
+# La configurazione per il framework REST è tutta con namespace all'interno di una singola impostazione Django
+# https://www.django-rest-framework.org/api-guide/settings/
+REST_FRAMEWORK.update({
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+})
+
 # The URL where requests are redirected for login, especially when using the login_required() decorator.
 #https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-failure-view
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
