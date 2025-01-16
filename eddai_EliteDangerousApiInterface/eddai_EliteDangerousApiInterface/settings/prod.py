@@ -35,3 +35,13 @@ REST_FRAMEWORK.update({
         'rest_framework.renderers.JSONRenderer',
     ],
 })
+
+# The URL where requests are redirected for login, especially when using the login_required() decorator.
+#https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-failure-view
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
+
+# A list of strings representing the host/domain names that this Django site can serve.
+# https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://eddai.italiangamingsystem.it'
+]
