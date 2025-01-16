@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', #per il login con token
     'rest_framework_gis', #pip install djangorestframework-gis
     'django_filters', #pip install django-filter
+    'django_celery_beat', #pip install django-celery-beat
 
     'users',
     'core',
@@ -314,14 +315,14 @@ CELERY_ACCEPT_CONTENT = ['application/json', 'application/x-python-serialize']
 
 #impostazioni per la gestione delle code predefinata di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-task_default_queue
-CELERY_DEFAULT_QUEUE = 'default'
+CELERY_TASK_DEFAULT_QUEUE = 'default'
 
 #impostazione per la gestione delle code dei task di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#std-setting-task_queues
 from kombu import Queue
 CELERY_TASK_QUEUES = (
-    Queue('eddn', routing_key='service.eddn.*'),
     Queue('default', routing_key='task.#'),
+    Queue('eddn', routing_key='service.eddn'),
     Queue('admin', routing_key='admin.#'),
 )
 
@@ -331,14 +332,5 @@ CELERY_TASK_ROUTES = {
     "service.eddn": {
         "queue": "eddn",
         "routing_key": "service.eddn",
-    },
-    "admin.*": {
-        "queue": "admin",
-    },
-}
-
-#impostazione per la gestione dei task periodici di celery
-#https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
-CELERY_BEAT_SCHEDULE = {
-
+    }
 }
