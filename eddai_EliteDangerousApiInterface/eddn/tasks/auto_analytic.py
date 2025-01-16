@@ -6,7 +6,7 @@ from eddn.service.dataAnalytics.utility import star_analytic
 
 @shared_task(name="auto_analytic", bind=False)
 def auto_analytic():
-    queryset = DataLog.objects.all().order_by('update')
+    queryset = DataLog.objects.all().order_by('created_at')
     job = group(star_analytic.s(instance) for instance in queryset)
     result:GroupResult = job.apply_async()
     result.get()

@@ -1,13 +1,13 @@
 from django.db import models
+from core.models import DateModels
 from django.core.exceptions import ValidationError
-from django.contrib import admin
+from django.db.models.functions import Coalesce
 
 from django.utils.translation import gettext_lazy as _
-from eddn.manager import EddnManager
 
 # Create your models here.
 
-class DataLog(models.Model):
+class DataLog(DateModels):
 
     data = models.JSONField(
         verbose_name=_('data')
@@ -18,12 +18,6 @@ class DataLog(models.Model):
     error = models.JSONField(
         verbose_name=_('error'), null=True, blank=True
     )
-    update = models.DateTimeField(
-        verbose_name=_("update"), auto_now=True,
-    )
-    creat_at = models.DateTimeField(
-        verbose_name=_("create at"), auto_now_add=True,
-    )
 
     def __str__(self) -> str:
         return str(self.schema) or str(self.data)
@@ -31,7 +25,7 @@ class DataLog(models.Model):
     class Meta:
         verbose_name = _("data log")
         verbose_name_plural = _("data logs")
-        ordering = ['-update']
+        ordering = ['-updated_at']
 
 class AbstractDataEDDN(models.Model):
     """
@@ -39,25 +33,19 @@ class AbstractDataEDDN(models.Model):
     che vengo utilizati per verificare e mapare i datti di eddn
     """
     name = models.CharField(
-        max_length=255, verbose_name=_('name')
+        max_length=255, verbose_name=_('name'),
+        unique=True,
     )
     _eddn = models.CharField(
         max_length=100, 
-        blank=True, null=True
+        blank=True, null=True,
     )
-
-    objects = EddnManager()
-
-    @property
-    @admin.display(ordering="_eddn", description="value for eddn")
-    def eddn(self) -> str:
-        if self.__eddn:
-            return self.__eddn
-        return self.name
-
-    @eddn.setter
-    def eddn(self, value: str) -> None:
-        self.__eddn = value
+    eddn = models.GeneratedField(
+        verbose_name=_('eddn'),
+        expression=Coalesce('_eddn', 'name'),
+        output_field=models.CharField(),
+        db_persist=True,
+    )
 
     def clean(self) -> None:
         super().clean()
