@@ -4,7 +4,11 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-from ..serializers import BaseBodySerializer, StarSerializer, PlanetSerializer
+from ..filterSet import BaseBodyFilterSet
+from ..serializers import (
+    BaseBodySerializer, BaseBodyDistanceSerializer,
+    StarSerializer, PlanetSerializer
+)
 
 from ed_body.models import BaseBody
 
@@ -26,6 +30,7 @@ class BaseBodyViewSet(OwnerAndDateModelViewSet):
     filterset_class = None
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']
+    filterset_class = BaseBodyFilterSet
 
     def get_serializer_class(self) -> BaseBodySerializer:
         if self.action == 'retrieve':
@@ -33,7 +38,15 @@ class BaseBodyViewSet(OwnerAndDateModelViewSet):
                 return PlanetSerializer
             if hasattr(self.instance, 'star'):
                 return StarSerializer
+        if self.request.query_params.get('order_by_system'):
+            return BaseBodyDistanceSerializer
         return BaseBodySerializer
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if not self.request.query_params.get('order_by_system'):
+            return queryset.order_by('name')
+        return queryset
     
     def get_object(self):
         obj = super().get_object()
