@@ -9,7 +9,8 @@ from ed_body.models import (
 from ed_body.api.serializers import (
     CompactedAtmosphereComponentSerializer, AtmosphereComponentSerializer,
     CompactedAtmosphereComponentInPlanetSerializer, AtmosphereComponentInPlanetSerializer,
-    CompactedAtmosphereTypeSerializer, AtmosphereTypeSerializer
+    CompactedAtmosphereTypeSerializer, AtmosphereTypeSerializer,
+    PlanetTypeSerializer, CompactedPlanetTypeSerializer
 )
 from ed_system.models import System
 from users.models import User
@@ -281,6 +282,68 @@ class AtmosphereTypeSerializerTestCase(TestCase):
             'name': 'test_deserializer'
         }
         serializer = AtmosphereTypeSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        instance = serializer.save()
+        self.assertEqual(instance.name, data.get('name'))
+        self.assertEqual(instance.note, None)
+
+class PlanetTypeSerializerTestCase(TestCase):
+    """
+    Test case for testing the PlanetType model serializer.
+    Classes:
+        PlanetTypeSerializerTestCase: Test case for testing the PlanetType model serializer.
+    Methods:
+        test_compacted_serializer(self):
+            Tests the CompactedPlanetTypeSerializer serializer.
+        test_compacted_deserializer(self):
+            Tests the CompactedPlanetTypeSerializer deserializer.
+        test_serializer(self):
+            Tests the PlanetTypeSerializer serializer.
+        test_deserializer(self):
+            Tests the PlanetTypeSerializer deserializer.
+    """
+
+    fixtures = ['user', 'economy', 'system', 'body']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.instance_planetType = AtmosphereType.objects.get(id=1)
+
+    def test_compacted_serializer(self):
+        serializer = CompactedPlanetTypeSerializer(
+            instance=self.instance_planetType
+        )
+        data = {
+            'id': self.instance_planetType.id,
+            'name': self.instance_planetType.name
+        }
+        self.assertEqual(serializer.data, data)
+    
+    def test_compacted_deserializer(self):
+        data = {
+            'name': 'test_compacted_deserializer'
+        }
+        serializer = CompactedPlanetTypeSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        instance = serializer.save()
+        self.assertEqual(instance.name, data.get('name'))
+
+    def test_serializer(self):
+        serializer = PlanetTypeSerializer(
+            instance=self.instance_planetType
+        )
+        data = {
+            'id': self.instance_planetType.id,
+            'name': self.instance_planetType.name,
+            'note': self.instance_planetType.note
+        }
+        self.assertEqual(serializer.data, data)
+
+    def test_deserializer(self):
+        data = {
+            'name': 'test_deserializer'
+        }
+        serializer = PlanetTypeSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         instance = serializer.save()
         self.assertEqual(instance.name, data.get('name'))

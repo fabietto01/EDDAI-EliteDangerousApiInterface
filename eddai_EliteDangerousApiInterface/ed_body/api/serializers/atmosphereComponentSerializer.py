@@ -22,4 +22,4 @@ class AtmosphereComponentSerializer(CompactedAtmosphereComponentSerializer):
 
     class Meta(CompactedAtmosphereComponentSerializer.Meta):
         fields = None
-        exclude  = ['_eddn']
+        exclude  = ['_eddn', 'eddn']
