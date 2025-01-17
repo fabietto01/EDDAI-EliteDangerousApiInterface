@@ -3,3 +3,4 @@ from .atmosphereComponentViewSets import AtmosphereComponentViewSet
 from .atmosphereComponentInPlanetViewSet import AtmosphereComponentInPlanetViewSet
 from .atmosphereTypeViewSet import AtmosphereTypeViewSet
 from .planetTypeViewSet import PlanetTypeViewSet
+from .volcanismViewSet import VolcanismViewSet

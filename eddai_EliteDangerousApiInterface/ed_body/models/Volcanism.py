@@ -23,3 +23,4 @@ class Volcanism(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('volcanism')
         verbose_name_plural = _('volcanisms')
+        ordering = ['pk']

@@ -3,14 +3,15 @@ from rest_framework.exceptions import ValidationError
 
 from ed_body.models import (
     AtmosphereComponent, AtmosphereComponentInPlanet,
-    Planet,
+    Planet, Volcanism,
     AtmosphereType
 )
 from ed_body.api.serializers import (
     CompactedAtmosphereComponentSerializer, AtmosphereComponentSerializer,
     CompactedAtmosphereComponentInPlanetSerializer, AtmosphereComponentInPlanetSerializer,
     CompactedAtmosphereTypeSerializer, AtmosphereTypeSerializer,
-    PlanetTypeSerializer, CompactedPlanetTypeSerializer
+    PlanetTypeSerializer, CompactedPlanetTypeSerializer,
+    VolcanismSerializer, CompactedVolcanismSerializer
 )
 from ed_system.models import System
 from users.models import User
@@ -344,6 +345,68 @@ class PlanetTypeSerializerTestCase(TestCase):
             'name': 'test_deserializer'
         }
         serializer = PlanetTypeSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        instance = serializer.save()
+        self.assertEqual(instance.name, data.get('name'))
+        self.assertEqual(instance.note, None)
+
+class VolcanismSerializerTestCase(TestCase):
+    """
+    Test case for testing the Volcanism model serializer.
+    Classes:
+        VolcanismSerializerTestCase: Test case for testing the Volcanism model serializer.
+    Methods:
+        test_compacted_serializer(self):
+            Tests the CompactedVolcanismSerializer serializer.
+        test_compacted_deserializer(self):
+            Tests the CompactedVolcanismSerializer deserializer.
+        test_serializer(self):
+            Tests the VolcanismSerializer serializer.
+        test_deserializer(self):
+            Tests the VolcanismSerializer deserializer.
+    """
+
+    fixtures = ['user', 'economy', 'system', 'body']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.instance_volcanism = Volcanism.objects.get(id=1)
+
+    def test_compacted_serializer(self):
+        serializer = CompactedVolcanismSerializer(
+            instance=self.instance_volcanism
+        )
+        data = {
+            'id': self.instance_volcanism.id,
+            'name': self.instance_volcanism.name
+        }
+        self.assertEqual(serializer.data, data)
+
+    def test_compacted_deserializer(self):
+        data = {
+            'name': 'test_compacted_deserializer'
+        }
+        serializer = CompactedVolcanismSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        instance = serializer.save()
+        self.assertEqual(instance.name, data.get('name'))
+
+    def test_serializer(self):
+        serializer = VolcanismSerializer(
+            instance=self.instance_volcanism
+        )
+        data = {
+            'id': self.instance_volcanism.id,
+            'name': self.instance_volcanism.name,
+            'note': self.instance_volcanism.note
+        }
+        self.assertEqual(serializer.data, data)
+
+    def test_deserializer(self):
+        data = {
+            'name': 'test_deserializer'
+        }
+        serializer = VolcanismSerializer(data=data)
         self.assertTrue(serializer.is_valid())
         instance = serializer.save()
         self.assertEqual(instance.name, data.get('name'))

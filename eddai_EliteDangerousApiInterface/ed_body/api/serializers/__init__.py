@@ -3,3 +3,4 @@ from .atmosphereComponentSerializer import AtmosphereComponentSerializer, Compac
 from .atmosphereComponentInPlanetSerializer import CompactedAtmosphereComponentInPlanetSerializer, AtmosphereComponentInPlanetSerializer
 from .atmosphereTypeSerializer import AtmosphereTypeSerializer, CompactedAtmosphereTypeSerializer
 from .planetTypeSerializer import PlanetTypeSerializer, CompactedPlanetTypeSerializer
+from .volcanismSerializer import VolcanismSerializer, CompactedVolcanismSerializer

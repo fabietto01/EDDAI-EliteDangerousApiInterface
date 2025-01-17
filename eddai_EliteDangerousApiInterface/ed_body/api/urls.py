@@ -19,7 +19,7 @@ from rest_framework.routers import DefaultRouter
 
 from .venws import (
     BaseBodyViewSet, AtmosphereComponentViewSet, AtmosphereComponentInPlanetViewSet,
-    AtmosphereTypeViewSet, PlanetTypeViewSet
+    AtmosphereTypeViewSet, PlanetTypeViewSet, VolcanismViewSet
 )
 
 router = DefaultRouter(trailing_slash=False)
@@ -28,5 +28,6 @@ router.register(r'body/(?P<planet_pk>\d+)/atmosphere-component', AtmosphereCompo
 router.register(r'atmosphere-component', AtmosphereComponentViewSet)
 router.register(r'atmosphere-type', AtmosphereTypeViewSet)
 router.register(r'planet-type', PlanetTypeViewSet)
+router.register(r'volcanism', VolcanismViewSet)
 
 urlpatterns = router.urls

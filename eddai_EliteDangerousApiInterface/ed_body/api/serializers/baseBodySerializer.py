@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from ed_body.models import Star, Planet, BaseBody, AtmosphereType, PlanetType
+from ed_body.models import (
+    Star, Planet, BaseBody, AtmosphereType, PlanetType, Volcanism
+)
 
 from .atmosphereComponentInPlanetSerializer import CompactedAtmosphereComponentInPlanetSerializer
 
@@ -56,6 +58,10 @@ class PlanetSerializer(BaseBodySerializer):
     )
     planetType = serializers.SlugRelatedField(
         queryset=PlanetType.objects.all(),
+        slug_field='name'
+    )
+    volcanism = serializers.SlugRelatedField(
+        queryset=Volcanism.objects.all(),
         slug_field='name'
     )
 
