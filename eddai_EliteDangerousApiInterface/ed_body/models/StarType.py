@@ -23,3 +23,4 @@ class StarType(AbstractDataEDDN,  models.Model):
     class Meta:
         verbose_name = _('star type')
         verbose_name_plural = _('star types')
+        ordering = ['pk']

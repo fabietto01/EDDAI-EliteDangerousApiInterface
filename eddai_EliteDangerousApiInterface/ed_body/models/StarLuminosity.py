@@ -20,6 +20,5 @@ class StarLuminosity(models.Model):
 
     class Meta:
         verbose_name = _('star luminosity')
-        verbose_name_plural = _('star luminosities')
-        
-    
+        verbose_name_plural = _('star luminosities') 
+        ordering = ['pk']
