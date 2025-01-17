@@ -9,16 +9,16 @@ class SystemFilterSet(django_filters.FilterSet):
     filter for system model
     """
     @staticmethod
-    def filter_by_system(queryset, name, value):
-        system:System = System.objects.get(id=value)
+    def filter_by_system(queryset, name, value:System):
         return queryset.annotate(
             distance_st=Distanza3D(
                 F('coordinate'),
-                point=system.coordinate
+                point=value.coordinate
             )
         ).order_by('distance_st')
 
-    order_by_system = django_filters.NumberFilter(
+    order_by_system = django_filters.ModelChoiceFilter(
+        queryset=System.objects.all(),
         method='filter_by_system',
         label='from system',
         distinct=True
