@@ -33,6 +33,7 @@ class SystemViewSet(OwnerAndDateModelViewSet):
         return SystemSerializer
     
     def get_queryset(self):
-        querry = super().get_queryset()
+        queryset = super().get_queryset()
         if not self.request.query_params.get('order_by_system'):
-            return querry.order_by('name')
+            return queryset.order_by('name')
+        return queryset

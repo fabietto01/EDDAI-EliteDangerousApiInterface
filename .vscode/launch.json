@@ -37,7 +37,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "50",
+        "--autoscale", "50,5",
         "-Q", "default",
         "-n", "WorkerTasck@%h"
       ],
@@ -56,7 +56,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "50",
+        "--autoscale", "50,5",
         "-Q", "admin",
         "-n", "WorkerAdmin@%h"
       ],
@@ -75,7 +75,7 @@
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
-        "-c", "50",
+        "--autoscale", "50,5",
         "-Q", "eddn",
         "-n", "WorkerEddn@%h"
       ],

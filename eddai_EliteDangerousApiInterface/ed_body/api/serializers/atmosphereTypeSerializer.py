@@ -23,4 +23,4 @@ class AtmosphereTypeSerializer(CompactedAtmosphereTypeSerializer):
 
     class Meta(CompactedAtmosphereTypeSerializer.Meta):
         fields = None
-        exclude = ['_eddn']
+        exclude = ['_eddn', 'eddn']

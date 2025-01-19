@@ -21,3 +21,4 @@ class PlanetType(models.Model):
     class Meta:
         verbose_name = _('planet type')
         verbose_name_plural = _('planet types')
+        ordering = ['pk']

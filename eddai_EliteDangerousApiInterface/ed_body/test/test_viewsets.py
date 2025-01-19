@@ -7,19 +7,24 @@ from json import dumps
 
 from ed_body.api.venws import (
     AtmosphereComponentViewSet, AtmosphereTypeViewSet,
-    AtmosphereComponentInPlanetViewSet
+    AtmosphereComponentInPlanetViewSet,
+    PlanetTypeViewSet,
+    VolcanismViewSet,
 )
 from ed_body.api.serializers import (
     CompactedAtmosphereComponentSerializer, AtmosphereComponentSerializer,
     CompactedAtmosphereTypeSerializer, AtmosphereTypeSerializer,
-    AtmosphereComponentInPlanetSerializer
+    AtmosphereComponentInPlanetSerializer,
+    PlanetTypeSerializer, CompactedPlanetTypeSerializer,
+    VolcanismSerializer, CompactedVolcanismSerializer
 )
 
 from ed_body.models import (
     AtmosphereComponent, AtmosphereType,
     AtmosphereComponentInPlanet,
-
-    Planet
+    PlanetType,
+    Volcanism,
+    Planet,
 )
 
 from ed_system.models import System
@@ -351,3 +356,127 @@ class AtmosphereComponentInPlanetViewSetAPITestCase(APITestCase):
             self.assertTrue(AtmosphereComponentInPlanet.objects.filter(id=item['id']).exists())
         queryset = AtmosphereComponentInPlanet.objects.filter(planet_id=planet.pk)
         self.assertEqual(response.data, AtmosphereComponentInPlanetSerializer(queryset, many=True).data)
+
+class PlanetTypeViewSetAPITestCase(APITestCase):
+
+    fixtures = ['user', 'economy', 'system', 'body']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            username='PlanetTypeViewSetAPITestCase_User',
+        )
+
+    def setUp(self):
+        super().setUp()
+        self.client.logout()
+    
+    def test_get_list_planet_types(self):
+        url = reverse('planettype-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], PlanetType.objects.count())
+        serializer = CompactedPlanetTypeSerializer(PlanetType.objects.all(), many=True)
+        for result, expected in zip(response.data['results'], serializer.data):
+            self.assertDictEqual(result, expected)
+
+    def test_get_search_planet_type(self):
+        planet_type = PlanetType.objects.first()
+        url = reverse('planettype-list')
+        response = self.client.get(url, {'search': planet_type.name})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(response.data['count'], 1)
+        self.assertTrue(
+            any(result['id'] == planet_type.id for result in response.data['results'])
+        )
+    
+    def test_get_detail_planet_type(self):
+        planet_type = PlanetType.objects.first()
+        url = reverse('planettype-detail', args=[planet_type.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = PlanetTypeSerializer(planet_type)
+        self.assertDictEqual(response.data, serializer.data)
+    
+    def test_delete_planet_type(self):
+        planet_type = PlanetType.objects.first()
+        url = reverse('planettype-detail', args=[planet_type.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_post_planet_type(self):
+        url = reverse('planettype-list')
+        data = {
+            'name': 'Test Planet Type',
+            'note': 'Test note'
+        }
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+class VolcanismViewSetAPITestCase(APITestCase):
+
+    fixtures = ['user', 'economy', 'system', 'body']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            username='VolcanismViewSetAPITestCase_User'
+        )
+
+    def setUp(self):
+        super().setUp()
+        self.client.logout()
+
+    def test_get_list_volcanisms(self):
+        url = reverse('volcanism-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], Volcanism.objects.count())
+        serializer = CompactedVolcanismSerializer(Volcanism.objects.all(), many=True)
+        for result, expected in zip(response.data['results'], serializer.data):
+            self.assertDictEqual(result, expected)
+
+    def test_get_search_volcanism(self):
+        volcanism = Volcanism.objects.first()
+        url = reverse('volcanism-list')
+        response = self.client.get(url, {'search': volcanism.name})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(response.data['count'], 1)
+        self.assertTrue(
+            any(result['id'] == volcanism.id for result in response.data['results'])
+        )
+
+    def test_get_retrieve_volcanism(self):
+        volcanism = Volcanism.objects.first()
+        url = reverse('volcanism-detail', args=[volcanism.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = VolcanismSerializer(volcanism)
+        self.assertDictEqual(response.data, serializer.data)
+
+    def test_delete_volcanism(self):
+        volcanism = Volcanism.objects.first()
+        url = reverse('volcanism-detail', args=[volcanism.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_post_volcanism(self):
+        url = reverse('volcanism-list')
+        data = {
+            'name': 'Test Volcanism',
+            'note': 'Test note'
+        }
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
