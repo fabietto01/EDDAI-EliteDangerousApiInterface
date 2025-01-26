@@ -1,40 +1,22 @@
-import django_filters
-from django.db.models import F
-
-from ed_core.functions import Distanza3D
-
+from ed_core.api.filters.baseDistanceFilterSet import BaseDistanceFilterSet
 from ed_body.models import BaseBody
-from ed_system.models import System
 
-class BaseBodyFilterSet(django_filters.FilterSet):
+class BaseBodyFilterSet(BaseDistanceFilterSet):
+    """
+    BaseBodyFilterSet is a filter set class that inherits from BaseDistanceFilterSet.
+    It is used to filter BaseBody model instances based on various criteria.
+    Attributes:
+        distance_fild (str): The field used for distance filtering, set to 'system__coordinate'.
+    Meta:
+        model (BaseBody): The model class that this filter set is based on.
+        fields (dict): A dictionary specifying the fields and their respective lookup types for filtering.
+            - 'name': Allows exact match filtering.
+            - 'system': Allows exact match filtering.
+            - 'distance': Allows filtering with less than ('lt'), less than or equal to ('lte'), greater than ('gt'), and greater than or equal to ('gte') lookups.
+    """
 
-    def __init__(self, param=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not self.data.get('order_by_system'):
-            self.filters.pop('order_by_distance_st', None)
 
-    @staticmethod
-    def filter_by_system(queryset, name, value:System):
-        return queryset.annotate(
-            distance_st=Distanza3D(
-                F('system__coordinate'),
-                point=value.coordinate
-            )
-        )
-    
-    order_by_system = django_filters.ModelChoiceFilter(
-        queryset=System.objects.all(),
-        method='filter_by_system',
-        label='from system',
-        distinct=True
-    )
-
-    order_by_distance_st = django_filters.OrderingFilter(
-        fields=(
-            ('distance_st', 'distance_st'),
-        ),
-        initial='distance_st'
-    )
+    distance_fild = 'system__coordinate'
 
     class Meta:
         model = BaseBody
