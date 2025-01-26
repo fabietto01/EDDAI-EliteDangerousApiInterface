@@ -1,10 +1,10 @@
-from ed_core.api.filters.baseDistanceFilterSet import BaseDistanceFilterSet
 import django_filters
+from django.db.models import QuerySet, Case, When, Subquery, IntegerField, OuterRef
+
+from ed_core.api.filters.baseDistanceFilterSet import BaseDistanceFilterSet
 from django.utils.translation import gettext_lazy as _
 
 from ed_body.models import BaseBody
-from ed_system.models import System
-
 
 class BaseBodyFilterSet(BaseDistanceFilterSet):
     """
@@ -19,9 +19,35 @@ class BaseBodyFilterSet(BaseDistanceFilterSet):
             - 'system': Allows exact match filtering.
             - 'distance': Allows filtering with less than ('lt'), less than or equal to ('lte'), greater than ('gt'), and greater than or equal to ('gte') lookups.
     """
-    
+
     distance_field = 'system__coordinate'
     default_ordering = 'name'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.data.get('system'):
+            self.filters.pop('ordering_body', None)
+
+    def _ordering_body(self, queryset:QuerySet, name, value:bool):
+        if value:
+            queryset = queryset.annotate(
+                _ordering_body=Case(
+                    When(parentsID=0, then='bodyID'),
+                    default=Subquery(
+                        BaseBody.objects.filter(
+                            parentsID=OuterRef('bodyID'),
+                            system_id=OuterRef('system_id')
+                        ).values('bodyID')[:1]
+                    ),
+                    output_field=IntegerField()
+                )
+            ).order_by('_ordering_body')
+        return queryset
+
+    ordering_body = django_filters.BooleanFilter(
+        method='_ordering_body',
+        label=_('Order body in system'),
+    )
 
     class Meta:
         model = BaseBody
