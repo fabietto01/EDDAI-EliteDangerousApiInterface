@@ -1,5 +1,10 @@
 from ed_core.api.filters.baseDistanceFilterSet import BaseDistanceFilterSet
+import django_filters
+from django.utils.translation import gettext_lazy as _
+
 from ed_body.models import BaseBody
+from ed_system.models import System
+
 
 class BaseBodyFilterSet(BaseDistanceFilterSet):
     """
@@ -14,9 +19,9 @@ class BaseBodyFilterSet(BaseDistanceFilterSet):
             - 'system': Allows exact match filtering.
             - 'distance': Allows filtering with less than ('lt'), less than or equal to ('lte'), greater than ('gt'), and greater than or equal to ('gte') lookups.
     """
-
-
-    distance_fild = 'system__coordinate'
+    
+    distance_field = 'system__coordinate'
+    default_ordering = 'name'
 
     class Meta:
         model = BaseBody

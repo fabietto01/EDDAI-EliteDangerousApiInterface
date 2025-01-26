@@ -31,9 +31,3 @@ class SystemViewSet(OwnerAndDateModelViewSet):
         if self.request.query_params.get('order_by_system'):
             return SystemDistanceSerializer
         return SystemSerializer
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if not self.request.query_params.get('order_by_system'):
-            return queryset.order_by('name')
-        return queryset

@@ -18,6 +18,7 @@ class SystemFilterSet(BaseDistanceFilterSet):
     """
     
     distance_field = 'coordinate'
+    default_ordering = ['name']
 
     class Meta:
         model = System

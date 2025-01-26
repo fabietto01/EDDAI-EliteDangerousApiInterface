@@ -41,13 +41,7 @@ class BaseBodyViewSet(OwnerAndDateModelViewSet):
         if self.request.query_params.get('order_by_system'):
             return BaseBodyDistanceSerializer
         return BaseBodySerializer
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if not self.request.query_params.get('order_by_system'):
-            return queryset.order_by('name')
-        return queryset
-    
+        
     def get_object(self):
         obj = super().get_object()
         if self.action == 'retrieve':
