@@ -13,7 +13,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from .views import IndexTemplateView
 
 urlpatterns = [
-    path('v1/', include('ed_core.api.urls')),
+    path('api/v1/', include('ed_core.api.urls')),
+    path('', IndexTemplateView.as_view(), name='index'),
 ]
