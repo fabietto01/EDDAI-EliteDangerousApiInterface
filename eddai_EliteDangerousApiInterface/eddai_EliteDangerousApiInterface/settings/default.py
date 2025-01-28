@@ -334,3 +334,7 @@ CELERY_TASK_ROUTES = {
         "routing_key": "service.eddn",
     }
 }
+
+#Vite django connetion
+VITE_BUILD_DIRNAME = "vuejs"
+VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
