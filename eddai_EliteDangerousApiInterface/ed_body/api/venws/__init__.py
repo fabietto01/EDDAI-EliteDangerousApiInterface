@@ -1,4 +1,6 @@
 from .baseBodyViewSet import BaseBodyViewSet
+from .planetViewSet import PlanetViewSet
+from .starViewSet import StarViewSet
 from .atmosphereComponentViewSets import AtmosphereComponentViewSet 
 from .atmosphereComponentInPlanetViewSet import AtmosphereComponentInPlanetViewSet
 from .atmosphereTypeViewSet import AtmosphereTypeViewSet
