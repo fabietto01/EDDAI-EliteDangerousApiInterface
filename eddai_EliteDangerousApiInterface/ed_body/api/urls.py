@@ -21,6 +21,7 @@ from .venws import (
     BaseBodyViewSet, StarViewSet, PlanetViewSet,
     AtmosphereComponentViewSet, AtmosphereComponentInPlanetViewSet,
     AtmosphereTypeViewSet, PlanetTypeViewSet, VolcanismViewSet,
+    StarLuminosityViewSet, StarTypeViewSet
 )
 
 router = DefaultRouter(trailing_slash=False)
@@ -32,5 +33,7 @@ router.register(r'atmosphere-component', AtmosphereComponentViewSet)
 router.register(r'atmosphere-type', AtmosphereTypeViewSet)
 router.register(r'planet-type', PlanetTypeViewSet)
 router.register(r'volcanism', VolcanismViewSet)
+router.register(r'star-luminosity', StarLuminosityViewSet)
+router.register(r'star-type', StarTypeViewSet)
 
 urlpatterns = router.urls

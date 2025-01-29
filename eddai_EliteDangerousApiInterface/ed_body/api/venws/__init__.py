@@ -6,3 +6,5 @@ from .atmosphereComponentInPlanetViewSet import AtmosphereComponentInPlanetViewS
 from .atmosphereTypeViewSet import AtmosphereTypeViewSet
 from .planetTypeViewSet import PlanetTypeViewSet
 from .volcanismViewSet import VolcanismViewSet
+from .starLuminosityViewSet import StarLuminosityViewSet
+from .StarTypeViewSet import StarTypeViewSet
