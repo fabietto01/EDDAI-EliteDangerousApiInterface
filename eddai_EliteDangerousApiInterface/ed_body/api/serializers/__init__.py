@@ -1,4 +1,6 @@
-from .baseBodySerializer import BaseBodySerializer, BaseBodyDistanceSerializer, StarSerializer, PlanetSerializer
+from .baseBodySerializer import BaseBodySerializer, BaseBodyDistanceSerializer
+from .starSerializer import StarSerializer, StarDistanceSerializer
+from .planetSerializer import PlanetSerializer, PlanetDistanceSerializer
 from .atmosphereComponentSerializer import AtmosphereComponentSerializer, CompactedAtmosphereComponentSerializer
 from .atmosphereComponentInPlanetSerializer import CompactedAtmosphereComponentInPlanetSerializer, AtmosphereComponentInPlanetSerializer
 from .atmosphereTypeSerializer import AtmosphereTypeSerializer, CompactedAtmosphereTypeSerializer

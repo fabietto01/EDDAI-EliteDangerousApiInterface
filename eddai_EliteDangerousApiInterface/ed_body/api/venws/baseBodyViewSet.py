@@ -1,14 +1,16 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin
+from ed_core.api.mixins import DistanceModelMixin
+
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from ..filterSet import BaseBodyFilterSet
-from ..serializers import BaseBodySerializer
+from ..serializers import BaseBodySerializer, BaseBodyDistanceSerializer
 
 from ed_body.models import BaseBody
 
-class BaseBodyViewSet(GenericViewSet, ListModelMixin):
+class BaseBodyViewSet(DistanceModelMixin, ListModelMixin, GenericViewSet):
     """
     BaseBodyViewSet is a view set that provides list and retrieve actions for the BaseBody model.
     Attributes:
@@ -21,6 +23,8 @@ class BaseBodyViewSet(GenericViewSet, ListModelMixin):
     
     queryset = BaseBody.objects.all().select_related("star", "planet")
     serializer_class = BaseBodySerializer
+    distance_serializer_class = BaseBodyDistanceSerializer
+    filter_param_distance = 'order_by_system'
     filterset_class = BaseBodyFilterSet
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']

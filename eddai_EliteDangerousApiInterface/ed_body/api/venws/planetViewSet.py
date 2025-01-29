@@ -1,13 +1,15 @@
 from core.api.viewsets import OwnerAndDateModelViewSet
+from ed_core.api.mixins import DistanceModelMixin
+
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-from ..serializers import PlanetSerializer
+from ..serializers import PlanetSerializer, PlanetDistanceSerializer
 from ..filterSet import PlanetFilterSet
 
 from ed_body.models import Planet
 
-class PlanetViewSet(OwnerAndDateModelViewSet):
+class PlanetViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
     PlanetViewSet is a view set for handling API requests related to Planet objects.
     Inherits from:
@@ -21,6 +23,8 @@ class PlanetViewSet(OwnerAndDateModelViewSet):
     
     queryset = Planet.objects.all()
     serializer_class = PlanetSerializer
+    distance_serializer_class = PlanetDistanceSerializer
+    filter_param_distance = 'order_by_system'
     filterset_class = PlanetFilterSet
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']
