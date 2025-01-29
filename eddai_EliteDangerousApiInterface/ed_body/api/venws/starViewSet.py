@@ -9,7 +9,7 @@ from ..filterSet import StarFilterSet
 
 from ed_body.models import Star
 
-class StarViewSet(OwnerAndDateModelViewSet):
+class StarViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
     StarViewSet is a view set for handling API requests related to the Star model.
     Attributes:
