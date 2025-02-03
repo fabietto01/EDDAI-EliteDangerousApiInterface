@@ -1,5 +1,4 @@
 from core.api.viewsets import OwnerAndDateModelViewSet
-from ed_core.api.mixins import DistanceModelMixin
 
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -9,7 +8,7 @@ from .filters import SystemFilterSet
 
 from ed_system.models import System
 
-class SystemViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
+class SystemViewSet(OwnerAndDateModelViewSet):
     """
     SystemViewSet is a viewset for handling CRUD operations on the System model.
     Attributes:
@@ -24,9 +23,17 @@ class SystemViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
             Otherwise, returns SystemSerializer.
     """
     queryset = System.objects.all()
-    serializer_class = SystemSerializer
-    distance_serializer_class = SystemDistanceSerializer
-    filter_param_distance = 'distance_by_system'
     filterset_class = SystemFilterSet
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']
+
+    def get_serializer_class(self):
+        if self.request.query_params.get('order_by_system'):
+            return SystemDistanceSerializer
+        return SystemSerializer
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if not self.request.query_params.get('order_by_system'):
+            return queryset.order_by('name')
+        return queryset
