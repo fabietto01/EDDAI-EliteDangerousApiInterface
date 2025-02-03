@@ -11,6 +11,7 @@
       "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
       "args": [
         "runserver",
+        "--noreload",
       ],
       "django": true,
       "consoleTitle": "Python Debug Django",
@@ -31,6 +32,9 @@
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
       "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "GEVENT_SUPPORT": "True"
+      },
       "module": "celery",
       "args": [
         "-A", "eddai_EliteDangerousApiInterface",
@@ -50,6 +54,9 @@
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
       "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "GEVENT_SUPPORT": "True"
+      },
       "module": "celery",
       "args": [
         "-A", "eddai_EliteDangerousApiInterface",
@@ -69,6 +76,9 @@
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
       "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "GEVENT_SUPPORT": "True"
+      },
       "module": "celery",
       "args": [
         "-A", "eddai_EliteDangerousApiInterface",
@@ -88,6 +98,9 @@
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
       "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "GEVENT_SUPPORT": "True"
+      },
       "module": "celery",
       "args": [
         "--app", "eddai_EliteDangerousApiInterface",
