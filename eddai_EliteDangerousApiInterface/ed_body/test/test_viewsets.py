@@ -16,6 +16,7 @@ from ed_body.api.venws import (
     StarTypeViewSet,
     BaseBodyViewSet,
     PlanetViewSet,
+    StarViewSet
 )
 from ed_body.api.serializers import (
     CompactedAtmosphereComponentSerializer, AtmosphereComponentSerializer,
@@ -27,6 +28,7 @@ from ed_body.api.serializers import (
     StarTypeSerializer, CompactedStarTypeSerializer,
     BaseBodySerializer, BaseBodyDistanceSerializer,
     PlanetSerializer, PlanetDistanceSerializer,
+    StarSerializer, StarDistanceSerializer
 )
 
 from ed_body.models import (
@@ -38,6 +40,7 @@ from ed_body.models import (
     StarType,
     BaseBody,
     Planet,
+    Star
 )
 
 from ed_system.models import System
@@ -769,3 +772,68 @@ class PlanetViewSetAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Planet.objects.filter(pk=planet.pk).exists())
 
+class StarViewSetAPITestCase(APITestCase):
+
+    fixtures = ['user', 'economy', 'system', 'body', 'body_test_data']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            username='StarViewSetAPITestCase_User'
+        )
+
+    def setUp(self):
+        super().setUp()
+        self.client.logout()
+
+    def test_get_list_stars(self):
+        url = reverse('star-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], Star.objects.count())
+        serializer = StarSerializer(Star.objects.all().order_by('name'), many=True)
+        for result, expected in zip(response.data['results'], serializer.data):
+            self.assertDictEqual(result, expected)
+
+    def test_get_search_star(self):
+        star = Star.objects.first()
+        url = reverse('star-list')
+        response = self.client.get(url, {'search': star.name})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertGreaterEqual(response.data['count'], 1)
+        self.assertTrue(
+            any(result['id'] == star.id for result in response.data['results'])
+        )
+    
+    def test_get_details_star(self):
+        star = Star.objects.first()
+        url = reverse('star-detail', args=[star.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer = StarSerializer(star)
+        self.assertDictEqual(response.data, serializer.data)
+
+    def test_patch_star(self):
+        star = Star.objects.first()
+        url = reverse('star-detail', args=[star.pk])
+        data = {
+            'name': 'Test Star',
+            'bodyID': 1
+        }
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        star.refresh_from_db()
+        self.assertEqual(star.name, data['name'])
+
+    def test_delete_star(self):
+        star = Star.objects.first()
+        url = reverse('star-detail', args=[star.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Star.objects.filter(pk=star.pk).exists())
