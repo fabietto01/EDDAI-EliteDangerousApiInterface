@@ -22,7 +22,7 @@ class StarViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     queryset = Star.objects.all()
     serializer_class = StarSerializer
     distance_serializer_class = StarDistanceSerializer
-    filter_param_distance = 'order_by_system'
+    filter_param_distance = 'distance_by_system'
     filterset_class = StarFilterSet
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']

@@ -24,7 +24,7 @@ class BaseBodyViewSet(DistanceModelMixin, ListModelMixin, GenericViewSet):
     queryset = BaseBody.objects.all().select_related("star", "planet")
     serializer_class = BaseBodySerializer
     distance_serializer_class = BaseBodyDistanceSerializer
-    filter_param_distance = 'order_by_system'
+    filter_param_distance = 'distance_by_system'
     filterset_class = BaseBodyFilterSet
     filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']

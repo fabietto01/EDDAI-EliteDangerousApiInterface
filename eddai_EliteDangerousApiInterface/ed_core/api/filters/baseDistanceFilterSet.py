@@ -12,8 +12,8 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
     Attributes:
         distance_field (str): The field used to calculate distance. Must be defined in subclasses.
         default_ordering (list[str]): The default ordering for the queryset. Must be defined in subclasses.
-        order_by_system (django_filters.ModelChoiceFilter): A filter for selecting a system to order by distance.
-        order_by_system_distance (OrderingFilterOrDefault): A filter for ordering by distance with a default ordering.
+        distance_by_system (django_filters.ModelChoiceFilter): A filter for selecting a system to order by distance.
+        order_distance_by_system (OrderingFilterOrDefault): A filter for ordering by distance with a default ordering.
     Methods:
         get_default_ordering() -> list[str]:
             Returns the default ordering for the queryset. Raises ValueError if not defined.
@@ -22,7 +22,7 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
         _has_ordering(queryset: QuerySet) -> bool:
             Checks if the queryset has any ordering applied.
         __init__(*args, **kwargs):
-            Initializes the filter set and removes 'order_by_system_distance' filter if 'order_by_system' is not in the data.
+            Initializes the filter set and removes 'order_distance_by_system' filter if 'distance_by_system' is not in the data.
         filter_queryset(queryset):
             Filters the queryset and applies default ordering if no ordering is present.
         filter_by_distance(queryset, name, value):
@@ -49,8 +49,8 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if not self.data.get('order_by_system'):
-            self.filters.pop('order_by_system_distance', None)
+        if not self.data.get('distance_by_system'):
+            self.filters.pop('order_distance_by_system', None)
 
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
@@ -66,14 +66,14 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
             )
         )
     
-    order_by_system = django_filters.ModelChoiceFilter(
+    distance_by_system = django_filters.ModelChoiceFilter(
         queryset=System.objects.all(),
         method='filter_by_distance',
         label='from system',
         distinct=True
     )
     
-    order_by_system_distance = OrderingFilterOrDefault(
+    order_distance_by_system = OrderingFilterOrDefault(
         fields=(
             ('distance_st', 'distance_st'),
         ),
