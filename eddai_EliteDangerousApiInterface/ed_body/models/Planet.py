@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import  MinValueValidator
 from django.utils.translation import gettext_lazy as _
+from django.contrib import admin
 
 from ed_body.models.BaseBody import BaseBody
 from ed_body.models.AtmosphereType import AtmosphereType
@@ -109,6 +110,15 @@ class Planet(BaseBody):
         null=True,
     )
 
+    @property
+    @admin.display(description=_('composition'))
+    def composition(self) -> dict:
+        return {
+            'ice': self._compositionIce,
+            'rock': self._compositionRock,
+            'metal': self._compositionMetal,
+        }
+    
     class Meta:
         verbose_name = _('planet')
         verbose_name_plural = _('planets')

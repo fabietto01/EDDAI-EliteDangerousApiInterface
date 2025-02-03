@@ -15,9 +15,16 @@ class PlanetSerializer(BaseBodySerializer):
         Meta (type): The metadata class for the serializer.
     """
 
+    class CompositionSerializer(serializers.Serializer):
+
+        ice = serializers.FloatField(source='_compositionIce')
+        rock = serializers.FloatField(source='_compositionRock')
+        metal = serializers.FloatField(source='_compositionMetal')
+        
     atmosphere_component = CompactedAtmosphereComponentInPlanetSerializer(
         many=True,
-        source='ed_body_atmospherecomponentinplanet_related'
+        source='ed_body_atmospherecomponentinplanet_related',
+        required=False
     )
     atmosphereType = serializers.SlugRelatedField(
         queryset=AtmosphereType.objects.all(),
@@ -31,9 +38,15 @@ class PlanetSerializer(BaseBodySerializer):
         queryset=Volcanism.objects.all(),
         slug_field='name'
     )
+    composition = CompositionSerializer(source='*', required=False)
 
     class Meta(BaseBodySerializer.Meta):
         model = Planet
+        fields = None
+        exclude = [
+            "_compositionIce", "_compositionRock",
+            "_compositionMetal"
+        ]
 
 class PlanetDistanceSerializer(PlanetSerializer, DistanceSerializer):
     class Meta(PlanetSerializer.Meta):
