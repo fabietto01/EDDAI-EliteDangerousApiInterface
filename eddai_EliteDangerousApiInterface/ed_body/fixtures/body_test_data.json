@@ -1,0 +1,175 @@
+[
+    {
+        "model": "ed_body.basebody",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Sol",
+            "system": 11,
+            "bodyID": 0,
+            "parentsID": 0,
+            "distance": 0.0,
+            "radius": 695499968.0,
+            "surfaceTemperature": null,
+            "eccentricity": null,
+            "orbitalInclination": null,
+            "orbitalPeriod": null,
+            "periapsis": null,
+            "semiMajorAxis": null,
+            "ascendingNode": null,
+            "meanAnomaly": null,
+            "axialTilt": -0.219615,
+            "rotationPeriod": 223194.917834,
+            "rotating": true,
+            "orbiting": false
+        }
+    },
+    {
+        "model": "ed_body.basebody",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-01-30T17:00:04.070Z",
+            "updated_at": "2025-01-30T17:01:31.372Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Earth",
+            "system": 11,
+            "bodyID": 3,
+            "parentsID": 0,
+            "distance": 503.403727,
+            "radius": 6378100.0,
+            "surfaceTemperature": null,
+            "eccentricity": 0.0167,
+            "orbitalInclination": 0.0,
+            "orbitalPeriod": 31558150.649071,
+            "periapsis": 114.207832,
+            "semiMajorAxis": 149597978591.91895,
+            "ascendingNode": -11.260999,
+            "meanAnomaly": 238.953967,
+            "axialTilt": 0.401426,
+            "rotationPeriod": 86164.10659,
+            "rotating": true,
+            "orbiting": true
+        }
+    },
+    {
+        "model": "ed_body.basebody",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-01-30T17:02:53.922Z",
+            "updated_at": "2025-01-30T17:02:53.922Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Moon",
+            "system": 11,
+            "bodyID": 4,
+            "parentsID": 3,
+            "distance": 502.176167,
+            "radius": 1738140.0,
+            "surfaceTemperature": null,
+            "eccentricity": null,
+            "orbitalInclination": null,
+            "orbitalPeriod": null,
+            "periapsis": null,
+            "semiMajorAxis": null,
+            "ascendingNode": null,
+            "meanAnomaly": null,
+            "axialTilt": null,
+            "rotationPeriod": null,
+            "rotating": false,
+            "orbiting": false
+        }
+    },
+    {
+        "model": "ed_body.star",
+        "pk": 1,
+        "fields": {
+            "absoluteMagnitude": 4.829987,
+            "age": 4792.0,
+            "luminosity": 19,
+            "starType": 5,
+            "stellarMass": 1.0,
+            "subclass": 2
+        }
+    },
+    {
+        "model": "ed_body.planet",
+        "pk": 2,
+        "fields": {
+            "atmosphereType": 2,
+            "planetType": 6,
+            "volcanism": 44,
+            "terraformState": null,
+            "_compositionIce": 0.0,
+            "_compositionRock": 0.7,
+            "_compositionMetal": 0.3,
+            "landable": false,
+            "massEM": 1.0,
+            "surfaceGravity": 9.797759,
+            "surfacePressure": 101231.65625,
+            "tidalLock": false,
+            "reserveLevel": "Low"
+        }
+    },
+    {
+        "model": "ed_body.planet",
+        "pk": 3,
+        "fields": {
+            "atmosphereType": 1,
+            "planetType": 3,
+            "volcanism": 46,
+            "terraformState": null,
+            "_compositionIce": 0.0,
+            "_compositionRock": 0.8,
+            "_compositionMetal": 0.2,
+            "landable": false,
+            "massEM": 0.012304,
+            "surfaceGravity": 1.623192,
+            "surfacePressure": 0.0,
+            "tidalLock": false,
+            "reserveLevel": "Low"
+        }
+    },
+    {
+        "model": "ed_body.atmospherecomponentinplanet", 
+        "pk": 1, 
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z", 
+            "updated_at": "2025-01-30T16:03:59.954Z", 
+            "created_by": 1, 
+            "updated_by": 1, 
+            "planet": 2, 
+            "atmosphere_component": 5, 
+            "percent": 77.886406
+        }
+    }, 
+    {
+        "model": "ed_body.atmospherecomponentinplanet", 
+        "pk": 2, 
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z", 
+            "updated_at": "2025-01-30T16:03:59.954Z", 
+            "created_by": 1, 
+            "updated_by": 1, 
+            "planet": 2, 
+            "atmosphere_component": 9, 
+            "percent": 20.892998
+        }
+    }, 
+    {
+        "model": "ed_body.atmospherecomponentinplanet", 
+        "pk": 3, 
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z", 
+            "updated_at": "2025-01-30T16:03:59.954Z", 
+            "created_by": 1, 
+            "updated_by": 1, 
+            "planet": 2,
+            "atmosphere_component": 3, 
+            "percent": 0.931637
+        }
+    }
+]

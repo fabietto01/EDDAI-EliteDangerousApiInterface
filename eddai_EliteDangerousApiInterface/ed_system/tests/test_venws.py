@@ -37,7 +37,8 @@ class SystemViewSetTestCase(APITestCase):
         self.assertEqual(len(response.data['results']), 2)
     
     def test_get_request_order_by_system(self):
-        response = self.client.get(reverse('system-list') + '?order_by_system=' + str(self.system1.id))
+        url = reverse('system-list')
+        response = self.client.get(url, {'distance_by_system': self.system1.id})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 2)
         self.assertEqual(response.data['results'][0]['id'], self.system1.id)
