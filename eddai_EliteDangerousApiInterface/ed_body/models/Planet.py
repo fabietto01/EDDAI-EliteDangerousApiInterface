@@ -30,21 +30,21 @@ class Planet(BaseBody):
         verbose_name=_('atmosphere type'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
-        null=True,
+        null=True, blank=True,
     )
     planetType = models.ForeignKey(
         PlanetType, models.PROTECT,
         verbose_name=_('planet type'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
-        null=True,
+        null=True, blank=True,
     )
     volcanism = models.ForeignKey(
         Volcanism, models.PROTECT,
         verbose_name=_('volcanism'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss',
-        null=True,
+        null=True, blank=True,
     )
     terraformState = models.CharField(
         max_length=15,
@@ -57,57 +57,57 @@ class Planet(BaseBody):
         validators=[
             MinValueValidator(0, _('the composition ice cannot be less than 0')),
         ],
-        null=True,        
+        null=True, blank=True, 
     )
     _compositionRock = models.FloatField(
         verbose_name=_('rock'),
         validators=[
             MinValueValidator(0, _('the composition rock cannot be less than 0')),
         ],
-        null=True,
+        null=True, blank=True,
     )
     _compositionMetal = models.FloatField(
         verbose_name=_('metal'),
         validators=[
             MinValueValidator(0, _('the composition metal cannot be less than 0')),
         ],
-        null=True,
+        null=True, blank=True,
     )
     landable = models.BooleanField(
         verbose_name=_('landable'),
-        null=True,
+        null=True, blank=True,
     )
     massEM = models.FloatField(
         verbose_name=_('Earth masses'),
         validators=[
             MinValueValidator(0, _('the mass cannot be less than 0')),
         ],
-        null=True,
+        null=True, blank=True,
     )
     surfaceGravity = models.FloatField(
         verbose_name=_('surface gravity'),
         validators=[
             MinValueValidator(0, _('the surface gravity cannot be less than 0')),
         ],
-        null=True
+        null=True, blank=True,
     )
     surfacePressure = models.FloatField(
         verbose_name=_('surface pressure'),
         validators=[
             MinValueValidator(0, _('the surface pressure cannot be less than 0')),
         ],
-        null=True,
+        null=True, blank=True,
     )
     tidalLock = models.BooleanField(
         verbose_name=_('tidal lock'),
         help_text=_('Tidal locking results in the moon rotating about its axis in about the same time it takes to orbit Body.'),
-        null=True,
+        null=True, blank=True,
     )
     reserveLevel = models.CharField(
         max_length=10,
         choices=ReserveLevel.choices,
         verbose_name=_('reserve level'),
-        null=True,
+        null=True, blank=True,
     )
 
     @property

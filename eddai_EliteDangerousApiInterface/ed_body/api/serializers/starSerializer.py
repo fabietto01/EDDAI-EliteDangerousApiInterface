@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .baseBodySerializer import BaseBodySerializer
 
 from ed_body.models import (
-    Star, StarLuminosity
+    Star, StarLuminosity, StarType
 )
 
 from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
@@ -22,7 +22,7 @@ class StarSerializer(BaseBodySerializer):
     )
 
     starType = serializers.SlugRelatedField(
-        queryset=StarLuminosity.objects.all(),
+        queryset=StarType.objects.all(),
         slug_field='name'
     )
 
