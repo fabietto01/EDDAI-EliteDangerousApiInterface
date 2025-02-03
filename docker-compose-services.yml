@@ -1,0 +1,55 @@
+services:
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.11.13-management
+        hostname: rabbitmq
+        environment:
+            TZ: UTC
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+        volumes:
+            - rabbitedvol:/var/lib/rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        restart: always
+    redis_result_backend:
+        container_name: redis_result_backend
+        image: redis:6.2.12
+        environment:
+            TZ: UTC
+        ports:
+            - "6379:6379"
+        restart: always
+        volumes:
+            - redisresultbackendvol:/data
+    redis_cache:
+        container_name: redis_cache
+        image: redis:6.2.12
+        environment:
+            TZ: UT        
+        ports:
+            - "6380:6379"
+        restart: always
+        volumes:
+            - rediscachevol:/data
+    postgis:
+        container_name: postGIS
+        image: postgis/postgis:16-3.4
+        environment:
+            TZ: UTC
+            POSTGRES_USER: ${POSTGIS_USER}
+            POSTGRES_PASSWORD: ${POSTGIS_PASSWORD}
+            POSTGRES_DB: ${POSTGIS_DB}
+        volumes:
+            - postgisvol:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        restart: always
+        command: postgres -c 'max_connections=10000' -c 'shared_buffers=250MB'
+
+volumes:
+    rabbitedvol:
+    redisresultbackendvol:
+    rediscachevol:
+    postgisvol:

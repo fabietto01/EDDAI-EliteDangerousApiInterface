@@ -12,6 +12,8 @@
 				"ms-python.vscode-pylance",
 				"snappify.snappify",
 				"esbenp.prettier-vscode",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
 				"mhutchie.git-graph",
 				"dzhavat.bracket-pair-toggler"
 			]
