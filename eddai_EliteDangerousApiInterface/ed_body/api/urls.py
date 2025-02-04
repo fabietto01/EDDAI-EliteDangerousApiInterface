@@ -18,16 +18,22 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .venws import (
-    BaseBodyViewSet, AtmosphereComponentViewSet, AtmosphereComponentInPlanetViewSet,
-    AtmosphereTypeViewSet, PlanetTypeViewSet, VolcanismViewSet
+    BaseBodyViewSet, StarViewSet, PlanetViewSet,
+    AtmosphereComponentViewSet, AtmosphereComponentInPlanetViewSet,
+    AtmosphereTypeViewSet, PlanetTypeViewSet, VolcanismViewSet,
+    StarLuminosityViewSet, StarTypeViewSet
 )
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'body', BaseBodyViewSet)
-router.register(r'body/(?P<planet_pk>\d+)/atmosphere-component', AtmosphereComponentInPlanetViewSet)
+router.register(r'body/star', StarViewSet)
+router.register(r'body/planet', PlanetViewSet)
+router.register(r'body/planet/(?P<planet_pk>\d+)/atmosphere-component', AtmosphereComponentInPlanetViewSet)
 router.register(r'atmosphere-component', AtmosphereComponentViewSet)
 router.register(r'atmosphere-type', AtmosphereTypeViewSet)
 router.register(r'planet-type', PlanetTypeViewSet)
 router.register(r'volcanism', VolcanismViewSet)
+router.register(r'star-luminosity', StarLuminosityViewSet)
+router.register(r'star-type', StarTypeViewSet)
 
 urlpatterns = router.urls

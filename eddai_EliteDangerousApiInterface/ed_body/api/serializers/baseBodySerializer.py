@@ -1,9 +1,6 @@
 from rest_framework import serializers
-from ed_body.models import (
-    Star, Planet, BaseBody, AtmosphereType, PlanetType, Volcanism
-)
+from ed_body.models import BaseBody
 from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
-from .atmosphereComponentInPlanetSerializer import CompactedAtmosphereComponentInPlanetSerializer
 
 from ed_system.api.serializers import SystemBasicInformation, System
 
@@ -34,40 +31,3 @@ class BaseBodySerializer(serializers.ModelSerializer):
 class BaseBodyDistanceSerializer(BaseBodySerializer, DistanceSerializer):
     class Meta(BaseBodySerializer.Meta):
         pass
-
-class StarSerializer(BaseBodySerializer):
-    """
-    StarSerializer is a serializer for the Star model.
-    Attributes:
-        Meta (type): The metadata class for the serializer.
-    """
-    class Meta(BaseBodySerializer.Meta):
-        model = Star
-
-class PlanetSerializer(BaseBodySerializer):
-    """
-    PlanetSerializer is a serializer for the Planet model.
-    Attributes:
-        Meta (type): The metadata class for the serializer.
-    """
-
-    atmosphere_component = CompactedAtmosphereComponentInPlanetSerializer(
-        many=True,
-        source='ed_body_atmospherecomponentinplanet_related'
-    )
-    atmosphereType = serializers.SlugRelatedField(
-        queryset=AtmosphereType.objects.all(),
-        slug_field='name'
-    )
-    planetType = serializers.SlugRelatedField(
-        queryset=PlanetType.objects.all(),
-        slug_field='name'
-    )
-    volcanism = serializers.SlugRelatedField(
-        queryset=Volcanism.objects.all(),
-        slug_field='name'
-    )
-
-    class Meta(BaseBodySerializer.Meta):
-        model = Planet
-        fields = "__all__"
