@@ -98,7 +98,7 @@ class BodyTestCase(TestCase):
             instance with the same bodyID raises an exception.
     """
     
-    fixtures = ['user', 'economy', 'system', 'body', 'bgs', 'exploration', 'material', 'mining', 'station']
+    fixtures = ['user', 'economy', 'system', 'body']
     
     @classmethod
     def setUpTestData(cls):

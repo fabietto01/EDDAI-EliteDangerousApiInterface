@@ -15,7 +15,6 @@ from ed_bgs.models import (
     StateInMinorFaction
 )
 
-from eddn.service.serializer.customFields import HappinessCacheSlugRelatedField
 from eddn.service.serializer.nestedSerializer.StateSerializer import StateSerializer
 
 
@@ -31,7 +30,7 @@ class MinorFactionInSystemSerializer(BaseMinorFactionSerializer):
     Influence = serializers.FloatField(
         min_value=0, max_value=1,
     )
-    Happiness = HappinessCacheSlugRelatedField(
+    Happiness = CacheSlugRelatedField(
         queryset=State.objects.filter(type=State.TypeChoices.HAPPINESS.value),
         slug_field='eddn',
         allow_null=True,
