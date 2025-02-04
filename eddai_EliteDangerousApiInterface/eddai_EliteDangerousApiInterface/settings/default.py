@@ -110,6 +110,12 @@ DATABASES = {
             "NAME": "ed_info_test",
             "DEPENDENCIES": [],
         },
+        'OPTIONS':{
+            "pool":{
+                'min_size': 4,  
+                'timeout': 10,  
+            }
+        }
     }
 }
 
