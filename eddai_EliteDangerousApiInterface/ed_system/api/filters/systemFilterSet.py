@@ -1,28 +1,24 @@
-import django_filters
+from ed_core.api.filters.baseDistanceFilterSet import BaseDistanceFilterSet
 from ed_system.models import System
-from django.db.models import F
 
-from ed_core.functions import Distanza3D
-
-class SystemFilterSet(django_filters.FilterSet):
+class SystemFilterSet(BaseDistanceFilterSet):
     """
-    filter for system model
+    SystemFilterSet is a filter set for the System model, inheriting from BaseDistanceFilterSet.
+    It allows filtering of systems based on various fields such as security, population, primaryEconomy, secondaryEconomy, and controllingFaction.
+    Attributes:
+        distance_field (str): The field used for distance calculations, set to 'coordinate'.
+    Meta:
+        model (System): The model to filter.
+        fields (dict): A dictionary specifying the fields to filter on and the types of filtering allowed.
+            - 'security': Allows exact matching.
+            - 'population': Allows exact matching, less than, and greater than comparisons.
+            - 'primaryEconomy': Allows exact matching.
+            - 'secondaryEconomy': Allows exact matching.
+            - 'controllingFaction': Allows exact matching.
     """
-    @staticmethod
-    def filter_by_system(queryset, name, value:System):
-        return queryset.annotate(
-            distance_st=Distanza3D(
-                F('coordinate'),
-                point=value.coordinate
-            )
-        ).order_by('distance_st')
-
-    order_by_system = django_filters.ModelChoiceFilter(
-        queryset=System.objects.all(),
-        method='filter_by_system',
-        label='from system',
-        distinct=True
-    )
+    
+    distance_field = 'coordinate'
+    default_ordering = ['name']
 
     class Meta:
         model = System
