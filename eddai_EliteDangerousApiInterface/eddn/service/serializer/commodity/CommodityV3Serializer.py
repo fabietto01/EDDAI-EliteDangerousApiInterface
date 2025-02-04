@@ -28,6 +28,7 @@ class CommodityV3Serializer(BaseSerializer):
     economies  = serializers.ListField(
         child=EconomieSerializer(),
         min_length=1,
+        required=False,
     )
     StationType = None
     timestamp = serializers.DateTimeField(
