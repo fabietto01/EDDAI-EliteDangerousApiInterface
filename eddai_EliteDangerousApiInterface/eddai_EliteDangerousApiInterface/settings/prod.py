@@ -11,12 +11,7 @@ ADMINS = [("Fabio Zorzetto", "fabio.zorzetto.01@gmail.com")]
 
 #impostazione per la gestione dei taask periodici di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#beat-schedule
-CELERY_BEAT_SCHEDULE = {
-    "auto_re_analytic":{
-        "task": "auto_analytic",
-        "schedule": crontab(minute=0, hour=0)#crontab(minute=0, hour='*/3'),
-    }
-}
+CELERY_BEAT_SCHEDULE = {}
 
 # The backend to use for sending emails. For the list of available backends see Sending email.
 # https://docs.djangoproject.com/en/4.1/ref/settings/#std-setting-EMAIL_BACKEND
