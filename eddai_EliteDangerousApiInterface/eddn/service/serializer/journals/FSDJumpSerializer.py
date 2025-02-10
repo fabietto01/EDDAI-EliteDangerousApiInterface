@@ -39,7 +39,7 @@ class FSDJumpSerializer(BaseJournal):
         child=MinorFactionInSystemSerializer(),
         required=False,
         min_length=0,
-        max_length=MinorFactionInSystem.MaxRelation(),
+        max_length=MinorFactionInSystem.get_max_relations(),
     )
     SystemFaction = BaseMinorFactionSerializer(
         required=False,
@@ -53,7 +53,7 @@ class FSDJumpSerializer(BaseJournal):
         ),
         required=False,
         min_length=0,
-        max_length=PowerInSystem.MaxRelation(),
+        max_length=PowerInSystem.get_max_relations(),
     )
     PowerplayState = CacheSlugRelatedField(
         queryset=PowerState.objects.all(),

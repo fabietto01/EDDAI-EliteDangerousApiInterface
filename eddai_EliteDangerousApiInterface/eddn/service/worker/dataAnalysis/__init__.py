@@ -1,0 +1,1 @@
+from .journalAnalysis import JournalAnalysis

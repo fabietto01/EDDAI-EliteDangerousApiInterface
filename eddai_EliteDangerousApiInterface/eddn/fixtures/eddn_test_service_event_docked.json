@@ -1,0 +1,818 @@
+[
+    {
+        "model": "ed_bgs.minorfaction",
+        "pk": 1,
+        "fields": {
+          "created_at": "2024-07-06T15:18:33.241Z",
+          "updated_at": "2024-07-06T15:18:33.241Z",
+          "created_by": 1,
+          "updated_by": 1,
+          "name": "Ryders of the Void",
+          "allegiance": 1,
+          "government": 3,
+          "description": ""
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2898,
+        "fields": {
+            "created_at": "2025-02-05T12:00:11.905Z",
+            "updated_at": "2025-02-05T12:00:11.905Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "5a62e8cf311b1146a6f753d394266c2f4c14f4b0",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.4.0",
+                    "gatewayTimestamp": "2025-02-05T12:00:12.313426Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        -81.75,
+                        7.78125,
+                        161.0625
+                    ],
+                    "odyssey": true,
+                    "MarketID": 129031330,
+                    "horizons": true,
+                    "timestamp": "2025-02-05T12:00:10Z",
+                    "StarSystem": "HIP 90578",
+                    "LandingPads": {
+                        "Large": 1,
+                        "Small": 4,
+                        "Medium": 2
+                    },
+                    "StationName": "Trailblazer Echo",
+                    "StationType": "MegaShip",
+                    "SystemAddress": 83718312690,
+                    "DistFromStarLS": 38.70791,
+                    "StationEconomy": "$economy_Refinery;",
+                    "StationFaction": {
+                        "Name": "Brewer Logistics"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "engineer",
+                        "facilitator",
+                        "flightcontroller",
+                        "stationoperations",
+                        "searchrescue",
+                        "stationMenu",
+                        "livery"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Refinery;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationGovernment": "$government_Corporate;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2899,
+        "fields": {
+            "created_at": "2025-02-05T12:00:12.908Z",
+            "updated_at": "2025-02-05T12:00:12.908Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "7ef84161d8f443b17a90a34ae9d76cc8f79e19b0",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:13.558634Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        -100.21875,
+                        3.09375,
+                        -60.25
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3226710784,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:12Z",
+                    "StarSystem": "Vagho",
+                    "LandingPads": {
+                        "Large": 5,
+                        "Small": 6,
+                        "Medium": 14
+                    },
+                    "StationName": "Sturckow Port",
+                    "StationType": "Coriolis",
+                    "SystemAddress": 13863751853457,
+                    "DistFromStarLS": 13.694421,
+                    "StationEconomy": "$economy_Extraction;",
+                    "StationFaction": {
+                        "Name": "Inara Nexus",
+                        "FactionState": "Boom"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Extraction;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationGovernment": "$government_Cooperative;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2900,
+        "fields": {
+            "created_at": "2025-02-05T12:00:13.841Z",
+            "updated_at": "2025-02-05T12:00:13.841Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "6c9fc379b270a02bb2ab053e1c512580df9624bb",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:14.463187Z"
+                },
+                "message": {
+                    "Body": "Leesti 1 a",
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        72.75,
+                        48.75,
+                        68.25
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "MarketID": 128673927,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:13Z",
+                    "StarSystem": "Leesti",
+                    "LandingPads": {
+                        "Large": 3,
+                        "Small": 2,
+                        "Medium": 3
+                    },
+                    "StationName": "Vatermann LLC",
+                    "StationType": "CraterOutpost",
+                    "SystemAddress": 3932277478114,
+                    "DistFromStarLS": 17.673521,
+                    "StationEconomy": "$economy_Colony;",
+                    "StationFaction": {
+                        "Name": "Didi Vatermann"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "outfitting",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "tuning",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "searchrescue",
+                        "stationMenu",
+                        "shop",
+                        "livery"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Colony;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationAllegiance": "Alliance",
+                    "StationGovernment": "$government_Engineer;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2901,
+        "fields": {
+            "created_at": "2025-02-05T12:00:14.058Z",
+            "updated_at": "2025-02-05T12:00:14.058Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "655afbba9dc91431dfc7787927527a0918e75c9f",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:14.623647Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        60.1875,
+                        -1.03125,
+                        -6.03125
+                    ],
+                    "odyssey": false,
+                    "MarketID": 3228544256,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:14Z",
+                    "StarSystem": "Elli",
+                    "LandingPads": {
+                        "Large": 7,
+                        "Small": 10,
+                        "Medium": 12
+                    },
+                    "StationName": "Wright City",
+                    "StationType": "Coriolis",
+                    "SystemAddress": 671759803809,
+                    "DistFromStarLS": 10.362676,
+                    "StationEconomy": "$economy_HighTech;",
+                    "StationFaction": {
+                        "Name": "Tyger Traders",
+                        "FactionState": "Boom"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_HighTech;",
+                            "Proportion": 0.8
+                        },
+                        {
+                            "Name": "$economy_Refinery;",
+                            "Proportion": 0.2
+                        }
+                    ],
+                    "StationAllegiance": "Federation",
+                    "StationGovernment": "$government_Corporate;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2902,
+        "fields": {
+            "created_at": "2025-02-05T12:00:20.231Z",
+            "updated_at": "2025-02-05T12:00:20.231Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "dc5628976ee18ee30a67f01dd0942240cbe3e028",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:20.867590Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        30.1875,
+                        145.03125,
+                        58.03125
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3231491328,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:19Z",
+                    "StarSystem": "Chakpa",
+                    "LandingPads": {
+                        "Large": 4,
+                        "Small": 8,
+                        "Medium": 13
+                    },
+                    "StationName": "Chargaff Installation",
+                    "StationType": "Coriolis",
+                    "SystemAddress": 2870246647233,
+                    "DistFromStarLS": 363.421682,
+                    "StationEconomy": "$economy_Refinery;",
+                    "StationFaction": {
+                        "Name": "Workers of HIP 67882 Democrats",
+                        "FactionState": "Boom"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "blackmarket",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "engineer",
+                        "missionsgenerated",
+                        "facilitator",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "stationMenu",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Refinery;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationAllegiance": "Federation",
+                    "StationGovernment": "$government_Democracy;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2903,
+        "fields": {
+            "created_at": "2025-02-05T12:00:26.857Z",
+            "updated_at": "2025-02-05T12:00:26.857Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "07b1c562907fd440da19a51952db95305da5d650",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:27.505856Z"
+                },
+                "message": {
+                    "Body": "Deciat 6 a",
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        122.625,
+                        -0.8125,
+                        -47.28125
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "MarketID": 128676487,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:26Z",
+                    "StarSystem": "Deciat",
+                    "LandingPads": {
+                        "Large": 3,
+                        "Small": 2,
+                        "Medium": 3
+                    },
+                    "StationName": "Farseer Inc",
+                    "StationType": "CraterOutpost",
+                    "SystemAddress": 6681123623626,
+                    "DistFromStarLS": 2038.202228,
+                    "StationEconomy": "$economy_Colony;",
+                    "StationFaction": {
+                        "Name": "Felicity Farseer"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "outfitting",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "tuning",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "searchrescue",
+                        "stationMenu",
+                        "shop",
+                        "livery"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Colony;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationAllegiance": "Federation",
+                    "StationGovernment": "$government_Engineer;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2904,
+        "fields": {
+            "created_at": "2025-02-05T12:00:26.862Z",
+            "updated_at": "2025-02-05T12:00:26.862Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "db50f72516971c4e88b4b728f72b3f5126c73d4c",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:27.509583Z"
+                },
+                "message": {
+                    "Body": "Huh A 1 c",
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        -26.875,
+                        -34.375,
+                        37.1875
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "MarketID": 3876436992,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:26Z",
+                    "StarSystem": "Huh",
+                    "LandingPads": {
+                        "Large": 0,
+                        "Small": 0,
+                        "Medium": 1
+                    },
+                    "StationName": "Barreau Mining Prospect",
+                    "StationType": "OnFootSettlement",
+                    "SystemAddress": 1733052830426,
+                    "DistFromStarLS": 1659.471374,
+                    "StationEconomy": "$economy_Extraction;",
+                    "StationFaction": {
+                        "Name": "Social Huh Free",
+                        "FactionState": "CivilUnrest"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "blackmarket",
+                        "commodities",
+                        "contacts",
+                        "missions",
+                        "refuel",
+                        "repair",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "searchrescue",
+                        "stationMenu"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Extraction;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationAllegiance": "Federation",
+                    "StationGovernment": "$government_Democracy;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2905,
+        "fields": {
+            "created_at": "2025-02-05T12:00:30.530Z",
+            "updated_at": "2025-02-05T12:00:30.530Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "c47d0e4d58dc06c8b644413312bd0bbe1855be98",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:30.965615Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        128.8125,
+                        -114.53125,
+                        58.03125
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3705747712,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:30Z",
+                    "StarSystem": "Ceronir",
+                    "LandingPads": {
+                        "Large": 8,
+                        "Small": 4,
+                        "Medium": 4
+                    },
+                    "StationName": "TNX-T7L",
+                    "StationType": "FleetCarrier",
+                    "SystemAddress": 9468657739201,
+                    "DistFromStarLS": 1296.727962,
+                    "StationEconomy": "$economy_Carrier;",
+                    "StationFaction": {
+                        "Name": "FleetCarrier"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "stationMenu",
+                        "carriermanagement",
+                        "carrierfuel",
+                        "socialspace",
+                        "bartender"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Carrier;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationGovernment": "$government_Carrier;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2906,
+        "fields": {
+            "created_at": "2025-02-05T12:00:41.085Z",
+            "updated_at": "2025-02-05T12:00:41.085Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "49cc04d3bc3954e240321a547667d98fe2afd5bf",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T12:00:40.967332Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        -33.65625,
+                        72.46875,
+                        -20.65625
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3930406913,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T12:00:40Z",
+                    "StarSystem": "Alioth",
+                    "LandingPads": {
+                        "Large": 2,
+                        "Small": 4,
+                        "Medium": 4
+                    },
+                    "StationName": "Stronghold Carrier",
+                    "StationType": "SurfaceStation",
+                    "SystemAddress": 1109989017963,
+                    "DistFromStarLS": 4532.188803,
+                    "StationEconomy": "$economy_HighTech;",
+                    "StationFaction": {
+                        "Name": "Edmund Mahon"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "stationMenu",
+                        "livery"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_HighTech;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationAllegiance": "Alliance",
+                    "StationGovernment": "$government_Corporate;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2907,
+        "fields": {
+            "created_at": "2025-02-05T12:00:44.471Z",
+            "updated_at": "2025-02-05T12:00:44.471Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "29f58a382021f629fce90e79ec2668a07fa7bc57",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-05T12:00:45.111845Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        113.21875,
+                        21.59375,
+                        -55.96875
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3229825024,
+                    "horizons": true,
+                    "timestamp": "2025-02-05T12:00:43Z",
+                    "StarSystem": "Likohochna",
+                    "LandingPads": {
+                        "Large": 8,
+                        "Small": 12,
+                        "Medium": 14
+                    },
+                    "StationName": "Aksyonov Colony",
+                    "StationType": "Coriolis",
+                    "SystemAddress": 9468389762449,
+                    "DistFromStarLS": 12.259346,
+                    "StationEconomy": "$economy_Extraction;",
+                    "StationFaction": {
+                        "Name": "Ryders of the Void",
+                        "FactionState": "Boom"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "materialtrader",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Extraction;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationGovernment": "$government_Feudal;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]

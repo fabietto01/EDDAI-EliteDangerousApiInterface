@@ -10,4 +10,3 @@ class StateSerializer(serializers.Serializer):
         queryset=State.objects.exclude(type=State.TypeChoices.HAPPINESS.value),
         slug_field='eddn',
     )
-    Trend = None

@@ -303,7 +303,6 @@ AUTHORI_SED_SOFTWARS = [
 ]
 
 #impostazioni per la gestione dell'utente nominativa per il scrivere i datti su DB, da parte del servizio EDDN
-EDDN_USER_AGENT_CACHE_KEY = uuid4(),
 EDDN_USER_NAME_AGENT = os.environ.get('EDDN_USER_NAME_AGENT', "EDDN-Client")
 EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!123')
 

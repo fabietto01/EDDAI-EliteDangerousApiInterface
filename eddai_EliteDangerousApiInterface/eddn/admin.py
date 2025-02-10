@@ -14,17 +14,17 @@ log = getLogger("django")
 @admin.register(DataLog)
 class DataLogModelAdmin(admin.ModelAdmin):
     model = DataLog
-    search_fields = ("schema","error")
-    list_display = ("pk","schema", "error", "updated_at", "created_at")
-    list_display_links = ("pk", "schema")
+    search_fields = ("data","error")
+    list_display = ("pk", "error", "updated_at", "created_at")
+    list_display_links = ("pk", )
     readonly_fields = ("created_at", "updated_at", "error")
-    list_filter = (
-        ("schema",admin.AllValuesFieldListFilter),  
-    )
+    # list_filter = (
+    #     ("schema",admin.AllValuesFieldListFilter),  
+    # )
     fieldsets = [
         (None, {
             "fields": (
-                "schema",
+                
                 "data",
                 "error",
             )

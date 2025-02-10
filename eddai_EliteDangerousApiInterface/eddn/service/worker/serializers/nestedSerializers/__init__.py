@@ -1,0 +1,3 @@
+from .economySerializer import EconomySerializer
+from .minorFactionSerializer import MinorFactionSerializer
+from .minorFactionInSystemSerializer import MinorFactionInSystemSerializer

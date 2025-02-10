@@ -12,13 +12,18 @@ class DataLog(DateModels):
     data = models.JSONField(
         verbose_name=_('data')
     )
-    schema = models.CharField(
-        verbose_name=_("schema"), max_length=100,
-    )
     error = models.JSONField(
         verbose_name=_('error'), null=True, blank=True
     )
 
+    @property
+    def schema(self) -> str:
+        return self.data.get("$schemaRef", None)
+    
+    @property
+    def message(self) -> dict:
+        return self.data.get("message", None)
+    
     def __str__(self) -> str:
         return str(self.schema) or str(self.data)
 
