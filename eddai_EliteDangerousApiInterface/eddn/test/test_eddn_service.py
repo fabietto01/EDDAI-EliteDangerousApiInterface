@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from eddn.service.worker.serializers import FSDJumpSerializer
+from eddn.service.worker.serializers import FSDJumpSerializer, DockedSerializer
 from eddn.service.worker.serializers.journal.baseJournalSerializer import BaseJournalSerializer
 
 from users.models import User
@@ -80,6 +80,32 @@ class FSDJumpSerializerTestCase(TestCase):
     def test_save(self):
         for item in DataLog.objects.all():
             serializer = FSDJumpSerializer(data=item.message)
+            valid = serializer.is_valid()
+            self.assertTrue(valid, serializer.errors)
+            serializer.save(
+                created_by=self.agent,
+                updated_by=self.agent
+            )
+
+class DockedSerializerTestCase(TestCase):
+
+    fixtures = ['user', 'economy', 'system', 'body', 'bgs', 'exploration', 'material', 'mining', 'station','eddn_test_service_event_Docked']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.agent = User.objects.create_user(
+            username='DockedSerializerTestCase'
+        )
+
+    def test_validate(self):
+        for item in DataLog.objects.all():
+            serializer = DockedSerializer(data=item.message)
+            valid = serializer.is_valid()
+            self.assertTrue(valid, serializer.errors)
+
+    def test_save(self):
+        for item in DataLog.objects.all():
+            serializer = DockedSerializer(data=item.message)
             valid = serializer.is_valid()
             self.assertTrue(valid, serializer.errors)
             serializer.save(

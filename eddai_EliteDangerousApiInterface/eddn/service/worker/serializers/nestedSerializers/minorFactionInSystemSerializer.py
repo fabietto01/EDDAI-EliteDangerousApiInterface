@@ -1,126 +1,169 @@
+from ..baseSerializer import BaseSerializer
 from rest_framework import serializers
-
-from ..baseSerializer import BaseListSerializer
 
 from .stateSerializer import StateSerializer
 
-from ed_bgs.models import Faction, Government, State, MinorFactionInSystem, MinorFaction
+from core.utility import (
+    create_or_update_if_time, in_list_models, 
+)
 
-class ListMinorFactionInSystemSerializer(BaseListSerializer):
+from ed_bgs.models import (
+    Faction, Government, State, MinorFactionInSystem, 
+    MinorFaction, StateInMinorFaction
+)
+
+class MinorFactionInSystemListSerializer(serializers.ListSerializer):
 
     def validate(self, attrs):
         count = len(attrs)
         if count > MinorFactionInSystem.get_max_relations():
-            raise serializers.ValidationError(f"too many factions in system: {count}")
+            raise serializers.ValidationError(f"too many factions: {count}")
+        if count < 1:
+            raise serializers.ValidationError(f"too few factions: {count}")
         return super().validate(attrs)
-    
-    def create_minorFaction(self, data:list[dict]) -> list[MinorFaction]:
-        qs = MinorFaction.objects.all()
-        minorFaction_add:list[MinorFaction] = []
-        minorFaction_update:list[MinorFaction] = []
-        for data in data:
-            try:
-                minorFaction = qs.get(name=data.get("name"))
-                data.pop("name")
-                for key, value in data.items():
-                    setattr(minorFaction, key, value)
-                minorFaction_update.append(minorFaction)
-            except MinorFaction.DoesNotExist:
-                minorFaction_add.append(MinorFaction(**data))
-        minorFaction_list = []
-        if minorFaction_add:
-            minorFaction_list = MinorFaction.objects.bulk_create(minorFaction_add)
-        if minorFaction_update:
-            MinorFaction.objects.bulk_update(minorFaction_update)
-            minorFaction_list.extend(minorFaction_update)
-        return minorFaction_list
-    
-    def create_minorFactionInSystem(self, instance, data:list[dict]) -> list[MinorFactionInSystem]:
-        qs = MinorFactionInSystem.objects.filter(system=instance)
-        minorFactionInSystem_add:list[MinorFactionInSystem] = []
-        minorFactionInSystem_update:list[MinorFactionInSystem] = []
-        for data in data:
-            try:
-                minorFactionInSystem = qs.get(minorFaction=data.get("minorFaction"))
-                for key, value in data.items():
-                    setattr(minorFactionInSystem, key, value)
-                minorFactionInSystem_update.append(minorFactionInSystem)
-            except MinorFactionInSystem.DoesNotExist:
-                minorFactionInSystem_add.append(MinorFactionInSystem(system=instance, **data))
-        minorFactionInSystem_list = []
-        if minorFactionInSystem_add:
-            minorFactionInSystem_list = MinorFactionInSystem.objects.bulk_create(minorFactionInSystem_add)
-        if minorFactionInSystem_update:
-            MinorFactionInSystem.objects.bulk_update(minorFactionInSystem_update)
-            minorFactionInSystem_list.extend(minorFactionInSystem_update)
-        return minorFactionInSystem_list
 
-    def update(self, instance, validated_data:list[dict]):
-        fields = self.get_fields_materilFaciotn(MinorFaction)
-        data = []
-        for item in validated_data:
-            data.append({key: value for key, value in item.items() if key in fields})
-        minorFaction_list = self.create_minorFaction(data)
-        fields = self.get_fields_materilFaciotn(MinorFactionInSystem)
-        data = []
-        for item in validated_data:
-            faction_name = item.get("name")
-            minorFaction = next((faction for faction in minorFaction_list if faction.name == faction_name), None)
-            {key: value for key, value in item.items() if key in fields}
-        return self.create_minorFactionInSystem(instance, data)
-
-class MinorFactionInSystemSerializer(serializers.ModelSerializer):
+class MinorFactionInSystemSerializer(BaseSerializer):
     Name = serializers.CharField(
         min_length=1,
-        source="name"
     )
     Allegiance = serializers.SlugRelatedField(
         queryset=Faction.objects.all(),
         slug_field='eddn',
-        source="allegiance"
     )
     Government = serializers.SlugRelatedField(
         queryset=Government.objects.all(),
         slug_field='eddn',
-        source="government"
     )
     Influence = serializers.FloatField(
         min_value=0, max_value=1,
     )
-    # Happiness = serializers.SlugRelatedField(
-    #     queryset=State.objects.filter(type=State.TypeChoices.HAPPINESS.value),
-    #     slug_field='eddn',
-    #     allow_null=True,
-    # )
-    # RecoveringStates = StateSerializer(
-    #     many=True,
-    #     required = False,
-    # )
-    # ActiveStates = StateSerializer(
-    #     many=True,
-    #     required = False,
-    # )
-    # PendingStates = StateSerializer(
-    #     many=True,
-    #     required = False,
-    # )
+    Happiness = serializers.SlugRelatedField(
+        queryset=State.objects.filter(type=State.TypeChoices.HAPPINESS.value),
+        slug_field='eddn',
+        required = False,
+        allow_null=True,
+    )
+    RecoveringStates = StateSerializer(
+        many=True,
+        required = False,
+    )
+    ActiveStates = StateSerializer(
+        many=True,
+        required = False,
+    )
+    PendingStates = StateSerializer(
+        many=True,
+        required = False,
+    )
 
-    def validate(self, attrs):
-        return super().validate(attrs)
-    
-    def save(self, **kwargs):
-        return super().save(**kwargs)
-    
-    def create(self, validated_data):
-        return super().create(validated_data)
-    
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+    def set_data_defaults(self, validated_data):
+        return {
+            "allegiance": validated_data.get('Allegiance'),
+            "government": validated_data.get('Government'),
+        }
 
-    class Meta:
-        model = MinorFactionInSystem
-        list_serializer_class = ListMinorFactionInSystemSerializer
-        fields = [
-            'Name', 'Allegiance',
-            "Government", "Influence",
-        ]
+    def set_data_defaults_create(self, validated_data):
+        return {
+            "created_by": validated_data.get('created_by'),
+            "updated_by": validated_data.get('updated_by'),
+            "updated_at": validated_data.get('updated_at'),
+            "created_at": validated_data.get('updated_at'),
+        }
+
+    def set_data_defaults_update(self, validated_data):
+        return {
+            "updated_by": validated_data.get('updated_by'),
+            "updated_at": validated_data.get('updated_at'),
+        }
+    
+    def set_data_defaults_MinorFactionInSystem(self, validated_data):
+        return {
+            "Influence": validated_data.get('Influence'),
+        }
+    
+    def get_state_instace(self, minorFactionInSystem, state, phase, validated_data):
+        return StateInMinorFaction(
+            minorFaction=minorFactionInSystem,
+            state=state,
+            phase=phase,
+            updated_by=validated_data.get('updated_by'),
+            created_by=validated_data.get('created_by'),
+            updated_at=validated_data.get('updated_at'),
+            created_at=validated_data.get('updated_at'),
+        )
+    
+    def get_list_status_in_validated_data(self, instance, validated_data):
+        status_add = []
+        happiness = validated_data.get('Happiness', None)
+        if happiness:
+            status_add.append(
+                self.get_state_instace(
+                    instance, happiness, StateInMinorFaction.PhaseChoices.ACTIVE.value, validated_data
+                )
+            )
+        for data in validated_data.get('RecoveringStates', []):
+            status_add.append(
+                self.get_state_instace(
+                    instance, data.get('State'), StateInMinorFaction.PhaseChoices.RECOVERING.value, validated_data 
+                )
+            )
+        for data in validated_data.get('ActiveStates', []):
+            status_add.append(
+                self.get_state_instace(
+                    instance, data.get('State'), StateInMinorFaction.PhaseChoices.ACTIVE.value, validated_data
+                )
+            )
+        for data in validated_data.get('PendingStates', []):
+            status_add.append(
+                self.get_state_instace(
+                    instance, data.get('State'), StateInMinorFaction.PhaseChoices.PENDING.value, validated_data
+                )
+            )
+        return status_add
+    
+    def create_state(self, instance, validated_data):
+        status_add = self.get_list_status_in_validated_data(instance, validated_data)
+        if status_add:
+            StateInMinorFaction.objects.bulk_create(status_add)
+
+    def update_state(self, instance, validated_data):
+        state_add = []
+        state_delete = []
+        state_qs_list = list(StateInMinorFaction.objects.filter(minorFactionInSystem=instance))
+        state_list = self.get_list_status_in_validated_data(instance, validated_data)
+        for state in state_list:
+            if not in_list_models(state, state_qs_list):
+                state_add.append(state)
+        for state in state_qs_list:
+            if not in_list_models(state, state_list, ):
+                state_delete.append(state.id)
+        if state_delete:
+            StateInMinorFaction.objects.filter(id__in=state_delete).delete()
+        if state_add:
+            StateInMinorFaction.objects.bulk_create(state_add)
+        
+    def create_dipendent(self, instance, validated_data):
+        self.create_state(instance, validated_data)
+
+    def update_dipendent(self, instance, validated_data):
+        self.update_state(instance, validated_data)
+
+    def update_or_create(self, validated_data):
+        minorFaction, create = create_or_update_if_time(
+            MinorFaction, time=self.get_time(validated_data),
+            defaults=self.get_data_defaults(validated_data),
+            defaults_create=self.get_data_defaults_create(validated_data), 
+            defaults_update=self.get_data_defaults_update(validated_data), 
+            name=validated_data.get('Name'),
+        )
+        def_create_dipendent = lambda instance: self.create_dipendent(instance, validated_data)
+        def_update_dipendent = lambda instance: self.update_dipendent(instance, validated_data)
+        instance, create = create_or_update_if_time(
+            MinorFactionInSystem, time=self.get_time(validated_data), 
+            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_MinorFactionInSystem),
+            defaults_create=self.get_data_defaults_create(validated_data), 
+            defaults_update=self.get_data_defaults_update(validated_data),
+            create_function=def_create_dipendent, update_function=def_update_dipendent,
+            system=validated_data.get('system'), minorFaction=minorFaction,
+        )
+        return instance

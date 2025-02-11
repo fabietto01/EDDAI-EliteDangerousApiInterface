@@ -35,13 +35,14 @@ class BaseDataAnalysis:
 
     def run_analysis(self):
         serializer = self.get_serializer(data=self.get_message())
-        self.istance.save(
-            agent=self.agent,
-        )
-        # if serializer.is_valid():
-        #     pass
+        self.istance.save()
+        if serializer.is_valid():
+            serializer.save(
+                created_by=self.agent,
+                updated_by=self.agent
+            )
         # else:
         #     self.log.error(f"error validating '{self.istance.schema}': {serializer.errors}")
         #     self.istance.error = serializer.errors
-        #     self.istance.save()
-        # return self.istance
+        
+        return self.istance

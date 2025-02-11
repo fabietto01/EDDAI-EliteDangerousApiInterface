@@ -3,6 +3,11 @@ from django_filters.filters import EMPTY_VALUES
 from ed_station.models import Station
 
 class LandingPadsChoiceField(serializers.ChoiceField):
+
+    def __init__(self, **kwargs):
+        choices = Station.LandingPadChoices.names
+        super().__init__(choices=choices, **kwargs)
+
     def to_internal_value(self, data: dict):
         choices = Station.LandingPadChoices.__empty__
 

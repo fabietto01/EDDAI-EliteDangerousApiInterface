@@ -2,6 +2,7 @@ from django.db import models
 from core.models import DateModels
 from django.core.exceptions import ValidationError
 from django.db.models.functions import Coalesce
+from django.contrib import admin
 
 from django.utils.translation import gettext_lazy as _
 
@@ -15,14 +16,17 @@ class DataLog(DateModels):
     error = models.JSONField(
         verbose_name=_('error'), null=True, blank=True
     )
-
+    
     @property
+    @admin.display(description=_('schema'))
     def schema(self) -> str:
         return self.data.get("$schemaRef", None)
     
     @property
+    @admin.display(description=_('message'))
     def message(self) -> dict:
         return self.data.get("message", None)
+    
     
     def __str__(self) -> str:
         return str(self.schema) or str(self.data)

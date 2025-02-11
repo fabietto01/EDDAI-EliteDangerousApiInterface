@@ -19,3 +19,6 @@ class JournalAnalysis(BaseDataAnalysis):
 
     def serializer_FSDJump(self):
         return FSDJumpSerializer
+    
+    def serializer_Docked(self):
+        return DockedSerializer
