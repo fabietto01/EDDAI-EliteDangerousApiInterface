@@ -1,3 +1,8 @@
 from .economySerializer import EconomySerializer
 from .minorFactionSerializer import MinorFactionSerializer
 from .minorFactionInSystemSerializer import MinorFactionInSystemSerializer
+from .ringSerializer import RingSerializer
+from .compositionSerializers import CompositionSerializers
+from .materialsSerializer import MaterialsSerializer
+from .atmosphereComponentSerializer import AtmosphereComponentSerializer
+

@@ -1,7 +1,7 @@
 from .baseDataAnalysis import BaseDataAnalysis
 from .errors import NotSerializerError
 
-from ..serializers.journal import DockedSerializer, FSDJumpSerializer
+from ..serializers.journal import DockedSerializer, FSDJumpSerializer, BaseScanSerializer, PlanetScanSerializer
 
 class JournalAnalysis(BaseDataAnalysis):
 
@@ -17,8 +17,18 @@ class JournalAnalysis(BaseDataAnalysis):
         else:
             return func()
 
-    def serializer_FSDJump(self):
-        return FSDJumpSerializer
+    # def serializer_FSDJump(self):
+    #     return FSDJumpSerializer
     
-    def serializer_Docked(self):
-        return DockedSerializer
+    # def serializer_Docked(self):
+    #     return DockedSerializer
+    
+    def serializer_Scan(self):
+        message = self.get_message()
+        if not 'Ring' in message.get('BodyName', ''):
+            if 'StarType' in message.keys():
+                return BaseScanSerializer
+            return PlanetScanSerializer
+        raise NotSerializerError(
+            f"the service with this '{self.get_event()}' event, is not able to scan bodies that have inside the name 'Ring'"
+        )

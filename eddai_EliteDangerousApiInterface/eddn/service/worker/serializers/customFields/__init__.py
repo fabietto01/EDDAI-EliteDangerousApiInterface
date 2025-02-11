@@ -1,3 +1,5 @@
 from .landingPadsChoiceField import LandingPadsChoiceField
 from .systemSecurityChoiceField import SystemSecurityChoiceField
 from .coordinateListField import CoordinateListField
+from .ringTypeChoiceField import RingTypeChoiceField
+from .reserveLevelChoiceField import ReserveLevelChoiceField

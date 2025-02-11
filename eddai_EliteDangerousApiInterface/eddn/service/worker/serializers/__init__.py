@@ -1,2 +1,1 @@
-from .journal import DockedSerializer
-from .journal import FSDJumpSerializer
+from .journal import DockedSerializer, FSDJumpSerializer, BaseScanSerializer, PlanetScanSerializer

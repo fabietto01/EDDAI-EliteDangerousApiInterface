@@ -23,3 +23,10 @@ class LandingPadsChoiceField(serializers.ChoiceField):
             choices = Station.LandingPadChoices.Small
 
         return choices
+    
+    def to_representation(self, value: Station.LandingPadChoices) -> dict:
+        return {
+            Station.LandingPadChoices.Large.name: value == Station.LandingPadChoices.Large,
+            Station.LandingPadChoices.Medium.name: value == Station.LandingPadChoices.Medium,
+            Station.LandingPadChoices.Small.name: value == Station.LandingPadChoices.Small,
+        }

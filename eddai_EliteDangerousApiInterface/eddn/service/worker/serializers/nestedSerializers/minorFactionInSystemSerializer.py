@@ -167,3 +167,6 @@ class MinorFactionInSystemSerializer(BaseSerializer):
             system=validated_data.get('system'), minorFaction=minorFaction,
         )
         return instance
+    
+    class Meta:
+        list_serializer_class = MinorFactionInSystemListSerializer

@@ -81,7 +81,7 @@ class FSDJumpSerializer(BaseJournalSerializer):
             instance: The system instance.
             validated_data (dict): The validated data dictionary.
         """
-        for faction in self.data.get('Factions', []):
+        for faction in self.initial_data.get('Factions', []):
             serializers = MinorFactionInSystemSerializer(data=faction)
             serializers.is_valid(raise_exception=True)
             serializers.save(
