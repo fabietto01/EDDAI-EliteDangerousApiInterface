@@ -6,8 +6,6 @@ from ...customFields import ReserveLevelChoiceField
 
 from ed_body.models import Planet, AtmosphereType, PlanetType, Volcanism, AtmosphereComponentInPlanet, AtmosphereComponent
 
-from core.utility import create_or_update_if_time
-
 class PlanetScanSerializer(BaseScanSerializer):
     AtmosphereType = serializers.SlugRelatedField(
         queryset=AtmosphereType.objects.all(),

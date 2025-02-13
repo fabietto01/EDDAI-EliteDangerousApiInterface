@@ -127,18 +127,16 @@ class BaseScanSerializerTestCase(TestCase):
     def test_validate(self):
         for item in DataLog.objects.all():
             analysis = JournalAnalysis(item, self.agent)
-            serializer = analysis.get_serializer(
-                data=analysis.get_message()
-            )
+            serializer = analysis.serializer_Scan()
+            serializer = serializer(data=analysis.get_message())
             valid = serializer.is_valid()
             self.assertTrue(valid, serializer.errors)
 
     def test_save(self):
         for item in DataLog.objects.all():
             analysis = JournalAnalysis(item, self.agent)
-            serializer = analysis.get_serializer(
-                data=analysis.get_message()
-            )
+            serializer = analysis.serializer_Scan()
+            serializer = serializer(data=analysis.get_message())
             valid = serializer.is_valid()
             self.assertTrue(valid, serializer.errors)
             serializer.save(
