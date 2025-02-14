@@ -5,4 +5,7 @@ from .ringSerializer import RingSerializer
 from .compositionSerializers import CompositionSerializers
 from .materialsSerializer import MaterialsSerializer
 from .atmosphereComponentSerializer import AtmosphereComponentSerializer
+from .hotspotSerializers import HotspotSerializers
+from .signalSerializers import SignalSerializers
+from .sampleSerializers import SampleSerializers
 
