@@ -1,14 +1,14 @@
 from .baseJournalSerializer import BaseJournalSerializer
 from rest_framework import serializers
 
-from ..customFields import SystemSecurityChoiceField, CoordinateListField
+from ..customFields import SystemSecurityChoiceField
 from ..nestedSerializers import MinorFactionInSystemSerializer, MinorFactionSerializer
 
 from ed_economy.models import Economy
 from ed_bgs.models import Power, PowerState, PowerInSystem, MinorFaction
 from ed_system.models import System
 
-from core.utility import create_or_update_if_time, in_list_models
+from core.utility import in_list_models
 
 class FSDJumpSerializer(BaseJournalSerializer):
     SystemEconomy = serializers.SlugRelatedField(

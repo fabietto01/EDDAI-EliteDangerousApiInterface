@@ -39,7 +39,7 @@ class DockedSerializer(BaseJournalSerializer):
     )
     StationFaction = MinorFactionSerializer()
 
-    def _get_minor_faction_name(self, data) -> str:
+    def _get_station_minor_faction_name(self, data) -> str:
         """Retrieve the name of the minor faction from the data."""
         StationFaction:dict = data.get('StationFaction')
         return StationFaction.get('Name')
@@ -61,14 +61,14 @@ class DockedSerializer(BaseJournalSerializer):
             return Economy.objects.get(eddn='$economy_None;')
         self._sort_economies(StationEconomies)
         return StationEconomies[1].get('Name')
-
+    
     def validate(self, attrs:dict):
         """Validate the attributes of the station, ensuring economies are different and the faction is present in the system."""
         economies = attrs.get('StationEconomies', [])
-        faction_Name = self._get_minor_faction_name(attrs)
+        faction_Name = self._get_station_minor_faction_name(attrs)
         system_Name = attrs.get('StarSystem')
         if len(economies) == 2:
-            if economies[0].get('Name', '') == economies[1].get('Name', ''):
+            if  self._get_primary_economy(attrs) == self._get_secondary_economy(attrs):
                 raise serializers.ValidationError({'StationEconomies': 'Economies must be different'})
         if not ( attrs.get('StationType').eddn == 'FleetCarrier' and faction_Name == 'FleetCarrier' ):
             if not MinorFactionInSystem.objects.filter(system__name=system_Name, minorFaction__name=faction_Name).exists():
@@ -81,7 +81,7 @@ class DockedSerializer(BaseJournalSerializer):
             "landingPad": validated_data.get('LandingPads'),
             "type": validated_data.get('StationType'),
             "distance": validated_data.get('DistFromStarLS'),
-            'minorFaction': MinorFaction.objects.get(name=self._get_minor_faction_name(validated_data)),
+            'minorFaction': MinorFaction.objects.get(name=self._get_station_minor_faction_name(validated_data)),
             'primaryEconomy': self._get_primary_economy(validated_data),
             'secondaryEconomy': self._get_secondary_economy(validated_data),
         }
