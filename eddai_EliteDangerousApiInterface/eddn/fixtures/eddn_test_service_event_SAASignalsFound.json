@@ -1,0 +1,197 @@
+[
+    {
+        "model": "eddn.datalog",
+        "pk": 96,
+        "fields": {
+            "created_at": "2025-02-14T14:40:49.039Z",
+            "updated_at": "2025-02-14T14:40:49.039Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "a96fdbde3db14e7b07f1bbbf36de2b4469c38a51",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-14T14:40:50.257736Z"
+                },
+                "message": {
+                    "event": "SAASignalsFound",
+                    "BodyID": 33,
+                    "Signals": [
+                        {
+                            "Type": "Painite",
+                            "Count": 3
+                        },
+                        {
+                            "Type": "Platinum",
+                            "Count": 2
+                        }
+                    ],
+                    "StarPos": [
+                        -13102.71875,
+                        61.4375,
+                        9985.65625
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Ellaiscs ZO-I d9-0 A 5 A Ring",
+                    "horizons": true,
+                    "timestamp": "2025-02-14T14:40:46Z",
+                    "StarSystem": "Ellaiscs ZO-I d9-0",
+                    "SystemAddress": 7742704979
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 100,
+        "fields": {
+            "created_at": "2025-02-14T14:41:01.985Z",
+            "updated_at": "2025-02-14T14:41:01.985Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "d1f38428dbe500d1ead26a2a381dc3ae4aa23254",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDI",
+                    "softwareVersion": "4.1.0-b3",
+                    "gatewayTimestamp": "2025-02-14T14:41:03.204356Z"
+                },
+                "message": {
+                    "event": "SAASignalsFound",
+                    "BodyID": 9,
+                    "Genuses": [],
+                    "Signals": [
+                        {
+                            "Type": "$SAA_SignalType_Human;",
+                            "Count": 9
+                        }
+                    ],
+                    "StarPos": [
+                        -104.625,
+                        -0.8125,
+                        -151.90625
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Hyades Sector DR-V c2-23 A 5",
+                    "horizons": true,
+                    "timestamp": "2025-02-14T14:40:59Z",
+                    "StarSystem": "Hyades Sector DR-V c2-23",
+                    "SystemAddress": 6405910172338
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 101,
+        "fields": {
+            "created_at": "2025-02-14T14:41:39.834Z",
+            "updated_at": "2025-02-14T14:41:39.834Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "1590568c193c3de621564fd0eed071580edd0d25",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-14T14:41:15.911406Z"
+                },
+                "message": {
+                    "event": "SAASignalsFound",
+                    "BodyID": 14,
+                    "Genuses": [
+                        {
+                            "Genus": "$Codex_Ent_Bacterial_Genus_Name;"
+                        }
+                    ],
+                    "Signals": [
+                        {
+                            "Type": "$SAA_SignalType_Biological;",
+                            "Count": 1
+                        }
+                    ],
+                    "StarPos": [
+                        -353.125,
+                        -863.125,
+                        10693.4375
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Eidaik WH-T c4-7 BC 1",
+                    "horizons": true,
+                    "timestamp": "2025-02-14T14:41:12Z",
+                    "StarSystem": "Eidaik WH-T c4-7",
+                    "SystemAddress": 2007393213226
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 102,
+        "fields": {
+            "created_at": "2025-02-14T14:41:39.837Z",
+            "updated_at": "2025-02-14T14:41:39.837Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "1c44f39abd16b2846371595515838e85bc676613",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-14T14:41:15.002029Z"
+                },
+                "message": {
+                    "event": "SAASignalsFound",
+                    "BodyID": 19,
+                    "Genuses": [],
+                    "Signals": [
+                        {
+                            "Type": "Alexandrite",
+                            "Count": 10
+                        },
+                        {
+                            "Type": "Grandidierite",
+                            "Count": 10
+                        },
+                        {
+                            "Type": "LowTemperatureDiamond",
+                            "Count": 6
+                        },
+                        {
+                            "Type": "Opal",
+                            "Count": 5
+                        },
+                        {
+                            "Type": "Tritium",
+                            "Count": 6
+                        },
+                        {
+                            "Type": "Bromellite",
+                            "Count": 7
+                        }
+                    ],
+                    "StarPos": [
+                        -1903.21875,
+                        257.0,
+                        376.40625
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Sifi UH-U c3-0 3 B Ring",
+                    "horizons": true,
+                    "timestamp": "2025-02-14T14:41:13Z",
+                    "StarSystem": "Sifi UH-U c3-0",
+                    "SystemAddress": 80698643234
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]
