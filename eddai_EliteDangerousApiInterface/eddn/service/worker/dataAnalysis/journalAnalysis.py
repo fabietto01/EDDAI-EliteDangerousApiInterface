@@ -1,7 +1,11 @@
 from .baseDataAnalysis import BaseDataAnalysis
 from .errors import NotSerializerError
 
-from ..serializers.journal import DockedSerializer, FSDJumpSerializer, BaseScanSerializer, PlanetScanSerializer, StarScanSerializer
+from ..serializers.journal import (
+    DockedSerializer, FSDJumpSerializer, BaseScanSerializer, 
+    PlanetScanSerializer, StarScanSerializer, LocationSerializer,
+    SAASignalsHotSpotFoundSerializers, SAASignalsFoundSerializers
+)
 
 class JournalAnalysis(BaseDataAnalysis):
 
@@ -9,7 +13,7 @@ class JournalAnalysis(BaseDataAnalysis):
         mesaage = self.get_message()
         return mesaage.get("event")
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> BaseScanSerializer:
         try:
             func = getattr(self, f"serializer_{self.get_event()}")
         except AttributeError as e:
@@ -32,3 +36,12 @@ class JournalAnalysis(BaseDataAnalysis):
         raise NotSerializerError(
             f"the service with this '{self.get_event()}' event, is not able to scan bodies that have inside the name 'Ring'"
         )
+    
+    def serializer_Location(self):
+        return LocationSerializer
+    
+    def serializer_SAASignalsFound(self):
+        message = self.get_message()
+        if 'Ring' in message.get('BodyName', ''):
+            return SAASignalsHotSpotFoundSerializers
+        return SAASignalsFoundSerializers
