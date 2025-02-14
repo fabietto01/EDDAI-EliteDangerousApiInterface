@@ -1,1 +1,1 @@
-from .journal import DockedSerializer, FSDJumpSerializer, BaseScanSerializer, PlanetScanSerializer, StarScanSerializer, LocationSerializer, SAASignalsBaseFoundSerializers, SAASignalsHotSpotFoundSerializers, SAASignalsFoundSerializers
+from .journal import DockedSerializer, FSDJumpSerializer, BaseScanSerializer, PlanetScanSerializer, StarScanSerializer, LocationSerializer, SAASignalsBaseFoundSerializers, SAASignalsHotSpotFoundSerializers, SAASignalsFoundSerializers, CarrierJumpSerializer

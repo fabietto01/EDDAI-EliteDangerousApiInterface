@@ -3,6 +3,7 @@ from django.test import TestCase
 from eddn.service.worker.serializers import FSDJumpSerializer, DockedSerializer, LocationSerializer
 from eddn.service.worker.serializers.journal.baseJournalSerializer import BaseJournalSerializer
 from eddn.service.worker.dataAnalysis.journalAnalysis import JournalAnalysis
+from eddn.service.worker.serializers.journal.carrierJumpSerializer import CarrierJumpSerializer
 
 from users.models import User
 from eddn.models import DataLog
@@ -193,6 +194,32 @@ class SAASignalsFoundSerializersTestCase(TestCase):
             analysis = JournalAnalysis(item, self.agent)
             serializer = analysis.serializer_SAASignalsFound()
             serializer = serializer(data=analysis.get_message())
+            valid = serializer.is_valid()
+            self.assertTrue(valid, serializer.errors)
+            serializer.save(
+                created_by=self.agent,
+                updated_by=self.agent
+            )
+
+class CarrierJumpSerializerTestCase(TestCase):
+    
+    fixtures = ['user', 'economy', 'system', 'body', 'bgs', 'exploration', 'material', 'mining', 'station','eddn_test_service_event_CarrierJump']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.agent = User.objects.create_user(
+            username='CarrierJumpSerializerTestCase'
+        )
+
+    def test_validate(self):
+        for item in DataLog.objects.all():
+            serializer = CarrierJumpSerializer(data=item.message)
+            valid = serializer.is_valid()
+            self.assertTrue(valid, serializer.errors)
+
+    def test_save(self):
+        for item in DataLog.objects.all():
+            serializer = CarrierJumpSerializer(data=item.message)
             valid = serializer.is_valid()
             self.assertTrue(valid, serializer.errors)
             serializer.save(

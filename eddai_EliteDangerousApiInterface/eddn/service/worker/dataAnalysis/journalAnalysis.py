@@ -4,7 +4,8 @@ from .errors import NotSerializerError
 from ..serializers.journal import (
     DockedSerializer, FSDJumpSerializer, BaseScanSerializer, 
     PlanetScanSerializer, StarScanSerializer, LocationSerializer,
-    SAASignalsHotSpotFoundSerializers, SAASignalsFoundSerializers
+    SAASignalsHotSpotFoundSerializers, SAASignalsFoundSerializers,
+    CarrierJumpSerializer
 )
 
 class JournalAnalysis(BaseDataAnalysis):
@@ -45,3 +46,6 @@ class JournalAnalysis(BaseDataAnalysis):
         if 'Ring' in message.get('BodyName', ''):
             return SAASignalsHotSpotFoundSerializers
         return SAASignalsFoundSerializers
+    
+    def serializer_CarrierJump(self):
+        return CarrierJumpSerializer

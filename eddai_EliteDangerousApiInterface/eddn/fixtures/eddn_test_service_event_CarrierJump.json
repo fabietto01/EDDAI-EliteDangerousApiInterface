@@ -1,0 +1,273 @@
+[
+    {
+        "model": "eddn.datalog",
+        "pk": 113,
+        "fields": {
+            "created_at": "2025-02-14T16:23:51.098Z",
+            "updated_at": "2025-02-14T16:23:51.098Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "78c015c631c68ceabe51f480c7e47001adae3001",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-14T16:23:04.451693Z"
+                },
+                "message": {
+                    "Body": "Pyramio SP-M b27-9",
+                    "event": "CarrierJump",
+                    "BodyID": 0,
+                    "Docked": false,
+                    "OnFoot": true,
+                    "StarPos": [
+                        -64.3125,
+                        -49.59375,
+                        5925.21875
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "timestamp": "2025-02-14T16:23:01Z",
+                    "Population": 0,
+                    "StarSystem": "Pyramio SP-M b27-9",
+                    "SystemAddress": 20461358296809,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 114,
+        "fields": {
+            "created_at": "2025-02-14T16:23:55.201Z",
+            "updated_at": "2025-02-14T16:23:55.201Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "24e16a2594fdb116549d6f46fe962383b75c2599",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-14T16:23:14.789247Z"
+                },
+                "message": {
+                    "Body": "Outorst SY-Q c18-1",
+                    "Taxi": false,
+                    "event": "CarrierJump",
+                    "BodyID": 0,
+                    "Docked": true,
+                    "StarPos": [
+                        -1901.1875,
+                        30.0,
+                        -1519.34375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "MarketID": 3706539520,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-14T16:23:13Z",
+                    "Population": 0,
+                    "StarSystem": "Outorst SY-Q c18-1",
+                    "StationName": "M2X-T4Z",
+                    "StationType": "FleetCarrier",
+                    "SystemAddress": 355576353186,
+                    "SystemEconomy": "$economy_None;",
+                    "StationEconomy": "$economy_Carrier;",
+                    "StationFaction": {
+                        "Name": "FleetCarrier"
+                    },
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "crewlounge",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "stationMenu",
+                        "carriermanagement",
+                        "carrierfuel",
+                        "socialspace"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Carrier;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "StationGovernment": "$government_Carrier;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 115,
+        "fields": {
+            "created_at": "2025-02-14T17:21:44.314Z",
+            "updated_at": "2025-02-14T17:21:44.314Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "a0ecfe10c5c44e97042d9848bc6bfacd56a4816c",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:18:13.021048Z"
+                },
+                "message": {
+                    "Body": "Duamta 2 a",
+                    "Taxi": false,
+                    "event": "CarrierJump",
+                    "BodyID": 9,
+                    "Docked": true,
+                    "StarPos": [
+                        2.1875,
+                        6.625,
+                        -7.0
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "Factions": [
+                        {
+                            "Name": "Independents of Duamta",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.093093,
+                            "Allegiance": "Federation",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Duamta Jet Power Commodities",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.103103,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Defence Force of Duamta",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.055055,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Duamta Gold Creative Corp.",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.45045,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "ActiveStates": [
+                                {
+                                    "State": "CivilLiberty"
+                                }
+                            ],
+                            "FactionState": "CivilLiberty"
+                        },
+                        {
+                            "Name": "Bureau of Duamta Conservatives",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.06006,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "The Order of The Smiling Moose",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.104104,
+                            "Allegiance": "Federation",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Aegis Core",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.01001,
+                            "Allegiance": "Independent",
+                            "Government": "Cooperative",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Mars Congressional Republic Navy",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.124124,
+                            "Allegiance": "Federation",
+                            "Government": "Confederacy",
+                            "FactionState": "None"
+                        }
+                    ],
+                    "MarketID": 3707730944,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:18:11Z",
+                    "Population": 13327723347,
+                    "StarSystem": "Duamta",
+                    "StationName": "K3W-48G",
+                    "StationType": "FleetCarrier",
+                    "SystemAddress": 4339804408171,
+                    "SystemEconomy": "$economy_HighTech;",
+                    "SystemFaction": {
+                        "Name": "Duamta Gold Creative Corp.",
+                        "FactionState": "CivilLiberty"
+                    },
+                    "StationEconomy": "$economy_Carrier;",
+                    "StationFaction": {
+                        "Name": "FleetCarrier"
+                    },
+                    "SystemSecurity": "$SYSTEM_SECURITY_high;",
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "stationMenu",
+                        "carriermanagement",
+                        "carrierfuel",
+                        "socialspace"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Carrier;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "SystemAllegiance": "Federation",
+                    "SystemGovernment": "$government_Corporate;",
+                    "StationGovernment": "$government_Carrier;",
+                    "SystemSecondEconomy": "$economy_Agri;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]
