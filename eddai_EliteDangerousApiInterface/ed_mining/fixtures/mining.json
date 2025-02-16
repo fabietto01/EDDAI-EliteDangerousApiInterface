@@ -107,7 +107,7 @@
         "model": "ed_mining.hotspottype",
         "pk": 14,
         "fields": {
-            "_eddn": "tritium",
+            "_eddn": null,
             "name": "Tritium"
         }
     }

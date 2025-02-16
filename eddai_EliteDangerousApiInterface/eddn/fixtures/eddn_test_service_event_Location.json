@@ -1,0 +1,647 @@
+[
+    {
+        "model": "eddn.datalog",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-02-13T17:00:27.018Z",
+            "updated_at": "2025-02-13T17:00:27.018Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "7e3a915c3269042ed3b7228752aa31e94302f369",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-13T17:00:26.797760Z"
+                },
+                "message": {
+                    "Body": "HIP 80162 A 4",
+                    "Taxi": false,
+                    "event": "Location",
+                    "BodyID": 10,
+                    "Docked": true,
+                    "StarPos": [
+                        -54.96875,
+                        108.46875,
+                        139.96875
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "Factions": [
+                        {
+                            "Name": "Workers of HIP 80162 Free",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.06513,
+                            "Allegiance": "Independent",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "New HIP 80162 First",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.012024,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "HIP 80162 State Commodities",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.093186,
+                            "Allegiance": "Independent",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "HIP 80162 Ring",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.017034,
+                            "Allegiance": "Independent",
+                            "Government": "Anarchy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Division Cassini",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.220441,
+                            "Allegiance": "Independent",
+                            "Government": "Cooperative",
+                            "ActiveStates": [
+                                {
+                                    "State": "Expansion"
+                                }
+                            ],
+                            "FactionState": "Expansion"
+                        },
+                        {
+                            "Name": "Talon Security",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.592184,
+                            "Allegiance": "Independent",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        }
+                    ],
+                    "MarketID": 3702263296,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-13T17:00:24Z",
+                    "Population": 5645792,
+                    "StarSystem": "HIP 80162",
+                    "StationName": "XNF-NQF",
+                    "StationType": "FleetCarrier",
+                    "SystemAddress": 1109989017979,
+                    "SystemEconomy": "$economy_Industrial;",
+                    "SystemFaction": {
+                        "Name": "Talon Security"
+                    },
+                    "DistFromStarLS": 1640.185842,
+                    "StationEconomy": "$economy_Carrier;",
+                    "StationFaction": {
+                        "Name": "FleetCarrier"
+                    },
+                    "SystemSecurity": "$SYSTEM_SECURITY_medium;",
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "stationMenu",
+                        "carriermanagement",
+                        "carrierfuel",
+                        "livery",
+                        "socialspace",
+                        "bartender"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Carrier;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "SystemAllegiance": "Independent",
+                    "SystemGovernment": "$government_Corporate;",
+                    "StationGovernment": "$government_Carrier;",
+                    "SystemSecondEconomy": "$economy_Extraction;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-02-13T17:00:30.386Z",
+            "updated_at": "2025-02-13T17:00:30.386Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "3eaed20f3164557001a23870cfedfea7b3986595",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-13T17:00:31.196095Z"
+                },
+                "message": {
+                    "Body": "Bean Terminal",
+                    "Taxi": false,
+                    "event": "Location",
+                    "BodyID": 17,
+                    "Docked": true,
+                    "Powers": [
+                        "Yuri Grom",
+                        "Zemina Torval"
+                    ],
+                    "StarPos": [
+                        18.25,
+                        -39.09375,
+                        36.9375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Station",
+                    "Factions": [
+                        {
+                            "Name": "Progressive Party of Anekaliti",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.012048,
+                            "Allegiance": "Federation",
+                            "Government": "Democracy",
+                            "FactionState": "None",
+                            "RecoveringStates": [
+                                {
+                                    "State": "Outbreak",
+                                    "Trend": 0
+                                }
+                            ]
+                        },
+                        {
+                            "Name": "Anekaliti Dragons",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.01004,
+                            "Allegiance": "Independent",
+                            "Government": "Anarchy",
+                            "FactionState": "None",
+                            "RecoveringStates": [
+                                {
+                                    "State": "NaturalDisaster",
+                                    "Trend": 0
+                                }
+                            ]
+                        },
+                        {
+                            "Name": "Silver Legal Ltd",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.059237,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Anekaliti Purple Comms Co",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.103414,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Justice Party of Anekaliti",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.017068,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "L 119-33 United Co",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.672691,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "ActiveStates": [
+                                {
+                                    "State": "Boom"
+                                }
+                            ],
+                            "FactionState": "Boom"
+                        },
+                        {
+                            "Name": "Paladin Consortium",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.125502,
+                            "Allegiance": "Independent",
+                            "Government": "Democracy",
+                            "ActiveStates": [
+                                {
+                                    "State": "Expansion"
+                                }
+                            ],
+                            "FactionState": "Expansion"
+                        }
+                    ],
+                    "MarketID": 3223921920,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-13T17:00:30Z",
+                    "Population": 2316834,
+                    "StarSystem": "Anekaliti",
+                    "StationName": "Bean Terminal",
+                    "StationType": "Bernal",
+                    "SystemAddress": 5369245748080,
+                    "SystemEconomy": "$economy_Industrial;",
+                    "SystemFaction": {
+                        "Name": "L 119-33 United Co",
+                        "FactionState": "Boom"
+                    },
+                    "DistFromStarLS": 789.624074,
+                    "PowerplayState": "Exploited",
+                    "StationEconomy": "$economy_Industrial;",
+                    "StationFaction": {
+                        "Name": "L 119-33 United Co",
+                        "FactionState": "Boom"
+                    },
+                    "SystemSecurity": "$SYSTEM_SECURITY_medium;",
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "ControllingPower": "Zemina Torval",
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Industrial;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "SystemAllegiance": "Federation",
+                    "SystemGovernment": "$government_Corporate;",
+                    "StationAllegiance": "Federation",
+                    "StationGovernment": "$government_Corporate;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-02-13T17:00:30.577Z",
+            "updated_at": "2025-02-13T17:00:30.577Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "d49f74695f70e47cdb378fada249f532b0c4d5ad",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-13T17:00:31.388587Z"
+                },
+                "message": {
+                    "Body": "Sterope II A",
+                    "Taxi": false,
+                    "event": "Location",
+                    "BodyID": 1,
+                    "Docked": true,
+                    "StarPos": [
+                        -81.65625,
+                        -147.28125,
+                        -340.84375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "MarketID": 3704117248,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-13T17:00:30Z",
+                    "Population": 0,
+                    "StarSystem": "Sterope II",
+                    "StationName": "T9Q-32F",
+                    "StationType": "FleetCarrier",
+                    "SystemAddress": 220349850788,
+                    "SystemEconomy": "$economy_None;",
+                    "StationEconomy": "$economy_Carrier;",
+                    "StationFaction": {
+                        "Name": "FleetCarrier"
+                    },
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "stationMenu",
+                        "carriermanagement",
+                        "carrierfuel",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Carrier;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "StationGovernment": "$government_Carrier;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 5,
+        "fields": {
+            "created_at": "2025-02-13T17:00:33.387Z",
+            "updated_at": "2025-02-13T17:00:33.388Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "1ea0c6f76d3046eed12244f7cb2e80becf31018b",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-13T17:00:34.197009Z"
+                },
+                "message": {
+                    "Body": "Borrego Station",
+                    "Taxi": false,
+                    "event": "Location",
+                    "BodyID": 47,
+                    "Docked": true,
+                    "StarPos": [
+                        66.8125,
+                        -210.625,
+                        -36.875
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Station",
+                    "Factions": [
+                        {
+                            "Name": "HIP 10483 Justice Party",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.061265,
+                            "Allegiance": "Empire",
+                            "Government": "Dictatorship",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Menero Kimi Empire Group",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.131423,
+                            "Allegiance": "Empire",
+                            "Government": "Patronage",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "HIP 10483 Gold Netcoms Partners",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.020751,
+                            "Allegiance": "Independent",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "HIP 10483 Jet Camorra",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.019763,
+                            "Allegiance": "Independent",
+                            "Government": "Anarchy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Green Party of HIP 10483",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.041502,
+                            "Allegiance": "Independent",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Coalition of the Willing",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.19664,
+                            "Allegiance": "Independent",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "LOST BOYS",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.528656,
+                            "Allegiance": "Independent",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        }
+                    ],
+                    "MarketID": 3222062080,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-13T17:00:33Z",
+                    "Population": 5755262,
+                    "StarSystem": "HIP 10483",
+                    "StationName": "Borrego Station",
+                    "StationType": "Bernal",
+                    "SystemAddress": 628969392483,
+                    "SystemEconomy": "$economy_Industrial;",
+                    "SystemFaction": {
+                        "Name": "LOST BOYS"
+                    },
+                    "DistFromStarLS": 1037.757174,
+                    "StationEconomy": "$economy_Industrial;",
+                    "StationFaction": {
+                        "Name": "LOST BOYS"
+                    },
+                    "SystemSecurity": "$SYSTEM_SECURITY_high;",
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "blackmarket",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Industrial;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "SystemAllegiance": "Independent",
+                    "SystemGovernment": "$government_Democracy;",
+                    "StationGovernment": "$government_Democracy;",
+                    "SystemSecondEconomy": "$economy_Military;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 6,
+        "fields": {
+            "created_at": "2025-02-13T17:00:37.617Z",
+            "updated_at": "2025-02-13T17:00:37.617Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "d865b7652e9d891d0ed05a29c3c4f8fab7c11d16",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-13T17:00:38.429221Z"
+                },
+                "message": {
+                    "Body": "Byua Ain GA-P c19-1250 C 2",
+                    "Taxi": false,
+                    "event": "Location",
+                    "BodyID": 6,
+                    "Docked": false,
+                    "StarPos": [
+                        -287.5625,
+                        4.21875,
+                        16421.53125
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-13T17:00:38Z",
+                    "Population": 0,
+                    "StarSystem": "Byua Ain GA-P c19-1250",
+                    "SystemAddress": 343680766451626,
+                    "SystemEconomy": "$economy_None;",
+                    "DistFromStarLS": 6322.329736,
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 7,
+        "fields": {
+            "created_at": "2025-02-13T17:00:38.730Z",
+            "updated_at": "2025-02-13T17:00:38.730Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "e88867dd85ba63b3779d5f2206c56be3d6480a07",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-13T17:00:39.518524Z"
+                },
+                "message": {
+                    "Body": "HIP 12099 1 b",
+                    "event": "Location",
+                    "BodyID": 16,
+                    "Docked": false,
+                    "StarPos": [
+                        -101.90625,
+                        -95.46875,
+                        -165.59375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Planet",
+                    "horizons": true,
+                    "timestamp": "2025-02-13T17:00:31Z",
+                    "Population": 0,
+                    "StarSystem": "HIP 12099",
+                    "SystemAddress": 560216394075,
+                    "SystemEconomy": "$economy_None;",
+                    "DistFromStarLS": 1101.68808,
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]

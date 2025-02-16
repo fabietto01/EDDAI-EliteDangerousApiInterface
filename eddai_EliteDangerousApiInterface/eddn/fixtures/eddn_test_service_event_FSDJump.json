@@ -1,0 +1,681 @@
+[
+    {
+        "model": "eddn.datalog",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-02-05T13:55:36.651Z",
+            "updated_at": "2025-02-05T13:55:36.652Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "89a51fe6016e59d1b50450d872751e80c2e11418",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:55:37.245415Z"
+                },
+                "message": {
+                    "Body": "Col 285 Sector NV-I b24-1",
+                    "Taxi": false,
+                    "event": "FSDJump",
+                    "BodyID": 0,
+                    "StarPos": [
+                        -83.40625,
+                        12.625,
+                        165.09375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:55:36Z",
+                    "Population": 0,
+                    "StarSystem": "Col 285 Sector NV-I b24-1",
+                    "SystemAddress": 2868904011241,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-02-05T13:55:37.486Z",
+            "updated_at": "2025-02-05T13:55:37.486Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "4388c5c24d0af7cd0381b712bb52d744bcabf94e",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:55:38.296591Z"
+                },
+                "message": {
+                    "Body": "Grie Dryue BM-N b39-5 A",
+                    "Taxi": false,
+                    "event": "FSDJump",
+                    "BodyID": 3,
+                    "StarPos": [
+                        -18506.5,
+                        -289.125,
+                        6176.09375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:55:37Z",
+                    "Population": 0,
+                    "StarSystem": "Grie Dryue BM-N b39-5",
+                    "SystemAddress": 11417498562385,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 4,
+        "fields": {
+            "created_at": "2025-02-05T13:55:38.058Z",
+            "updated_at": "2025-02-05T13:55:38.058Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "d61d5d723b239a025cf47e52b9413d3e5fe575ce",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-05T13:55:38.884521Z"
+                },
+                "message": {
+                    "Body": "Bunus A",
+                    "event": "FSDJump",
+                    "BodyID": 1,
+                    "StarPos": [
+                        39.53125,
+                        29.9375,
+                        47.5
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "Factions": [
+                        {
+                            "Name": "Bunus Raiders",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.010081,
+                            "Allegiance": "Independent",
+                            "Government": "Anarchy",
+                            "ActiveStates": [
+                                {
+                                    "State": "Bust"
+                                }
+                            ],
+                            "FactionState": "Bust"
+                        },
+                        {
+                            "Name": "LTT 5131 United Ltd",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.157258,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Independent Bunus League",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.089718,
+                            "Allegiance": "Federation",
+                            "Government": "Confederacy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Merti Dynamic PLC",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.117944,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Bunus Fortune Incorporated",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.027218,
+                            "Allegiance": "Independent",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Marquis du Bunus",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.030242,
+                            "Allegiance": "Independent",
+                            "Government": "Feudal",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Terra-EX Astro Corp",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.56754,
+                            "Allegiance": "Federation",
+                            "Government": "Corporate",
+                            "FactionState": "None",
+                            "PendingStates": [
+                                {
+                                    "State": "Expansion",
+                                    "Trend": 0
+                                }
+                            ]
+                        }
+                    ],
+                    "horizons": true,
+                    "timestamp": "2025-02-05T13:55:36Z",
+                    "Population": 55541,
+                    "StarSystem": "Bunus",
+                    "SystemAddress": 7268561200569,
+                    "SystemEconomy": "$economy_Extraction;",
+                    "SystemFaction": {
+                        "Name": "Terra-EX Astro Corp"
+                    },
+                    "SystemSecurity": "$SYSTEM_SECURITY_low;",
+                    "SystemAllegiance": "Federation",
+                    "SystemGovernment": "$government_Corporate;",
+                    "SystemSecondEconomy": "$economy_Refinery;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 5,
+        "fields": {
+            "created_at": "2025-02-05T13:55:40.028Z",
+            "updated_at": "2025-02-05T13:55:40.028Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "0c72b36917f69ec04ccb31c1f4711d50bfedf1fb",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-05T13:55:40.856321Z"
+                },
+                "message": {
+                    "Body": "Col 285 Sector DW-V d2-55 A",
+                    "event": "FSDJump",
+                    "BodyID": 1,
+                    "StarPos": [
+                        -84.3125,
+                        212.90625,
+                        -162.6875
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "timestamp": "2025-02-05T13:55:36Z",
+                    "Population": 0,
+                    "StarSystem": "Col 285 Sector DW-V d2-55",
+                    "SystemAddress": 1900246239579,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 6,
+        "fields": {
+            "created_at": "2025-02-05T13:55:41.589Z",
+            "updated_at": "2025-02-05T13:55:41.589Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "481b72bacfb82d4426c8f37430d51dd535b9a1fc",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:55:42.416006Z"
+                },
+                "message": {
+                    "Body": "Col 285 Sector GG-X d1-117",
+                    "Taxi": false,
+                    "event": "FSDJump",
+                    "BodyID": 0,
+                    "StarPos": [
+                        140.78125,
+                        51.96875,
+                        -186.0625
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:55:41Z",
+                    "Population": 0,
+                    "StarSystem": "Col 285 Sector GG-X d1-117",
+                    "SystemAddress": 4030600317267,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 7,
+        "fields": {
+            "created_at": "2025-02-05T13:55:43.837Z",
+            "updated_at": "2025-02-05T13:55:43.837Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "f3beccc00f4ae28b87cc3211e680baff9e7bc635",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.5.0",
+                    "gatewayTimestamp": "2025-02-05T13:55:44.638589Z"
+                },
+                "message": {
+                    "Body": "Blae Dryeia OC-P c8-0",
+                    "event": "FSDJump",
+                    "BodyID": 0,
+                    "StarPos": [
+                        1136.3125,
+                        -1543.0,
+                        4420.3125
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "timestamp": "2025-02-05T13:55:43Z",
+                    "Population": 0,
+                    "StarSystem": "Blae Dryeia OC-P c8-0",
+                    "SystemAddress": 85797443146,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 8,
+        "fields": {
+            "created_at": "2025-02-05T13:55:44.000Z",
+            "updated_at": "2025-02-05T13:55:44.000Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "d7e71913d6ac2f5f581d94a0a299d28c4dcf2942",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:55:44.826269Z"
+                },
+                "message": {
+                    "Body": "Lysoorb OY-W b19-0 A",
+                    "Taxi": false,
+                    "event": "FSDJump",
+                    "BodyID": 1,
+                    "StarPos": [
+                        220.375,
+                        818.0625,
+                        7040.65625
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:55:44Z",
+                    "Population": 0,
+                    "StarSystem": "Lysoorb OY-W b19-0",
+                    "SystemAddress": 673909977257,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 9,
+        "fields": {
+            "created_at": "2025-02-05T13:55:45.022Z",
+            "updated_at": "2025-02-05T13:55:45.022Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "d0b71b77f4ba277acacb8b8ac412a3cf7a0c497a",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:55:45.842312Z"
+                },
+                "message": {
+                    "Body": "Yu Di Yi A",
+                    "Taxi": false,
+                    "event": "FSDJump",
+                    "BodyID": 1,
+                    "StarPos": [
+                        -86.65625,
+                        -3.875,
+                        47.5
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "Factions": [
+                        {
+                            "Name": "Yu Di Yi Republic Party",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.070367,
+                            "Allegiance": "Federation",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Regulatory State of Yu Di Yi",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.076313,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "ActiveStates": [
+                                {
+                                    "State": "Election"
+                                }
+                            ],
+                            "FactionState": "Election"
+                        },
+                        {
+                            "Name": "Yu Di Yi Crimson Natural Inc",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.042616,
+                            "Allegiance": "Independent",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Yu Di Yi Bureau",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.043608,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Dragons Edge Elite",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.076313,
+                            "Allegiance": "Independent",
+                            "Government": "Dictatorship",
+                            "ActiveStates": [
+                                {
+                                    "State": "Election"
+                                }
+                            ],
+                            "FactionState": "Election"
+                        },
+                        {
+                            "Name": "Marauders Shadowcouncil",
+                            "Happiness": "",
+                            "Influence": 0.60555,
+                            "Allegiance": "Independent",
+                            "Government": "Cooperative",
+                            "ActiveStates": [
+                                {
+                                    "State": "Boom"
+                                },
+                                {
+                                    "State": "Expansion"
+                                }
+                            ],
+                            "FactionState": "Expansion"
+                        },
+                        {
+                            "Name": "Brotherhood of Helvetia",
+                            "Happiness": "",
+                            "Influence": 0.085233,
+                            "Allegiance": "Independent",
+                            "Government": "Confederacy",
+                            "FactionState": "None"
+                        }
+                    ],
+                    "horizons": true,
+                    "Conflicts": [
+                        {
+                            "Status": "active",
+                            "WarType": "election",
+                            "Faction1": {
+                                "Name": "Regulatory State of Yu Di Yi",
+                                "Stake": "",
+                                "WonDays": 0
+                            },
+                            "Faction2": {
+                                "Name": "Dragons Edge Elite",
+                                "Stake": "Ivanychuk Synthetics Depot",
+                                "WonDays": 0
+                            }
+                        }
+                    ],
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:55:44Z",
+                    "Population": 6363258,
+                    "StarSystem": "Yu Di Yi",
+                    "SystemAddress": 2868635575737,
+                    "SystemEconomy": "$economy_Industrial;",
+                    "SystemFaction": {
+                        "Name": "Marauders Shadowcouncil",
+                        "FactionState": "Expansion"
+                    },
+                    "SystemSecurity": "$SYSTEM_SECURITY_medium;",
+                    "SystemAllegiance": "Independent",
+                    "SystemGovernment": "$government_Cooperative;",
+                    "SystemSecondEconomy": "$economy_Extraction;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 10,
+        "fields": {
+            "created_at": "2025-02-05T13:55:46.614Z",
+            "updated_at": "2025-02-05T13:55:46.614Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "dc7394ec5a275b207fbea12ebb8c07435a713134",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.1.0",
+                    "gatewayTimestamp": "2025-02-05T13:55:47.441171Z"
+                },
+                "message": {
+                    "Body": "Dryio Bloo GR-W f1-68",
+                    "event": "FSDJump",
+                    "BodyID": 0,
+                    "StarPos": [
+                        -6341.34375,
+                        -2219.96875,
+                        29178.375
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "horizons": true,
+                    "timestamp": "2025-02-05T13:55:46Z",
+                    "Population": 0,
+                    "StarSystem": "Dryio Bloo GR-W f1-68",
+                    "SystemAddress": 36650325301,
+                    "SystemEconomy": "$economy_None;",
+                    "SystemSecurity": "$GAlAXY_MAP_INFO_state_anarchy;",
+                    "SystemAllegiance": "",
+                    "SystemGovernment": "$government_None;",
+                    "SystemSecondEconomy": "$economy_None;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2918,
+        "fields": {
+            "created_at": "2025-02-05T13:55:50.889Z",
+            "updated_at": "2025-02-05T13:55:50.889Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "075e10dfc15aaf186a3df978bcac1affbcc7e1b7",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-05T13:55:51.713626Z"
+                },
+                "message": {
+                    "Body": "Heverty A",
+                    "Taxi": false,
+                    "event": "FSDJump",
+                    "BodyID": 1,
+                    "Powers": [
+                        "Aisling Duval",
+                        "Zemina Torval"
+                    ],
+                    "StarPos": [
+                        111.6875,
+                        -61.875,
+                        55.15625
+                    ],
+                    "odyssey": true,
+                    "BodyType": "Star",
+                    "Factions": [
+                        {
+                            "Name": "Heverty Empire Party",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.020979,
+                            "Allegiance": "Empire",
+                            "Government": "Patronage",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Heverty Labour",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.126873,
+                            "Allegiance": "Independent",
+                            "Government": "Democracy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Theta Chamaelontis Citizen Party",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.187812,
+                            "Allegiance": "Independent",
+                            "Government": "Communism",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Heverty Purple Power & Co",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.027972,
+                            "Allegiance": "Independent",
+                            "Government": "Corporate",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Left Party of Guarpulici",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.04995,
+                            "Allegiance": "Independent",
+                            "Government": "Communism",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "Heverty Jet Boys",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.013986,
+                            "Allegiance": "Independent",
+                            "Government": "Anarchy",
+                            "FactionState": "None"
+                        },
+                        {
+                            "Name": "People's Party of Heverty",
+                            "Happiness": "$Faction_HappinessBand2;",
+                            "Influence": 0.572428,
+                            "Allegiance": "Independent",
+                            "Government": "Communism",
+                            "FactionState": "None",
+                            "PendingStates": [
+                                {
+                                    "State": "Expansion",
+                                    "Trend": 0
+                                }
+                            ],
+                            "RecoveringStates": [
+                                {
+                                    "State": "PublicHoliday",
+                                    "Trend": 0
+                                }
+                            ]
+                        }
+                    ],
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-05T13:55:50Z",
+                    "Population": 6132875,
+                    "StarSystem": "Heverty",
+                    "SystemAddress": 3657466614498,
+                    "SystemEconomy": "$economy_Industrial;",
+                    "SystemFaction": {
+                        "Name": "People's Party of Heverty"
+                    },
+                    "PowerplayState": "Exploited",
+                    "SystemSecurity": "$SYSTEM_SECURITY_medium;",
+                    "ControllingPower": "Aisling Duval",
+                    "SystemAllegiance": "Independent",
+                    "SystemGovernment": "$government_Communism;",
+                    "SystemSecondEconomy": "$economy_Military;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]

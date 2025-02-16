@@ -1,7 +1,7 @@
 from celery import shared_task, group
 from celery.result import GroupResult
 from eddn.models import DataLog
-from eddn.service.dataAnalytics.utility import star_analytic
+from eddn.service.worker import star_analytic
 from django.core.paginator import Paginator
 
 @shared_task(name="auto_analytic", bind=False)

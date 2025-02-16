@@ -130,6 +130,7 @@
       "program": "manage.py",
       "args": [
         "test",
+        "--noinput"
       ],
       "django": true,
       "consoleTitle": "Python Debug Django Tests"

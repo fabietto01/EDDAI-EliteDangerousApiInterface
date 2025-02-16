@@ -1,0 +1,294 @@
+[
+    {
+        "model": "ed_system.system",
+        "pk": 18,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Ross 129",
+            "coordinate": "SRID=4979;POINT Z (41.9375 74.65625 3.4375)",
+            "security": "M",
+            "population": 10218308
+        }
+    },
+    {
+        "model": "ed_bgs.minorfaction",
+        "pk": 4,
+        "fields": {
+          "created_at": "2024-07-06T15:18:33.241Z",
+          "updated_at": "2024-07-06T15:18:33.241Z",
+          "created_by": 1,
+          "updated_by": 1,
+          "name": "Wolf 406 Transport & Co",
+          "allegiance": 5,
+          "government": 9
+        }
+      },
+    {
+        "model": "ed_bgs.minorfactioninsystem",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-02-11T16:55:14.342Z",
+            "updated_at": "2025-02-11T16:55:14.342Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "system": 18,
+            "minorFaction": 4,
+            "Influence": 0.098802
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 2927,
+        "fields": {
+            "created_at": "2025-02-11T14:23:46.601Z",
+            "updated_at": "2025-02-11T14:23:46.601Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "dec4e533d8f6b15e4dad7332cac168aaf2c5e2a5",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-11T16:54:59.360350Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        17.03125,
+                        -172.78125,
+                        -3.46875
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3710910208,
+                    "horizons": true,
+                    "timestamp": "2025-02-11T16:54:55Z",
+                    "StarSystem": "Muang",
+                    "LandingPads": {
+                        "Large": 8,
+                        "Small": 4,
+                        "Medium": 4
+                    },
+                    "StationName": "V8Y-5HQ",
+                    "StationType": "FleetCarrier",
+                    "SystemAddress": 4481966019282,
+                    "DistFromStarLS": 176.749311,
+                    "StationEconomy": "$economy_Carrier;",
+                    "StationFaction": {
+                        "Name": "FleetCarrier"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "engineer",
+                        "flightcontroller",
+                        "stationoperations",
+                        "stationMenu",
+                        "carriermanagement",
+                        "carrierfuel",
+                        "voucherredemption",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Carrier;",
+                            "Proportion": 1.0
+                        }
+                    ],
+                    "StationGovernment": "$government_Carrier;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 3927,
+        "fields": {
+            "created_at": "2025-02-11T14:23:46.601Z",
+            "updated_at": "2025-02-11T14:23:46.601Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "7c34872dc5193bbc1731ec110dd2f74962a21786",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-11T16:55:01.800233Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        41.9375,
+                        74.65625,
+                        3.4375
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3229370368,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-11T16:55:00Z",
+                    "StarSystem": "Ross 129",
+                    "LandingPads": {
+                        "Large": 9,
+                        "Small": 17,
+                        "Medium": 18
+                    },
+                    "StationName": "Yang Hub",
+                    "StationType": "Coriolis",
+                    "SystemAddress": 671491564969,
+                    "DistFromStarLS": 455.668714,
+                    "StationEconomy": "$economy_Industrial;",
+                    "StationFaction": {
+                        "Name": "Wolf 406 Transport & Co",
+                        "FactionState": "Expansion"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "exploration",
+                        "missions",
+                        "outfitting",
+                        "crewlounge",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "materialtrader",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Industrial;",
+                            "Proportion": 0.77
+                        },
+                        {
+                            "Name": "$economy_Extraction;",
+                            "Proportion": 0.23
+                        }
+                    ],
+                    "StationAllegiance": "Alliance",
+                    "StationGovernment": "$government_Corporate;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 3928,
+        "fields": {
+            "created_at": "2025-02-11T14:23:46.601Z",
+            "updated_at": "2025-02-11T14:23:46.601Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "7c34872dc5193bbc1731ec110dd2f74962a21786",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-11T16:55:01.800233Z"
+                },
+                "message": {
+                    "Taxi": false,
+                    "event": "Docked",
+                    "StarPos": [
+                        41.9375,
+                        74.65625,
+                        3.4375
+                    ],
+                    "odyssey": true,
+                    "MarketID": 3229370368,
+                    "horizons": true,
+                    "Multicrew": false,
+                    "timestamp": "2025-02-11T18:00:00Z",
+                    "StarSystem": "Ross 129",
+                    "LandingPads": {
+                        "Large": 9,
+                        "Small": 17,
+                        "Medium": 18
+                    },
+                    "StationName": "Yang Hub",
+                    "StationType": "Coriolis",
+                    "SystemAddress": 671491564969,
+                    "DistFromStarLS": 455.668714,
+                    "StationEconomy": "$economy_Industrial;",
+                    "StationFaction": {
+                        "Name": "Wolf 406 Transport & Co",
+                        "FactionState": "Expansion"
+                    },
+                    "StationServices": [
+                        "dock",
+                        "autodock",
+                        "commodities",
+                        "contacts",
+                        "rearm",
+                        "refuel",
+                        "repair",
+                        "shipyard",
+                        "tuning",
+                        "engineer",
+                        "missionsgenerated",
+                        "flightcontroller",
+                        "stationoperations",
+                        "powerplay",
+                        "searchrescue",
+                        "materialtrader",
+                        "stationMenu",
+                        "shop",
+                        "livery",
+                        "socialspace",
+                        "bartender",
+                        "vistagenomics",
+                        "pioneersupplies",
+                        "apexinterstellar",
+                        "frontlinesolutions"
+                    ],
+                    "StationEconomies": [
+                        {
+                            "Name": "$economy_Industrial;",
+                            "Proportion": 0.77
+                        }
+                    ],
+                    "StationAllegiance": "Alliance",
+                    "StationGovernment": "$government_Corporate;"
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]
