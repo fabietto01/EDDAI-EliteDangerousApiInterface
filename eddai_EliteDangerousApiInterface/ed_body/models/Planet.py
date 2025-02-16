@@ -49,8 +49,8 @@ class Planet(BaseBody):
     terraformState = models.CharField(
         max_length=15,
         choices=TerraformingState.choices,
-        verbose_name=_('terraform state'),
-        blank=True, null=True
+        verbose_name=_('terraform state'), 
+        null=True, blank=True
     )
     _compositionIce = models.FloatField(
         verbose_name=_('ice'),

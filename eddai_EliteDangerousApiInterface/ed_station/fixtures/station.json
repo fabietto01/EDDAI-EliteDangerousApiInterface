@@ -430,5 +430,14 @@
             "name": "Mega Ship",
             "description": ""
         }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 11,
+        "fields": {
+            "_eddn": "Bernal",
+            "name": "Bernal",
+            "description": ""
+        }
     }
 ]
