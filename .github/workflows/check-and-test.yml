@@ -33,7 +33,6 @@ jobs:
         run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py migrate
       - name: Run tests
         run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password eddaielitedangerousapiinterface:latest python manage.py test
-        continue-on-error: true
       - name: Set pull request status to failure
         if: failure()
         run: |
