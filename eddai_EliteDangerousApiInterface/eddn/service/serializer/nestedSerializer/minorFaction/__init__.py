@@ -1,2 +1,0 @@
-from eddn.service.serializer.nestedSerializer.minorFaction.BaseMinorFactionSerializer import BaseMinorFactionSerializer
-from eddn.service.serializer.nestedSerializer.minorFaction.MinorFactionInSystemSerializer import MinorFactionInSystemSerializer
