@@ -4,6 +4,7 @@ from eddn.service.worker.serializers import FSDJumpSerializer, DockedSerializer,
 from eddn.service.worker.serializers.journal.baseJournalSerializer import BaseJournalSerializer
 from eddn.service.worker.dataAnalysis.journalAnalysis import JournalAnalysis
 from eddn.service.worker.serializers.journal.carrierJumpSerializer import CarrierJumpSerializer
+from eddn.service.worker.serializers.commodity import CommodityV3Serializer
 
 from users.models import User
 from eddn.models import DataLog
@@ -23,7 +24,7 @@ class BaseJournalSerializerTestCase(TestCase):
         for item in DataLog.objects.all():
             serializer = BaseJournalSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_update(self):
         object = DataLog.objects.get(id=1)
@@ -57,7 +58,7 @@ class BaseJournalSerializerTestCase(TestCase):
         for item in DataLog.objects.all():
             serializer = BaseJournalSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
@@ -77,13 +78,13 @@ class FSDJumpSerializerTestCase(TestCase):
         for item in DataLog.objects.all():
             serializer = FSDJumpSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_save(self):
         for item in DataLog.objects.all():
             serializer = FSDJumpSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
@@ -103,13 +104,13 @@ class DockedSerializerTestCase(TestCase):
         for item in DataLog.objects.all():
             serializer = DockedSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_save(self):
         for item in DataLog.objects.all():
             serializer = DockedSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
@@ -131,7 +132,7 @@ class BaseScanSerializerTestCase(TestCase):
             serializer = analysis.serializer_Scan()
             serializer = serializer(data=analysis.get_message())
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_save(self):
         for item in DataLog.objects.all():
@@ -139,7 +140,7 @@ class BaseScanSerializerTestCase(TestCase):
             serializer = analysis.serializer_Scan()
             serializer = serializer(data=analysis.get_message())
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
@@ -159,13 +160,13 @@ class LocationSerializerTestCase(TestCase):
         for item in DataLog.objects.all():
             serializer = LocationSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_save(self):
         for item in DataLog.objects.all():
             serializer = LocationSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
@@ -187,7 +188,7 @@ class SAASignalsFoundSerializersTestCase(TestCase):
             serializer = analysis.serializer_SAASignalsFound()
             serializer = serializer(data=analysis.get_message())
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_save(self):
         for item in DataLog.objects.all():
@@ -195,7 +196,7 @@ class SAASignalsFoundSerializersTestCase(TestCase):
             serializer = analysis.serializer_SAASignalsFound()
             serializer = serializer(data=analysis.get_message())
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
@@ -215,13 +216,40 @@ class CarrierJumpSerializerTestCase(TestCase):
         for item in DataLog.objects.all():
             serializer = CarrierJumpSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
 
     def test_save(self):
         for item in DataLog.objects.all():
             serializer = CarrierJumpSerializer(data=item.message)
             valid = serializer.is_valid()
-            self.assertTrue(valid, serializer.errors)
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
+            serializer.save(
+                created_by=self.agent,
+                updated_by=self.agent
+            )
+
+class CommodityV3SerializerTestCase(TestCase):
+
+    fixtures = ['user', 'economy', 'system', 'body', 'bgs', 'exploration', 'material', 'mining', 'station','eddn_test_service_event_Commodity']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.agent = User.objects.create_user(
+            username='CommodityV3SerializerTestCase'
+        )
+
+    def test_validate(self):
+        for item in DataLog.objects.all():
+            serializer = CommodityV3Serializer(data=item.message)
+            valid = serializer.is_valid()
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
+
+
+    def test_save(self):
+        for item in DataLog.objects.all():
+            serializer = CommodityV3Serializer(data=item.message)
+            valid = serializer.is_valid()
+            self.assertTrue(valid, f"id: {item.id} - {serializer.errors}")
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
