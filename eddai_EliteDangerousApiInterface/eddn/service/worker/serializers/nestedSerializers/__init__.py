@@ -1,4 +1,5 @@
 from .economySerializer import EconomySerializer
+from .economyLowerSerializer import EconomyLowerSerializer
 from .minorFactionSerializer import MinorFactionSerializer
 from .minorFactionInSystemSerializer import MinorFactionInSystemSerializer
 from .ringSerializer import RingSerializer
@@ -8,4 +9,4 @@ from .atmosphereComponentSerializer import AtmosphereComponentSerializer
 from .hotspotSerializers import HotspotSerializers
 from .signalSerializers import SignalSerializers
 from .sampleSerializers import SampleSerializers
-
+from .commoditySerializer import CommoditySerializer
