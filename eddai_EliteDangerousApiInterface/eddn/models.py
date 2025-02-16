@@ -27,7 +27,6 @@ class DataLog(DateModels):
     def message(self) -> dict:
         return self.data.get("message", None)
     
-    
     def __str__(self) -> str:
         return str(self.schema) or str(self.data)
 
