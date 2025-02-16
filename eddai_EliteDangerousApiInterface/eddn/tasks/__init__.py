@@ -1,1 +1,1 @@
-from .auto_analytic import auto_analytic
+from .auto_analytic import AutoAnalyticTask
