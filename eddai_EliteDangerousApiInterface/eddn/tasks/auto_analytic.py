@@ -14,7 +14,7 @@ class AutoAnalyticTask(Task):
     name = 'auto_analytic'
     ignore_result = True
     _agent = None
-    concurrency_limit = 100
+    concurrency_limit = 10000
 
     @property
     def agent(self) -> User:
@@ -31,7 +31,7 @@ class AutoAnalyticTask(Task):
     def get_queryset(self):
         return DataLog.objects.all().order_by('created_at')
     
-    def get_paginator(self, queryset):
+    def get_paginator(self, queryset) -> Paginator:
         orphans = int(self.concurrency_limit/2)
         return Paginator(queryset, self.concurrency_limit, orphans=orphans)
     
@@ -53,7 +53,7 @@ class AutoAnalyticTask(Task):
         Esegue il task di analisi per tutte le istanze di DataLog
         """
         queryset = self.get_queryset()
-        paginator = Paginator(queryset, 10000)
+        paginator = self.get_paginator(queryset)
         for page in paginator.page_range:
             page_obj  = paginator.get_page(page)
             success_tasks = self.run_tasks(page_obj)

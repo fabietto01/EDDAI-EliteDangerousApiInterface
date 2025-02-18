@@ -1,5 +1,6 @@
 from django.test import TestCase
 from eddn.tasks import AutoAnalyticTask
+from eddn.models import DataLog
 
 class TasckTestCase(TestCase):
 
@@ -16,4 +17,6 @@ class TasckTestCase(TestCase):
             istanca.run()
         except Exception as e:
             self.fail(f"auto_analytic() raised an exception: {e}")
-        
+        else:
+            count = DataLog.objects.count()
+            self.assertEqual(count, 0, f"auto_analytic() failed, {count} DataLog objects found")
