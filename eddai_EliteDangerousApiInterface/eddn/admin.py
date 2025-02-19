@@ -34,9 +34,18 @@ class DataLogModelAdmin(admin.ModelAdmin):
 
     @admin.action(description=_('This action is used to manually re-process the data'))
     def run_re_processing_data(self, request, queryset):
-        try:
-            results = self.sed_re_processing_task(queryset)
-            successful, unsuccessful, pending = self.get_re_processing_results_task(results)
+        try:    
+            job = group(star_analytic.s(istance=istance, agent=request.user) for istance in queryset)
+            result:GroupResult = job.apply_async(
+                queue="admin"
+            )
+
+            result.get()
+
+            successful = [res.result.id for res in result.results if not res.result.error and res.status == 'SUCCESS']
+            unsuccessful = [res.result.id for res in result.results if res.result.error or res.status == 'FAILURE']
+            pending = [res.result.id for res in result.results if res.status == 'PENDING']
+
             if successful:
                 queryset.filter(pk__in=successful).delete()
                 self.message_user(
@@ -63,23 +72,9 @@ class DataLogModelAdmin(admin.ModelAdmin):
                     messages.WARNING
                 )
         except Exception as e:
-            log.error("Error in the run_re_processing_data function", exc_info=e)
+            log.error("Error in the re-processing function", exc_info=e)
             self.message_user(
                 request,
                 _('error in the re-processing of data'),
                 messages.ERROR
             )
-
-    def sed_re_processing_task(self, queryset):
-        job = group(star_analytic.s(instance) for instance in queryset)
-        results:GroupResult = job.apply_async(
-            queue="admin"
-        )
-        return results
-    
-    def get_re_processing_results_task(self, results:GroupResult):
-        results.get()
-        successful = [res.result.id for res in results.results if not res.result.error and res.status == 'SUCCESS']
-        unsuccessful = [res.result.id for res in results.results if res.result.error or res.status == 'FAILURE']
-        pending = [res.result.id for res in results.results if res.status == 'PENDING']
-        return successful, unsuccessful, pending

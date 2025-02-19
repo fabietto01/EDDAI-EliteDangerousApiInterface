@@ -1,7 +1,7 @@
 import logging
-from rest_framework.serializers import Serializer
+from rest_framework.serializers import Serializer, ValidationError
 
-from .errors import NotDataContentError
+from .errors import NotDataContentError, NotSerializerError
 from eddn.models import DataLog
 from users.models import User
 
@@ -33,15 +33,25 @@ class BaseDataAnalysis:
             raise NotDataContentError("data not found")
         return data.get("message")
 
-    def run_analysis(self):
-        serializer = self.get_serializer(data=self.get_message())
-        if serializer.is_valid():
+    def run_analysis(self):    
+        try:
+            serializer = self.get_serializer(data=self.get_message())
+            serializer.is_valid(raise_exception=True)
             serializer.save(
                 created_by=self.agent,
                 updated_by=self.agent
             )
-        else:
-            self.log.error(f"error validating '{self.istance.schema}': {serializer.errors}")
+            self.istance.error = None
+        except ValidationError as e:
+            self.log.error(f"error validating '{self.istance.pk}': {serializer.errors}")
             self.istance.error = serializer.errors
+            self.istance.save()
+        except NotSerializerError as e:
+            self.log.debug(f"error in data analysis '{self.istance.pk}': {e}")
+            self.istance.error = {"error": f"{e}"}
+            self.istance.save()
+        except Exception as e:
+            self.log.exception(f"generic error in data analysis '{self.istance.pk}': {e}")
+            self.istance.error = {"error": f"{e}"}
             self.istance.save()
         return self.istance
