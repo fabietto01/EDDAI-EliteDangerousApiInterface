@@ -262,15 +262,19 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
-        "mail_eddn_admins": {
+        "mail_admins_critical": {
             "level": "CRITICAL",
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
     },
     "loggers": {
+        "task":{
+            "handlers": ["console", "mail_admins"],
+            "level": "INFO",
+        },
         "eddn":{
-            "handlers": ["console", "mail_eddn_admins"],
+            "handlers": ["console", "mail_admins_critical"],
             "level": "INFO",
         },
         "django": {

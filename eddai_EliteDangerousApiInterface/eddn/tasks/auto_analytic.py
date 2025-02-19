@@ -7,6 +7,7 @@ from eddn.service.worker import star_analytic
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.contrib.auth import authenticate
+import logging
 from users.models import User
 
 class AutoAnalyticTask(Task):
@@ -14,7 +15,11 @@ class AutoAnalyticTask(Task):
     name = 'auto_analytic'
     ignore_result = True
     _agent = None
-    concurrency_limit = 10000
+    log = logging.getLogger('task')
+
+    def __init__(self, concurrency_limit:int=5, *args, **kwargs):
+        self.concurrency_limit = concurrency_limit
+        super().__init__(*args, **kwargs)
 
     @property
     def agent(self) -> User:
@@ -52,11 +57,16 @@ class AutoAnalyticTask(Task):
         """
         Esegue il task di analisi per tutte le istanze di DataLog
         """
+        self.log.info(f'AutoAnalyticTask started')
         queryset = self.get_queryset()
         paginator = self.get_paginator(queryset)
+        self.log.info(f'A total of {paginator.num_pages} pages will be processed')
         for page in paginator.page_range:
+            self.log.info(f'Processing page {page}')
             page_obj  = paginator.get_page(page)
             success_tasks = self.run_tasks(page_obj)
             self.delete_success_tast(queryset, success_tasks)
+            self.log.info(f'Page {page} processed')
+        self.log.info(f'AutoAnalyticTask finished')
 
 app.register_task(AutoAnalyticTask())
