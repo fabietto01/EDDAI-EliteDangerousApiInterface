@@ -133,6 +133,9 @@
         "--noinput"
       ],
       "django": true,
+      "env": {
+        "DJANGO_SETTINGS_MODULE": "eddai_EliteDangerousApiInterface.settings.test"
+      },
       "consoleTitle": "Python Debug Django Tests"
     }
   ],
