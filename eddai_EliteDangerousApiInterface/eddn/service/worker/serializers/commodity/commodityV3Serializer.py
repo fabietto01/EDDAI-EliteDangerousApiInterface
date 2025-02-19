@@ -17,7 +17,7 @@ class CommodityV3Serializer(BaseSerializer):
         min_length=1
     )
     economies = EconomyLowerSerializer(
-        many=True
+        many=True, required=False
     )
     commodities = CommoditySerializer(
         many=True
@@ -35,13 +35,17 @@ class CommodityV3Serializer(BaseSerializer):
 
     def _get_primary_economy(self, data) -> Economy:
         """Get the primary economy from the sorted list of station economies."""
-        StationEconomies:list[dict] = data.get('economies')
+        StationEconomies:list[dict] = data.get('economies', [])
+        if not StationEconomies:
+            return None
         self._sort_economies(StationEconomies)
         return StationEconomies[0].get('name')
     
     def _get_secondary_economy(self, data) -> Economy:
         """Get the secondary economy from the sorted list of station economies."""
-        StationEconomies:list[dict] = data.get('economies')
+        StationEconomies:list[dict] = data.get('economies', [])
+        if not StationEconomies:
+            return None
         if len(StationEconomies) == 1:
             return Economy.objects.get(eddn='$economy_None;')
         self._sort_economies(StationEconomies)
