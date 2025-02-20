@@ -19,4 +19,4 @@ class TasckTestCase(TestCase):
             self.fail(f"auto_analytic() raised an exception: {e}")
         else:
             count = DataLog.objects.count()
-            self.assertEqual(count, 0, f"auto_analytic() failed, {count} DataLog objects found")
+            self.assertEqual(count, 0, f"auto_analytic() failed, {count} DataLog instances found")

@@ -28,7 +28,7 @@ class DataLog(DateModels):
         return self.data.get("message", None)
     
     def __str__(self) -> str:
-        return str(self.schema) or str(self.data)
+        return str(self.pk) or str(self.schema)
 
     class Meta:
         verbose_name = _("data log")
