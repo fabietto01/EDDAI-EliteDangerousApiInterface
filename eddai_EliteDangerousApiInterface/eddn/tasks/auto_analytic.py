@@ -7,7 +7,7 @@ from eddn.service.worker import star_analytic
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.contrib.auth import authenticate
-import logging
+from celery.utils.log import get_task_logger
 from users.models import User
 
 class AutoAnalyticTask(Task):
@@ -15,11 +15,8 @@ class AutoAnalyticTask(Task):
     name = 'auto_analytic'
     ignore_result = True
     _agent = None
-    log = logging.getLogger('task')
-
-    def __init__(self, concurrency_limit:int=5, *args, **kwargs):
-        self.concurrency_limit = concurrency_limit
-        super().__init__(*args, **kwargs)
+    log = get_task_logger(__name__)
+    _concurrency_limit = 500
 
     @property
     def agent(self) -> User:
@@ -36,9 +33,10 @@ class AutoAnalyticTask(Task):
     def get_queryset(self):
         return DataLog.objects.all().order_by('created_at')
     
-    def get_paginator(self, queryset) -> Paginator:
-        orphans = int(self.concurrency_limit/2)
-        return Paginator(queryset, self.concurrency_limit, orphans=orphans)
+    def get_paginator(self, queryset, *args, **kwargs) -> Paginator:
+        concurrency_limit = kwargs.get('concurrency_limit', self._concurrency_limit)
+        orphans = int(concurrency_limit/2)
+        return Paginator(queryset, concurrency_limit, orphans=orphans)
     
     def run_tasks(self, page_obj):
         """
@@ -53,13 +51,13 @@ class AutoAnalyticTask(Task):
         if success_tasks:
             queryset.filter(id__in=success_tasks).delete()
 
-    def run(self):
+    def run(self, *args, **kwargs):
         """
         Esegue il task di analisi per tutte le istanze di DataLog
         """
-        self.log.info(f'AutoAnalyticTask started')
+        self.log.info(f'started')
         queryset = self.get_queryset()
-        paginator = self.get_paginator(queryset)
+        paginator = self.get_paginator(queryset, *args, **kwargs)
         self.log.info(f'A total of {paginator.num_pages} pages will be processed')
         for page in paginator.page_range:
             self.log.info(f'Processing page {page}')
@@ -67,6 +65,6 @@ class AutoAnalyticTask(Task):
             success_tasks = self.run_tasks(page_obj)
             self.delete_success_tast(queryset, success_tasks)
             self.log.info(f'Page {page} processed')
-        self.log.info(f'AutoAnalyticTask finished')
+        self.log.info(f'finished')
 
 app.register_task(AutoAnalyticTask())
