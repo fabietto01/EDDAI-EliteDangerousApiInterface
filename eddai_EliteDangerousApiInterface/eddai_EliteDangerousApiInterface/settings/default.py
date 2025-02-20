@@ -256,7 +256,6 @@ LOGGING = {
     "handlers": {
         "celery.task.console": {
             "level": "INFO",
-            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.task.console",
         },
@@ -339,7 +338,7 @@ CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("CELERY_RESULT_BACKEND_HOST")
 
 #impostazioni per la gestione del heartbeat del broker
 #https://docs.celeryq.dev/en/v5.4.0/userguide/configuration.html#broker-heartbeat
-CELERY_BROKER_HEARTBEAT = 120.0
+CELERY_BROKER_HEARTBEAT = 0
 
 #impostazioni per la gestione della serializzazione dei dati
 #https://docs.celeryq.dev/en/stable/userguide/calling.html#serializers
