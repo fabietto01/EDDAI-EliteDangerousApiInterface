@@ -16,7 +16,7 @@ class AutoAnalyticTask(Task):
     ignore_result = True
     _agent = None
     log = get_task_logger(__name__)
-    _concurrency_limit = 500
+    _concurrency_limit = 50
 
     @property
     def agent(self) -> User:
