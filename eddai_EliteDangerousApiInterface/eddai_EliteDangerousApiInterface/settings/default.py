@@ -337,6 +337,10 @@ EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("CELERY_BROKER_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
 CELERY_RESULT_BACKEND =  F'redis://{os.environ.get("CELERY_RESULT_BACKEND_HOST")}:{os.environ.get("CELERY_RESULT_BACKEND_PORT")}'
 
+#impostazioni per la gestione del heartbeat del broker
+#https://docs.celeryq.dev/en/v5.4.0/userguide/configuration.html#broker-heartbeat
+CELERY_BROKER_HEARTBEAT = 0
+
 #impostazioni per la gestione della serializzazione dei dati
 #https://docs.celeryq.dev/en/stable/userguide/calling.html#serializers
 CELERY_TASK_SERIALIZER = 'pickle'
