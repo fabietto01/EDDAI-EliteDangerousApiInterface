@@ -46,12 +46,14 @@ class BaseDataAnalysis:
         except ValidationError as e:
             self.log.info(f"error validating '{self.istance}': {serializer.errors}")
             self.istance.error = serializer.errors
+            self.istance.save()
         except NotSerializerError as e:
             self.log.debug(f"error in data analysis '{self.istance}': {e}")
             self.istance.error = {"error": f"{e}"}
+            self.istance.save()
         except Exception as e:
             self.log.exception(f"generic error in data analysis '{self.istance}': {e}")
             self.istance.error = {"error": f"{e}"}
-        self.istance.save()
+            self.istance.save()
         self.log.info(f"finished analysis for '{self.istance}'")
         return self.istance

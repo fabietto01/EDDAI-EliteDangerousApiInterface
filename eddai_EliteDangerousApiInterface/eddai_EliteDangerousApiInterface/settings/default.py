@@ -256,7 +256,6 @@ LOGGING = {
     "handlers": {
         "celery.task.console": {
             "level": "INFO",
-            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.task.console",
         },
