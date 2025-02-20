@@ -243,9 +243,28 @@ LOGGING = {
             "()": "django.utils.log.ServerFormatter",
             "format": "[{server_time}] {message}",
             "style": "{",
-        }
+        },
+        "celery.task.console": {
+            "()": "celery.app.log.TaskFormatter",
+            "format": "%(asctime)s [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
+        },
+        "celery.worker.console": {
+            "()": "celery.utils.log.ColorFormatter",
+            "format": "%(asctime)s [%(levelname)s] [%(processName)s] %(message)s",
+        },
     },
     "handlers": {
+        "celery.task.console": {
+            "level": "INFO",
+            "filters": ["require_debug_true"],
+            "class": "logging.StreamHandler",
+            "formatter": "celery.task.console",
+        },
+        'celery.worker': {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "celery.worker.console",
+        },
         "console": {
             "level": "INFO",
             "filters": ["require_debug_true"],
@@ -262,19 +281,22 @@ LOGGING = {
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
-        "mail_admins_critical": {
-            "level": "CRITICAL",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
     },
     "loggers": {
-        "task":{
-            "handlers": ["console", "mail_admins"],
+        "celery.task":{
+            "handlers": ["celery.task.console", "mail_admins"],
+            "level": "INFO",
+        },
+        "celery.beat":{
+            "handlers": ["celery.worker", "mail_admins"],
+            "level": "INFO",
+        },
+        "celery.worker":{
+            "handlers": ["celery.worker", "mail_admins"],
             "level": "INFO",
         },
         "eddn":{
-            "handlers": ["console", "mail_admins_critical"],
+            "handlers": ["console", "mail_admins"],
             "level": "INFO",
         },
         "django": {
