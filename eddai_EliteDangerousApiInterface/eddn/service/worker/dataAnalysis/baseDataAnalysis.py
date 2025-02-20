@@ -1,4 +1,4 @@
-import logging
+from celery.utils.log import get_task_logger
 from rest_framework.serializers import Serializer, ValidationError
 
 from .errors import NotDataContentError, NotSerializerError
@@ -7,7 +7,7 @@ from users.models import User
 
 class BaseDataAnalysis:
 
-    log = logging.getLogger("eddn")
+    log = get_task_logger(__name__)
 
     def __init__(self, istance:DataLog, agent:User, *args, **kwargs):
         self.istance = istance
@@ -33,7 +33,8 @@ class BaseDataAnalysis:
             raise NotDataContentError("data not found")
         return data.get("message")
 
-    def run_analysis(self):    
+    def run_analysis(self):
+        self.log.info(f"started analysis for '{self.istance}'")
         try:
             serializer = self.get_serializer(data=self.get_message())
             serializer.is_valid(raise_exception=True)
@@ -43,15 +44,14 @@ class BaseDataAnalysis:
             )
             self.istance.error = None
         except ValidationError as e:
-            self.log.error(f"error validating '{self.istance.pk}': {serializer.errors}")
+            self.log.info(f"error validating '{self.istance}': {serializer.errors}")
             self.istance.error = serializer.errors
-            self.istance.save()
         except NotSerializerError as e:
-            self.log.debug(f"error in data analysis '{self.istance.pk}': {e}")
+            self.log.debug(f"error in data analysis '{self.istance}': {e}")
             self.istance.error = {"error": f"{e}"}
-            self.istance.save()
         except Exception as e:
-            self.log.exception(f"generic error in data analysis '{self.istance.pk}': {e}")
+            self.log.exception(f"generic error in data analysis '{self.istance}': {e}")
             self.istance.error = {"error": f"{e}"}
-            self.istance.save()
+        self.istance.save()
+        self.log.info(f"finished analysis for '{self.istance}'")
         return self.istance
