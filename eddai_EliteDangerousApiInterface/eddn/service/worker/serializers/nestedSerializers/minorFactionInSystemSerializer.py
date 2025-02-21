@@ -129,7 +129,7 @@ class MinorFactionInSystemSerializer(BaseSerializer):
     def update_state(self, instance, validated_data):
         state_add = []
         state_delete = []
-        state_qs_list = list(StateInMinorFaction.objects.filter(minorFactionInSystem=instance))
+        state_qs_list = list(StateInMinorFaction.objects.filter(minorFaction=instance))
         state_list = self.get_list_status_in_validated_data(instance, validated_data)
         for state in state_list:
             if not in_list_models(state, state_qs_list):
