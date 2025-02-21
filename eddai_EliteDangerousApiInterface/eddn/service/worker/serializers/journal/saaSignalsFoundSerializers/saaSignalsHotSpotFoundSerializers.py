@@ -24,7 +24,8 @@ class SAASignalsHotSpotFoundSerializers(SAASignalsBaseFoundSerializers):
 
     def run_update_hotspot(self, instance:Ring, validated_data:dict) -> None:
         serializer = HotspotSerializers(
-            data=self.initial_data.get('Signals', []), many=True
+            data=self.initial_data.get('Signals', []), many=True,
+            context={'ring': instance}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save(

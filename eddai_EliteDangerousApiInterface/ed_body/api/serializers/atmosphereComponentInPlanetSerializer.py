@@ -22,6 +22,7 @@ class ListCompactedAtmosphereComponentInPlanetSerializer(serializers.ListSeriali
             from rest_framework import status
             raise serializers.ValidationError('An internal server error occurred', code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return attrs
+    
     def create(self, validated_data):
         atmosphereComponent = [AtmosphereComponentInPlanet(**item) for item in validated_data]
         return AtmosphereComponentInPlanet.objects.bulk_create(atmosphereComponent)

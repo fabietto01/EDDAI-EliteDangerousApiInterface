@@ -105,7 +105,10 @@ class PlanetScanSerializer(BaseScanSerializer):
     
     def run_update_materials(self, instance, validated_data):
         if validated_data.get('Materials', None):
-            serializer = MaterialsSerializer(data=self.initial_data.get('Materials', []), many=True)
+            serializer = MaterialsSerializer(
+                data=self.initial_data.get('Materials', []), many=True,
+                context={'planet': instance}
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save(
                 created_by=validated_data.get('created_by'),
@@ -116,7 +119,10 @@ class PlanetScanSerializer(BaseScanSerializer):
 
     def run_update_atmosphereComposition(self, instance, validated_data):
         if validated_data.get('AtmosphereComposition', None):
-            serializer = AtmosphereComponentSerializer(data=self.initial_data.get('AtmosphereComposition', []), many=True)
+            serializer = AtmosphereComponentSerializer(
+                data=self.initial_data.get('AtmosphereComposition', []), many=True,
+                context={'planet': instance}
+            )
             serializer.is_valid(raise_exception=True)
             serializer.save(
                 created_by=validated_data.get('created_by'),

@@ -9,8 +9,8 @@ from core.utility import in_list_models
 
 class CommodityListSerializer(serializers.ListSerializer):
 
-    def _get_station(self, validated_data):
-        return validated_data[0].get('station')
+    def _get_station(self):
+        return self.context.get('station')
     
     def get_commodity_mean_prices(self, validated_data):
         commodity_mean_prices = []
@@ -41,7 +41,7 @@ class CommodityListSerializer(serializers.ListSerializer):
         self.update_commodity_mean_prices(commodity_mean_prices)
         commodity_in_station_add = []
         commodity_in_station_delete = []
-        commodity_in_station_qs = list(CommodityInStation.objects.filter(station=self._get_station(validated_data)))
+        commodity_in_station_qs = list(CommodityInStation.objects.filter(station=self._get_station()))
         commodity_in_station_list = [CommodityInStation(**item) for item in validated_data]
         for commodity_in_station in commodity_in_station_list:
             if not in_list_models(commodity_in_station, commodity_in_station_qs):
