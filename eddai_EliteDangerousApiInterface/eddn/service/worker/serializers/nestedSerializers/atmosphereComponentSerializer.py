@@ -9,14 +9,13 @@ from ed_body.models import AtmosphereComponentInPlanet, AtmosphereComponent
 
 class AtmosphereComponentListSerializer(serializers.ListSerializer):
 
-    def _get_plante(self, validated_data):
-        return validated_data[0].get('planet')
+    def _get_plante(self):
+        return self.context.get('planet')
 
     def create(self, validated_data):
-        plante = self._get_plante(validated_data)
         atmosphere_component_in_planet_add = []
         atmosphere_component_in_planet_delete = []
-        atmosphere_component_in_planet__qs_list = list(AtmosphereComponentInPlanet.objects.filter(planet=plante))
+        atmosphere_component_in_planet__qs_list = list(AtmosphereComponentInPlanet.objects.filter(planet=self._get_plante()))
         atmosphere_component_in_planet = [AtmosphereComponentInPlanet(**item) for item in validated_data]
         for atmosphereComponent in atmosphere_component_in_planet:
             if not in_list_models(atmosphereComponent, atmosphere_component_in_planet__qs_list):

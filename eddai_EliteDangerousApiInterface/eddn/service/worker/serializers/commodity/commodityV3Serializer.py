@@ -77,7 +77,10 @@ class CommodityV3Serializer(BaseSerializer):
         }
 
     def run_update_commodities(self, instance, validated_data):
-        serializer = CommoditySerializer(data=self.initial_data.get('commodities', []), many=True)
+        serializer = CommoditySerializer(
+            data=self.initial_data.get('commodities', []), many=True,
+            context={'station': instance}
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save(
             created_by=validated_data.get('created_by'),

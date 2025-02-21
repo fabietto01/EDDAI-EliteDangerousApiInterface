@@ -14,14 +14,13 @@ class HotspotListSerializer(serializers.ListSerializer):
             raise serializers.ValidationError(f"too few hotspots: {count}")
         return super().validate(attrs)
     
-    def _get_ring(self, validated_data):
-        return validated_data[0].get('ring')
+    def _get_ring(self):
+        return self.context.get('ring')
     
     def create(self, validated_data):
-        ring = self._get_ring(validated_data)
         hotspot_add = []
         hotspot_delete = []
-        hotspot_qs = list(HotSpot.objects.filter(ring=ring))
+        hotspot_qs = list(HotSpot.objects.filter(ring=self._get_ring()))
         hotspot_list = [HotSpot(**item) for item in validated_data]
         for hotspot in hotspot_list:
             if not in_list_models(hotspot, hotspot_qs):

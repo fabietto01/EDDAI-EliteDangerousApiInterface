@@ -76,7 +76,7 @@ class BaseSerializer(serializers.Serializer):
                 del default_data[key]
         return default_data
 
-    def _get_data_defaults(self, validated_data:dict, function:Callable[[dict], dict]) -> dict:
+    def _get_data_defaults(self, validated_data:dict, function:Callable[[dict], dict], *args, **kwargs) -> dict:
         """
         Processes the validated data through a given function and cleans the resulting default data.
         Args:
@@ -86,10 +86,11 @@ class BaseSerializer(serializers.Serializer):
             dict: The cleaned default data.
         """
         default_data = function(validated_data)
+        default_data = {**default_data, **kwargs}
         default_data = self._clean_data_defaults(default_data)
         return default_data
     
-    def get_data_defaults(self, validated_data:dict, function:Callable[[dict], dict]=None) -> dict:
+    def get_data_defaults(self, validated_data:dict, function:Callable[[dict], dict]=None, *args, **kwargs) -> dict:
             """
             Returns the data with default values applied.
 
@@ -102,9 +103,9 @@ class BaseSerializer(serializers.Serializer):
             """
             if not function:
                 function = self.set_data_defaults
-            return self._get_data_defaults(validated_data, function)
+            return self._get_data_defaults(validated_data, function, *args, **kwargs)
 
-    def get_data_defaults_create(self, validated_data, function:Callable[[dict], dict]=None) -> dict:
+    def get_data_defaults_create(self, validated_data, function:Callable[[dict], dict]=None, *args, **kwargs) -> dict:
         """
         Returns a dictionary containing default data for creating a new object.
 
@@ -117,9 +118,9 @@ class BaseSerializer(serializers.Serializer):
         """
         if not function:
             function = self.set_data_defaults_create
-        return self._get_data_defaults(validated_data, function)
+        return self._get_data_defaults(validated_data, function, *args, **kwargs)
 
-    def get_data_defaults_update(self, validated_data, function:Callable[[dict], dict]=None) -> dict:
+    def get_data_defaults_update(self, validated_data, function:Callable[[dict], dict]=None, *args, **kwargs) -> dict:
         """
         Returns a dictionary containing default data for updating records.
 
@@ -133,7 +134,7 @@ class BaseSerializer(serializers.Serializer):
         """
         if not function:
             function = self.set_data_defaults_update
-        return self._get_data_defaults(validated_data, function)
+        return self._get_data_defaults(validated_data, function, *args, **kwargs)
 
     def get_time(self, validated_data:dict = None) -> datetime:
         """

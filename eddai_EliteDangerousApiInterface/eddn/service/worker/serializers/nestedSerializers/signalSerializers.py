@@ -13,11 +13,11 @@ class SignalListSerializer(serializers.ListSerializer):
             raise serializers.ValidationError(f"too few hotspots: {count}")
         return super().validate(attrs)
     
-    def _get_planet(self, validated_data):
-        return validated_data[0].get('planet')
+    def _get_planet(self):
+        return self.context.get('planet')
     
     def create(self, validated_data):
-        planet = self._get_planet(validated_data)
+        planet = self._get_planet()
         signal_add = []
         signal_delete = []
         signal_qs = list(Signal.objects.filter(planet=planet))
