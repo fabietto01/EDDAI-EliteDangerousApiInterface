@@ -22,7 +22,8 @@ class SAASignalsFoundSerializers(SAASignalsBaseFoundSerializers):
     
     def run_update_signals(self, instance:Planet, validated_data:dict) -> None:
         serializer = SignalSerializers(
-            data=self.initial_data.get('Signals', []), many=True
+            data=self.initial_data.get('Signals', []), many=True,
+            context={'planet': instance}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save(

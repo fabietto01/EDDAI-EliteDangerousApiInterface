@@ -9,14 +9,13 @@ from ed_material.models import Material, MaterialInPlanet
 
 class MaterialsSerializerListSerializer(serializers.ListSerializer):
 
-    def _get_plante(self, validated_data):
-        return validated_data[0].get('planet')
+    def _get_plante(self):
+        return self.context.get('planet')
 
     def create(self, validated_data):
-        plante = self._get_plante(validated_data)
         materials_in_planet_add = []
         materials_in_planet_delete = []
-        materials_in_planet_qs_list = list(MaterialInPlanet.objects.filter(planet=plante))
+        materials_in_planet_qs_list = list(MaterialInPlanet.objects.filter(planet=self._get_plante()))
         materials = [MaterialInPlanet(**item) for item in validated_data]
         for material in materials:
             if not in_list_models(material, materials_in_planet_qs_list):
