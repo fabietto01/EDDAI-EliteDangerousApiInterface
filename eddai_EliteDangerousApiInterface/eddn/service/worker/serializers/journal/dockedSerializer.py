@@ -79,7 +79,6 @@ class DockedSerializer(BaseJournalSerializer):
         """Set default values for the station data."""
         return {
             "landingPad": validated_data.get('LandingPads'),
-            "system": validated_data.get('system'),
             "type": validated_data.get('StationType'),
             "distance": validated_data.get('DistFromStarLS'),
             'minorFaction': MinorFaction.objects.get(name=self._get_station_minor_faction_name(validated_data)),
@@ -143,17 +142,16 @@ class DockedSerializer(BaseJournalSerializer):
         system = super().update_or_create(validated_data, update_function, create_function)
         def_create_dipendent = lambda instance: self.create_dipendent(instance, validated_data)
         def_update_dipendent = lambda instance: self.update_dipendent(instance, validated_data)
-        kwargs = {}
+        kwargs = {'name':validated_data.get('StationName')}
         if validated_data.get('StationType').eddn != 'FleetCarrier':
-            kwargs = {'system':system}
+            kwargs.update({'system':system})
         station, create = create_or_update_if_time(
             Station, time=self.get_time(),
-            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_station),
+            defaults=self.get_data_defaults(validated_data, self.set_data_defaults_station, system=system),
             defaults_create=self.get_data_defaults_create(validated_data),
             defaults_update=self.get_data_defaults_update(validated_data),
             update_function=def_update_dipendent,
             create_function=def_create_dipendent,
-            name=validated_data.get('StationName'),
             **kwargs
         )
         return station
