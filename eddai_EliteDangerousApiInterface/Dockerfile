@@ -20,5 +20,11 @@ COPY . $APP_HOME
 RUN addgroup --system app && adduser --system --group app
 # Change the ownership of the /app directory to the 'app' user and group
 RUN chown -R app:app $APP_HOME
+
+# Ensure the entrypoint script is executable
+RUN chmod +x ./entrypoint
+
 # Switch to the 'app' user for running subsequent commands
 USER app
+
+ENTRYPOINT [ "./entrypoint" ]
