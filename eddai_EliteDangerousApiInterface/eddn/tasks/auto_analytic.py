@@ -45,7 +45,7 @@ class AutoAnalyticTask(Task):
         job = group(star_analytic.s(instance, self.agent) for instance in page_obj)
         result:GroupResult = job.apply_async()
         result.get(propagate=False)
-        return [res.result.id for res in result.results if not res.result.error and res.status == 'SUCCESS']
+        return [res.result.id for res in result.results if res.status == 'SUCCESS' and not getattr(res.result, 'error', "is_error")]
     
     def delete_success_tast(self, queryset, success_tasks:list=None):
         if success_tasks:
