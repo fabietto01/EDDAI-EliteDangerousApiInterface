@@ -4,7 +4,7 @@ from celery.result import GroupResult
 from eddn.models import DataLog
 
 from eddn.service.worker import star_analytic
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.conf import settings
 from django.contrib.auth import authenticate
 from celery.utils.log import get_task_logger
@@ -67,6 +67,9 @@ class AutoAnalyticTask(Task):
                 self.delete_success_tast(queryset, success_tasks)
             except Exception as e:
                 self.log.error(f'Error processing page {page}', exc_info=e)
+            except EmptyPage:
+                self.log.info(f'Page {page} is empty, no more data to process, exiting')
+                break
             else:
                 self.log.info(f'Page {page} processed')
         self.log.info(f'finished')
