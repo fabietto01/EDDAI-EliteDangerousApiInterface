@@ -111,10 +111,7 @@ DATABASES = {
             "DEPENDENCIES": [],
         },
         'OPTIONS':{
-            "pool":{
-                'min_size': 4,  
-                'timeout': 10,  
-            }
+            "pool":True,
         }
     }
 }
