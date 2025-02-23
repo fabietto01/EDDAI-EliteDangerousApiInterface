@@ -111,10 +111,7 @@ DATABASES = {
             "DEPENDENCIES": [],
         },
         'OPTIONS':{
-            "pool":{
-                'min_size': 4,  
-                'timeout': 10,  
-            }
+            "pool":True,
         }
     }
 }
@@ -246,7 +243,7 @@ LOGGING = {
         },
         "celery.task.console": {
             "()": "celery.app.log.TaskFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
+            "format": "%(asctime)s [%(levelname)s] [%(processName)s] [%(task_name)s(%(task_id)s)] %(message)s",
         },
         "celery.worker.console": {
             "()": "celery.utils.log.ColorFormatter",

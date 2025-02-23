@@ -16,6 +16,9 @@ class DataLog(DateModels):
     error = models.JSONField(
         verbose_name=_('error'), null=True, blank=True
     )
+    _count = models.PositiveSmallIntegerField(
+        verbose_name=_('count'), default=0
+    )
     
     @property
     @admin.display(description=_('schema'))
@@ -29,6 +32,11 @@ class DataLog(DateModels):
     
     def __str__(self) -> str:
         return str(self.pk) or str(self.schema)
+    
+    def save(self, *args, **kwargs):
+        if self.pk:
+            self._count = self._count + 1
+        return super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("data log")
