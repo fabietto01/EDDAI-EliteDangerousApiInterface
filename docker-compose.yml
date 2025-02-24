@@ -84,8 +84,6 @@ services:
     <<: *default-config
     container_name: eddn
     command: python eddn.py
-    depends_on:
-      - celery_worker_eddn
   nginx:
     build: ./nginx
     container_name: nginx
