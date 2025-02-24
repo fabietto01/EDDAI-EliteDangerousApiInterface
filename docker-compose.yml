@@ -36,18 +36,46 @@ services:
       - media_volume:/app/media-server
     ports:
       - "8080:8080"
-  celery_worker_task:
+  celery_worker_task_replica_1:
     <<: *default-config
-    container_name: celery_worker_task
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 200,5 -Q default -n WorkerTasck@%h 
-  celery_worker_admin:
+    container_name: celery_worker_task_replica_1
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h 
+  celery_worker_task_replica_2:
     <<: *default-config
-    container_name: celery_worker_admin
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 200,5 -Q admin -n WorkerAdmin@%h
-  celery_worker_eddn:
+    container_name: celery_worker_task_replica_2
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h 
+  celery_worker_task_replica_3:
     <<: *default-config
-    container_name: celery_worker_eddn
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 200,5 -Q eddn -n WorkerEddn@%h
+    container_name: celery_worker_task_replica_3
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h 
+  celery_worker_admin_replica_1:
+    <<: *default-config
+    container_name: celery_worker_admin_replica_1
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
+  celery_worker_admin_replica_2:
+    <<: *default-config
+    container_name: celery_worker_admin_replica_2
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
+  celery_worker_admin_replica_3:
+    <<: *default-config
+    container_name: celery_worker_admin_replica_3
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
+  celery_worker_eddn_replica_1:
+    <<: *default-config
+    container_name: celery_worker_eddn_replica_1
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+  celery_worker_eddn_replica_2:
+    <<: *default-config
+    container_name: celery_worker_eddn_replica_2
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+  celery_worker_eddn_replica_3:
+    <<: *default-config
+    container_name: celery_worker_eddn_replica_3
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+  celery_worker_all_replica_1:
+    <<: *default-config
+    container_name: celery_worker_all_replica_1
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,eddn,default -n WorkerAdmin@%h
   celery_beat:
     <<: *default-config
     container_name: celery_beat
