@@ -4224,6 +4224,26 @@
         }
     },
     {
+        "model": "ed_economy.commodity",
+        "pk": 385,
+        "fields": {
+            "_eddn": null,
+            "name": "Steel",
+            "description": "",
+            "meanPrice": 0
+        }
+    },
+    {
+        "model": "ed_economy.commodity",
+        "pk": 386,
+        "fields": {
+            "_eddn": null,
+            "name": "Haematite",
+            "description": "",
+            "meanPrice": 0
+        }
+    },
+    {
         "model": "ed_economy.economy",
         "pk": 1,
         "fields": {
