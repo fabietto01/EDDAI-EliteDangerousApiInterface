@@ -10,8 +10,8 @@ from ed_station.models import Station
 from core.utility import create_or_update_if_time, in_list_models
 
 class CommodityV3Serializer(BaseSerializer):
-    systemName = serializers.CharField(
-        min_length=1
+    SystemAddress = serializers.IntegerField(
+        min_value=0
     )
     marketId = serializers.IntegerField(
         min_value=0,
@@ -55,7 +55,7 @@ class CommodityV3Serializer(BaseSerializer):
         return StationEconomies[1].get('name')
 
     def validate(self, attrs):
-        if not System.objects.filter(name=attrs.get('systemName')).exists():
+        if not System.objects.filter(address=attrs.get('SystemAddress')).exists():
             raise serializers.ValidationError('System not found')
         return super().validate(attrs)
     
@@ -103,7 +103,7 @@ class CommodityV3Serializer(BaseSerializer):
     def update_or_create(self, validated_data):
         def_create_dipendent = lambda instance: self.create_dipendent(instance, validated_data)
         def_update_dipendent = lambda instance: self.update_dipendent(instance, validated_data)
-        system = System.objects.get(name=validated_data.get('systemName'))
+        system = System.objects.get(address=validated_data.get('SystemAddress'))
         station, create = create_or_update_if_time(
             Station, time=self.get_time(),
             defaults=self.get_data_defaults(validated_data, system=system),

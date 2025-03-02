@@ -360,6 +360,15 @@
         }
     },
     {
+        "model": "ed_station.service",
+        "pk": 40,
+        "fields": {
+            "_eddn": "refinery",
+            "name": "Refinery",
+            "description": null
+        }
+    },
+    {
         "model": "ed_station.stationtype",
         "pk": 1,
         "fields": {

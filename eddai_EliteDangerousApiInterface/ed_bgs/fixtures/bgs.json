@@ -674,5 +674,14 @@
       "name": "Fortified",
       "description": ""
     }
+  },
+  {
+    "model": "ed_bgs.powerstate",
+    "pk": 9,
+    "fields": {
+      "_eddn": null,
+      "name": "Stronghold",
+      "description": ""
+    }
   }
 ]
