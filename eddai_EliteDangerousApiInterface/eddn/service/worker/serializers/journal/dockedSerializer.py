@@ -20,6 +20,9 @@ class DockedSerializer(BaseJournalSerializer):
     StationName = serializers.CharField(
         min_length=1,
     )
+    MarketID = serializers.IntegerField(
+        min_value=0,
+    )
     StationType = serializers.SlugRelatedField(
         queryset=StationType.objects.all(),
         slug_field='eddn',
@@ -78,6 +81,8 @@ class DockedSerializer(BaseJournalSerializer):
     def set_data_defaults_station(self, validated_data:dict) -> dict:
         """Set default values for the station data."""
         return {
+            "name": validated_data.get('StationName'),
+            "system":validated_data.get('system'),
             "landingPad": validated_data.get('LandingPads'),
             "type": validated_data.get('StationType'),
             "distance": validated_data.get('DistFromStarLS'),
@@ -85,7 +90,7 @@ class DockedSerializer(BaseJournalSerializer):
             'primaryEconomy': self._get_primary_economy(validated_data),
             'secondaryEconomy': self._get_secondary_economy(validated_data),
         }
-        
+
     def get_service_in_station_instace(self, station, service, validated_data):
         """Create a ServiceInStation instance with the provided data."""
         return ServiceInStation(
@@ -142,9 +147,6 @@ class DockedSerializer(BaseJournalSerializer):
         system = super().update_or_create(validated_data, update_function, create_function)
         def_create_dipendent = lambda instance: self.create_dipendent(instance, validated_data)
         def_update_dipendent = lambda instance: self.update_dipendent(instance, validated_data)
-        kwargs = {'name':validated_data.get('StationName')}
-        if validated_data.get('StationType').eddn != 'FleetCarrier':
-            kwargs.update({'system':system})
         station, create = create_or_update_if_time(
             Station, time=self.get_time(),
             defaults=self.get_data_defaults(validated_data, self.set_data_defaults_station, system=system),
@@ -152,6 +154,6 @@ class DockedSerializer(BaseJournalSerializer):
             defaults_update=self.get_data_defaults_update(validated_data),
             update_function=def_update_dipendent,
             create_function=def_create_dipendent,
-            **kwargs
+            markerid=validated_data.get('MarketID'),
         )
         return station

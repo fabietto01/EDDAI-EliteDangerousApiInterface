@@ -342,6 +342,15 @@
         }
     },
     {
+        "model": "ed_station.service",
+        "pk": 35,
+        "fields": {
+            "_eddn": "registeringcolonisation",
+            "name": "System colonisation",
+            "description": null
+        }
+    },
+    {
         "model": "ed_station.stationtype",
         "pk": 1,
         "fields": {

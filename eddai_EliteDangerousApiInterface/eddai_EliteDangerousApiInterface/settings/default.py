@@ -273,7 +273,7 @@ LOGGING = {
             "formatter": "django.server",
         },
         "mail_admins": {
-            "level": "ERROR",
+            "level": "CRITICAL",
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },

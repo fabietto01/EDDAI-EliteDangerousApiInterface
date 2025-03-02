@@ -10,6 +10,9 @@ class BaseJournalSerializer(BaseSerializer):
     StarSystem = serializers.CharField(
         min_length=1,
     )
+    SystemAddress = serializers.IntegerField(
+        min_value=0,
+    )
     StarPos = CoordinateListField(
         source='coordinate',
     )
@@ -23,6 +26,7 @@ class BaseJournalSerializer(BaseSerializer):
     def set_data_defaults(self, validated_data:dict) -> dict:
         return {
             "coordinate": validated_data.get('coordinate'),
+            "address": validated_data.get('SystemAddress'),
         }
     
     def set_data_defaults_create(self, validated_data):

@@ -8,6 +8,7 @@
             "created_by": 1,
             "updated_by": 1,
             "name": "Ross 129",
+            "address": 671491564969,
             "coordinate": "SRID=4979;POINT Z (41.9375 74.65625 3.4375)",
             "security": "M",
             "population": 10218308
