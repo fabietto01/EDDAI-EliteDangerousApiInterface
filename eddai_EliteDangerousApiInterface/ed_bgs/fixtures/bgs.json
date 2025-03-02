@@ -668,7 +668,7 @@
   },
   {
     "model": "ed_bgs.powerstate",
-    "pk": 2,
+    "pk": 8,
     "fields": {
       "_eddn": null,
       "name": "Fortified",
