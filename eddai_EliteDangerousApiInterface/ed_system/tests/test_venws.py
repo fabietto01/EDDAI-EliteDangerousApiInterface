@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from django.contrib.gis.geos import Point
 from rest_framework import status
+import random
 
 from ed_system.api.venws import System
 from users.models import User
@@ -20,12 +21,14 @@ class SystemViewSetTestCase(APITestCase):
         cls.user = User.objects.create_user(username="testuser")
         cls.system1 = System.objects.create(
             name="Sol",
+            address=random.getrandbits(16),
             coordinate = Point(0, 0, 0),
             created_by=cls.user,
             updated_by=cls.user
         )
         cls.system2 = System.objects.create(
             name="Alpha Centauri",
+            address=random.getrandbits(16),
             coordinate = Point(3.03, -0.09, 3.16),
             created_by=cls.user,
             updated_by=cls.user

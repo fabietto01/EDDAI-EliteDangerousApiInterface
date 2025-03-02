@@ -244,6 +244,7 @@ class AtmosphereComponentInPlanetViewSetAPITestCase(APITestCase):
         )
         cls.system = System.objects.create(
             name='AtmosphereComponentInPlanetViewSetAPITestCase_System',
+            address=random.getrandbits(16),
             coordinate=Point(50, 95483, 50),
             created_by=cls.user,
             updated_by=cls.user

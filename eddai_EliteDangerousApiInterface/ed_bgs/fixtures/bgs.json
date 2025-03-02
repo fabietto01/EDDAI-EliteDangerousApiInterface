@@ -665,5 +665,14 @@
       "name": "Turmoil",
       "description": ""
     }
+  },
+  {
+    "model": "ed_bgs.powerstate",
+    "pk": 8,
+    "fields": {
+      "_eddn": null,
+      "name": "Fortified",
+      "description": ""
+    }
   }
 ]

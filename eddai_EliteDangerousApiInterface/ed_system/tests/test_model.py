@@ -3,8 +3,7 @@ from django.contrib.gis.geos import Point
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
-from ed_core.functions import Distanza3D
-from django.db.models import F
+import random
 
 from ed_system.models import System
 from users.models import User
@@ -33,6 +32,7 @@ class SystemTestCase(TestCase):
     def test_create_system(self):
         system = System.objects.create(
             name="test_create_system",
+            address=random.getrandbits(16),
             coordinate=Point(0, 0, 0, srid=4979),
             created_by=self.istance_user,
             updated_by=self.istance_user,
@@ -46,6 +46,7 @@ class SystemTestCase(TestCase):
     def test_unique_name_constraint(self):
         System.objects.create(
             name="Unique Name Test System",
+            address=random.getrandbits(16),
             coordinate=Point(0, 0, 0),
             created_by=self.istance_user,
             updated_by=self.istance_user,
@@ -53,6 +54,7 @@ class SystemTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             System.objects.create(
                 name="Unique Name Test System",
+                address=random.getrandbits(16),
                 coordinate=Point(1, 1, 1),
                 created_by=self.istance_user,
                 updated_by=self.istance_user,
@@ -61,6 +63,7 @@ class SystemTestCase(TestCase):
     def test_unique_coordinate_constraint(self):
         System.objects.create(
             name="Unique Coordinate Test System",
+            address=random.getrandbits(16),
             coordinate=Point(2, 2, 2),
             created_by=self.istance_user,
             updated_by=self.istance_user,
@@ -68,6 +71,7 @@ class SystemTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             System.objects.create(
                 name="Unique Coordinate Test System 2",
+                address=random.getrandbits(16),
                 coordinate=Point(2, 2, 2),
                 created_by=self.istance_user,
                 updated_by=self.istance_user,
@@ -78,6 +82,7 @@ class SystemTestCase(TestCase):
         secondary_economy = Economy.objects.create(name="Secondary Economy")
         system = System.objects.create(
             name="Economy Test System",
+            address=random.getrandbits(16),
             coordinate=Point(3, 3, 3),
             primaryEconomy=primary_economy,
             secondaryEconomy=secondary_economy,
@@ -98,6 +103,7 @@ class SystemTestCase(TestCase):
         )
         system = System.objects.create(
             name="Clean Method Test System",
+            address=random.getrandbits(16),
             coordinate=Point(4, 4, 4),
             conrollingFaction=minor_faction,
             created_by=self.istance_user,
@@ -120,6 +126,7 @@ class SystemTestCase(TestCase):
     def test_system_str_method(self):
         system = System.objects.create(
             name="Test System",
+            address=random.getrandbits(16),
             coordinate=Point(5, 5, 5),
             created_by=self.istance_user,
             updated_by=self.istance_user,
@@ -129,12 +136,14 @@ class SystemTestCase(TestCase):
     def test_system_distance(self):
         system1 = System.objects.create(
             name="Distance Test System 1",
+            address=random.getrandbits(16),
             coordinate=Point(0, 0, 0, srid=4979),
             created_by=self.istance_user,
             updated_by=self.istance_user,
         )
         system2 = System.objects.create(
             name="Distance Test System 2",
+            address=random.getrandbits(16),
             coordinate=Point(3, 4, 0, srid=4979),
             created_by=self.istance_user,
             updated_by=self.istance_user,

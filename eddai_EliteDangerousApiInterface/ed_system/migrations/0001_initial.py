@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated')),
                 ('name', models.CharField(max_length=100, unique=True, verbose_name='name')),
+                ('address', models.BigIntegerField(unique=True, verbose_name='address')),
                 ('coordinate', django.contrib.gis.db.models.fields.PointField(dim=3, srid=4979, unique=True, verbose_name='coordinate')),
                 ('security', models.CharField(blank=True, choices=[('L', 'Low'), ('M', 'Medium'), ('H', 'High'), ('A', 'Anarchy')], max_length=1, null=True, verbose_name='security')),
                 ('population', models.PositiveBigIntegerField(default=0, verbose_name='population')),

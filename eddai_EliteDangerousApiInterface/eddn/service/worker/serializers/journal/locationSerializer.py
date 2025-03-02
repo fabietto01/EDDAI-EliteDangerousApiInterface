@@ -70,6 +70,10 @@ class LocationSerializer(BaseJournalSerializer):
         min_length=1,
         required=False,
     )
+    MarketID = serializers.IntegerField(
+        min_value=0,
+        required=False,
+    )
     StationType = serializers.SlugRelatedField(
         queryset=StationType.objects.all(),
         slug_field='eddn',
@@ -144,6 +148,8 @@ class LocationSerializer(BaseJournalSerializer):
         if self._get_is_doced(attrs) or self._get_class_body_type(attrs) == Station:
             if not attrs.get('StationName', None):
                 raise serializers.ValidationError({'StationName': 'This field is required when Docked is True'})
+            if not attrs.get('MarketID', None):
+                raise serializers.ValidationError({'MarketID': 'This field is required when Docked is True'})
             if not attrs.get('StationType', None):
                 raise serializers.ValidationError({'StationType': 'This field is required when Docked is True'})
             if not attrs.get('StationServices', None):
@@ -190,6 +196,8 @@ class LocationSerializer(BaseJournalSerializer):
     
     def set_data_defaults_stastion(self, validated_data: dict) -> dict:
         return {
+            "name": validated_data.get('StationName'),
+            "system":validated_data.get('system'),
             'type': validated_data.get('StationType', None),
             "distance": validated_data.get('DistFromStarLS'),
             'minorFaction': MinorFaction.objects.get(name=self._get_station_minor_faction_name(validated_data)),
@@ -394,11 +402,11 @@ class LocationSerializer(BaseJournalSerializer):
             def_update_station_dipendent = lambda instance: self.update_station_dipendent(instance, validated_data)
             create_or_update_if_time(
                 Station, self.get_time(),
-                defaults=self.get_data_defaults(validated_data, self.set_data_defaults_stastion),
+                defaults=self.get_data_defaults(validated_data, self.set_data_defaults_stastion, system=system),
                 defaults_update=self.get_data_defaults_update(validated_data),
                 defaults_create=self.get_data_defaults_create(validated_data),
                 update_function=def_update_station_dipendent,
                 create_function=def_create_station_dipendent,
-                system=system, name=validated_data.get('StationName')
+                markerid=validated_data.get('MarketID'),
             )
         return system
