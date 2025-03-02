@@ -46,6 +46,9 @@ class System(OwnerAndDateModels, models.Model):
     name = models.CharField(
         max_length=100, unique=True, verbose_name=_('name')
     )
+    address = models.BigIntegerField(
+        verbose_name=_('address'), unique=True, 
+    )
     coordinate = models.PointField(
         dim=3, srid=4979,
         verbose_name=_('coordinate'),
