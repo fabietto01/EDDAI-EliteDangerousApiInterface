@@ -56,6 +56,10 @@ class CarrierJumpSerializer(BaseJournalSerializer):
         min_length=1,
         required=False,
     )
+    MarketID = serializers.FloatField(
+        min_value=0,
+        required=False,
+    )
     StationType = serializers.SlugRelatedField(
         queryset=StationType.objects.all(),
         slug_field='eddn',
@@ -77,10 +81,15 @@ class CarrierJumpSerializer(BaseJournalSerializer):
         required=False,
     )
     Docked = serializers.BooleanField()
+    OnFoot = serializers.BooleanField(required=False)
 
     def _get_is_docked(self, data:dict) -> bool:
         """Return whether the carrier is docked."""
-        return data.get('Docked', False)
+        return data.get('Docked')
+    
+    def _get_is_on_foot(self, data:dict) -> bool:
+        """Return whether the carrier is on foot."""
+        return data.get('OnFoot', False)
 
     def _get_body_class(self, data:dict):
         """Return the class of the body"""
@@ -114,6 +123,10 @@ class CarrierJumpSerializer(BaseJournalSerializer):
             if not attrs.get('StationName', None):
                 raise serializers.ValidationError(
                     'StationName must be provided if Docked is True'
+                )
+            if not attrs.get('MarketID', None):
+                raise serializers.ValidationError(
+                    'MarketID must be provided if Docked is True'
                 )
             if not attrs.get('StationType', None):
                 raise serializers.ValidationError(
@@ -157,6 +170,8 @@ class CarrierJumpSerializer(BaseJournalSerializer):
     
     def set_data_defaults_station(self, validated_data:dict) -> dict:
         return {
+            "name": validated_data.get('StationName'),
+            "system":validated_data.get('system'),
             "type":validated_data.get('StationType'),
             "primaryEconomy": self._get_primary_economy(validated_data),
             "secondaryEconomy": self._get_secondary_economy(validated_data),
@@ -278,14 +293,14 @@ class CarrierJumpSerializer(BaseJournalSerializer):
             defaults_update=self.get_data_defaults_update(validated_data),
             system=system, name=validated_data.get('Body'), bodyID=validated_data.get('BodyID')
         )
-        if self._get_is_docked(validated_data):
+        if self._get_is_docked(validated_data) and not self._get_is_on_foot(validated_data):
             def_create_dipendent_station = lambda instance: self.create_dipendent_station(instance, validated_data)
             def_update_dipendent_station = lambda instance: self.update_dipendent_station(instance, validated_data)
             station, create = create_or_update_if_time(
                 Station, time=self.get_time(), 
-                defaults=self.get_data_defaults(validated_data, self.set_data_defaults_station),
+                defaults=self.get_data_defaults(validated_data, self.set_data_defaults_station, system=system,),
                 defaults_create=self.get_data_defaults_create(validated_data), defaults_update=self.get_data_defaults_update(validated_data),
                 update_function=def_update_dipendent_station, create_function=def_create_dipendent_station,
-                system=system, name=validated_data.get('StationName'),
+                markerid=validated_data.get('MarketID'),
             )
         return system

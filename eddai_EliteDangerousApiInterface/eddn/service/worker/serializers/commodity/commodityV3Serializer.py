@@ -13,6 +13,9 @@ class CommodityV3Serializer(BaseSerializer):
     systemName = serializers.CharField(
         min_length=1
     )
+    marketId = serializers.IntegerField(
+        min_value=0,
+    )
     stationName = serializers.CharField(
         min_length=1
     )
@@ -58,6 +61,8 @@ class CommodityV3Serializer(BaseSerializer):
     
     def set_data_defaults(self, validated_data):
         return {
+            "name": validated_data.get('StationName'),
+            "system":validated_data.get('system'),
             "primaryEconomy": self._get_primary_economy(validated_data),
             "secondaryEconomy": self._get_secondary_economy(validated_data),
         }
@@ -101,12 +106,11 @@ class CommodityV3Serializer(BaseSerializer):
         system = System.objects.get(name=validated_data.get('systemName'))
         station, create = create_or_update_if_time(
             Station, time=self.get_time(),
-            defaults=self.get_data_defaults(validated_data),
+            defaults=self.get_data_defaults(validated_data, system=system),
             defaults_update=self.get_data_defaults_update(validated_data),
             defaults_create=self.get_data_defaults_create(validated_data),
             update_function=def_update_dipendent,
             create_function=def_create_dipendent,
-            name=validated_data.get('stationName'),
-            system=system,
+            markerid=validated_data.get('marketId'),
         )
         return station
