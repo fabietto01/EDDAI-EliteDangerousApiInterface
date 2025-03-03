@@ -226,6 +226,25 @@
         "conrollingFaction": null,
         "description": ""
       }
+    },
+    {
+      "model": "ed_system.system",
+      "pk": 9,
+      "fields": {
+        "created_at": "2024-12-24T23:32:34.701Z",
+        "updated_at": "2024-12-24T23:32:34.702Z",
+        "created_by": 1,
+        "updated_by": 1,
+        "name": "Nanomam",
+        "address": 4752121268587,
+        "coordinate": "SRID=4979;POINT Z (-14.78 19.66 -15.25)",
+        "security": "H",
+        "population": 2120000000,
+        "primaryEconomy": 5,
+        "secondaryEconomy": 4,
+        "conrollingFaction": null,
+        "description": ""
+      }
     }
   ]
   

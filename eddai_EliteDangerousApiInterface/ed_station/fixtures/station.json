@@ -369,6 +369,15 @@
         }
     },
     {
+        "model": "ed_station.service",
+        "pk": 41,
+        "fields": {
+            "_eddn": "techBroker",
+            "name": "Tech Broker",
+            "description": null
+        }
+    },
+    {
         "model": "ed_station.stationtype",
         "pk": 1,
         "fields": {
@@ -473,6 +482,24 @@
         "fields": {
             "_eddn": null,
             "name": "SurfaceStation",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 13,
+        "fields": {
+            "_eddn": "SpaceConstructionDepot",
+            "name": "Space Construction Depot",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 14,
+        "fields": {
+            "_eddn": "PlanetaryConstructionDepot",
+            "name": "Planetary Construction Depot",
             "description": ""
         }
     }
