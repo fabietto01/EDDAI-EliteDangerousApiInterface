@@ -19,7 +19,7 @@ class SystemAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {
             "fields": (
-                ("name", "address"),
+                "name",
                 ("coordinate"),
                 "population",
                 "security",
@@ -27,6 +27,12 @@ class SystemAdmin(admin.ModelAdmin):
                 "conrollingFaction",
             )
         }),
+        (
+            _("EDDN Information"), {
+                "fields": ("address",),
+                "classes": ("collapse",)
+            }
+        ),
         (_("Advanced options"), {
             "classes": ("collapse",),
             "fields": ("description","created_by", "updated_by", "created_at", "updated_at")
