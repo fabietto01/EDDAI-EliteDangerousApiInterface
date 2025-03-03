@@ -245,6 +245,25 @@
         "conrollingFaction": null,
         "description": ""
       }
+    },
+    {
+      "model": "ed_system.system",
+      "pk": 3304,
+      "fields": {
+        "created_at": "2025-03-02T16:38:44.347767Z",
+        "updated_at": "2025-03-03T09:22:59.188804Z",
+        "created_by": 1,
+        "updated_by": 1,
+        "name": "Tionisla",
+        "address": 5031789105890,
+        "coordinate":"SRID=4979;POINT Z (82.25 48.75 68.15625)",
+        "security": "H",
+        "population": 5200016905,
+        "primaryEconomy": 3,
+        "secondaryEconomy": 4,
+        "conrollingFaction": null,
+        "description": ""
+      }
     }
   ]
   
