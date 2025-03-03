@@ -10,7 +10,7 @@ from ed_station.admin import StationTabularInline
 class SystemAdmin(admin.ModelAdmin):
     model = System
     form = SystemModelForm
-    search_fields = ("name","pk")
+    search_fields = ("name","pk", "address")
     list_display = ("name", "security","population", "economy", "conrollingFaction", "updated_at", "created_at")
     list_display_links = ("name",)
     readonly_fields = ("created_at", "updated_at")
@@ -27,6 +27,12 @@ class SystemAdmin(admin.ModelAdmin):
                 "conrollingFaction",
             )
         }),
+        (
+            _("EDDN Information"), {
+                "fields": ("address",),
+                "classes": ("collapse",)
+            }
+        ),
         (_("Advanced options"), {
             "classes": ("collapse",),
             "fields": ("description","created_by", "updated_by", "created_at", "updated_at")
