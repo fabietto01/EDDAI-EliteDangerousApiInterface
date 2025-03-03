@@ -30,7 +30,7 @@ services:
   django:
     <<: *default-config
     container_name: django
-    command: python -m gunicorn eddai_EliteDangerousApiInterface.wsgi:application -b :8080 --timeout 120
+    command: python -m gunicorn eddai_EliteDangerousApiInterface.wsgi:application -b :8080 --timeout 60
     volumes:
       - static_volume:/app/static-server
       - media_volume:/app/media-server
