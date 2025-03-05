@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.db.models import Value
 from django.db.models.functions import Concat
 
+from .manager import SystemManager
 from core.models import OwnerAndDateModels
 
 from ed_economy.models import Economy
@@ -83,6 +84,8 @@ class System(OwnerAndDateModels, models.Model):
         blank=True, null=True
     )
 
+    objects = SystemManager()
+
     @property
     @admin.display(ordering=Concat("primaryEconomy", Value(" "), "secondaryEconomy"), description=_('economy'))
     def economy(self) -> list[Economy]:
@@ -124,10 +127,10 @@ class System(OwnerAndDateModels, models.Model):
         return System.objects.filter(id=to.id).annotate(
             distance=Distanza3D(F('coordinate'), point=by.coordinate)
         ).values_list('distance', flat=True).first()
-
+    
     def __str__(self):
         return self.name
-
+    
     class Meta:
         verbose_name = _('System')
         verbose_name_plural = _('Systems')
