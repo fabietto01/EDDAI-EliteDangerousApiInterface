@@ -55,7 +55,7 @@ class SystemFilterSet(BaseDistanceFilterSet):
     def  filter_conrollingFaction_not_in_state(self, queryset:SystemQuerySet, name, value):
         if value not in EMPTY_VALUES and value:
             return queryset.view_system_control_faction().exclude(
-                cconrolling_faction_view__ed_bgs_stateinminorfactions__state__in=value
+                conrolling_faction_view__ed_bgs_stateinminorfactions__state__in=value
             )
         return queryset
 
@@ -115,4 +115,6 @@ class SystemFilterSet(BaseDistanceFilterSet):
             'primaryEconomy': ['exact','in'],
             'secondaryEconomy': ['exact','in'],
             'conrollingFaction': ['exact', 'in'],
+            'created_at': ['exact', 'lt', 'gt'],
+            'updated_at': ['exact', 'lt', 'gt'],
         }

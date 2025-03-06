@@ -121,12 +121,17 @@ class System(OwnerAndDateModels, models.Model):
             Returns:
                 float: The distance between the two systems.
         """
-        from ed_core.functions import Distanza3D
-        from django.db.models import F
+        from django.contrib.gis.geos import Point
+        from math import sqrt
 
-        return System.objects.filter(id=to.id).annotate(
-            distance=Distanza3D(F('coordinate'), point=by.coordinate)
-        ).values_list('distance', flat=True).first()
+        by_point:Point = by.coordinate
+        to_point:Point = to.coordinate
+
+        return round(sqrt(
+            (by_point.x - to_point.x) ** 2 +
+            (by_point.y - to_point.y) ** 2 +
+            (by_point.z - to_point.z) ** 2
+        ), 3)
     
     def __str__(self):
         return self.name

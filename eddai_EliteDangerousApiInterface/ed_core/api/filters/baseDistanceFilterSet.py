@@ -2,6 +2,7 @@ import django_filters
 from django.db.models import QuerySet
 
 from django.db.models import F
+from django.db.models.functions import Round
 from ed_core.functions import Distanza3D
 from .castomOrderingFilter import OrderingFilterOrDefault
 from ed_system.models import System
@@ -60,9 +61,12 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
 
     def filter_by_distance(self, queryset, name, value):
         return queryset.annotate(
-            distance_st=Distanza3D(
-                F(self.get_distance_field()),
-                point=value.coordinate
+            distance_st=Round(
+                Distanza3D(
+                    F(self.get_distance_field()),
+                    point=value.coordinate
+                ),
+                3
             )
         )
     
