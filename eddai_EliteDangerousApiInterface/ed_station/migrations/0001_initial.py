@@ -66,7 +66,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated')),
-                ('name', models.CharField(max_length=255, unique=True, verbose_name='name')),
+                ('name', models.CharField(max_length=255, verbose_name='name')),
+                ('markerid', models.BigIntegerField(unique=True, verbose_name='marker id')),
                 ('landingPad', models.CharField(choices=[(None, 'None'), ('S', 'Small'), ('M', 'Medium'), ('L', 'Large')], max_length=1, null=True, verbose_name='landing pad')),
                 ('distance', models.FloatField(help_text='distance from the stary center', null=True, validators=[django.core.validators.MinValueValidator(0, 'the distance cannot be less than 0')], verbose_name='distance')),
                 ('commodity', models.ManyToManyField(through='ed_economy.CommodityInStation', to='ed_economy.commodity', verbose_name='commodity')),
@@ -123,6 +124,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='station',
-            constraint=models.UniqueConstraint(fields=('name', 'system'), name='unique_station_in_system'),
+            constraint=models.UniqueConstraint(fields=('markerid', 'system'), name='unique_station_markerid_in_system'),
         ),
     ]

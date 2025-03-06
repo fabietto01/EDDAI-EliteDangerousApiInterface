@@ -77,6 +77,12 @@ class StationModelAdmin(admin.ModelAdmin):
         (_("Station options"), {
             "fields": ("type", ("primaryEconomy", "secondaryEconomy"), "landingPad", "minorFaction", "distance")
         }),
+        (
+            _("EDDN Information"), {
+                "fields": ("markerid",),
+                "classes": ("collapse",)
+            }
+        ),
         (_("Advanced options"), {
             "fields": ("created_by", "updated_by", "created_at", "updated_at"),
             "classes": ("collapse",)

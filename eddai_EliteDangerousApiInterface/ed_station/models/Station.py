@@ -32,7 +32,10 @@ class Station(OwnerAndDateModels):
         __empty__ = _('None')
 
     name = models.CharField(
-        max_length=255, unique=True, verbose_name=_('name')
+        max_length=255, verbose_name=_('name')
+    )
+    markerid = models.BigIntegerField(
+        verbose_name=_('marker id'), unique=True,
     )
     system = models.ForeignKey(
         'ed_system.System', on_delete=models.CASCADE,
@@ -126,5 +129,5 @@ class Station(OwnerAndDateModels):
             models.Index(fields=['secondaryEconomy']),
         ]
         constraints = [
-            models.UniqueConstraint(fields=['name','system'], name='unique_station_in_system')
+            models.UniqueConstraint(fields=['markerid','system'], name='unique_station_markerid_in_system')
         ]

@@ -495,11 +495,21 @@
   },
   {
     "model": "ed_bgs.power",
-    "pk": 4,
+    "pk": 1,
     "fields": {
-      "name": "Aisling Duval",
-      "headquarter": 4,
+      "name": "Zemina Torval",
+      "headquarter": 1,
       "allegiance": 6,
+      "note": ""
+    }
+  },
+  {
+    "model": "ed_bgs.power",
+    "pk": 2,
+    "fields": {
+      "name": "Felicia Winters",
+      "headquarter": 2,
+      "allegiance": 7,
       "note": ""
     }
   },
@@ -509,6 +519,16 @@
     "fields": {
       "name": "A. Lavigny-Duval",
       "headquarter": 3,
+      "allegiance": 6,
+      "note": ""
+    }
+  },
+  {
+    "model": "ed_bgs.power",
+    "pk": 4,
+    "fields": {
+      "name": "Aisling Duval",
+      "headquarter": 4,
       "allegiance": 6,
       "note": ""
     }
@@ -545,26 +565,6 @@
   },
   {
     "model": "ed_bgs.power",
-    "pk": 2,
-    "fields": {
-      "name": "Felicia Winters",
-      "headquarter": 2,
-      "allegiance": 7,
-      "note": ""
-    }
-  },
-  {
-    "model": "ed_bgs.power",
-    "pk": 11,
-    "fields": {
-      "name": "Jerome Archer",
-      "headquarter": 9,
-      "allegiance": 7,
-      "note": ""
-    }
-  },
-  {
-    "model": "ed_bgs.power",
     "pk": 8,
     "fields": {
       "name": "Li Yong-Rui",
@@ -575,10 +575,10 @@
   },
   {
     "model": "ed_bgs.power",
-    "pk": 12,
+    "pk": 9,
     "fields": {
-      "name": "Pranav Antal",
-      "headquarter": 12,
+      "name": "Nakato Kaine",
+      "headquarter": 3304,
       "allegiance": 1,
       "note": ""
     }
@@ -595,11 +595,21 @@
   },
   {
     "model": "ed_bgs.power",
-    "pk": 1,
+    "pk": 11,
     "fields": {
-      "name": "Zemina Torval",
-      "headquarter": 1,
-      "allegiance": 6,
+      "name": "Jerome Archer",
+      "headquarter": 9,
+      "allegiance": 7,
+      "note": ""
+    }
+  },
+  {
+    "model": "ed_bgs.power",
+    "pk": 12,
+    "fields": {
+      "name": "Pranav Antal",
+      "headquarter": 12,
+      "allegiance": 1,
       "note": ""
     }
   },
@@ -663,6 +673,24 @@
     "fields": {
       "_eddn": null,
       "name": "Turmoil",
+      "description": ""
+    }
+  },
+  {
+    "model": "ed_bgs.powerstate",
+    "pk": 8,
+    "fields": {
+      "_eddn": null,
+      "name": "Fortified",
+      "description": ""
+    }
+  },
+  {
+    "model": "ed_bgs.powerstate",
+    "pk": 9,
+    "fields": {
+      "_eddn": null,
+      "name": "Stronghold",
       "description": ""
     }
   }

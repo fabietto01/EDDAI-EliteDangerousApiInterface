@@ -20,6 +20,6 @@ from rest_framework.routers import DefaultRouter
 from .venws import SystemViewSet
 
 router = DefaultRouter(trailing_slash=False)
-router.register(r'systems', SystemViewSet)
+router.register(r'system', SystemViewSet)
 
 urlpatterns = router.urls

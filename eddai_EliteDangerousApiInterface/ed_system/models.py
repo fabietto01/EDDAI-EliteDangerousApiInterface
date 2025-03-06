@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.db.models import Value
 from django.db.models.functions import Concat
 
+from .manager import SystemManager
 from core.models import OwnerAndDateModels
 
 from ed_economy.models import Economy
@@ -46,6 +47,9 @@ class System(OwnerAndDateModels, models.Model):
     name = models.CharField(
         max_length=100, unique=True, verbose_name=_('name')
     )
+    address = models.BigIntegerField(
+        verbose_name=_('address'), unique=True, 
+    )
     coordinate = models.PointField(
         dim=3, srid=4979,
         verbose_name=_('coordinate'),
@@ -79,6 +83,8 @@ class System(OwnerAndDateModels, models.Model):
     description = models.TextField(
         blank=True, null=True
     )
+
+    objects = SystemManager()
 
     @property
     @admin.display(ordering=Concat("primaryEconomy", Value(" "), "secondaryEconomy"), description=_('economy'))
@@ -115,16 +121,21 @@ class System(OwnerAndDateModels, models.Model):
             Returns:
                 float: The distance between the two systems.
         """
-        from ed_core.functions import Distanza3D
-        from django.db.models import F
+        from django.contrib.gis.geos import Point
+        from math import sqrt
 
-        return System.objects.filter(id=to.id).annotate(
-            distance=Distanza3D(F('coordinate'), point=by.coordinate)
-        ).values_list('distance', flat=True).first()
+        by_point:Point = by.coordinate
+        to_point:Point = to.coordinate
 
+        return round(sqrt(
+            (by_point.x - to_point.x) ** 2 +
+            (by_point.y - to_point.y) ** 2 +
+            (by_point.z - to_point.z) ** 2
+        ), 3)
+    
     def __str__(self):
         return self.name
-
+    
     class Meta:
         verbose_name = _('System')
         verbose_name_plural = _('Systems')

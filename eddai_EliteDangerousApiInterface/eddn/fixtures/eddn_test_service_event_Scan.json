@@ -1,0 +1,404 @@
+[
+    {
+        "model": "eddn.datalog",
+        "pk": 157,
+        "fields": {
+            "created_at": "2025-02-11T20:15:55.084Z",
+            "updated_at": "2025-02-11T20:15:55.084Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "636f16d5b3810802934887e976cd0511fc95a32b",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "EDDiscovery",
+                    "softwareVersion": "18.1.6.0",
+                    "gatewayTimestamp": "2025-02-11T20:15:20.656373Z"
+                },
+                "message": {
+                    "event": "Scan",
+                    "Age_MY": 660,
+                    "BodyID": 2,
+                    "Radius": 379056800.0,
+                    "Parents": [
+                        {
+                            "Null": 0
+                        }
+                    ],
+                    "StarPos": [
+                        -30.03125,
+                        6.5,
+                        98.0
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Karen B",
+                    "ScanType": "Detailed",
+                    "StarType": "M",
+                    "Subclass": 2,
+                    "horizons": true,
+                    "AxialTilt": 0.0,
+                    "Periapsis": 282.402388,
+                    "WasMapped": false,
+                    "timestamp": "2025-02-11T20:15:16Z",
+                    "Luminosity": "Va",
+                    "StarSystem": "Karen",
+                    "MeanAnomaly": 151.525726,
+                    "StellarMass": 0.367188,
+                    "Eccentricity": 0.074786,
+                    "AscendingNode": -3.53504,
+                    "OrbitalPeriod": 122846162319.18335,
+                    "SemiMajorAxis": 29751077294349.67,
+                    "SystemAddress": 5301877082483,
+                    "WasDiscovered": true,
+                    "RotationPeriod": 173017.304735,
+                    "AbsoluteMagnitude": 8.614563,
+                    "OrbitalInclination": -24.500759,
+                    "SurfaceTemperature": 3275.0,
+                    "DistanceFromArrivalLS": 145528.88362
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 158,
+        "fields": {
+            "created_at": "2025-02-11T20:15:55.138Z",
+            "updated_at": "2025-02-11T20:15:55.138Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "a710a3f71044cdea52b6778363374e243685eb57",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-11T20:15:20.734048Z"
+                },
+                "message": {
+                    "event": "Scan",
+                    "BodyID": 17,
+                    "MassEM": 15.169983,
+                    "Radius": 12682090.0,
+                    "Parents": [
+                        {
+                            "Null": 12
+                        },
+                        {
+                            "Star": 1
+                        },
+                        {
+                            "Null": 0
+                        }
+                    ],
+                    "StarPos": [
+                        -2448.53125,
+                        296.25,
+                        -1336.09375
+                    ],
+                    "odyssey": true,
+                    "BodyName": "S171 43 A 8",
+                    "Landable": false,
+                    "ScanType": "Detailed",
+                    "horizons": true,
+                    "AxialTilt": 0.151867,
+                    "Periapsis": 224.351978,
+                    "TidalLock": true,
+                    "Volcanism": "major silicate vapour geysers volcanism",
+                    "WasMapped": true,
+                    "timestamp": "2025-02-11T20:15:19Z",
+                    "Atmosphere": "",
+                    "StarSystem": "S171 43",
+                    "Composition": {
+                        "Ice": 0.0,
+                        "Rock": 0.669477,
+                        "Metal": 0.330523
+                    },
+                    "MeanAnomaly": 149.808281,
+                    "PlanetClass": "High metal content body",
+                    "Eccentricity": 0.026288,
+                    "AscendingNode": -121.357254,
+                    "OrbitalPeriod": 3086816.78772,
+                    "SemiMajorAxis": 17092310786.247253,
+                    "SystemAddress": 178618511,
+                    "WasDiscovered": true,
+                    "AtmosphereType": "None",
+                    "RotationPeriod": 3087266.696853,
+                    "SurfaceGravity": 37.593505,
+                    "TerraformState": "",
+                    "SurfacePressure": 0.169553,
+                    "OrbitalInclination": 9.673296,
+                    "SurfaceTemperature": 1136.244995,
+                    "DistanceFromArrivalLS": 1394.604696
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 159,
+        "fields": {
+            "created_at": "2025-02-11T20:15:55.216Z",
+            "updated_at": "2025-02-11T20:15:55.216Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "b8b32ad913894ed6f182062b1bb6b34122e0e221",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-11T20:15:20.795944Z"
+                },
+                "message": {
+                    "event": "Scan",
+                    "BodyID": 3,
+                    "MassEM": 0.660622,
+                    "Radius": 6869598.5,
+                    "Parents": [
+                        {
+                            "Star": 0
+                        }
+                    ],
+                    "StarPos": [
+                        348.28125,
+                        -36.125,
+                        5885.46875
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Pyramio JY-E a52-2 3",
+                    "Landable": false,
+                    "ScanType": "Detailed",
+                    "horizons": true,
+                    "AxialTilt": -0.185755,
+                    "Periapsis": 66.306363,
+                    "TidalLock": false,
+                    "Volcanism": "minor carbon dioxide geysers volcanism",
+                    "WasMapped": false,
+                    "timestamp": "2025-02-09T11:17:53Z",
+                    "Atmosphere": "helium atmosphere",
+                    "StarSystem": "Pyramio JY-E a52-2",
+                    "Composition": {
+                        "Ice": 0.687429,
+                        "Rock": 0.210313,
+                        "Metal": 0.102257
+                    },
+                    "MeanAnomaly": 7.941903,
+                    "PlanetClass": "Icy body",
+                    "Eccentricity": 0.000538,
+                    "AscendingNode": 88.021847,
+                    "OrbitalPeriod": 315270978.212357,
+                    "SemiMajorAxis": 235498994588.85193,
+                    "SystemAddress": 40589051321784,
+                    "WasDiscovered": false,
+                    "AtmosphereType": "Helium",
+                    "RotationPeriod": 125442.803441,
+                    "SurfaceGravity": 5.57956,
+                    "TerraformState": "",
+                    "SurfacePressure": 15218.974609,
+                    "OrbitalInclination": -0.155858,
+                    "SurfaceTemperature": 20.172483,
+                    "AtmosphereComposition": [
+                        {
+                            "Name": "Helium",
+                            "Percent": 100.0
+                        }
+                    ],
+                    "DistanceFromArrivalLS": 785.121442
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 160,
+        "fields": {
+            "created_at": "2025-02-11T20:15:55.244Z",
+            "updated_at": "2025-02-11T20:15:55.244Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "825a9fa78c25aaf4d3b6043d74254c0cd3b406c5",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-11T20:15:20.836110Z"
+                },
+                "message": {
+                    "event": "Scan",
+                    "BodyID": 57,
+                    "MassEM": 0.00264,
+                    "Radius": 1217109.5,
+                    "Parents": [
+                        {
+                            "Planet": 54
+                        },
+                        {
+                            "Star": 0
+                        }
+                    ],
+                    "StarPos": [
+                        -5750.75,
+                        595.4375,
+                        36995.3125
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Vegnue FB-B b44-33 7 a",
+                    "Landable": true,
+                    "ScanType": "Detailed",
+                    "horizons": true,
+                    "AxialTilt": -0.078511,
+                    "Materials": [
+                        {
+                            "Name": "sulphur",
+                            "Percent": 26.938087
+                        },
+                        {
+                            "Name": "carbon",
+                            "Percent": 22.652142
+                        },
+                        {
+                            "Name": "phosphorus",
+                            "Percent": 14.502289
+                        },
+                        {
+                            "Name": "iron",
+                            "Percent": 12.075446
+                        },
+                        {
+                            "Name": "nickel",
+                            "Percent": 9.133361
+                        },
+                        {
+                            "Name": "chromium",
+                            "Percent": 5.430729
+                        },
+                        {
+                            "Name": "selenium",
+                            "Percent": 4.216038
+                        },
+                        {
+                            "Name": "vanadium",
+                            "Percent": 2.965309
+                        },
+                        {
+                            "Name": "niobium",
+                            "Percent": 0.825292
+                        },
+                        {
+                            "Name": "antimony",
+                            "Percent": 0.733978
+                        },
+                        {
+                            "Name": "mercury",
+                            "Percent": 0.527315
+                        }
+                    ],
+                    "Periapsis": 339.715851,
+                    "TidalLock": true,
+                    "Volcanism": "",
+                    "WasMapped": false,
+                    "timestamp": "2025-02-11T20:15:20Z",
+                    "Atmosphere": "",
+                    "StarSystem": "Vegnue FB-B b44-33",
+                    "Composition": {
+                        "Ice": 0.826045,
+                        "Rock": 0.158418,
+                        "Metal": 0.015537
+                    },
+                    "MeanAnomaly": 155.646294,
+                    "PlanetClass": "Icy body",
+                    "Eccentricity": 6e-06,
+                    "AscendingNode": 114.568046,
+                    "OrbitalPeriod": 1249285.101891,
+                    "SemiMajorAxis": 1032767891.88385,
+                    "SystemAddress": 73161414500217,
+                    "WasDiscovered": false,
+                    "AtmosphereType": "None",
+                    "RotationPeriod": 1249442.918779,
+                    "SurfaceGravity": 0.710291,
+                    "TerraformState": "",
+                    "SurfacePressure": 0.0,
+                    "OrbitalInclination": 0.122723,
+                    "SurfaceTemperature": 46.139618,
+                    "DistanceFromArrivalLS": 2449.271931
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    },
+    {
+        "model": "eddn.datalog",
+        "pk": 604,
+        "fields": {
+            "created_at": "2025-02-11T20:30:30.354Z",
+            "updated_at": "2025-02-11T20:30:30.354Z",
+            "data": {
+                "header": {
+                    "gamebuild": "r308767/r0 ",
+                    "uploaderID": "98076918fbae04d67804cdcbd46c198cd70b69e8",
+                    "gameversion": "4.0.0.1904",
+                    "softwareName": "E:D Market Connector [Windows]",
+                    "softwareVersion": "5.12.1",
+                    "gatewayTimestamp": "2025-02-11T20:29:39.022888Z"
+                },
+                "message": {
+                    "Rings": [
+                        {
+                            "Name": "Preae Theia TP-G d10-8 B A Belt",
+                            "MassMT": 101600000000000.0,
+                            "InnerRad": 702770000.0,
+                            "OuterRad": 2010400000.0,
+                            "RingClass": "eRingClass_Rocky"
+                        }
+                    ],
+                    "event": "Scan",
+                    "Age_MY": 3688,
+                    "BodyID": 2,
+                    "Radius": 425921536.0,
+                    "Parents": [
+                        {
+                            "Null": 0
+                        }
+                    ],
+                    "StarPos": [
+                        2644.5625,
+                        8.71875,
+                        -1413.90625
+                    ],
+                    "odyssey": true,
+                    "BodyName": "Preae Theia TP-G d10-8 B",
+                    "ScanType": "AutoScan",
+                    "StarType": "M",
+                    "Subclass": 0,
+                    "horizons": true,
+                    "AxialTilt": 0.0,
+                    "Periapsis": 150.528661,
+                    "WasMapped": false,
+                    "timestamp": "2025-02-11T20:29:38Z",
+                    "Luminosity": "Va",
+                    "StarSystem": "Preae Theia TP-G d10-8",
+                    "MeanAnomaly": 219.941183,
+                    "StellarMass": 0.496094,
+                    "Eccentricity": 0.093576,
+                    "AscendingNode": -170.568952,
+                    "OrbitalPeriod": 2430606663.227081,
+                    "SemiMajorAxis": 1759520947933.197,
+                    "SystemAddress": 285908928731,
+                    "WasDiscovered": true,
+                    "RotationPeriod": 187263.943786,
+                    "AbsoluteMagnitude": 7.833694,
+                    "OrbitalInclination": 35.364178,
+                    "SurfaceTemperature": 3698.0,
+                    "DistanceFromArrivalLS": 10461.221008
+                },
+                "$schemaRef": "https://eddn.edcd.io/schemas/journal/1"
+            },
+            "error": null
+        }
+    }
+]

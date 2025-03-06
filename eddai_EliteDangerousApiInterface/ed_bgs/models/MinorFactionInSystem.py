@@ -24,7 +24,7 @@ class MinorFactionInSystem(OwnerAndDateModels):
     )
 
     @staticmethod
-    def MaxRelation():
+    def get_max_relations():
         return 8
 
     def __str__(self) -> str:

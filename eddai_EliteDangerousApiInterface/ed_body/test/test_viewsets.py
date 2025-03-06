@@ -6,6 +6,7 @@ import random
 
 from ed_core.functions import Distanza3D
 from django.db.models import F
+from django.db.models.functions import Round
 
 from ed_body.api.venws import (
     AtmosphereComponentViewSet, AtmosphereTypeViewSet,
@@ -244,6 +245,7 @@ class AtmosphereComponentInPlanetViewSetAPITestCase(APITestCase):
         )
         cls.system = System.objects.create(
             name='AtmosphereComponentInPlanetViewSetAPITestCase_System',
+            address=random.getrandbits(16),
             coordinate=Point(50, 95483, 50),
             created_by=cls.user,
             updated_by=cls.user
@@ -665,9 +667,13 @@ class BaseBodyViewSetAPITestCase(APITestCase):
             all(result['distance_st'] for result in response.data['results'])
         )
         qs =  BaseBody.objects.annotate(
-            distance_st=Distanza3D(
-                F('system__coordinate'),
-                point=system.coordinate
+            distance_st=
+            Round(
+                Distanza3D(
+                    F('system__coordinate'),
+                    point=system.coordinate
+                ),
+                3
             )
         )
         serializer = BaseBodyDistanceSerializer(qs.order_by('distance_st'), many=True)

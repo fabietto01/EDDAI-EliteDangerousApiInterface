@@ -111,10 +111,7 @@ DATABASES = {
             "DEPENDENCIES": [],
         },
         'OPTIONS':{
-            "pool":{
-                'min_size': 4,  
-                'timeout': 10,  
-            }
+            "pool":True,
         }
     }
 }
@@ -243,9 +240,27 @@ LOGGING = {
             "()": "django.utils.log.ServerFormatter",
             "format": "[{server_time}] {message}",
             "style": "{",
-        }
+        },
+        "celery.task.console": {
+            "()": "celery.app.log.TaskFormatter",
+            "format": "%(asctime)s [%(levelname)s] [%(processName)s] [%(task_name)s(%(task_id)s)] %(message)s",
+        },
+        "celery.worker.console": {
+            "()": "celery.utils.log.ColorFormatter",
+            "format": "%(asctime)s [%(levelname)s] [%(processName)s] %(message)s",
+        },
     },
     "handlers": {
+        "celery.task.console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "celery.task.console",
+        },
+        'celery.worker': {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "celery.worker.console",
+        },
         "console": {
             "level": "INFO",
             "filters": ["require_debug_true"],
@@ -258,19 +273,26 @@ LOGGING = {
             "formatter": "django.server",
         },
         "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
-        "mail_eddn_admins": {
             "level": "CRITICAL",
             "filters": ["require_debug_false"],
             "class": "django.utils.log.AdminEmailHandler",
         },
     },
     "loggers": {
+        "celery.task":{
+            "handlers": ["celery.task.console", "mail_admins"],
+            "level": "INFO",
+        },
+        "celery.beat":{
+            "handlers": ["celery.worker", "mail_admins"],
+            "level": "INFO",
+        },
+        "celery.worker":{
+            "handlers": ["celery.worker", "mail_admins"],
+            "level": "INFO",
+        },
         "eddn":{
-            "handlers": ["console", "mail_eddn_admins"],
+            "handlers": ["console", "mail_admins"],
             "level": "INFO",
         },
         "django": {
@@ -303,7 +325,6 @@ AUTHORI_SED_SOFTWARS = [
 ]
 
 #impostazioni per la gestione dell'utente nominativa per il scrivere i datti su DB, da parte del servizio EDDN
-EDDN_USER_AGENT_CACHE_KEY = uuid4(),
 EDDN_USER_NAME_AGENT = os.environ.get('EDDN_USER_NAME_AGENT', "EDDN-Client")
 EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!123')
 

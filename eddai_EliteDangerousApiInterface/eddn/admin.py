@@ -7,38 +7,35 @@ from celery import group
 from celery.result import GroupResult
 
 from eddn.models import DataLog
-from eddn.service.dataAnalytics.utility import star_analytic
+from eddn.service.worker import star_analytic
 
 log = getLogger("django")
 
 @admin.register(DataLog)
 class DataLogModelAdmin(admin.ModelAdmin):
     model = DataLog
-    search_fields = ("schema","error")
-    list_display = ("pk","schema", "error", "updated_at", "created_at")
-    list_display_links = ("pk", "schema")
-    readonly_fields = ("created_at", "updated_at", "error")
-    list_filter = (
-        ("schema",admin.AllValuesFieldListFilter),  
-    )
+    search_fields = ("data","error")
+    list_display = ("pk", "schema", "error", "updated_at", "created_at")
+    list_display_links = ("pk", "schema",)
+    readonly_fields = ("schema", "message", "created_at", "updated_at", "error")
     fieldsets = [
         (None, {
-            "fields": (
-                "schema",
-                "data",
-                "error",
-            )
+            "fields": ("schema","message","error",)
         }),
-        ("Date", {
+        (_("Advanced options"), {
+                "classes": ("collapse",),
+                "fields": ("data",)
+        }),
+        (_("Date"), {
             "fields": ("created_at", "updated_at")
         })
     ]
-    actions = ['re_processing']
+    actions = ['run_re_processing_data']
 
-    @admin.action(description=_('data re-processing'))
-    def re_processing(self, request, queryset):
+    @admin.action(description=_('This action is used to manually re-process the data'))
+    def run_re_processing_data(self, request, queryset):
         try:    
-            job = group(star_analytic.s(instance) for instance in queryset)
+            job = group(star_analytic.s(istance=istance, agent=request.user) for istance in queryset)
             result:GroupResult = job.apply_async(
                 queue="admin"
             )
@@ -75,7 +72,7 @@ class DataLogModelAdmin(admin.ModelAdmin):
                     messages.WARNING
                 )
         except Exception as e:
-            log.error("Error in the re_processing function", exc_info=e)
+            log.error("Error in the re-processing function", exc_info=e)
             self.message_user(
                 request,
                 _('error in the re-processing of data'),

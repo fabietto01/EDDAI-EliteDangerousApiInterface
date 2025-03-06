@@ -20,6 +20,7 @@ x-common-config: &default-config
   - EDDN_USER_NAME_AGENT=${EDDN_USER_NAME_AGENT}
   - EDDN_USER_PASSWORD_AGENT=${EDDN_USER_PASSWORD_AGENT}
   - POSTGIS_HOST=${POSTGIS_HOST}
+  - POSTGIS_PORT=${POSTGIS_PORT}
   - POSTGIS_USER=${POSTGIS_USER}
   - POSTGIS_PASSWORD=${POSTGIS_PASSWORD}
   - POSTGIS_DB=${POSTGIS_DB}
@@ -29,24 +30,52 @@ services:
   django:
     <<: *default-config
     container_name: django
-    command: python -m gunicorn eddai_EliteDangerousApiInterface.wsgi:application -b :8080
+    command: python -m gunicorn eddai_EliteDangerousApiInterface.wsgi:application -b :8080 --timeout 60
     volumes:
       - static_volume:/app/static-server
       - media_volume:/app/media-server
     ports:
       - "8080:8080"
-  celery_worker_task:
+  celery_worker_task_replica_1:
     <<: *default-config
-    container_name: celery_worker_task
+    container_name: celery_worker_task_replica_1
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h 
-  celery_worker_admin:
+  celery_worker_task_replica_2:
     <<: *default-config
-    container_name: celery_worker_admin
+    container_name: celery_worker_task_replica_2
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h 
+  celery_worker_task_replica_3:
+    <<: *default-config
+    container_name: celery_worker_task_replica_3
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h 
+  celery_worker_admin_replica_1:
+    <<: *default-config
+    container_name: celery_worker_admin_replica_1
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
-  celery_worker_eddn:
+  celery_worker_admin_replica_2:
     <<: *default-config
-    container_name: celery_worker_eddn
+    container_name: celery_worker_admin_replica_2
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
+  celery_worker_admin_replica_3:
+    <<: *default-config
+    container_name: celery_worker_admin_replica_3
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
+  celery_worker_eddn_replica_1:
+    <<: *default-config
+    container_name: celery_worker_eddn_replica_1
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+  celery_worker_eddn_replica_2:
+    <<: *default-config
+    container_name: celery_worker_eddn_replica_2
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+  celery_worker_eddn_replica_3:
+    <<: *default-config
+    container_name: celery_worker_eddn_replica_3
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+  celery_worker_all_replica_1:
+    <<: *default-config
+    container_name: celery_worker_all_replica_1
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,eddn,default -n WorkerAdmin@%h
   celery_beat:
     <<: *default-config
     container_name: celery_beat
@@ -55,8 +84,6 @@ services:
     <<: *default-config
     container_name: eddn
     command: python eddn.py
-    depends_on:
-      - celery_worker_eddn
   nginx:
     build: ./nginx
     container_name: nginx

@@ -1,8 +1,6 @@
 {
-    "python.testing.unittestArgs": [
-        "-p",
-        "*test*.py"
-    ],
+    "python.testing.unittestArgs": [],
     "python.testing.pytestEnabled": false,
-    "python.testing.unittestEnabled": true
+    "python.testing.unittestEnabled": true,
+    "python.experiments.optInto": ["pythonTestAdapter"]
 }

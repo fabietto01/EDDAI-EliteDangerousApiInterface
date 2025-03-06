@@ -1,1 +1,2 @@
-from .auto_analytic import auto_analytic
+from .auto_analytic import AutoAnalyticTask
+from .delete_data_logs import *

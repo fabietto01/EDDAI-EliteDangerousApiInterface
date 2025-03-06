@@ -342,6 +342,42 @@
         }
     },
     {
+        "model": "ed_station.service",
+        "pk": 35,
+        "fields": {
+            "_eddn": "registeringcolonisation",
+            "name": "System colonisation",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 39,
+        "fields": {
+            "_eddn": "colonisationcontribution",
+            "name": "colonisation contribution",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 40,
+        "fields": {
+            "_eddn": "refinery",
+            "name": "Refinery",
+            "description": null
+        }
+    },
+    {
+        "model": "ed_station.service",
+        "pk": 41,
+        "fields": {
+            "_eddn": "techBroker",
+            "name": "Tech Broker",
+            "description": null
+        }
+    },
+    {
         "model": "ed_station.stationtype",
         "pk": 1,
         "fields": {
@@ -428,6 +464,42 @@
         "fields": {
             "_eddn": "MegaShip",
             "name": "Mega Ship",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 11,
+        "fields": {
+            "_eddn": "Bernal",
+            "name": "Bernal",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 12,
+        "fields": {
+            "_eddn": null,
+            "name": "SurfaceStation",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 13,
+        "fields": {
+            "_eddn": "SpaceConstructionDepot",
+            "name": "Space Construction Depot",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_station.stationtype",
+        "pk": 14,
+        "fields": {
+            "_eddn": "PlanetaryConstructionDepot",
+            "name": "Planetary Construction Depot",
             "description": ""
         }
     }

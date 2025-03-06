@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('ed_station.api.urls')),
     path('', include('ed_system.api.urls')),
     path('', include('ed_economy.api.urls')),
+    path('', include('ed_mining.api.urls')),
 ]

@@ -1,30 +1,48 @@
-from django.conf import settings
 import zlib, zmq, json
-from eddn.models import DataLog
 import logging
-from eddn.service.dataAnalytics.utility import star_analytic
+
+from django.conf import settings
+from django.contrib.auth import authenticate
+
+from eddn.service.worker import star_analytic
+from eddn.models import DataLog
+from users.models import User
 
 class EddnClient:
     """
     This class represents a client for the EDDN (Elite Dangerous Data Network) service.
 
     Attributes:
-        __log (Logger): The logger instance for logging messages.
-        __debug (bool): A flag indicating whether debug mode is enabled.
-        __timeout (int): The timeout value for receiving messages from the EDDN broker.
-        __rely (str): The address of the EDDN broker to connect to.
-        __authori_softwers (list): A list of authorized software names.
+        log (Logger): The logger instance for logging messages.
+        debug (bool): A flag indicating whether debug mode is enabled.
+        timeout (int): The timeout value for receiving messages from the EDDN broker.
+        rely (str): The address of the EDDN broker to connect to.
+        authori_softwers (list): A list of authorized software names.
         name (str): The name of the EDDN service.
 
     Methods:
         connect(): Connects to the EDDN broker and starts receiving messages.
         receive(subscriber: zmq.Socket): Receives messages from the EDDN broker and processes them.
     """
-    __log = logging.getLogger('eddn')
-    __debug = settings.DEBUG
-    __timeout = settings.EDDN_TIMEOUT
-    __rely = settings.EDDN_RELY
-    __authori_softwers = settings.AUTHORI_SED_SOFTWARS
+    log = logging.getLogger('eddn')
+    debug = settings.DEBUG
+    timeout = settings.EDDN_TIMEOUT
+    rely = settings.EDDN_RELY
+    authori_softwers = settings.AUTHORI_SED_SOFTWARS
+
+    _agent = None
+
+    @property
+    def agent(self) -> User:
+        """
+        restituisce l'utente utilizzato per inviare il datto
+        """
+        if not self._agent:
+            self._agent = authenticate(
+                username=settings.EDDN_USER_NAME_AGENT,
+                password=settings.EDDN_USER_PASSWORD_AGENT
+            )
+        return self._agent
 
     def connect(self):
         """
@@ -33,21 +51,21 @@ class EddnClient:
         Raises:
             zmq.ZMQError: If there is an error connecting to the EDDN broker.
         """
-        self.__log.info("Create a Socket associated with this Context")
+        self.log.info("Create a Socket associated with this Context")
         context = zmq.Context()
         subscriber = context.socket(zmq.SUB)
         subscriber.setsockopt(zmq.SUBSCRIBE, b"")
-        subscriber.setsockopt(zmq.RCVTIMEO, self.__timeout)
-        self.__log.info("created a socket")
+        subscriber.setsockopt(zmq.RCVTIMEO, self.timeout)
+        self.log.info("created a socket")
         while True:
             try:
-                subscriber.connect(self.__rely)
-                self.__log.info("Connecting to EDDN")
+                subscriber.connect(self.rely)
+                self.log.info("Connecting to EDDN")
                 self.receive(subscriber)
-                self.__log.error(f"Disconecter from {self.__rely}")
+                self.log.error(f"Disconecter from {self.rely}")
             except zmq.ZMQError as e:
-                subscriber.disconnect(self.__rely)
-                self.__log.critical(f"Failed to connecting EDDN broker: %s", e, exc_info=True)
+                subscriber.disconnect(self.rely)
+                self.log.critical(f"Failed to connecting EDDN broker: %s", e, exc_info=True)
 
     def receive(self, subscriber: zmq.Socket):
         """
@@ -63,23 +81,23 @@ class EddnClient:
         while True:
             dataCompres = subscriber.recv()
             if dataCompres == False:
-                self.__log.error(f"The connection was lost From {self.__rely}")
+                self.log.error(f"The connection was lost From {self.rely}")
                 break
 
             dataDeCompress = zlib.decompress(dataCompres)
             if dataDeCompress == False:
-                self.__log.error(f"Failed to decompress message")
+                self.log.error(f"Failed to decompress message")
             
             dataJson = json.loads(dataDeCompress)
             if dataJson == False:
-                self.__log.error(f"Failed to decode message")
+                self.log.error(f"Failed to decode message")
 
-            self.__log.debug(f"Received and decompressed message: {dataJson}")
+            self.log.debug(f"Received and decompressed message: {dataJson}")
 
-            if dataJson['header']['softwareName'] in self.__authori_softwers:
+            if dataJson['header']['softwareName'] in self.authori_softwers:
                 istance = DataLog(data=dataJson)
-                self.__log.info(f"Send message to worker: {istance}")
+                self.log.info(f"Send message to worker: {istance}")
                 star_analytic.apply_async(
-                    kwargs={'istance':istance}, ignore_result=True,
+                    kwargs={'istance':istance, 'agent':self.agent}, ignore_result=True,
                     queue="eddn"
                 )
