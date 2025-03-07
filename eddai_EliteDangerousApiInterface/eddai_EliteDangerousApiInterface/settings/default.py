@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework', #pip install djangorestframework
     'rest_framework.authtoken', #per il login con token
     'rest_framework_gis', #pip install djangorestframework-gis
+    'drf_spectacular', #pip install drf-spectacular
     'django_filters', #pip install django-filter
     'django_celery_beat', #pip install django-celery-beat
 
@@ -212,7 +213,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Struttura dati contenente informazioni di configurazione. 
@@ -360,4 +362,17 @@ CELERY_TASK_ROUTES = {
         "queue": "eddn",
         "routing_key": "service.eddn",
     }
+}
+
+#impostazione per la generazione automatica della documentazione API
+#https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'EDDAI - Elite Dangerous API Interface', 
+    'DESCRIPTION': "Le API di EDDAI-EliteDangerousApiInterface forniscono \
+        un'interfaccia per accedere e gestire i dati relativi al gioco Elite Dangerous. \
+        Queste API permettono agli sviluppatori di interagire con il database del \
+        progetto, consentendo operazioni di lettura dei dati.",
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
 }
