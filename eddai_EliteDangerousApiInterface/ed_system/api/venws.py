@@ -18,10 +18,6 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
         responses={200: SystemDistanceSerializer(many=True)}
     ),
     retrieve=extend_schema(description="Returns the details of a system by ID"),
-    create=extend_schema(exclude=True), 
-    update=extend_schema(exclude=True), 
-    partial_update=extend_schema(exclude=True), 
-    destroy=extend_schema(exclude=True)
 )
 class SystemViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """

@@ -10,35 +10,22 @@ from rest_framework.decorators import action
 from rest_framework import status
 from django.db.utils import IntegrityError
 
-
 from ed_body.models import AtmosphereComponentInPlanet, Planet
 
 from ..serializers import AtmosphereComponentInPlanetSerializer
 
+
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description="Returns a list of atmosphere components in a planet",
+    ),
+    retrieve=extend_schema(description="Returns the details of an atmosphere component in a planet by ID"),
+)
 class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
     """
-    ViewSet for managing atmosphere components in a planet.
-    This ViewSet provides CRUD operations for atmosphere components associated with a specific planet.
-    It includes custom methods for adding multiple atmosphere components at once.
-    Attributes:
-        queryset (QuerySet): The queryset for retrieving atmosphere components.
-        serializer_class (Serializer): The serializer class for atmosphere components.
-        filterset_class (FilterSet): The filter set class for atmosphere components.
-        filter_backends (list): The list of filter backends for the ViewSet.
-        search_fields (list): The list of fields to search in the atmosphere components.
-    Methods:
-        get_queryset(self):
-            Retrieves the queryset filtered by the specified planet.
-        get_serializer_context(self):
-            Adds the planet primary key to the serializer context.
-        perform_create(self, serializer):
-            Saves a new atmosphere component with the created_by and updated_by fields set to the current user.
-        perform_update(self, serializer):
-            Updates an existing atmosphere component with the updated_by field set to the current user.
-        multiple_add_atmosphere_components(self, request, planet_pk=None, pk=None):
-            Adds multiple atmosphere components to a specified planet.
-            Validates the incoming data using a serializer and saves the components if valid.
-            Returns appropriate responses based on the success or failure of the operation.
+    AtmosphereComponentInPlanetViewSet is a view set for handling API requests related to AtmosphereComponentInPlanet objects.
     """
 
     queryset = AtmosphereComponentInPlanet.objects.all()
@@ -73,6 +60,11 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
             updated_by=user
         )
 
+    @extend_schema(
+        description="Adds an atmosphere component to a planet",
+        request=AtmosphereComponentInPlanetSerializer(many=True),
+        responses={201: AtmosphereComponentInPlanetSerializer(many=True)}
+    )
     @action(
         detail=False,
         methods=[HTTPMethod.POST],
