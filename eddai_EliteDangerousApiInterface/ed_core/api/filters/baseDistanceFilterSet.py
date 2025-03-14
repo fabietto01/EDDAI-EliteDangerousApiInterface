@@ -1,11 +1,15 @@
 import django_filters
 from django.db.models import QuerySet
+from django.utils.translation import gettext_lazy as _
 
 from django.db.models import F
 from django.db.models.functions import Round
 from ed_core.functions import Distanza3D
 from .castomOrderingFilter import OrderingFilterOrDefault
 from ed_system.models import System
+
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 
 class BaseDistanceFilterSet(django_filters.FilterSet):
     """
@@ -59,6 +63,7 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
             queryset = queryset.order_by(*self.get_default_ordering())
         return queryset
 
+    @extend_schema_field(OpenApiTypes.INT)
     def filter_by_distance(self, queryset, name, value):
         return queryset.annotate(
             distance_st=Round(
@@ -73,8 +78,8 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
     distance_by_system = django_filters.ModelChoiceFilter(
         queryset=System.objects.all(),
         method='filter_by_distance',
-        label='from system',
-        distinct=True
+        label=_('From system'),
+        description=_('Calculate the distance from the selected system'),
     )
     
     order_distance_by_system = OrderingFilterOrDefault(
@@ -82,5 +87,9 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
             ('distance_st', 'distance_st'),
         ),
         initial='distance',
-        default_ordering=['distance_st']
+        default_ordering=['distance_st'],
+        label=_('Order by distance'),
+        description=_('Reorder the results by the distance \
+                      between systems, usable only in combination \
+                      with the distance_by_system filter'),
     )

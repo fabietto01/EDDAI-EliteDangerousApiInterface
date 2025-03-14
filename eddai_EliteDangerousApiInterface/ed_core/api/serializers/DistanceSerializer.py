@@ -5,7 +5,7 @@ class DistanceSerializer(serializers.ModelSerializer):
         
         distance_st = serializers.SerializerMethodField(read_only=True)
     
-        def get_distance_st(self, instance:Model):
+        def get_distance_st(self, instance:Model) -> float:
             """
             restutuiser il campo distanza calcolato nella querry
             """
