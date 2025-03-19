@@ -6,7 +6,7 @@ from django.contrib import admin
 
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
+from .manager import EddnManager
 
 class DataLog(DateModels):
 
@@ -62,6 +62,8 @@ class AbstractDataEDDN(models.Model):
         output_field=models.CharField(),
         db_persist=True,
     )
+
+    objects = EddnManager()
 
     def clean(self) -> None:
         super().clean()
