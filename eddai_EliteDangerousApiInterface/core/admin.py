@@ -1,30 +1,24 @@
 from django.contrib import admin
 from django.forms import ModelForm
 
-class BaseOwnerModelsTabularInline(admin.TabularInline):
+class BaseOwnerModelsInlineModelAdmin:
     """
-    A custom TabularInline class for Django admin that automatically sets 
-    `created_by` and `updated_by` fields based on the current request user.
+    A base class for creating inline model admins with ownership tracking.
 
-    This class includes a custom ModelForm and FormSet to pass the request 
-    object to the form, enabling the automatic assignment of user-related 
-    fields during save operations.
+    This class provides functionality to automatically set the `created_by` 
+    and `updated_by` fields of a model instance based on the current user 
+    making the request. It also customizes the formset to pass the request 
+    object to each form.
 
     Inner Classes:
-        - BaseOwnerModelsTabularInlineModelForm: A custom ModelForm that 
-          overrides the `save` method to set `created_by` and `updated_by` 
-          fields if they are not already set.
-        - CustomFormSet: A custom FormSet that injects the request object 
-          into the form's keyword arguments.
+        BaseOwnerModelsTabularInlineModelForm (ModelForm):
+            A custom form that sets the `created_by` and `updated_by` fields 
+            of the model instance during save.
 
     Methods:
-        - get_formset(request, obj=None, **kwargs): Returns a custom formset 
-          that includes the request object in the form's initialization 
-          arguments.
-
-    Usage:
-        Subclass this TabularInline in your admin classes to enable automatic 
-        handling of `created_by` and `updated_by` fields for related models.
+        get_formset(request, obj=None, **kwargs):
+            Returns a customized formset class that injects the request object 
+            into the form's keyword arguments.
     """
 
     class BaseOwnerModelsTabularInlineModelForm(ModelForm):
@@ -51,3 +45,41 @@ class BaseOwnerModelsTabularInline(admin.TabularInline):
 
         kwargs["formset"] = CustomFormSet
         return super().get_formset(request, obj, **kwargs)
+
+class BaseOwnerModelsTabularInline(BaseOwnerModelsInlineModelAdmin, admin.TabularInline):
+    pass
+
+class BaseOwnerModelsStackedInline(BaseOwnerModelsInlineModelAdmin, admin.StackedInline):
+    pass
+
+class BaseOwnerModelsModelAdmin(admin.ModelAdmin):
+    """
+    A custom ModelAdmin class that automatically sets the `created_by` and `updated_by` 
+    fields for models based on the currently logged-in user.
+    Methods:
+        get_form(request, obj, change, **kwargs):
+            Overrides the default `get_form` method to pre-fill the `created_by` and 
+            `updated_by` fields with the current user. If the object is being created, 
+            both fields are initialized to the current user. If the object is being 
+            updated, only the `updated_by` field is initialized.
+        save_model(request, obj, form, change):
+            Overrides the default `save_model` method to ensure that the `created_by` 
+            field is set to the current user when the object is created, and the 
+            `updated_by` field is updated to the current user whenever the object is saved.
+    """
+
+    def get_form(self, request, obj, change, **kwargs):
+        form = super().get_form(request, obj, change, **kwargs)
+        if not obj:
+            form.base_fields['created_by'].initial = request.user
+            form.base_fields['updated_by'].initial = request.user
+        else:
+            form.base_fields['updated_by'].initial = request.user
+        return form 
+    
+    def save_model(self, request, obj, form, change) -> None:
+        if not obj.pk and not obj.created_by:
+            obj.created_by = request.user
+        if not obj.updated_by:
+            obj.updated_by = request.user
+        return super().save_model(request, obj, form, change)
