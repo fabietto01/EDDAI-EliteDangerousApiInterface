@@ -1,36 +1,26 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-
-# Register your models here.
+from core.admin import (
+    BaseOwnerModelsTabularInline, 
+    BaseOwnerModelsModelAdmin
+)
 
 from ed_station.models import *
 from ed_economy.admin import CommodityInStationTabularInline
 
-class ServiceInStationTabularInline(admin.TabularInline):
+class ServiceInStationTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = ServiceInStation
     raw_id_fields = ("station",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("station", "service", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
     
-class StationTabularInline(admin.TabularInline):
+class StationTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = Station
     raw_id_fields = ("system",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("name", "system", "type", "landingPad", "minorFaction", "distance", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(StationType)
 class StationTypeModelAdmin(admin.ModelAdmin):
@@ -63,7 +53,7 @@ class ServiceModelAdmin(admin.ModelAdmin):
     )
 
 @admin.register(Station)
-class StationModelAdmin(admin.ModelAdmin):
+class StationModelAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     model = Station
     search_fields = ("name", "system__name", "id")
     list_display = ("name", "system", "type", "landingPad", "economy", "minorFaction", "distance")
@@ -89,19 +79,3 @@ class StationModelAdmin(admin.ModelAdmin):
         }),
     )
     inlines = [ServiceInStationTabularInline, CommodityInStationTabularInline]
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form 
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)

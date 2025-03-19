@@ -1,26 +1,18 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-
-
-# Register your models here.
-
-from django.contrib import admin
+from core.admin import (
+    BaseOwnerModelsTabularInline, 
+    BaseOwnerModelsModelAdmin
+)
 
 from ed_exploration.models import *
-# Register your models here.
 
-class SignalInline(admin.TabularInline):
+class SignalInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = Signal
     raw_id_fields = ("planet",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("planet", "type", "count", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 class SampleInline(admin.TabularInline):
     model = Sample
@@ -28,12 +20,6 @@ class SampleInline(admin.TabularInline):
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("planet", "type", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(SignalSignals)
 class SignalsSignalsAdmin(admin.ModelAdmin):
@@ -51,7 +37,7 @@ class SignalsSignalsAdmin(admin.ModelAdmin):
     )
 
 @admin.register(Signal)
-class SignalsAdmin(admin.ModelAdmin):
+class SignalsAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     model = Signal
     search_fields = ('planet__name', 'pk', 'type__name')
     list_display = ('planet', 'type', 'count')
@@ -67,22 +53,6 @@ class SignalsAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form 
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(SampleSignals)
 class SampleSignalsAdmin(admin.ModelAdmin):
@@ -100,7 +70,7 @@ class SampleSignalsAdmin(admin.ModelAdmin):
     )
 
 @admin.register(Sample)
-class SampleAdmin(admin.ModelAdmin):
+class SampleAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     model = Sample
     search_fields = ('planet__name', 'pk', 'type__name')
     list_display = ('planet', 'type')
@@ -116,19 +86,3 @@ class SampleAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)

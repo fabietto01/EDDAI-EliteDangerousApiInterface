@@ -11,7 +11,6 @@ from ed_mining.admin import RingInline
 from ed_material.admin import MaterialInPlanetInline
 from ed_exploration.admin import SignalInline, SampleInline
 
-
 class AtmosphereComponentInPlanetInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = AtmosphereComponentInPlanet
     raw_id_fields = ("planet",)
