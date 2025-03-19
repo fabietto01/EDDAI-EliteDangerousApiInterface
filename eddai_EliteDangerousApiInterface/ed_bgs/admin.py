@@ -1,46 +1,30 @@
 from django.contrib import admin
+from core.admin import BaseOwnerModelsTabularInline
 
 from ed_bgs.models import *
 # Register your models here.
 
-class MinorFactionInSystemTabularInline(admin.TabularInline):
+class MinorFactionInSystemTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
+        
     model = MinorFactionInSystem
     raw_id_fields = ("system","minorFaction")
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("system", "minorFaction", "Influence", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-    
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
-class StateInMinorFactionTabularInline(admin.TabularInline):
+class StateInMinorFactionTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = StateInMinorFaction
     raw_id_fields = ("minorFaction",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("minorFaction", "state", "phase", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
 
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
-
-class PowerInSystemTabularInline(admin.TabularInline):
+class PowerInSystemTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = PowerInSystem
     raw_id_fields = ("system",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("system", "power", "state", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 class PowerInSystemStackedInline(admin.StackedInline):
     model = PowerInSystem
