@@ -83,53 +83,45 @@ class SystemFilterSet(BaseDistanceFilterSet):
         field_name='conrollingFaction',
         lookup_expr='exact',
         label=_('Not Controlling Faction'),
-        description=_('Filter the systems that are not controlled by the specified faction'),
         exclude=True
     )
     conrollingFaction_state = django_filters.ModelChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_state',
         label=_('The controlling faction is in the state'),
-        description=_('Filter the systems that are controlled by a faction with the specified status')
     )
     conrollingFaction_not_state = django_filters.ModelChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_not_state',
         label=_('The controlling faction does not have the status'),
-        desription=_('Filter the systems that are not controlled by a faction with the specified status'),
     )
     conrollingFaction_in_state = django_filters.ModelMultipleChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_in_state',
         label=_('The controlling faction is in a state'),
-        description=_('Filter the systems that are controlled by a faction with a specified state')
     )
     conrollingFaction_not_in_state = django_filters.ModelMultipleChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_not_in_state',
         label=_('The controlling faction is not in a state'),
-        description=_('Filter the systems that are not controlled by a faction with a specified state')
     )
     power = django_filters.ModelChoiceFilter(
         queryset=Power.objects.all(),
         field_name='ed_bgs_powerinsystems__power',
         lookup_expr='exact',
         label=_('Power'),
-        description=_('Filter the systems that have the specified power in the system')
     )
     allegiance = django_filters.ModelChoiceFilter(
         queryset=Faction.objects.all(),
         field_name='conrollingFaction__allegiance',
         lookup_expr='exact',
         label=_('Allegiance'),
-        description=_('Filter the systems the specified allegiance')
     )
     government = django_filters.ModelChoiceFilter(
         queryset=Government.objects.all(),
         field_name='conrollingFaction__government',
         lookup_expr='exact',
         label=_('Allegiance'),
-        description=_('Filter the systems the specified government')
     )
 
     class Meta:

@@ -79,7 +79,6 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
         queryset=System.objects.all(),
         method='filter_by_distance',
         label=_('From system'),
-        description=_('Calculate the distance from the selected system'),
     )
     
     order_distance_by_system = OrderingFilterOrDefault(
@@ -89,7 +88,4 @@ class BaseDistanceFilterSet(django_filters.FilterSet):
         initial='distance',
         default_ordering=['distance_st'],
         label=_('Order by distance'),
-        description=_('Reorder the results by the distance \
-                      between systems, usable only in combination \
-                      with the distance_by_system filter'),
     )
