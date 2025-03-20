@@ -152,22 +152,22 @@ To start the three Celery workers and the Celery beat scheduler, use the followi
 
 1. Start the first Celery worker:
     ```sh
-    celery -A eddai worker --loglevel=info -n worker1@%h
+    python celery -A eddai_EliteDangerousApiInterface worker -l Debug -P gevent --autoscale 50,5 -Q default -n WorkerTasck@%h
     ```
 
 2. Start the second Celery worker:
     ```sh
-    celery -A eddai worker --loglevel=info -n worker2@%h
+    python celery -A eddai_EliteDangerousApiInterface worker -l Debug -P gevent --autoscale 50,5 -Q admin -n WorkerAdmin@%h
     ```
 
 3. Start the third Celery worker:
     ```sh
-    celery -A eddai worker --loglevel=info -n worker3@%h
+    python celery -A eddai_EliteDangerousApiInterface worker -l Debug -P gevent --autoscale 50,5 -Q eddn -n WorkerEddn@%h
     ```
 
 4. Start the Celery beat scheduler:
     ```sh
-    celery -A eddai beat --loglevel=info
+    python celery -A eddai_EliteDangerousApiInterface beat -l Debug --scheduler django_celery_beat.schedulers:DatabaseSchedule
     ```
 
 This will start the Django development server, and you can access the application at `http://127.0.0.1:8000/`.

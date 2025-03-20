@@ -9,19 +9,19 @@ from .filters import SystemFilterSet
 
 from ed_system.models import System
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description="Returns a list of systems, if the parameter distance_by_system is passed,\
+            it returns the distance between systems in the distance_st field",
+        responses={200: SystemDistanceSerializer(many=True)}
+    ),
+    retrieve=extend_schema(description="Returns the details of a system by ID"),
+)
 class SystemViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
-    SystemViewSet is a viewset for handling CRUD operations on the System model.
-    Attributes:
-        queryset (QuerySet): A queryset of all System objects.
-        filterset_class (type): The filter set class used for filtering the queryset.
-        filter_backends (list): A list of filter backends used for filtering and searching.
-        search_fields (list): A list of fields that can be searched.
-    Methods:
-        get_serializer_class(self):
-            Returns the appropriate serializer class based on the request query parameters.
-            If 'order_by_system' is present in the query parameters, returns SystemDistanceSerializer.
-            Otherwise, returns SystemSerializer.
+    Handles requests related to systems.
     """
     queryset = System.objects.all()
     serializer_class = SystemSerializer
@@ -29,4 +29,4 @@ class SystemViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     filter_param_distance = 'distance_by_system'
     filterset_class = SystemFilterSet
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    search_fields = ['name']
+    search_fields = ['name', 'address']

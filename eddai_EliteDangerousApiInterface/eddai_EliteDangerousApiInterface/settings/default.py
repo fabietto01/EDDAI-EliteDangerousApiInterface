@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-from uuid import uuid4
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -44,8 +43,10 @@ INSTALLED_APPS = [
     'rest_framework', #pip install djangorestframework
     'rest_framework.authtoken', #per il login con token
     'rest_framework_gis', #pip install djangorestframework-gis
+    'drf_spectacular', #pip install drf-spectacular
     'django_filters', #pip install django-filter
     'django_celery_beat', #pip install django-celery-beat
+    'cacheops', #pip install django-cacheops
 
     'users',
     'core',
@@ -79,7 +80,7 @@ ROOT_URLCONF = 'eddai_EliteDangerousApiInterface.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,9 +122,35 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
+        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('DJANGO_CACHES_PORT', '6379')}/2",
     }
 }
+
+# Cacheops
+# https://github.com/Suor/django-cacheops?tab=readme-ov-file#setup
+CACHEOPS_REDIS = f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('DJANGO_CACHES_PORT', '6379')}/1"
+CACHEOPS_DEFAULTS = {
+    'timeout': 60*60
+}
+CACHEOPS = {
+    'ed_bgs.faction': {'ops': 'all'},
+    'ed_bgs.government': {'ops': 'all'},
+    'ed_bgs.powerstate': {'ops': 'all'},
+    'ed_bgs.state': {'ops': 'all'},
+    'ed_body.atmospherecomponent': {'ops': 'all'},
+    'ed_body.atmospheretype': {'ops': 'all'},
+    'ed_body.startype': {'ops': 'all'},
+    'ed_body.volcanism': {'ops': 'all'},
+    'ed_economy.commodity': {'ops': 'all'},
+    'ed_economy.economy': {'ops': 'all'},
+    'ed_exploration.samplesignals': {'ops': 'all'},
+    'ed_exploration.signalsignals': {'ops': 'all'},
+    'ed_material.material': {'ops': 'all'},
+    'ed_mining.hotspottype': {'ops': 'all'},
+    'ed_station.service': {'ops': 'all'},
+    'ed_station.stationtype': {'ops': 'all'},
+}
+CACHEOPS_ENABLED = True
 
 # setting per la gestione della geolocalizzazione
 # https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
@@ -212,7 +239,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Struttura dati contenente informazioni di configurazione. 
@@ -300,7 +328,7 @@ LOGGING = {
             "level": "INFO",
         },
         "django.server": {
-            "handlers": ["django.server"],
+            "handlers": ["console", "django.server"],
             "level": "INFO",
             "propagate": False,
         },
@@ -360,4 +388,21 @@ CELERY_TASK_ROUTES = {
         "queue": "eddn",
         "routing_key": "service.eddn",
     }
+}
+
+#Vite django connetion
+VITE_BUILD_DIRNAME = "vuejs"
+VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
+
+#Spectacular
+#https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'EDDAI - Elite Dangerous API Interface', 
+    'DESCRIPTION': "Le API di EDDAI-EliteDangerousApiInterface forniscono \
+        un'interfaccia per accedere e gestire i dati relativi al gioco Elite Dangerous. \
+        Queste API permettono agli sviluppatori di interagire con il database del \
+        progetto, consentendo operazioni di lettura dei dati.",
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
 }

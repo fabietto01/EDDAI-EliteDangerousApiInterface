@@ -10,6 +10,16 @@ from ..serializers import BaseBodySerializer, BaseBodyDistanceSerializer
 
 from ed_body.models import BaseBody
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description="Returns a list of base bodies, if the parameter distance_by_system is passed,\
+            it returns the distance between base bodies in the distance_st field",
+        responses={200: BaseBodyDistanceSerializer(many=True)}
+    ),
+    retrieve=extend_schema(description="Returns the details of a base bodies by ID"),
+)
 class BaseBodyViewSet(DistanceModelMixin, ListModelMixin, GenericViewSet):
     """
     BaseBodyViewSet is a view set that provides list and retrieve actions for the BaseBody model.
