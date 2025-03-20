@@ -80,7 +80,7 @@ ROOT_URLCONF = 'eddai_EliteDangerousApiInterface.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -389,6 +389,10 @@ CELERY_TASK_ROUTES = {
         "routing_key": "service.eddn",
     }
 }
+
+#Vite django connetion
+VITE_BUILD_DIRNAME = "vuejs"
+VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
 
 #impostazione per la generazione automatica della documentazione API
 #https://drf-spectacular.readthedocs.io/en/latest/settings.html
