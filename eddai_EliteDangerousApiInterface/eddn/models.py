@@ -6,8 +6,6 @@ from django.contrib import admin
 
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
-
 class DataLog(DateModels):
 
     data = models.JSONField(

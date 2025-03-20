@@ -9,6 +9,16 @@ from ..filterSet import PlanetFilterSet
 
 from ed_body.models import Planet
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description="Returns a list of planets, if the parameter distance_by_system is passed,\
+            it returns the distance between planets in the distance_st field",
+        responses={200: PlanetDistanceSerializer(many=True)}
+    ),
+    retrieve=extend_schema(description="Returns the details of a planet by ID")
+)
 class PlanetViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
     PlanetViewSet is a view set for handling API requests related to Planet objects.

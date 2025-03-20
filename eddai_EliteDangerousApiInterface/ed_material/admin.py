@@ -1,24 +1,20 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-
-# Register your models here.
+from core.admin import (
+    BaseOwnerModelsTabularInline, 
+    BaseOwnerModelsModelAdmin
+)
 
 from ed_material.models import *
 from ed_material.forms import MaterialInPlanetForm
 
-class MaterialInPlanetInline(admin.TabularInline):
+class MaterialInPlanetInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     form = MaterialInPlanetForm
     model = MaterialInPlanet
     raw_id_fields = ("planet",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("planet", "material", "percent", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(Material)
 class MaterialAdmin(admin.ModelAdmin):
@@ -37,7 +33,7 @@ class MaterialAdmin(admin.ModelAdmin):
     )
 
 @admin.register(MaterialInPlanet)
-class MaterialInPlanetAdmin(admin.ModelAdmin):
+class MaterialInPlanetAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     model = MaterialInPlanet
     form = MaterialInPlanetForm
     search_fields = ('planet__name', 'material__name', 'id')
@@ -54,19 +50,3 @@ class MaterialInPlanetAdmin(admin.ModelAdmin):
             "classes": ("collapse",)
         }),
     )
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form 
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)

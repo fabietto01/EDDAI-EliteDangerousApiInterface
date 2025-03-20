@@ -9,6 +9,16 @@ from ..filterSet import StarFilterSet
 
 from ed_body.models import Star
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description="Returns a list of stars, if the parameter distance_by_system is passed,\
+            it returns the distance between stars in the distance_st field",
+        responses={200: StarDistanceSerializer(many=True)}
+    ),
+    retrieve=extend_schema(description="Returns the details of a stars by ID")
+)
 class StarViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
     StarViewSet is a view set for handling API requests related to the Star model.
