@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-from uuid import uuid4
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     'drf_spectacular', #pip install drf-spectacular
     'django_filters', #pip install django-filter
     'django_celery_beat', #pip install django-celery-beat
+    'cacheops', #pip install django-cacheops
 
     'users',
     'core',
@@ -122,9 +122,35 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
+        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('DJANGO_CACHES_PORT', '6379')}/2",
     }
 }
+
+# Cacheops
+# https://github.com/Suor/django-cacheops?tab=readme-ov-file#setup
+CACHEOPS_REDIS = f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('DJANGO_CACHES_PORT', '6379')}/1"
+CACHEOPS_DEFAULTS = {
+    'timeout': 60*60
+}
+CACHEOPS = {
+    'ed_bgs.faction': {'ops': 'all'},
+    'ed_bgs.government': {'ops': 'all'},
+    'ed_bgs.powerstate': {'ops': 'all'},
+    'ed_bgs.state': {'ops': 'all'},
+    'ed_body.atmospherecomponent': {'ops': 'all'},
+    'ed_body.atmospheretype': {'ops': 'all'},
+    'ed_body.startype': {'ops': 'all'},
+    'ed_body.volcanism': {'ops': 'all'},
+    'ed_economy.commodity': {'ops': 'all'},
+    'ed_economy.economy': {'ops': 'all'},
+    'ed_exploration.samplesignals': {'ops': 'all'},
+    'ed_exploration.signalsignals': {'ops': 'all'},
+    'ed_material.material': {'ops': 'all'},
+    'ed_mining.hotspottype': {'ops': 'all'},
+    'ed_station.service': {'ops': 'all'},
+    'ed_station.stationtype': {'ops': 'all'},
+}
+CACHEOPS_ENABLED = True
 
 # setting per la gestione della geolocalizzazione
 # https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
@@ -302,7 +328,7 @@ LOGGING = {
             "level": "INFO",
         },
         "django.server": {
-            "handlers": ["django.server"],
+            "handlers": ["console", "django.server"],
             "level": "INFO",
             "propagate": False,
         },
