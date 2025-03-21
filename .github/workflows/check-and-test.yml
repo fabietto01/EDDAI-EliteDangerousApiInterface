@@ -30,11 +30,11 @@ jobs:
       - name: Build the Docker image
         run: docker build --file eddai_EliteDangerousApiInterface/Dockerfile -t eddaielitedangerousapiinterface:latest "eddai_EliteDangerousApiInterface" 
       - name: Run database flush
-        run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGRES_DB=ed_info -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password -e POSTGIS_HOST=localhost -e POSTGIS_PORT=5432 eddaielitedangerousapiinterface:latest python manage.py flush --no-input
+        run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_DB=ed_info -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password -e POSTGIS_HOST=localhost -e POSTGIS_PORT=5432 eddaielitedangerousapiinterface:latest python manage.py flush --no-input
       - name: Run database migrations
-        run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGRES_DB=ed_info -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password -e POSTGIS_HOST=localhost -e POSTGIS_PORT=5432 eddaielitedangerousapiinterface:latest python manage.py migrate
+        run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_DB=ed_info -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password -e POSTGIS_HOST=localhost -e POSTGIS_PORT=5432 eddaielitedangerousapiinterface:latest python manage.py migrate
       - name: Run tests
-        run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGRES_DB=ed_info -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password -e POSTGIS_HOST=localhost -e POSTGIS_PORT=5432 eddaielitedangerousapiinterface:latest python manage.py test
+        run: docker run --rm --network host -e DJANGO_SECRET_KEY='5^_hu^y$-f!okdysc6wrp)x^s6vzd=!d68#vm7+*(mkhwt@b11' -e DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.test -e POSTGIS_DB=ed_info -e POSTGIS_USER=test_user -e POSTGIS_PASSWORD=test_password -e POSTGIS_HOST=localhost -e POSTGIS_PORT=5432 eddaielitedangerousapiinterface:latest python manage.py test
       - name: Set pull request status to failure
         if: failure()
         run: |
