@@ -335,8 +335,7 @@ LOGGING = {
     },
 }
 
-#impostazioni deticatte al app EDDN pre la sinc del database con i datti 
-# provenienti dalla community ED
+# impostazioni per la gestione del servizio EDDN
 EDDN_RELY = "tcp://eddn.edcd.io:9500"
 EDDN_TIMEOUT = 600000
 AUTHORI_SED_SOFTWARS = [
