@@ -4412,5 +4412,15 @@
             "name": "None",
             "description": ""
         }
+    },
+    {
+        "model": "ed_economy.economy",
+        "pk": 18,
+        "fields": {
+            "_eddn": "$economy_Prison;",
+            "eddn": "$economy_Prison;",
+            "name": "Prison",
+            "description": ""
+        }
     }
 ]

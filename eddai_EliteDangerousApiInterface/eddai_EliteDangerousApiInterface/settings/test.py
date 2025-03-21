@@ -17,7 +17,16 @@ CACHES = {
     }
 }
 
+# Cacheops
+# https://github.com/Suor/django-cacheops?tab=readme-ov-file#setup
+CACHEOPS_ENABLED = False
+
+#impostazioni per la gestione delle code di celery
+#https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_BROKER_URL = 'memory://'
 CELERY_RESULT_BACKEND = "cache+memory://"
+
+# impostazioni per la gestione dei task di celery in modalità sincrona
+# https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-always-eager
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
