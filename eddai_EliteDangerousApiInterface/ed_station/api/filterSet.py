@@ -1,24 +1,12 @@
 import django_filters
-from ed_station.models import Station
-from ed_system.models import System
-from django.db.models import F
 
-from ed_core.functions import Distanza3D
+from ed_core.api.filters import BaseDistanceFilterSet
+from ed_station.models import Station, Service
 
-class StationFilterSet(django_filters.FilterSet):
+class StationFilterSet(BaseDistanceFilterSet):
 
-    @staticmethod
-    def filter_by_system(queryset, name, value):
-        system:System = System.objects.get(id=value)
-        return queryset.annotate(
-            distance_st=Distanza3D(F('system__coordinate'), point=system.coordinate)
-        ).order_by('distance_st')
-    
-    order_by_system = django_filters.NumberFilter(
-        method='filter_by_system',
-        label='from system',
-        distinct=True
-    )
+    distance_field = "system__coordinate"
+    default_ordering = "name"
 
     class Meta:
         model = Station
@@ -28,7 +16,6 @@ class StationFilterSet(django_filters.FilterSet):
             'primaryEconomy': ['in'],
             'secondaryEconomy': ['in'],
             'minorFaction': ['in',],
-            'service': ['in',],
-            'commodity': ['in',],
+            'service': ['exact','in'],
             'distance': ['lt', 'gt']
         }
