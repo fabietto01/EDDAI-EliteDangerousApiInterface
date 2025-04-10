@@ -4,7 +4,7 @@ from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
 
 from .stationTypeBasicInformationSerializer import StationTypeBasicInformationSerializer
 from ed_system.api.serializers import SystemBasicInformation
-from ed_economy.api.serializers import EconomyBasicInformationSerializer, CommodityInStatioBasicInformation
+from ed_economy.api.serializers import EconomyBasicInformationSerializer
 from ed_bgs.api.serializers import MinorFactionBasicInformation
 
 from ed_station.models import Station, StationType, Service

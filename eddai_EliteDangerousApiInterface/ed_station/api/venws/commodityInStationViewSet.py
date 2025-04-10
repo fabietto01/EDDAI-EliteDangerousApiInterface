@@ -9,24 +9,35 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 
-from ..serializers import ServiceInStationSerializer
-from ed_station.models import ServiceInStation, Station
+from ..serializers import CommodityInStationSerializer
+from ed_economy.models import CommodityInStation
+from ed_station.models import Station
 
-class ServiceInStationViewSet(OwnerAndDateModelViewSet):
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
+@extend_schema_view(
+    multiple_add_commodities=extend_schema(
+        description="Add multiple commodities to a station",
+        request=CommodityInStationSerializer(many=True),
+        responses={
+            201: CommodityInStationSerializer(many=True),
+        }
+    )
+)
+class CommodityInStationViewSet(OwnerAndDateModelViewSet):
     """
-    ServiceInStationViewSet is a view set for handling API requests related to ServiceInStation objects.
+    CommodityInStationViewSet is a view set for handling API requests related to CommodityInStation objects.
     """
     
-    queryset = ServiceInStation.objects.all()
-    serializer_class = ServiceInStationSerializer
+    queryset = CommodityInStation.objects.all()
+    serializer_class = CommodityInStationSerializer
     filterset_class = None
     filter_backends = [SearchFilter, DjangoFilterBackend]
-    search_fields = ['service__name']
+    search_fields = ['commodity__name']
 
     def get_queryset(self):
         """
-        Returns a queryset of ServiceInStation objects filtered by station ID.
+        Returns a queryset of CommodityInStation objects filtered by station ID.
         """
         queryset = super().get_queryset()
         return queryset.filter(station=self.kwargs['station_pk'])
@@ -58,37 +69,43 @@ class ServiceInStationViewSet(OwnerAndDateModelViewSet):
 
     @action(
         detail=False,
-        methods=[HTTPMethod.POST],
+        methods=[HTTPMethod.GET],
         url_name="multiple-adds",
         url_path="adds",
     )
-    def multiple_add_service(self, request, station_pk=None, pk=None) -> None:
+    def multiple_add_commodities(self, request, station_pk=None, pk=None) -> None:
+        """
+        Add multiple commodities to a station.
+        """
         if Station.objects.filter(pk=station_pk).exists():
             try:
                 serializer:ModelSerializer = self.get_serializer(
                     data=request.data,
-                    many=True
+                    many=True,
                 )
                 if serializer.is_valid():
                     user = self.request.user
                     serializer.save(
+                        station_id=self.kwargs['station_pk'],
                         created_by=user,
-                        updated_by=user,
-                        station_id=self.kwargs['station_pk']
+                        updated_by=user
                     )
                     return Response(
-                        serializer.data,
+                        serializer.data, 
                         status=status.HTTP_201_CREATED
                     )
                 return Response(
                     serializer.errors,
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            except Exception:
+            except Exception as e:
                 return Response(
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    str(e),
+                    status=status.HTTP_400_BAD_REQUEST
                 )
-        return  Response(
-            {'detail': _('Station not found')},
+        return Response(
+            {
+                'detail': _('Station not found'),
+            },
             status=status.HTTP_404_NOT_FOUND
         )

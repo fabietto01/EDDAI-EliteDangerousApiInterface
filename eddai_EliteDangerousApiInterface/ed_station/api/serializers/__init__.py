@@ -1,3 +1,4 @@
 from .stationSerializer import StationSerializer, StationDistanceSerializer, StationBasicInformation
 from .stationTypeBasicInformationSerializer import StationTypeBasicInformationSerializer
 from .serviceInStationSerializer import ServiceInStationSerializer
+from . commodityInStationSerializer import CommodityInStationSerializer
