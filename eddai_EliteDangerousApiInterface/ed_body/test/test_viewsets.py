@@ -357,7 +357,7 @@ class AtmosphereComponentInPlanetViewSetAPITestCase(APITestCase):
             created_by=self.user,
             updated_by=self.user
         )
-        url = reverse('atmospherecomponentinplanet-multiple-add', kwargs={'planet_pk': planet.pk})
+        url = reverse('atmospherecomponentinplanet-multiple-adds', kwargs={'planet_pk': planet.pk})
         queryset = AtmosphereComponent.objects.all()
         data = [
             {
