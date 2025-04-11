@@ -18,10 +18,12 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from .venws import (
-    CommodityViewSet
+    CommodityViewSet,
+    EconomyViewSet
 )
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'commodity', CommodityViewSet)
+router.register(r'economy', EconomyViewSet)
 
 urlpatterns = router.urls

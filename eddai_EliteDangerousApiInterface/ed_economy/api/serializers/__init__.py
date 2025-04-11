@@ -1,2 +1,2 @@
 from .commoditySerializer import CompactedCommoditySerializer, CommoditySerializer
-from .economyBasicInformationSerializer import EconomyBasicInformationSerializer
+from .economySerializer import EconomyBasicInformationSerializer, EconomySerializer
