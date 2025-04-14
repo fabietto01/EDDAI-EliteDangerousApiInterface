@@ -5,7 +5,7 @@ from ed_body.models import Star, StarLuminosity, StarType
 
 class StarScanSerializer(BaseScanSerializer):
     AbsoluteMagnitude = serializers.FloatField(
-        min_value=0,
+        min_value=-1,
     )
     Age_MY = serializers.FloatField(
         min_value=0,

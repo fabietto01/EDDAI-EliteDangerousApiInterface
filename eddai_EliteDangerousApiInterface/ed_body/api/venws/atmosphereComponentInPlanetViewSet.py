@@ -14,7 +14,6 @@ from ed_body.models import AtmosphereComponentInPlanet, Planet
 
 from ..serializers import AtmosphereComponentInPlanetSerializer
 
-
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
 @extend_schema_view(
@@ -68,8 +67,8 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
     @action(
         detail=False,
         methods=[HTTPMethod.POST],
-        url_name="multiple-add",
-        url_path="add"
+        url_name="multiple-adds",
+        url_path="adds",
     )
     def multiple_add_atmosphere_components(self, request, planet_pk=None, pk=None) -> None:
         """

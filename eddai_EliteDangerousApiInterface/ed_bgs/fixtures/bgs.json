@@ -615,9 +615,9 @@
   },
   {
     "model": "ed_bgs.powerstate",
-    "pk": 4,
+    "pk": 10,
     "fields": {
-      "_eddn": null,
+      "_eddn": "Unoccupied",
       "name": "Contested",
       "description": ""
     }

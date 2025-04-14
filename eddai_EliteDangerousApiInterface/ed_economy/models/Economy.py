@@ -19,3 +19,4 @@ class Economy(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('economy')
         verbose_name_plural = _('economies')
+        ordering = ['name']
