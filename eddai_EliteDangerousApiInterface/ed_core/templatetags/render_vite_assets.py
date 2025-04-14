@@ -13,7 +13,7 @@ def render_vite_assets():
         return mark_safe(
             """
             <script type='module' src='http://127.0.0.1:5173/@vite/client'>
-            </script><script type='module' src='http://127.0.0.1:5173/src/main.ts'></script>
+            </script><script type='module' src='http://127.0.0.1:5173/src/main.js'></script>
             """
         )
     manifest_json_path = os.path.join(settings.VITE_STATIC_BUNDLE, ".vite", "manifest.json")
