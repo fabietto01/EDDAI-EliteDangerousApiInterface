@@ -17,11 +17,10 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .venws import StationViewSet, ServiceInStationViewSet, CommodityInStationViewSet
+from .venws import StationViewSet, ServiceInStationViewSet
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'stations', StationViewSet)
 router.register(r'stations/(?P<station_pk>[^/.]+)/services', ServiceInStationViewSet)
-router.register(r'stations/(?P<station_pk>[^/.]+)/commodities', CommodityInStationViewSet)
 
 urlpatterns = router.urls

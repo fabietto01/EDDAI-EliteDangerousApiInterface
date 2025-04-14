@@ -58,7 +58,7 @@ class StationModelAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     search_fields = ("name", "system__name", "id")
     list_display = ("name", "system", "type", "landingPad", "economy", "minorFaction", "distance")
     readonly_fields = ("created_at", "updated_at")
-    raw_id_fields = ("system",)
+    raw_id_fields = ("system", "minorFaction")
     list_filter = ("landingPad", "type",)
     fieldsets = (
         (None, {

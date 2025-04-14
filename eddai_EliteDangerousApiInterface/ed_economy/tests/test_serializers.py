@@ -3,12 +3,16 @@ from django.db.utils import IntegrityError
 
 from ed_economy.models import (
     Commodity, Economy,
+    CommodityInStation
 )
 
 from ed_economy.api.serializers import (
     CompactedCommoditySerializer, CommoditySerializer,
-    EconomyBasicInformationSerializer, EconomySerializer
+    EconomyBasicInformationSerializer, EconomySerializer,
+    CommodityInStationSerializer
 )
+
+from users.models import User
 
 class CommoditySerializerTestCase(TestCase):
     """
@@ -157,3 +161,147 @@ class EconomySerializerTestCase(TestCase):
                 getattr(instance, key), value,
                 f"Error in {key} field"
             )
+
+class CommodityInStationSerializerTestCase(TestCase):
+
+    fixtures = ['user', 'economy', 'system', 'station', 'bgs', 'economy_test_data']
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.instance_user = User.objects.create_user(
+            username='testuser'
+        )
+
+    def test_serializer(self):
+        instance = CommodityInStation.objects.first()
+        serializer = CommodityInStationSerializer(
+            instance
+        )
+        self.assertEqual(
+            serializer.data['commodity'],
+            instance.commodity.name,
+            f"Error in commodity field"
+        )
+        self.assertEqual(
+            serializer.data['buyPrice'],
+            instance.buyPrice,
+            f"Error in buyPrice field"
+        )
+        self.assertEqual(
+            serializer.data['sellPrice'],
+            instance.sellPrice,
+            f"Error in sellPrice field"
+        )
+        self.assertEqual(
+            serializer.data['inStock'],
+            instance.inStock,
+            f"Error in inStock field"
+        )
+        self.assertEqual(
+            serializer.data['stockBracket'],
+            instance.stockBracket,
+            f"Error in stockBracket field"
+        )
+        self.assertEqual(
+            serializer.data['demand'],
+            instance.demand,
+            f"Error in demand field"
+        )
+        self.assertEqual(
+            serializer.data['demandBracket'],
+            instance.demandBracket,
+            f"Error in demandBracket field"
+        )
+        self.assertTrue(
+            serializer.data['created_at'],
+            f"Error in created_at field"
+        )
+        self.assertTrue(
+            serializer.data['updated_at'],
+            f"Error in updated_at field"
+        )
+        self.assertTrue(
+            serializer.data['created_by'],
+            f"Error in created_by field"
+        )
+        self.assertTrue(
+            serializer.data['updated_by'],
+            f"Error in updated_by field"
+        )
+
+    def test_deserializer(self):
+        data = {
+            'commodity': 'Algae',
+            'buyPrice': 123,
+            'sellPrice': 123,
+            'inStock': 123,
+            'stockBracket': 123,
+            'demand': 123.0,
+            'demandBracket': 123,
+        }
+        serializer = CommodityInStationSerializer(
+            data=data, context={
+                'station': 914,
+            }
+        )
+        is_valid = serializer.is_valid()
+        self.assertTrue(is_valid, serializer.errors)
+        instance = serializer.save(
+            station_id=914,
+            created_by=self.instance_user,
+            updated_by=self.instance_user,
+        )
+        self.assertEqual(
+            data.pop('commodity'),
+            instance.commodity.name,
+        )
+        for key, value in data.items():
+            self.assertEqual(
+                getattr(instance, key), value,
+                f"Error in {key} field"
+            )
+
+    def test_list_deserializer(self):
+        data = [
+            {
+                'commodity': 'Agri-Medicines',
+                'buyPrice': 123,
+                'sellPrice': 123,
+                'inStock': 123,
+                'stockBracket': 123,
+                'demand': 123.0,
+                'demandBracket': 123,
+            },
+            {
+                'commodity': 'Agronomic Treatment',
+                'buyPrice': 123,
+                'sellPrice': 123,
+                'inStock': 123,
+                'stockBracket': 123,
+                'demand': 123.0,
+                'demandBracket': 123,
+            }
+        ]
+        serializer = CommodityInStationSerializer(
+            data=data, context={
+                'station_pk': 914
+            },
+            many=True
+        )
+        is_valid = serializer.is_valid()
+        self.assertTrue(is_valid, serializer.errors)
+        instance = serializer.save(
+            station_id=914,
+            created_by=self.instance_user,
+            updated_by=self.instance_user,
+        )
+        for i in range(len(data)):
+            self.assertEqual(
+                data[i].pop('commodity'),
+                instance[i].commodity.name
+            )
+            for key, value in data[i].items():
+                self.assertEqual(
+                    getattr(instance[i], key), value,
+                    f"Error in {key} field"
+                )

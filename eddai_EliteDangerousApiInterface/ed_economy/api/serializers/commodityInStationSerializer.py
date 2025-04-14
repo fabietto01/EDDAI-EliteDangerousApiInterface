@@ -16,6 +16,11 @@ class CommodityInStationListSerializer(serializers.ListSerializer):
                     f"CommodityInStation with station {station_pk} already has the following commodities: {', '.join(existing_commodities)}.",
                     code=status.HTTP_400_BAD_REQUEST
                 )
+            if len(attrs) != len(set(item['commodity'] for item in attrs)):
+                raise serializers.ValidationError(
+                    "Duplicate commodities found in the input data.",
+                    code=status.HTTP_400_BAD_REQUEST
+                )
         except KeyError:
             raise serializers.ValidationError('An internal server error occurred', code=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return attrs
