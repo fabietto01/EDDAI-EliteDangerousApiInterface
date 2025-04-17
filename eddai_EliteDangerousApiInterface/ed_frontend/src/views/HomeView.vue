@@ -1,20 +1,23 @@
 <template>
 
-  <div class="container d-flex justify-content-center align-items-center mt-4">
-    <div class="row g-2">
-      <div class="col-md-6" v-for="card in cards" :key="card.id">
-        <div class="card">
-          <div class="d-flex align-items-center p-3 border-bottom border-dark">
+  <div class="container">
+    <div class="row align-items-center row-cols-3 g-2 mt-5">
+      <div class="col" v-for="card in cards" :key="card.id">
+        <div class="card h-100">
+          <div class="d-flex align-items-center p-2 border-bottom border-dark">
             <div class="me-3">
               <i class="bi bi-sun"></i>
             </div>
-            <h5 class="mb-0">{{ card.title }}</h5>
+            <h5 class="mb-0 ms-auto text-end">{{ card.title }}</h5>
           </div>
-          <div class="card-body">
+          <div class="card-body flex-grow-1">
             <p class="card-text">{{ card.description }}</p>
           </div>
         </div>
       </div>
+    </div>
+    <div>
+
     </div>
   </div>
 </template>
@@ -28,15 +31,21 @@ export default {
         {
           id: 1,
           title: 'System',
-          description: 'Description for Card 1',
+          description: 'Find the system that best suits your needs.',
           link: '#'
         },
         {
           id: 2,
           title: 'Station',
-          description: 'Description for Card 2',
+          description: 'Find the space station that meets your needs.',
           link: '#'
         },
+        {
+          id: 3,
+          title: 'Body',
+          description: 'Find the body that meets your needs.',
+          link: '#'
+        }
       ]
     };
   }
@@ -48,11 +57,16 @@ export default {
   background-color: #aac9de;
   border: none;
   border-radius: 10px;
-  padding: 5px; /* Imposta i margini interni della card */
+  padding: 5px;
   max-width: 400px;
 }
 
+.row.g-2 {
+  display: flex;
+  flex-wrap: wrap;
+}
 
-
-/* Aggiungi eventuali stili personalizzati qui */
+.col-md-6 {
+  display: flex;
+}
 </style>
