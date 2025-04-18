@@ -32,7 +32,7 @@ export default {
           id: 1,
           title: 'System',
           description: 'Find the system that best suits your needs.',
-          link: '#'
+          link: '/systems/'
         },
         {
           id: 2,
@@ -52,7 +52,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card {
   background-color: #aac9de;
   border: none;
