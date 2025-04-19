@@ -1,24 +1,21 @@
 <template>
-
-  <div class="container">
-    <div class="row align-items-center row-cols-3 g-2 mt-5">
-      <div class="col" v-for="card in cards" :key="card.id">
-        <div class="card h-100">
-          <div class="d-flex align-items-center p-2 border-bottom border-dark">
-            <div class="me-3">
+  <div class="container pt-5">
+    <div class="row g-3">
+      <div class="col-md-4 d-flex" v-for="card in cards" :key="card.id">
+        <a class="card p-1 h-100 w-100 text-decoration-none" :href="card.link">
+          <div class="d-flex justify-content-between align-items-center p-2 border-bottom border-dark">
+            <div>
               <i class="bi bi-sun"></i>
             </div>
-            <h5 class="mb-0 ms-auto text-end">{{ card.title }}</h5>
+            <h5 class="mb-0 text-end">{{ card.title }}</h5>
           </div>
-          <div class="card-body flex-grow-1">
+          <div class="card-body d-flex flex-column">
             <p class="card-text">{{ card.description }}</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
-    <div>
-
-    </div>
+    
   </div>
 </template>
 
@@ -31,19 +28,19 @@ export default {
         {
           id: 1,
           title: 'System',
-          description: 'Find the system that best suits your needs.',
+          description: 'Discover detailed information about various systems across the galaxy. Each system page allows you to explore specific traits, enabling tailored filtering to match your interests and search preferences with ease.',
           link: '/systems/'
         },
         {
           id: 2,
           title: 'Station',
-          description: 'Find the space station that meets your needs.',
+          description: 'Explore the characteristics of celestial bodies within each system. Use smart filtering tools to narrow down entities based on distinct features, making it easier to find what truly matters to you.',
           link: '#'
         },
         {
           id: 3,
           title: 'Body',
-          description: 'Find the body that meets your needs.',
+          description: 'Get in-depth data about every station in our network. Each page offers advanced filtering options, helping you browse based on functionality, location, or features that meet your unique criteria.',
           link: '#'
         }
       ]
@@ -55,18 +52,6 @@ export default {
 <style scoped>
 .card {
   background-color: #aac9de;
-  border: none;
-  border-radius: 10px;
-  padding: 5px;
-  max-width: 400px;
 }
 
-.row.g-2 {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.col-md-6 {
-  display: flex;
-}
 </style>

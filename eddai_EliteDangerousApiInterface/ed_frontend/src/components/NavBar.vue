@@ -1,10 +1,10 @@
 <template>
     <nav class="navbar" style="background-color: #1c1b1d; color: #b1b2b5;">
         <div class="container-fluid">
-            <div class="d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="/">
                 <div class="rounded-circle" style="width: 40px; height: 40px; background-color: #b1b2b5; margin-right: 10px;"></div>
-                <span class="navbar-brand mb-0 h1" style="color: #f36c1b;">EDDAI</span>
-            </div>
+                <span class="navbar-brand m-0 h1" style="color: #f36c1b;">EDDAI</span>
+            </a>
             <div class="d-flex justify-content-center flex-grow-1">
                 <ul class="navbar-nav d-flex flex-row">
                     <li v-for="item in navItems" :key="item.name" class="nav-item mx-3">
@@ -23,7 +23,7 @@ export default {
     data() {
         return {
             navItems: [
-                { name: 'System', link: '#' },
+                { name: 'System', link: '/systems/' },
                 { name: 'Station', link: '#' },
                 { name: 'Body', link: '#' },
             ],
