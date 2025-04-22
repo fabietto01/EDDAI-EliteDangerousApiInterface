@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django_filters', #pip install django-filter
     'django_celery_beat', #pip install django-celery-beat
     'cacheops', #pip install django-cacheops
-
+    
     'users',
     'core',
 
@@ -179,6 +179,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# auth
+# https://docs.djangoproject.com/en/5.1/ref/settings/#auth
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = '/users/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 # 1 day
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -220,10 +231,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Custom user model
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
-AUTH_USER_MODEL = 'users.User'
 
 # La configurazione per il framework REST è tutta con namespace all'interno di una singola impostazione Django
 # https://www.django-rest-framework.org/api-guide/settings/
