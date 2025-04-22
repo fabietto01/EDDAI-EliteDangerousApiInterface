@@ -271,21 +271,23 @@ LOGGING = {
         },
         "celery.task.console": {
             "()": "celery.app.log.TaskFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(processName)s] [%(task_name)s(%(task_id)s)] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
         },
         "celery.worker.console": {
             "()": "celery.utils.log.ColorFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(processName)s] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] %(message)s",
         },
     },
     "handlers": {
         "celery.task.console": {
             "level": "INFO",
+            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.task.console",
         },
         'celery.worker': {
             "level": "INFO",
+            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.worker.console",
         },
