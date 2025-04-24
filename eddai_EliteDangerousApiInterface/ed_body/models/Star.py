@@ -10,7 +10,7 @@ class Star(BaseBody):
     absoluteMagnitude = models.FloatField(
         verbose_name=_('absolute magnitude'),
         validators=[
-            MinValueValidator(0, _('the absolute magnitude cannot be less than 0'))
+            MinValueValidator(-1, _('the absolute magnitude cannot be less than -1'))
         ],
         null=True, blank=True,
     )
