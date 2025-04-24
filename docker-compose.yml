@@ -55,7 +55,6 @@ services:
     <<: *default-config
     deploy:
       replicas: 3
-    container_name: celery_worker_all
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,eddn,default -n WorkerAdmin@%h
   celery_beat:
     <<: *default-config
