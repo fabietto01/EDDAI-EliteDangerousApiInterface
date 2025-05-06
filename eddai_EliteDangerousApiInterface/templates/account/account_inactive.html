@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div id="login-card" class="card p-4 shadow rounded">
+                    <div class="mb-5 text-center">
+                        <h1>Account Inactive</h1>
+                        <p>This account is inactive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #login-card{
+            background-color: #1c1b1d;
+            color: #f36c1d;
+        }
+    </style>
+{% endblock content %}
