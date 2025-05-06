@@ -56,7 +56,7 @@ class CommodityV3Serializer(BaseSerializer):
 
     def validate(self, attrs):
         if not System.objects.filter(name=attrs.get('systemName')).exists():
-            raise serializers.ValidationError('System not found')
+            raise serializers.ValidationError({'systemName': 'System not found'})
         return super().validate(attrs)
     
     def set_data_defaults(self, validated_data):
