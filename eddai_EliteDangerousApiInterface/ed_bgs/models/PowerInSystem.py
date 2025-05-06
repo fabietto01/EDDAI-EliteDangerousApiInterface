@@ -34,7 +34,7 @@ class PowerInSystem(OwnerAndDateModels):
         """
         Returns the maximum relation value.
         """
-        return 6
+        return 12
 
     @staticmethod
     def StateForMoreRellation() -> PowerState:
