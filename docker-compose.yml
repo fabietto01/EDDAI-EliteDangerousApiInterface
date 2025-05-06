@@ -30,7 +30,7 @@ services:
   django:
     <<: *default-config
     container_name: django
-    command: python -m gunicorn eddai_EliteDangerousApiInterface.wsgi:application -b :8080 --timeout 60
+    command: python -m daphne eddai_EliteDangerousApiInterface.asgi:application -p 8080 -b 0.0.0.0
     volumes:
       - static_volume:/app/static-server
       - media_volume:/app/media-server
@@ -55,7 +55,6 @@ services:
     <<: *default-config
     deploy:
       replicas: 3
-    container_name: celery_worker_all
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,eddn,default -n WorkerAdmin@%h
   celery_beat:
     <<: *default-config

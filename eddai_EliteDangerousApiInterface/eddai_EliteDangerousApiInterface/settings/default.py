@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne', #pip install daphne
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +48,11 @@ INSTALLED_APPS = [
     'django_filters', #pip install django-filter
     'django_celery_beat', #pip install django-celery-beat
     'cacheops', #pip install django-cacheops
+    
+    'allauth', #pip install django-allauth
+    'allauth.account', 
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.frontier',
 
     'users',
     'core',
@@ -73,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'eddai_EliteDangerousApiInterface.urls'
@@ -94,7 +101,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'eddai_EliteDangerousApiInterface.wsgi.application'
-
+ASGI_APPLICATION = "eddai_EliteDangerousApiInterface.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -179,6 +186,38 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# auth
+# https://docs.djangoproject.com/en/5.1/ref/settings/#auth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = '/users/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 # 1 day
+
+# allauth
+# https://docs.allauth.org/en/latest/account/configuration.html
+ACCOUNT_EMAIL_VERIFICATION  = 'none'
+
+# socialaccount
+# https://docs.allauth.org/en/latest/socialaccount/configuration.html
+#SOCIALACCOUNT_ADAPTER  = 'users.adapter.CustomSocialAccountAdapter'
+SOCIALACCOUNT_ONLY = True
+SOCIALACCOUNT_PROVIDERS = {
+    'frontier': {
+        'SCOPE': ['auth', 'capi'],
+        'VERIFIED_EMAIL': True,
+        'EMAIL_AUTHENTICATION': True,
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -220,10 +259,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Custom user model
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
-AUTH_USER_MODEL = 'users.User'
 
 # La configurazione per il framework REST è tutta con namespace all'interno di una singola impostazione Django
 # https://www.django-rest-framework.org/api-guide/settings/
@@ -271,21 +306,23 @@ LOGGING = {
         },
         "celery.task.console": {
             "()": "celery.app.log.TaskFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(processName)s] [%(task_name)s(%(task_id)s)] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
         },
         "celery.worker.console": {
             "()": "celery.utils.log.ColorFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(processName)s] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] %(message)s",
         },
     },
     "handlers": {
         "celery.task.console": {
             "level": "INFO",
+            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.task.console",
         },
         'celery.worker': {
             "level": "INFO",
+            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.worker.console",
         },
