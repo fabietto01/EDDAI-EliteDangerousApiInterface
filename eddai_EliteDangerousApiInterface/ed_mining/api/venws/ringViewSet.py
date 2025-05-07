@@ -5,7 +5,7 @@ from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from ..filterset import RingFilterSet
-from ..serializers import RingModelSerializer, RingDistanceSerializer
+from ..serializers import RingSerializer, RingDistanceSerializer
 
 from ed_mining.models import Ring
 
@@ -20,7 +20,7 @@ class RingViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
 
     queryset = Ring.objects.all()
-    serializer_class = RingModelSerializer
+    serializer_class = RingSerializer
     distance_serializer_class = RingDistanceSerializer
     filter_param_distance = 'distance_by_system'
     filterset_class = RingFilterSet

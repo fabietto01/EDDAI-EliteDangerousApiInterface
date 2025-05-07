@@ -18,9 +18,11 @@ from rest_framework.routers import DefaultRouter
 
 from .venws import (
     RingViewSet,
+    HotspotTypeViewSet,
 )
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'ring', RingViewSet)
+router.register(r'hotspot-type', HotspotTypeViewSet)
 
 urlpatterns = router.urls

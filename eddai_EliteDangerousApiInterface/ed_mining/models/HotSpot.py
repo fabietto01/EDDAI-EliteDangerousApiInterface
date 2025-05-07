@@ -1,24 +1,21 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 
 from core.models import OwnerAndDateModels
-
-from .Ring import Ring
-from .HotspotType import HotspotType
 
 class HotSpot(OwnerAndDateModels):
     """
     """
     type = models.ForeignKey(
-        HotspotType, models.PROTECT,
+        'ed_mining.HotspotType', models.PROTECT,
         verbose_name=_('type'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
     )
     ring = models.ForeignKey(
-        Ring, models.CASCADE, 
+        'ed_mining.Ring', models.CASCADE, 
         verbose_name=_('ring'),
         related_name='%(app_label)s_%(class)s_related',
         related_query_name='%(app_label)s_%(class)ss'
