@@ -34,7 +34,7 @@ class SystemViewSetTestCase(APITestCase):
         self.assertEqual(
             len(response.data['results']), 
             System.objects.all().count()
-        )    
+        )
         for system_data in response.data['results']:
             self.assertTrue('distance_st' in system_data, f'distance_st not in system {system_data["name"]}')
         distance_st = -1

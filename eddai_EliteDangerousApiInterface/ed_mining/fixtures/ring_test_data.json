@@ -1,0 +1,60 @@
+[
+    {
+        "model": "ed_mining.ring",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-05-06T16:34:38.802Z",
+            "updated_at": "2025-05-06T16:34:38.802Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Earth Ring",
+            "body": 2,
+            "innerRad": 151190000.0,
+            "outerRad": 185070000.0,
+            "massMT": 268920000000.0,
+            "ringType": "MetalRich"
+        }
+    },
+    {
+        "model": "ed_mining.ring",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-05-06T16:34:39.019Z",
+            "updated_at": "2025-05-06T16:34:39.019Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Moon Ring",
+            "body": 3,
+            "innerRad": 185170000.0,
+            "outerRad": 381390000.0,
+            "massMT": 2625400000000.0,
+            "ringType": "Rocky"
+        }
+    },
+    {
+        "model": "ed_mining.hotspot",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-05-07T16:09:11.151Z",
+            "updated_at": "2025-05-07T16:09:11.151Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "type": 14,
+            "ring": 1,
+            "count": 4
+        }
+    },
+    {
+        "model": "ed_mining.hotspot",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-05-07T16:09:11.151Z",
+            "updated_at": "2025-05-07T16:09:11.151Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "type": 5,
+            "ring": 1,
+            "count": 2
+        }
+    }
+]

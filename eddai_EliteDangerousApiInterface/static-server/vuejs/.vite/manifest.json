@@ -1,26 +1,11 @@
 {
   "index.html": {
-    "file": "assets/index-C0J72652.js",
+    "file": "assets/index-DWU4sPWp.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
-    "dynamicImports": [
-      "src/views/AboutView.vue"
-    ],
     "css": [
-      "assets/index-5dJgFXHu.css"
-    ]
-  },
-  "src/views/AboutView.vue": {
-    "file": "assets/AboutView-DGq5n9XY.js",
-    "name": "AboutView",
-    "src": "src/views/AboutView.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ],
-    "css": [
-      "assets/AboutView-CSIvawM9.css"
+      "assets/index-C4AiFSch.css"
     ]
   }
 }
