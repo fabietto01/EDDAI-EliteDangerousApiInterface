@@ -1,1 +1,3 @@
-from .ringModelSerializer import RingModelSerializer, RingDistanceSerializer
+from .ringSerializer import RingSerializer, RingDistanceSerializer
+from .hotSpotTypeSerializer import HotspotTypeModelSerializer
+from .hotSpotInRing import HotSpotInRingBasicInformation, HotSpotInRingSerializer
