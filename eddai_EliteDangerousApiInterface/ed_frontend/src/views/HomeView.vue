@@ -18,7 +18,7 @@
     
   </div>
   <div class="container my-cont w-100">
-    <h1 class="scritta">Comin soon</h1>
+    <h1 class="scritta">Coming soon</h1>
   </div>
 </template>
 
