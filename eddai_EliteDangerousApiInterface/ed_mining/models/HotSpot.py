@@ -40,3 +40,4 @@ class HotSpot(OwnerAndDateModels):
         constraints = [
             models.UniqueConstraint(fields=['type', 'ring'], name='unique_type_ring'),
         ]
+        ordering = ['id']

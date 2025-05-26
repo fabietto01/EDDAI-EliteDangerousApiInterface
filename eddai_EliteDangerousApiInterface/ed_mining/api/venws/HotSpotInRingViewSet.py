@@ -59,7 +59,7 @@ class HotSpotInRingViewSet(OwnerAndDateModelViewSet):
         url_path='multiple-adds',
         url_name='adds'
     )
-    def multiple_adds(self, request, ring_pk, pk) -> None:
+    def multiple_adds(self, request, ring_pk) -> None:
         if Ring.objects.filter(pk=ring_pk).exists():
             try:
                 serializer:ModelSerializer = self.get_serializer(

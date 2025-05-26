@@ -45,7 +45,7 @@ BASE_RING_SERIALIZER_DATA = {
     "innerRad": 151190000.0,
     "outerRad": 185070000.0,
     "massMT": 268920000000.0,
-    "ringType": "MetalRich",
+    "type": "MetalRich",
     "created_by": 1,
     "updated_by": 1
 }
@@ -56,7 +56,7 @@ BASE_RING_DESERIALIZER_DATA = {
     "innerRad": 151190000.0,
     "outerRad": 185070000.0,
     "massMT": 268920000000.0,
-    "ringType": "MetalRich",
+    "type": "MetalRich",
 }
 
 BASE_HOTSPOT_TYPE_SERIALIZER_DATA = {
@@ -102,12 +102,16 @@ class RingSerializerTestCase(APITestCase):
             created_by=self.user,
             updated_by=self.user
         )
-        for kay, value in BASE_RING_DESERIALIZER_DATA.items():
-            if kay != "body_id":
+        for key, value in BASE_RING_DESERIALIZER_DATA.items():
+            if not key in ['body_id', 'type' ]:
                 self.assertEqual(
-                    getattr(instance, kay), value,
-                    msg=f"The deserialized data does not match the expected data for field '{kay}'."
+                    getattr(instance, key), value,
+                    msg=f"The deserialized data does not match the expected data for field '{key}'."
                 )
+        self.assertEqual(
+            instance.ringType, BASE_RING_DESERIALIZER_DATA["type"],
+            msg="The deserialized data does not match the expected data for field 'type'."
+        )
         self.assertEqual(
             instance.body.id, BASE_RING_DESERIALIZER_DATA["body_id"],
             msg="The deserialized data does not match the expected data for field 'body_id'."

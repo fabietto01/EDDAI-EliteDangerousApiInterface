@@ -29,6 +29,10 @@ class RingSerializer(serializers.ModelSerializer):
         read_only=True,
         source='ed_mining_hotspot_related'
     )
+    type = serializers.ChoiceField(
+        source="ringType",
+        choices=Ring.RingType.choices,
+    )
 
     class Meta:
         model = Ring
@@ -38,7 +42,7 @@ class RingSerializer(serializers.ModelSerializer):
             'created_by': {'read_only': True},
             'updated_by': {'read_only': True},
         }
-        fields = "__all__"
+        exclude = ['ringType']
 
 class RingDistanceSerializer(RingSerializer, DistanceSerializer):
     class Meta(RingSerializer.Meta):
