@@ -137,7 +137,7 @@ class SystemTestCase(TestCase):
         system1 = System.objects.create(
             name="Distance Test System 1",
             address=random.getrandbits(16),
-            coordinate=Point(0, 0, 0, srid=4979),
+            coordinate=Point(8, 7, 6, srid=4979),
             created_by=self.istance_user,
             updated_by=self.istance_user,
         )
@@ -148,4 +148,5 @@ class SystemTestCase(TestCase):
             created_by=self.istance_user,
             updated_by=self.istance_user,
         )
-        self.assertEqual(System.get_distance(system1, system2), 5.0)     
+        distance = System.get_distance(system1, system2)
+        self.assertEqual(distance, 8.367)     

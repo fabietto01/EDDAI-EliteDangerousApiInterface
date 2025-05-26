@@ -40,3 +40,7 @@ CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 CSRF_TRUSTED_ORIGINS = [
     'https://eddai.italiangamingsystem.it'
 ]
+
+# Cacheops
+# https://github.com/Suor/django-cacheops?tab=readme-ov-file#setup
+CACHEOPS_DEGRADE_ON_FAILURE = True

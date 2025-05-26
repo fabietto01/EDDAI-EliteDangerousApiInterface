@@ -8,5 +8,5 @@ class EconomyLowerSerializer(serializers.Serializer):
     )
     proportion = serializers.FloatField(
         min_value=0,
-        max_value=1,
+        max_value=2,
     )

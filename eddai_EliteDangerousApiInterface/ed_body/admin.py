@@ -1,5 +1,9 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from core.admin import (
+    BaseOwnerModelsTabularInline,
+    BaseOwnerModelsModelAdmin
+)
 
 from ed_body.models import *
 
@@ -7,19 +11,12 @@ from ed_mining.admin import RingInline
 from ed_material.admin import MaterialInPlanetInline
 from ed_exploration.admin import SignalInline, SampleInline
 
-
-class AtmosphereComponentInPlanetInline(admin.TabularInline):
+class AtmosphereComponentInPlanetInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = AtmosphereComponentInPlanet
     raw_id_fields = ("planet",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("planet", "atmosphere_component", "percent", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(StarLuminosity)
 class StarLuminosityAdmin(admin.ModelAdmin):
@@ -52,7 +49,7 @@ class StarTypeAdmin(admin.ModelAdmin):
     )
 
 @admin.register(Star)
-class StarAdmin(admin.ModelAdmin):
+class StarAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     model = Star
     search_fields = ('name', 'system__name', 'id')
     list_display = ('name', 'system', 'distance', "luminosity", "starType", "rotating", "orbiting")
@@ -85,24 +82,8 @@ class StarAdmin(admin.ModelAdmin):
     )
     inlines = [RingInline]
 
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
-
 @admin.register(Planet)
-class PlanetAdmin(admin.ModelAdmin):
+class PlanetAdmin(BaseOwnerModelsModelAdmin, admin.ModelAdmin):
     model = Planet
     search_fields = ('name', 'system__name', 'id')
     list_display = ('name', 'system', 'distance', "atmosphereType", "planetType", "terraformState")
@@ -140,22 +121,6 @@ class PlanetAdmin(admin.ModelAdmin):
         RingInline, AtmosphereComponentInPlanetInline, 
         MaterialInPlanetInline, SignalInline, SampleInline
     ]
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form 
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(AtmosphereType)
 class AtmosphereTypeAdmin(admin.ModelAdmin):

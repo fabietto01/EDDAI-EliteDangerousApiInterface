@@ -28,6 +28,11 @@ class BaseBodySerializer(serializers.ModelSerializer):
         }
         fields = "__all__"
 
+class BaseBodyBasicInformation(BaseBodySerializer):
+
+    class Meta(BaseBodySerializer.Meta):
+        fields = ['id', 'name']
+
 class BaseBodyDistanceSerializer(BaseBodySerializer, DistanceSerializer):
     class Meta(BaseBodySerializer.Meta):
         pass

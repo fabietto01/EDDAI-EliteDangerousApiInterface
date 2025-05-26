@@ -1,59 +1,39 @@
 from django.contrib import admin
+from core.admin import (
+    BaseOwnerModelsTabularInline, BaseOwnerModelsStackedInline, 
+    BaseOwnerModelsModelAdmin
+)
 
 from ed_bgs.models import *
 # Register your models here.
 
-class MinorFactionInSystemTabularInline(admin.TabularInline):
+class MinorFactionInSystemTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = MinorFactionInSystem
     raw_id_fields = ("system","minorFaction")
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("system", "minorFaction", "Influence", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-    
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
-class StateInMinorFactionTabularInline(admin.TabularInline):
+class StateInMinorFactionTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = StateInMinorFaction
     raw_id_fields = ("minorFaction",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("minorFaction", "state", "phase", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
 
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
-
-class PowerInSystemTabularInline(admin.TabularInline):
+class PowerInSystemTabularInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = PowerInSystem
     raw_id_fields = ("system",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("system", "power", "state", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
 
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
-
-class PowerInSystemStackedInline(admin.StackedInline):
+class PowerInSystemStackedInline(BaseOwnerModelsStackedInline, admin.StackedInline):
     model = PowerInSystem
     raw_id_fields = ("system",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")
     fields = ("system", "power", "state", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk:
-            obj.created_by = request.user
-        obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(MinorFactionInSystem)
 class MinorFactionInSystemModelAdmin(admin.ModelAdmin):
@@ -122,7 +102,7 @@ class FactionModelAdmin(admin.ModelAdmin):
     ]
 
 @admin.register(MinorFaction)
-class MinorFactionModelAdmin(admin.ModelAdmin):
+class MinorFactionModelAdmin(BaseOwnerModelsModelAdmin):
     model = MinorFaction
     search_fields = ("name","pk")
     list_display = ("name", "allegiance", "government")
@@ -149,22 +129,6 @@ class MinorFactionModelAdmin(admin.ModelAdmin):
         )
     ]
     inlines = [MinorFactionInSystemTabularInline]
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form 
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)
 
 @admin.register(Government)
 class GovernmentModelAdmin(admin.ModelAdmin):
@@ -271,7 +235,7 @@ class PowerStateModelAdmin(admin.ModelAdmin):
     ]
 
 @admin.register(PowerInSystem)
-class PowerInSystemModelAdmin(admin.ModelAdmin):
+class PowerInSystemModelAdmin(BaseOwnerModelsModelAdmin):
     model = PowerInSystem
     search_fields = ("system__name","power__name","pk")
     list_display = ("system", "power", "state")
@@ -297,19 +261,3 @@ class PowerInSystemModelAdmin(admin.ModelAdmin):
             }
         )
     ]
-
-    def get_form(self, request, obj, change, **kwargs):
-        form = super().get_form(request, obj, change, **kwargs)
-        if not obj:
-            form.base_fields['created_by'].initial = request.user
-            form.base_fields['updated_by'].initial = request.user
-        else:
-            form.base_fields['updated_by'].initial = request.user
-        return form 
-
-    def save_model(self, request, obj, form, change) -> None:
-        if not obj.pk and not obj.created_by:
-            obj.created_by = request.user
-        if not obj.updated_by:
-            obj.updated_by = request.user
-        return super().save_model(request, obj, form, change)

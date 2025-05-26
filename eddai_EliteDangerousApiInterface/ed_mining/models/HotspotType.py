@@ -14,3 +14,4 @@ class HotspotType(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _("Hotspot Type")
         verbose_name_plural = _("Hotspot Type")
+        ordering = ['name']

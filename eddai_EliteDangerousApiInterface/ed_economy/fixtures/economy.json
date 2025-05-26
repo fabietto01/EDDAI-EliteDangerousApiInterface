@@ -4244,6 +4244,16 @@
         }
     },
     {
+        "model": "ed_economy.commodity",
+        "pk": 387,
+        "fields": {
+            "_eddn": "USSCargoExperimentalChemicals",
+            "name": "Experimental Chemicals",
+            "description": "",
+            "meanPrice": 0
+        }
+    },
+    {
         "model": "ed_economy.economy",
         "pk": 1,
         "fields": {
@@ -4400,6 +4410,16 @@
             "_eddn": "$economy_None;",
             "eddn": "$economy_None;",
             "name": "None",
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_economy.economy",
+        "pk": 18,
+        "fields": {
+            "_eddn": "$economy_Prison;",
+            "eddn": "$economy_Prison;",
+            "name": "Prison",
             "description": ""
         }
     }

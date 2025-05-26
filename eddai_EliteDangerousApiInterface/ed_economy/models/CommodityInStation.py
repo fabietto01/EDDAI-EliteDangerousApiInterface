@@ -59,6 +59,7 @@ class CommodityInStation(OwnerAndDateModels):
     class Meta:
         verbose_name = _('commodity in station')
         verbose_name_plural = _('commodities in station')
+        ordering = ['station', 'commodity__name']
         indexes = [
             models.Index(fields=['station']),
             models.Index(fields=['commodity'])

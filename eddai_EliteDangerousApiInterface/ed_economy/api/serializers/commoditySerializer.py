@@ -11,7 +11,7 @@ class CompactedCommoditySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Commodity
-        fields = ['id', 'name', 'meanPrice']
+        fields = ['id', 'name']
 
 class CommoditySerializer(serializers.ModelSerializer):
     

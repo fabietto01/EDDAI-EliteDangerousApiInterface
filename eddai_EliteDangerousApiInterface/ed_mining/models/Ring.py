@@ -81,3 +81,4 @@ class Ring(OwnerAndDateModels):
             models.UniqueConstraint(fields=['name', 'body'], name='unique_ring_name_body'),
             models.CheckConstraint(check=models.Q(innerRad__lt=models.F('outerRad'))  | models.Q(innerRad__isnull=True) | models.Q(outerRad__isnull=True), name='inner_radius_lt_outer_radius'),
         ]
+        ordering = ['id']

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div id="login-card" class="card p-4 shadow rounded">
+                    <div class="mb-5 text-center">
+                        <h1>Login Cancelled</h1>
+                        {% url 'account_login' as login_url %}
+                        <p>You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #login-card{
+            background-color: #1c1b1d;
+            color: #f36c1d;
+        }
+    </style>
+{% endblock content %}

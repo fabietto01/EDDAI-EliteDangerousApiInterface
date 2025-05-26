@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-from uuid import uuid4
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -33,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne', #pip install daphne
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,8 +44,15 @@ INSTALLED_APPS = [
     'rest_framework', #pip install djangorestframework
     'rest_framework.authtoken', #per il login con token
     'rest_framework_gis', #pip install djangorestframework-gis
+    'drf_spectacular', #pip install drf-spectacular
     'django_filters', #pip install django-filter
     'django_celery_beat', #pip install django-celery-beat
+    'cacheops', #pip install django-cacheops
+    
+    'allauth', #pip install django-allauth
+    'allauth.account', 
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.frontier',
 
     'users',
     'core',
@@ -72,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = 'eddai_EliteDangerousApiInterface.urls'
@@ -79,7 +87,7 @@ ROOT_URLCONF = 'eddai_EliteDangerousApiInterface.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,7 +101,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'eddai_EliteDangerousApiInterface.wsgi.application'
-
+ASGI_APPLICATION = "eddai_EliteDangerousApiInterface.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -121,9 +129,35 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('REDIS_CACHE_PORT', '6379')}",
+        "LOCATION": f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('DJANGO_CACHES_PORT', '6379')}/2",
     }
 }
+
+# Cacheops
+# https://github.com/Suor/django-cacheops?tab=readme-ov-file#setup
+CACHEOPS_REDIS = f"redis://{os.environ.get('DJANGO_CACHES_HOST', 'localhost')}:{os.environ.get('DJANGO_CACHES_PORT', '6379')}/1"
+CACHEOPS_DEFAULTS = {
+    'timeout': 60*60
+}
+CACHEOPS = {
+    'ed_bgs.faction': {'ops': 'all'},
+    'ed_bgs.government': {'ops': 'all'},
+    'ed_bgs.powerstate': {'ops': 'all'},
+    'ed_bgs.state': {'ops': 'all'},
+    'ed_body.atmospherecomponent': {'ops': 'all'},
+    'ed_body.atmospheretype': {'ops': 'all'},
+    'ed_body.startype': {'ops': 'all'},
+    'ed_body.volcanism': {'ops': 'all'},
+    'ed_economy.commodity': {'ops': 'all'},
+    'ed_economy.economy': {'ops': 'all'},
+    'ed_exploration.samplesignals': {'ops': 'all'},
+    'ed_exploration.signalsignals': {'ops': 'all'},
+    'ed_material.material': {'ops': 'all'},
+    'ed_mining.hotspottype': {'ops': 'all'},
+    'ed_station.service': {'ops': 'all'},
+    'ed_station.stationtype': {'ops': 'all'},
+}
+CACHEOPS_ENABLED = True
 
 # setting per la gestione della geolocalizzazione
 # https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
@@ -152,6 +186,38 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# auth
+# https://docs.djangoproject.com/en/5.1/ref/settings/#auth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_URL = '/users/login/'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 # 1 day
+
+# allauth
+# https://docs.allauth.org/en/latest/account/configuration.html
+ACCOUNT_EMAIL_VERIFICATION  = 'none'
+
+# socialaccount
+# https://docs.allauth.org/en/latest/socialaccount/configuration.html
+#SOCIALACCOUNT_ADAPTER  = 'users.adapter.CustomSocialAccountAdapter'
+SOCIALACCOUNT_ONLY = True
+SOCIALACCOUNT_PROVIDERS = {
+    'frontier': {
+        'SCOPE': ['auth', 'capi'],
+        'VERIFIED_EMAIL': True,
+        'EMAIL_AUTHENTICATION': True,
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -194,10 +260,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Custom user model
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-user-model
-AUTH_USER_MODEL = 'users.User'
-
 # La configurazione per il framework REST è tutta con namespace all'interno di una singola impostazione Django
 # https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
@@ -212,7 +274,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 # Struttura dati contenente informazioni di configurazione. 
@@ -243,21 +306,23 @@ LOGGING = {
         },
         "celery.task.console": {
             "()": "celery.app.log.TaskFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(processName)s] [%(task_name)s(%(task_id)s)] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
         },
         "celery.worker.console": {
             "()": "celery.utils.log.ColorFormatter",
-            "format": "%(asctime)s [%(levelname)s] [%(processName)s] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] %(message)s",
         },
     },
     "handlers": {
         "celery.task.console": {
             "level": "INFO",
+            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.task.console",
         },
         'celery.worker': {
             "level": "INFO",
+            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.worker.console",
         },
@@ -300,15 +365,14 @@ LOGGING = {
             "level": "INFO",
         },
         "django.server": {
-            "handlers": ["django.server"],
+            "handlers": ["console", "django.server"],
             "level": "INFO",
             "propagate": False,
         },
     },
 }
 
-#impostazioni deticatte al app EDDN pre la sinc del database con i datti 
-# provenienti dalla community ED
+# impostazioni per la gestione del servizio EDDN
 EDDN_RELY = "tcp://eddn.edcd.io:9500"
 EDDN_TIMEOUT = 600000
 AUTHORI_SED_SOFTWARS = [
@@ -360,4 +424,21 @@ CELERY_TASK_ROUTES = {
         "queue": "eddn",
         "routing_key": "service.eddn",
     }
+}
+
+#Vite django connetion
+VITE_BUILD_DIRNAME = "vuejs"
+VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
+
+#Spectacular
+#https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'EDDAI - Elite Dangerous API Interface', 
+    'DESCRIPTION': "Le API di EDDAI-EliteDangerousApiInterface forniscono \
+        un'interfaccia per accedere e gestire i dati relativi al gioco Elite Dangerous. \
+        Queste API permettono agli sviluppatori di interagire con il database del \
+        progetto, consentendo operazioni di lettura dei dati.",
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
 }
