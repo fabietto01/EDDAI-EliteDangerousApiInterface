@@ -17,6 +17,9 @@
     </div>
     
   </div>
+  <div class="container my-cont w-100">
+    <h1 class="scritta">Comin soon</h1>
+  </div>
 </template>
 
 <script>
@@ -25,24 +28,6 @@ export default {
   data() {
     return {
       cards: [
-        {
-          id: 1,
-          title: 'System',
-          description: 'Discover detailed information about various systems across the galaxy. Each system page allows you to explore specific traits, enabling tailored filtering to match your interests and search preferences with ease.',
-          link: '/systems/'
-        },
-        {
-          id: 2,
-          title: 'Station',
-          description: 'Explore the characteristics of celestial bodies within each system. Use smart filtering tools to narrow down entities based on distinct features, making it easier to find what truly matters to you.',
-          link: '#'
-        },
-        {
-          id: 3,
-          title: 'Body',
-          description: 'Get in-depth data about every station in our network. Each page offers advanced filtering options, helping you browse based on functionality, location, or features that meet your unique criteria.',
-          link: '#'
-        }
       ]
     };
   }
@@ -50,8 +35,22 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  background-color: #aac9de;
+
+.scritta {
+  color: white;
+  font-size: 88px;
+}
+
+.my-cont {
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  /* todo: aggiungere immagine di sfondo */
+  background-image: none;
 }
 
 </style>
