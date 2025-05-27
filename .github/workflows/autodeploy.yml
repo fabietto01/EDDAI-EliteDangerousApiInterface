@@ -11,5 +11,5 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Trigger Portainer Webhook
-                run: |
-                    curl -X POST "https://${HOST}/api/stacks/webhooks/${PORTAINER_WEBHOOK_GUID}"
+              run: |
+                  curl -X POST "https://${HOST}/api/stacks/webhooks/${PORTAINER_WEBHOOK_GUID}"
