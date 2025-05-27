@@ -1,0 +1,15 @@
+name: Auto Deploy
+on:
+    push:
+        branches:
+            - main
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Trigger Portainer Webhook
+                env:
+                    HOST: ${{ secrets.PORTAINER_HOST }}
+                    PORTAINER_WEBHOOK_GUID: ${{ secrets.PORTAINER_WEBHOOK_GUID }}
+                run: |
+                    curl -X POST "https://${HOST}/api/stacks/webhooks/${PORTAINER_WEBHOOK_GUID}"
