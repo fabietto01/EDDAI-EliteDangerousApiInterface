@@ -1,7 +1,7 @@
 name: check and test
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*" ]
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
