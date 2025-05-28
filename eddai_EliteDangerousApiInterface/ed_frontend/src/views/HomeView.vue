@@ -52,6 +52,24 @@ export default {
 </script>
 
 <style scoped>
+
+.scritta {
+  color: white;
+  font-size: 88px;
+}
+
+.my-cont {
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  background-image: none;
+}
+
+
 .card {
   background-color: #aac9de;
 }
