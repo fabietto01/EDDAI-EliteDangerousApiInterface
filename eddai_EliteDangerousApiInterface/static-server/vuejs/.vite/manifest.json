@@ -1,23 +1,11 @@
 {
   "index.html": {
-    "file": "assets/index-CASTBDdS.js",
+    "file": "assets/index-BR8WPdRW.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
-    "dynamicImports": [
-      "src/views/SystemView.vue"
-    ],
     "css": [
-      "assets/index-BiWlGgPA.css"
-    ]
-  },
-  "src/views/SystemView.vue": {
-    "file": "assets/SystemView-BfQGOfp_.js",
-    "name": "SystemView",
-    "src": "src/views/SystemView.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
+      "assets/index-BZsHIgxv.css"
     ]
   }
 }
