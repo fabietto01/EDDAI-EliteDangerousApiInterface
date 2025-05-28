@@ -34,9 +34,9 @@ export default {
     data() {
         return {
             navItems: [
-                { name: 'System', link: '/systems/' },
-                { name: 'Station', link: '#' },
-                { name: 'Body', link: '#' },
+                // { name: 'System', link: '/systems/' },
+                // { name: 'Station', link: '#' },
+                // { name: 'Body', link: '#' },
             ],
         };
     },
