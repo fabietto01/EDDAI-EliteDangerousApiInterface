@@ -13,7 +13,8 @@
 				"snappify.snappify",
 				"esbenp.prettier-vscode",
 				"mhutchie.git-graph",
-				"dzhavat.bracket-pair-toggler"
+				"dzhavat.bracket-pair-toggler",
+				"Vue.volar"
 			]
 		}
 	}

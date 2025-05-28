@@ -426,7 +426,11 @@ CELERY_TASK_ROUTES = {
     }
 }
 
-#impostazione per la generazione automatica della documentazione API
+#Vite django connetion
+VITE_BUILD_DIRNAME = "vuejs"
+VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
+
+#Spectacular
 #https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
     'TITLE': 'EDDAI - Elite Dangerous API Interface', 
