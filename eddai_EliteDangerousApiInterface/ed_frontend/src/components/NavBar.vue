@@ -23,7 +23,7 @@
                     </li>
                 </ul>
             </div>
-            <button class="btn nav-btn d-none d-md-block">Login</button>
+            <!-- <button class="btn nav-btn d-none d-md-block">Login</button> -->
         </div>
     </nav>
 </template>
@@ -34,9 +34,6 @@ export default {
     data() {
         return {
             navItems: [
-                // { name: 'System', link: '/systems/' },
-                // { name: 'Station', link: '#' },
-                // { name: 'Body', link: '#' },
             ],
         };
     },
