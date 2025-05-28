@@ -1,11 +1,6 @@
 from core.api.viewsets import OwnerAndDateModelViewSet
 from ed_core.api.mixins import DistanceModelMixin
 
-from http import HTTPMethod
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework import status
-
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
