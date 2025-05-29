@@ -15,7 +15,7 @@ class StationFilterSet(BaseDistanceFilterSet):
             'landingPad': ['exact'],
             'primaryEconomy': ['in'],
             'secondaryEconomy': ['in'],
-            'minorFaction': ['in',],
+            'minorFaction': ['exact','in',],
             'service': ['exact','in'],
             'distance': ['lt', 'gt']
         }

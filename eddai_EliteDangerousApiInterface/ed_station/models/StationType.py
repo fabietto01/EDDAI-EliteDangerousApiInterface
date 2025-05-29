@@ -17,4 +17,4 @@ class StationType(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('station type')
         verbose_name_plural = _('station types')
-    
+        ordering = ['name']

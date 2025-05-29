@@ -46,6 +46,24 @@
         }
     },
     {
+        "model": "ed_station.station",
+        "pk": 171191,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.307Z",
+            "updated_at": "2025-05-28T07:59:32.307Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Navarrete's Prospect",
+            "markerid": 9144.208117,
+            "system": 11,
+            "landingPad": "L",
+            "type": 2,
+            "primaryEconomy": 1,
+            "secondaryEconomy": 17,
+            "distance": 9144.208117
+        }
+    },
+    {
         "model": "ed_station.serviceinstation",
         "pk": 1,
         "fields": {
