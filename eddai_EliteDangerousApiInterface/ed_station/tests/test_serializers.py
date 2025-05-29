@@ -65,9 +65,6 @@ BASE_STATION_DESERIALIZER_DATA = {
   "primaryEconomy_id": 4,
   "secondaryEconomy_id": 8,
   "minorFaction_id": 3163,
-  "service_id": [
-    33, 27,2,24,1
-  ],
   "name": "Mother Test Station",
   "markerid": 80760457,
   "landingPad": "S",
@@ -151,19 +148,19 @@ class StationSerializerTestCase(APITestCase):
             is_valid,
             msg="The deserialized data is not valid. Errors: {}".format(serializer.errors)
         )
-        instance = serializer.save(
+        instance:Station = serializer.save(
             created_by=self.user,
             updated_by=self.user
         )
         for key, value in BASE_STATION_DESERIALIZER_DATA.items():
-            if key not in ['body_id', 'type_id', 'primaryEconomy_id', 'secondaryEconomy_id', 'minorFaction_id', 'service_id']:
+            if key not in ['system_id', 'type_id', 'primaryEconomy_id', 'secondaryEconomy_id', 'minorFaction_id', 'service_id']:
                 self.assertEqual(
                     getattr(instance, key), value,
                     msg=f"The deserialized data does not match the expected data for field '{key}'."
                 )
         self.assertEqual(
-            instance.body.id, BASE_STATION_DESERIALIZER_DATA["body_id"],
-            msg="The deserialized data does not match the expected data for field 'body_id'."
+            instance.system.id, BASE_STATION_DESERIALIZER_DATA["system_id"],
+            msg="The deserialized data does not match the expected data for field 'system_id'."
         )
         self.assertEqual(
             instance.type.id, BASE_STATION_DESERIALIZER_DATA["type_id"],
@@ -181,11 +178,6 @@ class StationSerializerTestCase(APITestCase):
             instance.minorFaction.id, BASE_STATION_DESERIALIZER_DATA["minorFaction_id"],
             msg="The deserialized data does not match the expected data for field 'minorFaction_id'."
         )
-        for service_id in BASE_STATION_DESERIALIZER_DATA["service_id"]:
-            self.assertTrue(
-                instance.service.filter(id=service_id).exists(),
-                msg=f"The deserialized data does not contain the expected service with id '{service_id}'."
-            )
             
     def test_many_serializer(self):
         qs = Station.objects.all()

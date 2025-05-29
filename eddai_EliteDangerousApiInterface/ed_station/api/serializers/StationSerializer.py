@@ -76,12 +76,6 @@ class StationSerializer(StationBasicInformation):
         many=True,
         read_only=True,
     )
-    service_id = serializers.PrimaryKeyRelatedField(
-        queryset=Service.objects.all(),
-        source='service',
-        write_only=True,
-        many=True,
-    )
 
     class Meta(StationBasicInformation.Meta):
         fields = None
