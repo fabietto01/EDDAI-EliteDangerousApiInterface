@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
 
-from ed_body.api.serializers.baseBodySerializer import BaseBodyBasicInformation
+from ed_body.api.serializers.baseBodySerializer import CompactBaseBodySerializer
 from ed_system.api.serializers import SystemBasicInformation
 from ed_mining.api.serializers.hotSpotInRing import HotSpotInRingBasicInformation
 
@@ -18,7 +18,7 @@ class RingSerializer(serializers.ModelSerializer):
     system = SystemBasicInformation(
         read_only=True, source='body.system'
     )
-    body = BaseBodyBasicInformation(read_only=True)
+    body = CompactBaseBodySerializer(read_only=True)
     body_id = serializers.PrimaryKeyRelatedField(
         queryset=BaseBody.objects.all(),
         write_only=True,

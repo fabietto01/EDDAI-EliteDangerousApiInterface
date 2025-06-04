@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .baseBodySerializer import BaseBodySerializer
+from .baseBodySerializer._baseBodySerializer import _BaseBodySerializer
 
 from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
 from .atmosphereComponentInPlanetSerializer import CompactedAtmosphereComponentInPlanetSerializer
@@ -8,7 +8,7 @@ from ed_body.models import (
     Planet, AtmosphereType, PlanetType, Volcanism
 )
 
-class PlanetSerializer(BaseBodySerializer):
+class PlanetSerializer(_BaseBodySerializer):
     """
     PlanetSerializer is a serializer for the Planet model.
     Attributes:
@@ -40,7 +40,7 @@ class PlanetSerializer(BaseBodySerializer):
     )
     composition = CompositionSerializer(source='*', required=False)
 
-    class Meta(BaseBodySerializer.Meta):
+    class Meta(_BaseBodySerializer.Meta):
         model = Planet
         fields = None
         exclude = [

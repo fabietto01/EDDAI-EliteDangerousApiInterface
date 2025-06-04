@@ -1,10 +1,9 @@
-from rest_framework import serializers
-from ed_body.models import BaseBody
-from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
+from rest_framework.serializers import PrimaryKeyRelatedField
 
+from .compactBaseBodySerializer import CompactBaseBodySerializer
 from ed_system.api.serializers import SystemBasicInformation, System
 
-class BaseBodySerializer(serializers.ModelSerializer):
+class _BaseBodySerializer(CompactBaseBodySerializer):
     """
     BaseBodySerializer is a serializer for the BaseBody model.
     Attributes:
@@ -12,14 +11,13 @@ class BaseBodySerializer(serializers.ModelSerializer):
     """
 
     system = SystemBasicInformation(read_only=True)
-    system_id = serializers.PrimaryKeyRelatedField(
+    system_id = PrimaryKeyRelatedField(
         queryset=System.objects.all(),
         write_only=True,
         source='system',
     )
 
-    class Meta:
-        model = BaseBody
+    class Meta(CompactBaseBodySerializer.Meta):
         extra_kwargs = {
             'created_at': {'read_only': True},
             'updated_at': {'read_only': True},
@@ -27,12 +25,3 @@ class BaseBodySerializer(serializers.ModelSerializer):
             'updated_by': {'read_only': True},
         }
         fields = "__all__"
-
-class BaseBodyBasicInformation(BaseBodySerializer):
-
-    class Meta(BaseBodySerializer.Meta):
-        fields = ['id', 'name']
-
-class BaseBodyDistanceSerializer(BaseBodySerializer, DistanceSerializer):
-    class Meta(BaseBodySerializer.Meta):
-        pass
