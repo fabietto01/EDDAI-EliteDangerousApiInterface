@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .baseBodySerializer._baseBodySerializer import _BaseBodySerializer
+from .baseBodySerializer import BaseBodySerializer
 
 from ed_body.models import (
     Star, StarLuminosity, StarType
@@ -9,7 +9,7 @@ from ed_core.api.serializers.DistanceSerializer import DistanceSerializer
 from .starLuminosityserializer import CompactedStarLuminositySerializer
 from .starTypeSerializer import CompactedStarTypeSerializer
 
-class StarSerializer(_BaseBodySerializer):
+class StarSerializer(BaseBodySerializer):
     """
     StarSerializer is a serializer for the Star model.
     Attributes:
@@ -26,7 +26,7 @@ class StarSerializer(_BaseBodySerializer):
         slug_field='name'
     )
 
-    class Meta(_BaseBodySerializer.Meta):
+    class Meta(BaseBodySerializer.Meta):
         model = Star
 
 class StarDistanceSerializer(StarSerializer, DistanceSerializer):
