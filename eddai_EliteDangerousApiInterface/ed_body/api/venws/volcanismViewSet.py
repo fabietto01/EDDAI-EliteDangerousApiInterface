@@ -4,6 +4,16 @@ from rest_framework.filters import SearchFilter
 from ..serializers import VolcanismSerializer, CompactedVolcanismSerializer
 from ed_body.models import Volcanism
 
+from django.utils.translation import gettext_lazy as _
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+
+@extend_schema_view(
+    list=extend_schema(
+        description=_("Returns a list of volcanism types with a compact representation.")
+    ),
+    retrieve=extend_schema(description=_("Returns the details of a volcanism type by ID"))
+)
 class VolcanismViewSet(ReadOnlyModelViewSet):
     """
     VolcanismViewSet is a viewset for handling CRUD operations on the Volcanism model.
