@@ -8,8 +8,8 @@ class ServiceInStationListSerializer(serializers.ListSerializer):
     def validate(self, attrs):
         try:
             station_pk:int = self.context["station_pk"]
-            queryset = ServiceInStation.objects.filter(staion_id=station_pk) \
-                                               .filter(service__in=[item.service for item in attrs])
+            queryset = ServiceInStation.objects.filter(station_id=station_pk) \
+                                               .filter(service__in=[item['service'] for item in attrs])
             if queryset.exists():
                 existing_services = [item.service.name for item in queryset]
                 raise serializers.ValidationError(

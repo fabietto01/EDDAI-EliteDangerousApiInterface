@@ -27,6 +27,8 @@ class BaseBodyFilterSet(BaseDistanceFilterSet):
         super().__init__(*args, **kwargs)
         if not self.data.get('system'):
             self.filters.pop('ordering_body', None)
+        if self.data.get('system'):
+            self.filters.pop('distance_by_system', None)
 
     def _ordering_body(self, queryset:QuerySet, name, value:bool):
         if value:
@@ -52,7 +54,7 @@ class BaseBodyFilterSet(BaseDistanceFilterSet):
     class Meta:
         model = BaseBody
         fields = {
-            'name': ['exact'],
+            'name': ['exact', 'startswith'],
             'system': ['exact'],
             'distance': ['lt', 'lte', 'gt', 'gte'],
         }

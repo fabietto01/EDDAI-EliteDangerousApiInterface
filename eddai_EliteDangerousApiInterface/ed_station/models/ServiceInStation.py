@@ -33,3 +33,4 @@ class ServiceInStation(OwnerAndDateModels):
                 fields=['station', 'service'], name='unique_service_in_station'
             )
         ]
+        ordering = ['station', 'service']

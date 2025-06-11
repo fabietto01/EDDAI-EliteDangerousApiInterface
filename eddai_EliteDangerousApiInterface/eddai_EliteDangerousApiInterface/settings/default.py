@@ -430,7 +430,7 @@ CELERY_TASK_ROUTES = {
 VITE_BUILD_DIRNAME = "vuejs"
 VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
 
-#Spectacular
+#impostazione per la generazione automatica della documentazione API
 #https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
     'TITLE': 'EDDAI - Elite Dangerous API Interface', 

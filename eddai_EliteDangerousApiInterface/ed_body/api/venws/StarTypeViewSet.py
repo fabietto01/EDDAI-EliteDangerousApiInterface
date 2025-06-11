@@ -4,6 +4,16 @@ from rest_framework.filters import SearchFilter
 from ..serializers import StarTypeSerializer, CompactedStarTypeSerializer
 from ed_body.models import StarType
 
+from django.utils.translation import gettext_lazy as _
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+
+@extend_schema_view(
+    list=extend_schema(
+        description=_("Returns a list of star types with a compact representation.")
+    ),
+    retrieve=extend_schema(description=_("Returns the details of a star type by ID"))
+)
 class StarTypeViewSet(ReadOnlyModelViewSet):
     """
     StarTypeViewSet is a viewset for handling CRUD operations on the StarType model.

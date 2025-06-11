@@ -5,6 +5,15 @@ from rest_framework.filters import SearchFilter
 from ..serializers import PlanetTypeSerializer, CompactedPlanetTypeSerializer
 from ed_body.models import PlanetType
 
+from django.utils.translation import gettext_lazy as _
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description=_("Returns a list of planet types with a compact representation.")
+    ),
+    retrieve=extend_schema(description=_("Returns the details of a planet type by ID"))
+)
 class PlanetTypeViewSet(ReadOnlyModelViewSet):
     """
     PlanetTypeViewSet is a viewset for handling CRUD operations on the PlanetType model.

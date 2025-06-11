@@ -1,0 +1,114 @@
+[
+    {
+        "model": "ed_bgs.minorfaction",
+        "pk": 3163,
+        "fields": {
+            "created_at": "2025-04-11T08:08:44.575Z",
+            "updated_at": "2025-04-11T08:08:44.575Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Mother Gaia",
+            "allegiance": 7,
+            "government": 10,
+            "description": ""
+        }
+    },
+    {
+        "model": "ed_bgs.minorfactioninsystem",
+        "pk": 3864,
+        "fields": {
+            "created_at": "2025-05-28T08:10:07.523Z",
+            "updated_at": "2025-05-28T08:10:07.523Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "system": 11,
+            "minorFaction": 3163,
+            "Influence": 0.352227
+        }
+    },
+    {
+        "model": "ed_station.station",
+        "pk": 2042,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.307Z",
+            "updated_at": "2025-05-28T07:59:32.307Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Abraham Lincoln",
+            "markerid": 128016896,
+            "system": 11,
+            "landingPad": "L",
+            "type": 5,
+            "primaryEconomy": 8,
+            "secondaryEconomy": 17,
+            "minorFaction": 3163,
+            "distance": 490.665508
+        }
+    },
+    {
+        "model": "ed_station.station",
+        "pk": 171191,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.307Z",
+            "updated_at": "2025-05-28T07:59:32.307Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Navarrete's Prospect",
+            "markerid": 9144.208117,
+            "system": 11,
+            "landingPad": "L",
+            "type": 2,
+            "primaryEconomy": 1,
+            "secondaryEconomy": 17,
+            "distance": 9144.208117
+        }
+    },
+    {
+        "model": "ed_station.serviceinstation",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.323Z",
+            "updated_at": "2025-05-28T07:59:32.323Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "station": 2042,
+            "service": 27
+        }
+    },
+    {
+        "model": "ed_station.serviceinstation",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.331Z",
+            "updated_at": "2025-05-28T07:59:32.331Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "station": 2042,
+            "service": 2
+        }
+    },
+    {
+        "model": "ed_station.serviceinstation",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.333Z",
+            "updated_at": "2025-05-28T07:59:32.333Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "station": 2042,
+            "service": 24
+        }
+    },
+    {
+        "model": "ed_station.serviceinstation",
+        "pk": 4,
+        "fields": {
+            "created_at": "2025-05-28T07:59:32.336Z",
+            "updated_at": "2025-05-28T07:59:32.336Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "station": 2042,
+            "service": 4
+        }
+    }
+]

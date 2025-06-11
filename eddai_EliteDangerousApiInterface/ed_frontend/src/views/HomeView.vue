@@ -15,7 +15,6 @@
         </a>
       </div>
     </div>
-    
   </div>
   <div class="container my-cont w-100">
     <h1 class="scritta">Coming soon</h1>

@@ -1,3 +1,5 @@
+from ed_core.api.filters.baseDistanceFilterSet import BaseDistanceFilterSet
+
 class DistanceModelMixin:
     """
     A mixin class for Django Rest Framework views to handle rendering with two different serializers.
@@ -14,6 +16,7 @@ class DistanceModelMixin:
     """
     
     serializer_class = None
+    filterset_class:BaseDistanceFilterSet = ImportWarning
     distance_serializer_class = None
     filter_param_distance:str = None
 
