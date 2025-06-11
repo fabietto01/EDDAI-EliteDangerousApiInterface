@@ -85,22 +85,22 @@ class SystemFilterSet(BaseDistanceFilterSet):
         label=_('Not Controlling Faction'),
         exclude=True
     )
-    conrollingFaction_state = django_filters.ModelChoiceFilter(
+    conrollingFaction__state = django_filters.ModelChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_state',
         label=_('The controlling faction is in the state'),
     )
-    conrollingFaction_not_state = django_filters.ModelChoiceFilter(
+    conrollingFaction__not__state = django_filters.ModelChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_not_state',
         label=_('The controlling faction does not have the status'),
     )
-    conrollingFaction_in_state = django_filters.ModelMultipleChoiceFilter(
+    conrollingFaction__in__state = django_filters.ModelMultipleChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_in_state',
         label=_('The controlling faction is in a state'),
     )
-    conrollingFaction_not_in_state = django_filters.ModelMultipleChoiceFilter(
+    conrollingFaction__not__in__state = django_filters.ModelMultipleChoiceFilter(
         queryset=State.objects.all(),
         method='filter_conrollingFaction_not_in_state',
         label=_('The controlling faction is not in a state'),

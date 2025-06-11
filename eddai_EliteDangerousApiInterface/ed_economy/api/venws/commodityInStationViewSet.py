@@ -2,7 +2,6 @@ from core.api.viewsets import OwnerAndDateModelViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.serializers import ModelSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-from django.utils.translation import gettext_lazy as _
 
 from http import HTTPMethod
 from rest_framework.response import Response
@@ -13,16 +12,40 @@ from ed_economy.api.serializers import CommodityInStationSerializer
 from ed_economy.models import CommodityInStation
 from ed_station.models import Station
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from django.utils.translation import gettext_lazy as _
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes
 
 @extend_schema_view(
-    multiple_add_commodities=extend_schema(
-        description="Add multiple commodities to a station",
-        request=CommodityInStationSerializer(many=True),
-        responses={
-            201: CommodityInStationSerializer(many=True),
-        }
-    )
+    list=extend_schema(
+        description=_("Retrieve a list of commodities available in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The ID of the station to filter commodities by."), type=OpenApiTypes.INT, location=OpenApiParameter.PATH, required=True),
+        ],
+    ),
+    retrieve=extend_schema(
+        description=_("Get detailed information about a specific commodity in a station by its ID."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The ID of the station to filter commodities by."), type=OpenApiTypes.INT, location=OpenApiParameter.PATH, required=True),
+        ],
+    ),
+    create=extend_schema(
+        description=_("Add a new commodity to a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The ID of the station to filter commodities by."), type=OpenApiTypes.INT, location=OpenApiParameter.PATH, required=True),
+        ],
+    ),
+    update=extend_schema(
+        description=_("Update an existing commodity in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The ID of the station to filter commodities by."), type=OpenApiTypes.INT, location=OpenApiParameter.PATH, required=True),
+        ],
+    ),
+    destroy=extend_schema(
+        description=_("Delete a commodity from a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The ID of the station to filter commodities by."), type=OpenApiTypes.INT, location=OpenApiParameter.PATH, required=True),
+        ],
+    ),
 )
 class CommodityInStationViewSet(OwnerAndDateModelViewSet):
     """
@@ -67,6 +90,14 @@ class CommodityInStationViewSet(OwnerAndDateModelViewSet):
             updated_by=user
         )
 
+    @extend_schema(
+        description=_("Allows adding multiple commodities in a single operation within the station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The ID of the station to filter commodities by."), type=OpenApiTypes.INT, location=OpenApiParameter.PATH, required=True),
+        ],
+        request=CommodityInStationSerializer(many=True),
+        responses={201: CommodityInStationSerializer(many=True)},
+    )
     @action(
         detail=False,
         methods=[HTTPMethod.GET],
@@ -98,14 +129,11 @@ class CommodityInStationViewSet(OwnerAndDateModelViewSet):
                     serializer.errors,
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            except Exception as e:
+            except Exception:
                 return Response(
-                    str(e),
-                    status=status.HTTP_400_BAD_REQUEST
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
         return Response(
-            {
-                'detail': _('Station not found'),
-            },
+            {'detail': _('the specified station does not exist.'),},
             status=status.HTTP_404_NOT_FOUND
         )

@@ -10,6 +10,7 @@ from ed_bgs.api.serializers import MinorFactionBasicInformation
 from ed_station.models import Station, StationType, Service
 from ed_economy.models import Economy
 from ed_system.models import System
+from ed_bgs.models import MinorFaction
 
 class StationBasicInformation(serializers.ModelSerializer):
     
@@ -65,7 +66,7 @@ class StationSerializer(StationBasicInformation):
         read_only=True,
     )
     minorFaction_id = serializers.PrimaryKeyRelatedField(
-        queryset=Station.objects.all(),
+        queryset=MinorFaction.objects.all(),
         source='minorFaction',
         write_only=True,
     )
@@ -74,12 +75,6 @@ class StationSerializer(StationBasicInformation):
         slug_field='name',
         many=True,
         read_only=True,
-    )
-    service_id = serializers.PrimaryKeyRelatedField(
-        queryset=Service.objects.all(),
-        source='service',
-        write_only=True,
-        many=True,
     )
 
     class Meta(StationBasicInformation.Meta):
