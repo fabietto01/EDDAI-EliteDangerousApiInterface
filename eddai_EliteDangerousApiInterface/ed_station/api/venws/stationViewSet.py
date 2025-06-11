@@ -20,7 +20,7 @@ from drf_spectacular.utils import (
         parameters=[
             OpenApiParameter(name='name', description=_("Filter stations by their name."), required=False, type=OpenApiTypes.STR),
             OpenApiParameter(name='system', description=_("Filter stations by the system ID they belong to."), required=False, type=OpenApiTypes.INT64),
-            OpenApiParameter(name='landingPad', description=_("Filter stations by the type of landing pad they have."), required=False, type=OpenApiTypes.STR),
+            OpenApiParameter(name='landingPad', description=_("Filter stations by the type of landing pad they have."), required=False, type=OpenApiTypes.STR, enum=Station.LandingPadChoices.values),
             OpenApiParameter(name='primaryEconomy', description=_("Filter stations by their primary economy."), required=False, type=OpenApiTypes.STR),
             OpenApiParameter(name='secondaryEconomy', description=_("Filter stations by their secondary economy."), required=False, type=OpenApiTypes.STR),
             OpenApiParameter(name='minorFaction', description=_("Filter stations by the minor faction they belong to."), required=False, type=OpenApiTypes.INT64),

@@ -19,7 +19,7 @@ from drf_spectacular.utils import (
         description=_("Returns a list of systems."),
         parameters=[
             OpenApiParameter(name='search', description=_("Search for systems by name or address."), required=False, type=OpenApiTypes.STR),
-            OpenApiParameter(name='security', description=_("Filter by the security level of the system."), required=False, type=OpenApiTypes.STR),
+            OpenApiParameter(name='security', description=_("Filter by the security level of the system."), required=False, type=OpenApiTypes.STR, enum=System.SecurityChoices.values),
             OpenApiParameter(name='population', description=_("Filter by the population of the system."), required=False, type=OpenApiTypes.INT64),
             OpenApiParameter(name='population__gt', description=_("Filter systems with population greater than the specified value."), required=False, type=OpenApiTypes.INT64),
             OpenApiParameter(name='population__lt', description=_("Filter systems with population greater than or equal to the specified value."), required=False, type=OpenApiTypes.INT64),
