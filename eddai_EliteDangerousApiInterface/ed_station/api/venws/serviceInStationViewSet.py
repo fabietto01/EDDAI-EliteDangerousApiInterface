@@ -12,6 +12,48 @@ from rest_framework import status
 from ..serializers import ServiceInStationSerializer
 from ed_station.models import ServiceInStation, Station
 
+from drf_spectacular.utils import (
+    extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes
+)
+
+@extend_schema_view(
+    list=extend_schema(
+        description=_("Returns a list of services available in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station to filter services."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ]
+    ),
+    retrieve=extend_schema(
+        description=_("Returns the details of a specific service in a station by ID."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station to filter services."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ]
+    ),
+    create=extend_schema(
+        description=_("Creates a new service in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station where the service will be added."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ]
+    ),
+    update=extend_schema(
+        description=_("Updates an existing service in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station where the service belongs."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ]
+    ),
+    partial_update=extend_schema(
+        description=_("Partially updates an existing service in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station where the service belongs."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ]
+    ),
+    destroy=extend_schema(
+        description=_("Deletes an existing service in a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station where the service belongs."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ]
+    )
+)
 class ServiceInStationViewSet(OwnerAndDateModelViewSet):
 
     """
@@ -56,6 +98,14 @@ class ServiceInStationViewSet(OwnerAndDateModelViewSet):
             updated_by=user
         )
 
+    @extend_schema(
+        description=_("Bulk adds multiple services to a specific station."),
+        parameters=[
+            OpenApiParameter(name='station_pk', description=_("The primary key of the station where the services will be added."), location=OpenApiParameter.PATH, required=True, type=OpenApiTypes.INT64),
+        ],
+        request=ServiceInStationSerializer(many=True),
+        responses={201: ServiceInStationSerializer(many=True)}
+    )
     @action(
         detail=False,
         methods=[HTTPMethod.POST],
