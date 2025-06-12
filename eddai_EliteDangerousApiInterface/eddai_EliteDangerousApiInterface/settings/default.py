@@ -211,6 +211,9 @@ ACCOUNT_EMAIL_VERIFICATION  = 'none'
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
 SOCIALACCOUNT_ADAPTER = 'users.adapter.CustomSocialAccountAdapter'
 SOCIALACCOUNT_ONLY = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_PROVIDERS = {
     'frontier': {
         'SCOPE': ['auth', 'capi'],

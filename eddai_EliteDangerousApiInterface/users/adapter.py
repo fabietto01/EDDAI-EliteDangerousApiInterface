@@ -6,6 +6,6 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def populate_user(self, request, sociallogin:SocialLogin, data):
         user = super().populate_user(request, sociallogin, data)
         if sociallogin.provider.id == 'frontier':
-            user.username = data.get('first_name', '') + ' ' + data.get('last_name', '')
+            user.username = data.get('firstname', '') + ' ' + data.get('lastname', '')
         return user
     
