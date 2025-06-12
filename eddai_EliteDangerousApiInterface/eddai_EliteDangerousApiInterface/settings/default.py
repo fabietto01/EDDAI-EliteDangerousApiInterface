@@ -209,7 +209,7 @@ ACCOUNT_EMAIL_VERIFICATION  = 'none'
 
 # socialaccount
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_ADAPTER = 'users.adapter.CustomSocialAccountAdapter'
+#SOCIALACCOUNT_ADAPTER  = 'users.adapter.CustomSocialAccountAdapter'
 SOCIALACCOUNT_ONLY = True
 SOCIALACCOUNT_PROVIDERS = {
     'frontier': {
