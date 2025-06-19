@@ -1,0 +1,43 @@
+[
+    {
+        "model": "ed_system.system",
+        "pk": 18,
+        "fields": {
+            "created_at": "2024-06-08T18:47:44.951Z",
+            "updated_at": "2024-06-08T18:47:44.951Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "name": "Ross 129",
+            "address": 671491564969,
+            "coordinate": "SRID=4979;POINT Z (41.9375 74.65625 3.4375)",
+            "security": "M",
+            "population": 10218308
+        }
+    },
+    {
+        "model": "ed_bgs.minorfaction",
+        "pk": 4,
+        "fields": {
+          "created_at": "2024-07-06T15:18:33.241Z",
+          "updated_at": "2024-07-06T15:18:33.241Z",
+          "created_by": 1,
+          "updated_by": 1,
+          "name": "Wolf 406 Transport & Co",
+          "allegiance": 5,
+          "government": 9
+        }
+      },
+    {
+        "model": "ed_bgs.minorfactioninsystem",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-02-11T16:55:14.342Z",
+            "updated_at": "2025-02-11T16:55:14.342Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "system": 18,
+            "minorFaction": 4,
+            "Influence": 0.098802
+        }
+    }
+]

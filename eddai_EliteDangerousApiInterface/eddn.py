@@ -21,7 +21,7 @@ def main():
         ) from e
     
     try:
-        from eddn.service import EddnClient
+        from ed_dbsync.service import EddnClient
     except ImportError as e:
         raise ImportError(
             "Couldn't import EddnClient. Are you sure it's installed and "

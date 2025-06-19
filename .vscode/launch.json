@@ -69,7 +69,7 @@
       "consoleTitle": "Python Debug Worker Admin"
     },
     {
-      "name": "Python: Celery Worker Eddn",
+      "name": "Python: Celery Worker dbsync",
       "type": "debugpy",
       "request": "launch",
       "console": "integratedTerminal",
@@ -85,10 +85,10 @@
         "-l","Debug", 
         "-P", "gevent", 
         "--autoscale", "50,5",
-        "-Q", "eddn",
-        "-n", "WorkerEddn@%h"
+        "-Q", "ed_dbsync",
+        "-n", "WorkerDBsync@%h"
       ],
-      "consoleTitle": "Python Debug Worker Eddn"
+      "consoleTitle": "Python Debug Worker dbsync"
     },
     {
       "name": "Python: Celery beat",

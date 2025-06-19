@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'ed_station',
     'ed_economy',
     
-    'eddn',
+    'ed_dbsync',
 
 ]
 
@@ -309,11 +309,11 @@ LOGGING = {
         },
         "celery.task.console": {
             "()": "celery.app.log.TaskFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [CELERY-TASK] [%(task_name)s(%(task_id)s)] %(message)s",
         },
         "celery.worker.console": {
             "()": "celery.utils.log.ColorFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [CELERY-WORKER] %(message)s",
         },
     },
     "handlers": {
@@ -416,16 +416,16 @@ CELERY_TASK_DEFAULT_QUEUE = 'default'
 from kombu import Queue
 CELERY_TASK_QUEUES = (
     Queue('default', routing_key='task.#'),
-    Queue('eddn', routing_key='service.eddn'),
+    Queue('ed_dbsync', routing_key='ed_dbsync.#'),
     Queue('admin', routing_key='admin.#'),
 )
 
 #impostazione per la gestione dei ruting dei tasck di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-routes
 CELERY_TASK_ROUTES = {
-    "service.eddn": {
-        "queue": "eddn",
-        "routing_key": "service.eddn",
+    "ed_dbsync.#": {
+        "queue": "ed_dbsync",
+        "routing_key": "ed_dbsync.#",
     }
 }
 
