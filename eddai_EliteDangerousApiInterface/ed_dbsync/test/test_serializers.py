@@ -2490,7 +2490,7 @@ class FSDJumpSerializerTestCase(TestCase):
 
 class DockedSerializerTestCase(TestCase):
     
-    fixtures = ['user', 'economy', 'system', 'body', 'bgs', 'exploration', 'material', 'mining', 'station', 'test_doked_serializer.']
+    fixtures = ['user', 'economy', 'system', 'body', 'bgs', 'exploration', 'material', 'mining', 'station', 'test_doked_serializer']
 
     @classmethod
     def setUpTestData(cls):

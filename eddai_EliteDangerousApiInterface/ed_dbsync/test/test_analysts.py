@@ -143,8 +143,8 @@ class JournalAnalystTestCase(TestCase):
 
     def test_get_event_CarrierJump(self):
         data = IncomingData(
-            source='EDDN',
-            message={
+            source='eddn',
+            data={
                 "header": EDDN_HEADER,
                 "message": FSDJUMP_MESSAGE
             }
@@ -157,8 +157,8 @@ class JournalAnalystTestCase(TestCase):
 
     def test_get_serializer_class_CarrierJump(self):
         data = IncomingData(
-            source='EDDN',
-            message={
+            source='eddn',
+            data={
                 "header": EDDN_HEADER,
                 "message": FSDJUMP_MESSAGE
             }
@@ -172,8 +172,8 @@ class JournalAnalystTestCase(TestCase):
 
     def test_get_event_Docked(self):
         data = IncomingData(
-            source='EDDN',
-            message={
+            source='eddn',
+            data={
                 "header": EDDN_HEADER,
                 "message": DOKED_MESSAGE
             }
@@ -186,8 +186,8 @@ class JournalAnalystTestCase(TestCase):
 
     def test_get_serializer_class_Docked(self):
         data = IncomingData(
-            source='EDDN',
-            message={
+            source='eddn',
+            data={
                 "header": EDDN_HEADER,
                 "message": DOKED_MESSAGE
             }
@@ -209,8 +209,8 @@ class Commodity3AnalystTestCase(TestCase):
 
     def test_get_serializer(self):
         data = IncomingData(
-            source='EDDN',
-            message={
+            source='eddn',
+            data={
                 "header": EDDN_HEADER,
                 "message": COMMODITYV3_MESSAGE
             }
@@ -218,6 +218,6 @@ class Commodity3AnalystTestCase(TestCase):
         analyst = Commodity3Analyst(data, self.agent)
         serializer_class = analyst.get_serializer_class()
         self.assertEqual(
-            serializer_class.__class__.__name__, 'CommodityV3Serializer',
+            serializer_class.__name__, 'CommodityV3Serializer',
             "The serializer class should be CommodityV3Serializer."
         )
