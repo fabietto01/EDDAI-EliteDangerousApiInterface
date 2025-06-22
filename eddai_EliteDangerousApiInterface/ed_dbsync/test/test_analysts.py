@@ -1,6 +1,5 @@
 from django.test import TestCase
 
-
 from ed_dbsync.analysts import (
     JournalAnalyst, Commodity3Analyst
 )

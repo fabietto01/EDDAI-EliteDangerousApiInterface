@@ -395,6 +395,10 @@ AUTHORI_SED_SOFTWARS = [
 EDDN_USER_NAME_AGENT = os.environ.get('EDDN_USER_NAME_AGENT', "EDDN-Client")
 EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!123')
 
+# impostazioni per la gestione del servizio CAPI
+CAPI_HOST = os.environ.get('CAPI_HOST', 'companion.orerve.net')
+CAPI_USER_AGENT = os.environ.get('CAPI_USER_AGENT', 'EDCD-EDDAI-0.0.1')
+
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("CELERY_BROKER_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'

@@ -25,7 +25,6 @@ class EDDNClient:
         receive(subscriber: zmq.Socket): Receives messages from the EDDN broker and processes them.
     """
     log = logging.getLogger('eddn')
-    debug = settings.DEBUG
     timeout = settings.EDDN_TIMEOUT
     rely = settings.EDDN_RELY
     authori_softwers = settings.AUTHORI_SED_SOFTWARS
