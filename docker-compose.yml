@@ -27,6 +27,8 @@ x-common-config: &default-config
   - LOKI_HOST=${LOKI_HOST}
   - LOKI_PORT=${LOKI_PORT}
   restart: always
+  networks:
+    - eddai
 
 volumes:
   static_volume:
@@ -35,7 +37,6 @@ volumes:
 networks:
   eddai:
     driver: bridge
-    internal: false
 
 services:
   django:
@@ -48,8 +49,6 @@ services:
     depends_on:
       - celery_worker_task
       - celery_worker_admin
-    networks:
-      - eddai
   celery_worker_task:
     <<: *default-config
     deploy:
