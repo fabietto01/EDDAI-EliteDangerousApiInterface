@@ -46,7 +46,6 @@ services:
       - static_volume:/app/static-server
       - media_volume:/app/media-server
     depends_on:
-      - nginx
       - celery_worker_task
       - celery_worker_admin
     networks:
@@ -86,6 +85,8 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+    depends_on:
+      - django
     volumes:
       - static_volume:/app/static-server
       - media_volume:/app/media-server

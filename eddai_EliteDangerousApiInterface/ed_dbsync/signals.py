@@ -37,18 +37,13 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         'one_off': False,
         'queue': 'ed_dbsync',
         'args': [],
-        'kwargs': {'user_id': user.id},
+        'kwargs': {'user_id': f'{user.id}'},
         'description': f"Sync CAPI journal for user {user.username} (ID: {user.id})",
     }
-    tasck, create = PeriodicTask.objects.get_or_create(
+    PeriodicTask.objects.update_or_create(
         name=f"CAPI_JournalSync_for_userid-{user.id}",
         defaults=defaults
     )
-    if not create:
-        # Update the task if it already exists
-        for key, value in defaults.items():
-            setattr(tasck, key, value)
-        tasck.save()
     log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
 
 @receiver(social_account_removed)
