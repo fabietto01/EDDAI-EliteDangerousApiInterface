@@ -129,7 +129,6 @@
       "program": "manage.py",
       "args": [
         "test",
-        "ed_dbsync",
         "--noinput"
       ],
       "django": true,
