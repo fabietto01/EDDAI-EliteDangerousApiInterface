@@ -70,7 +70,7 @@ LOGGING = {
         "celery.worker.loki": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.task.console",
+            "formatter": "celery.worker.console",
             "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
             "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery.worker"},
             "version": "1",
@@ -78,7 +78,7 @@ LOGGING = {
         "celery.beat.loki": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.task.console",
+            "formatter": "celery.worker.console",
             "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
             "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery.beat"},
             "version": "1",
@@ -86,7 +86,7 @@ LOGGING = {
         "eddn.loki": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.task.console",
+            "formatter": "django.console",
             "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
             "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "eddn"},
             "version": "1",
@@ -94,7 +94,7 @@ LOGGING = {
         "django.loki": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.task.console",
+            "formatter": "django.console",
             "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
             "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "django"},
             "version": "1",
