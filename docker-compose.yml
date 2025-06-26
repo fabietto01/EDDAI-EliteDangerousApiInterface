@@ -25,11 +25,6 @@ x-common-config: &default-config
   - POSTGIS_PASSWORD=${POSTGIS_PASSWORD}
   - POSTGIS_DB=${POSTGIS_DB}
   restart: always
-  logging:
-    driver: "loki"
-    options:
-      loki-url: "http://${LOKI_HOST}:${LOKI_PORT}/loki/api/v1/push"
-      loki-retries: "5"
 
 volumes:
   static_volume:

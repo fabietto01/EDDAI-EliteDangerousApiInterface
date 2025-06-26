@@ -21,3 +21,6 @@ class IncomingData:
     def __post_init__(self):
         if self.source not in ["eddn", "capi_api"]:
             raise ValueError(f"Invalid source '{self.source}'. Valid sources are: {self._souce_valid}")
+        
+    def __str__(self) -> str:
+        return str(self.guiid)

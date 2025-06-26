@@ -70,7 +70,7 @@ class AnalystTasck(Task):
             analyst = self.get_analyst(istance=istance, agent=agent)
             log.info(f"Analyst found: {analyst.__class__.__name__}", extra={'istance': istance})
             analyst.run_analysis()
-            log.info(f"Analysis completed for {istance.guiid}", extra={'istance': istance})
+            log.info(f"Analysis completed for {istance}", extra={'istance': istance})
         except NotSourceError as e:
             log.error(f"No analyst was found for the data source", exc_info=e, extra={'istance': istance})
         except ValidationError as e:

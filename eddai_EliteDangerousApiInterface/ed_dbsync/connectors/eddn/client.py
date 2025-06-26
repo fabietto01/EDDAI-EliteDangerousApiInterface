@@ -97,7 +97,7 @@ class EDDNClient:
 
             if dataJson['header']['softwareName'] in self.authori_softwers:
                 istance = IncomingData(data=dataJson, source="eddn")
-                self.log.info(f"Send message to worker: {istance}")
+                self.log.info(f"Send message to worker: {istance}", extra={'istance': istance})
                 AnalystTasck().apply_async(
                     kwargs={'istance':istance, 'agent':self.agent}, 
                     queue="ed_dbsync"
