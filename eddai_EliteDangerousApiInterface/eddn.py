@@ -21,7 +21,7 @@ def main():
         ) from e
     
     try:
-        from eddn.service import EddnClient
+        from ed_dbsync.connectors.eddn import EDDNClient
     except ImportError as e:
         raise ImportError(
             "Couldn't import EddnClient. Are you sure it's installed and "
@@ -29,7 +29,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from e
 
-    client = EddnClient()
+    client = EDDNClient()
     client.connect()
 
 if __name__ == '__main__':
