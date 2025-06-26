@@ -24,6 +24,8 @@ x-common-config: &default-config
   - POSTGIS_USER=${POSTGIS_USER}
   - POSTGIS_PASSWORD=${POSTGIS_PASSWORD}
   - POSTGIS_DB=${POSTGIS_DB}
+  - LOKI_HOST=${LOKI_HOST}
+  - LOKI_PORT=${LOKI_PORT}
   restart: always
 
 volumes:
