@@ -37,7 +37,7 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         'one_off': False,
         'queue': 'ed_dbsync',
         'args': [],
-        'kwargs': {'user_id': f'{user.id}'},
+        'kwargs': str({'user_id': f'{user.id}'}).replace("'", '"'),
         'description': f"Sync CAPI journal for user {user.username} (ID: {user.id})",
     }
     PeriodicTask.objects.update_or_create(
