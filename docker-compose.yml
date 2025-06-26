@@ -58,17 +58,17 @@ services:
   celery_worker_admin:
     <<: *default-config
     deploy:
-      replicas: 2
+      replicas: 3
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
   celery_worker_ed_dbsync:
     <<: *default-config
     deploy:
-      replicas: 5
+      replicas: 3
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q ed_dbsync -n WorkerDBSync@%h
   celery_worker_all:
     <<: *default-config
     deploy:
-      replicas: 5
+      replicas: 3
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,ed_dbsync,default -n WorkerAdmin@%h
   celery_beat:
     <<: *default-config
