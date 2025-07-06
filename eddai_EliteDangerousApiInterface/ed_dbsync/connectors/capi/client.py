@@ -1,11 +1,11 @@
 import logging
 import requests
 from datetime import datetime
-from typing import Optional, Union, Literal
 import json
 from django.conf import settings
 
 from allauth.socialaccount.models import SocialToken, SocialApp
+from allauth.socialaccount.providers.oauth2 import client
 from users.models import User
 
 from .exceptions import (
@@ -71,7 +71,7 @@ class CapiClient:
             log.error("SocialApp 'Frointer' does not exist. Please ensure it is created in the admin panel.")
             raise CapiClinetAuthError("SocialApp 'Frointer' does not exist. Please create it in the admin panel.")
 
-    def get_token(self) -> str:
+    def get_social_token(self) -> SocialToken:
         """
         Retrieves the SocialToken for the CAPI client.
 
@@ -79,10 +79,13 @@ class CapiClient:
             SocialToken: The SocialToken associated with the CAPI client.
         """
         try:
-            return SocialToken.objects.get(app=self.get_social_app(), account__user=self.agent).token
+            return SocialToken.objects.get(app=self.get_social_app(), account__user=self.agent)
         except SocialToken.DoesNotExist:
             log.error(f"SocialToken for user {self.agent.username} does not exist. Please ensure the user is authenticated with CAPI.")
             raise CapiClinetAuthError(f"SocialToken for user {self.agent.username} does not exist. Please authenticate the user with CAPI.")
+
+    def get_token(self) -> str:
+        return self.get_social_token().token
 
     def get_request(self, path: str) -> requests.Response:
         """
@@ -206,30 +209,3 @@ class CapiClient:
         except requests.RequestException as e:
             log.error(f"Error in fleetcarrier request: {e}")
             raise CapiClientError(f"Error in fleetcarrier request: {e}")
-
-    def connect(self, endpoint: Literal['journal', 'profile', 'fleetcarrier'], *arg, **kwargs) -> Union[dict, list[dict]]:
-        """
-        Connects to the specified CAPI endpoint and retrieves data.
-        Args:
-            endpoint (Literal['journal', 'profile', 'fleetcarrier']): The endpoint to connect to.
-            *arg: Additional positional arguments.
-            **kwargs: Additional keyword arguments.
-
-        Returns:
-            Union[dict, list[dict]]: The data retrieved from the specified endpoint.
-        Raises:
-            ValueError: If the endpoint is invalid.
-            CapiClientError: If there is an error retrieving data from the endpoint.
-        Raises:
-            FleetCarrierNotOwnedError: If the user does not own a Fleet Carrier.
-            FileGenerationInProgressError: If a file generation is already in progress.
-        Raises:
-            requests.RequestException: If there is an error with the request.
-        """
-        
-        if endpoint not in self.endpoint_methods:
-            raise ValueError(f"Invalid endpoint: {endpoint}. Valid endpoints are: {list(self.endpoint_methods.keys())}")
-        
-        method = self.endpoint_methods[endpoint]
-        
-        return method(*arg, **kwargs)
