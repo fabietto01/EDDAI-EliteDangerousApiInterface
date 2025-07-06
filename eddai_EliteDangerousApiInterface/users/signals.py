@@ -14,6 +14,6 @@ def update_cmdr_profile(sender, request, sociallogin, **kwargs):
 
         username = get_cmdr_name(user)
 
-        if username:
+        if username and username != user.username:
             user.username = username
             user.save()
