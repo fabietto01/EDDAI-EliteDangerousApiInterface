@@ -8,7 +8,7 @@ import logging
 
 log = logging.getLogger(__name__)
 
-@receiver(social_account_added)
+#@receiver(social_account_added)
 def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
     """
     Aggiorna il profilo CMDR quando un account social viene aggiornato
@@ -26,4 +26,4 @@ def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
             user.username = username
             user.save()
     except Exception as e:
-        log.error(f"Error updating CMDR profile for user {user.id}: {e}", exc_info=True)
+        log.error(f"Error updating CMDR profile for user {user.id}", exc_info=e)
