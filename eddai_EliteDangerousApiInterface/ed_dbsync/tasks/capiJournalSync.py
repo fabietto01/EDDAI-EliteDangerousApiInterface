@@ -26,6 +26,10 @@ class CapiJournalSync(Task):
     retry_backoff_max = 60 * 10 # 10 minuti
     autoretry_for = (JournalPartialContentError, CapiClinetAuthError)
 
+    @staticmethod
+    def get_task_name_for_periodic_task(user: User) -> str:
+        return f"CapiJournalSync_for_userid-{user.id}"
+
     def run(self, user_id: int, *args, **kwargs):
         
         try:

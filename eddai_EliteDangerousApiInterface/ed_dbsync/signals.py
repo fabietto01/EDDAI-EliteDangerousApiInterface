@@ -24,7 +24,10 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         sociallogin: The social login instance containing the updated account information.
         **kwargs: Additional keyword arguments.
     """
-    user:User = sociallogin.account.user
+    if sociallogin.provider != 'frontier':
+        return
+    
+    user:User = sociallogin.user
     log.info(f"Social account updated for user: {user.username}")
     interval_schedule, create = IntervalSchedule.objects.get_or_create(
         every=24,  # 24 hours
@@ -41,7 +44,7 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         'description': f"Sync CAPI journal for user {user.username} (ID: {user.id})",
     }
     PeriodicTask.objects.update_or_create(
-        name=f"CAPI_JournalSync_for_userid-{user.id}",
+        name=CapiJournalSync.get_task_name_for_periodic_task(user),
         defaults=defaults
     )
     log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
@@ -58,10 +61,13 @@ def remove_social_account(sender, request, socialaccount:SocialAccount, **kwargs
         sociallogin: The social login instance containing the account information.
         **kwargs: Additional keyword arguments.
     """
+    if socialaccount.provider != 'frontier':
+        return
+    
     user:User = socialaccount.user
     log.info(f"Social account removed for user: {user.username}")
     try:
-        tasck = PeriodicTask.objects.get(name=f"CAPI_JournalSync-{user.id}")
+        tasck = PeriodicTask.objects.get(name=CapiJournalSync.get_task_name_for_periodic_task(user))
         tasck.delete()
         log.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
     except PeriodicTask.DoesNotExist:
