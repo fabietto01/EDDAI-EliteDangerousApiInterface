@@ -25,6 +25,7 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         **kwargs: Additional keyword arguments.
     """
     if sociallogin.provider != 'frontier':
+        log.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")
         return
     
     user:User = sociallogin.user
