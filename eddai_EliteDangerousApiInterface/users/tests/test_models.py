@@ -1,10 +1,6 @@
 from django.test import TestCase
 from users.models import User
 
-from ed_system.models import System
-
-from django.conf import settings
-
 # Create your tests here.
 
 class UserTestCase(TestCase):
