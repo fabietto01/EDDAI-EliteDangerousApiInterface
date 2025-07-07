@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from allauth.socialaccount.signals import social_account_updated, social_account_added
+from allauth.socialaccount.signals import social_account_added
 from .utility import get_cmdr_name
 
 from .models import User
