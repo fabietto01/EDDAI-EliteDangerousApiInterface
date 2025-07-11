@@ -53,47 +53,6 @@ def _setup_capi_sync_task(user:User):
     )
     log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
 
-def _remove_sync_task(user:User):
-    """
-    Helper function to remove the CAPI journal sync task for a user.
-    
-    Args:
-        user: The user whose sync task should be removed.
-    """
-    try:
-        task = PeriodicTask.objects.get(name=CapiJournalSync.get_task_name_for_periodic_task(user))
-        task.delete()
-        log.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
-    except PeriodicTask.DoesNotExist:
-        log.warning(f"No periodic task found for user: {user.username} (ID: {user.id})")
-
-def _setup_capi_sync_task(user:User):
-    """
-    Helper function to set up the CAPI journal sync task for a user.
-    
-    Args:
-        user: The user for whom to set up the sync task.
-    """
-    interval_schedule, create = IntervalSchedule.objects.get_or_create(
-        every=24,  # 24 hours
-        period=IntervalSchedule.HOURS,
-    )
-    defaults={
-        'task': CapiJournalSync.name,
-        'interval': interval_schedule,
-        'enabled': True,
-        'one_off': False,
-        'queue': 'ed_dbsync',
-        'args': [],
-        'kwargs': str({'user_id': f'{user.id}'}).replace("'", '"'),
-        'description': f"Sync CAPI journal for user {user.username} (ID: {user.id})",
-    }
-    PeriodicTask.objects.update_or_create(
-        name=CapiJournalSync.get_task_name_for_periodic_task(user),
-        defaults=defaults
-    )
-    log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
-
 @receiver(social_account_updated)
 def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
     """

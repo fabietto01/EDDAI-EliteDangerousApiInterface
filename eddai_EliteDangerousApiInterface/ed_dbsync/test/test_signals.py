@@ -1,7 +1,11 @@
 from django.test import TestCase
 from unittest.mock import MagicMock
 
-from ed_dbsync.signals import update_social_account, remove_social_account
+from ed_dbsync.signals import (
+    update_social_account, remove_social_account,
+    user_deleted, update_account_on_signup,
+    update_account_on_connect
+)
 from users.models import User
 
 from django_celery_beat.models import PeriodicTask
