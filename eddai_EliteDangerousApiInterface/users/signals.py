@@ -14,7 +14,7 @@ def update_cmdr_profile(sender, user:User, **kwargs):
     Aggiorna il profilo CMDR quando un account social viene aggiornato
     """
     try:
-        if not SocialAccount.objects.filter(user=user, provider='Frontier').exists():
+        if not SocialAccount.objects.filter(user=user, provider='frontier').exists():
             log.info(f"No Frontier social account found for user {user.id}, skipping CMDR profile update.")
             return
         
