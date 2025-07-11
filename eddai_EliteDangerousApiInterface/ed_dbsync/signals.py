@@ -11,6 +11,8 @@ from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
 log = logging.getLogger("django")
 
+log.info("Signals for social account updates and removals are being registered.")
+
 @receiver(social_account_updated)
 def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
     """

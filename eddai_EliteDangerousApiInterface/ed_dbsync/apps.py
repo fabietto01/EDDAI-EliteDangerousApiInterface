@@ -8,4 +8,4 @@ class EdDbsyncConfig(AppConfig):
     verbose_name = _('ed Database Sync')
 
     def ready(self):
-        from . import signals
+        import ed_dbsync.signals

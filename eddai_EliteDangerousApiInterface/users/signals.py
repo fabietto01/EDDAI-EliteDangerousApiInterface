@@ -8,6 +8,8 @@ import logging
 
 log = logging.getLogger("django")
 
+log.info("Signals for social account updates are being registered.")
+
 @receiver(social_account_added)
 def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
     """
