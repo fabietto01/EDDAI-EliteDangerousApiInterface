@@ -6,13 +6,14 @@ from .utility import get_cmdr_name
 from .models import User
 import logging
 
-log = logging.getLogger(__name__)
+log = logging.getLogger("django")
 
-#@receiver(social_account_added)
+@receiver(social_account_added)
 def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
     """
     Aggiorna il profilo CMDR quando un account social viene aggiornato
     """
+    log.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", {"sociallogin": sociallogin})
     try:
         if sociallogin.provider != 'frontier':
             log.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")

@@ -9,7 +9,7 @@ from ed_dbsync.tasks.capiJournalSync import CapiJournalSync
 
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
-log = logging.getLogger(__name__)
+log = logging.getLogger("django")
 
 
 @receiver(social_account_updated)
@@ -24,6 +24,7 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         sociallogin: The social login instance containing the updated account information.
         **kwargs: Additional keyword arguments.
     """
+    log.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", {"sociallogin": sociallogin})
     if sociallogin.provider != 'frontier':
         log.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")
         return
