@@ -13,11 +13,11 @@ log = logging.getLogger(__name__)
 
 @receiver(social_account_updated)
 def update_social_account(sender, **kwargs):
-    log.info("DEBUG: social_account_updated signal received", {"kwargs": kwargs})
+    log.info("DEBUG: social_account_updated signal received")
 
 @receiver(social_account_removed)
 def remove_social_account(sender, **kwargs):
-    log.info("DEBUG: social_account_removed signal received", {"kwargs": kwargs})
+    log.info("DEBUG: social_account_removed signal received")
 
 # @receiver(social_account_updated)
 # def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):

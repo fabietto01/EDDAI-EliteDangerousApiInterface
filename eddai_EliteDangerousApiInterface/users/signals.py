@@ -10,7 +10,7 @@ log = logging.getLogger("django")
 
 @receiver(social_account_added)
 def update_cmdr_profile(sender, **kwargs):
-    log.info("DEBUG: social_account_added signal received", {"kwargs": kwargs})
+    log.info("DEBUG: social_account_added signal received")
 
 # @receiver(social_account_added)
 # def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
