@@ -6,7 +6,7 @@ from .utility import get_cmdr_name
 from .models import User
 import logging
 
-log = logging.getLogger(__name__)
+log = logging.getLogger("django")
 
 @receiver(social_account_added)
 def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
