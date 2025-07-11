@@ -121,7 +121,7 @@ def update_account_on_signup(sender, user:User, **kwargs):
     try:
         log.info(f"Signal: user_signed_up ricevuto per user {user.id}")
         
-        if not SocialAccount.objects.filter(user=user, provider='Frontier').exists():
+        if not SocialAccount.objects.filter(user=user, provider='frontier').exists():
             log.info(f"No Frontier account found for user {user.username} (ID: {user.id}), skipping CAPI sync setup")
             return
         
