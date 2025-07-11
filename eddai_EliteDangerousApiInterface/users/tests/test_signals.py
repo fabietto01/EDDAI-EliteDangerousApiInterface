@@ -1,8 +1,9 @@
 from django.test import TestCase
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from users.signals import update_cmdr_profile
 from users.models import User
+from allauth.socialaccount.models import SocialAccount
 
 class UserSignalsTestCase(TestCase):
     """
@@ -16,6 +17,10 @@ class UserSignalsTestCase(TestCase):
         """
         # Create a user and a social account for testing
         cls.user = User.objects.create(username='UserSignalsTestCase')
+        cls.social_account = SocialAccount.objects.create(
+            user=cls.user,
+            provider='Frontier',
+        )
 
     @patch('users.signals.get_cmdr_name')
     def test_update_cmdr_profile(self, mock_get_cmdr_name):
@@ -25,15 +30,10 @@ class UserSignalsTestCase(TestCase):
         # Configura il mock per restituire un nome specifico
         mock_get_cmdr_name.return_value = 'fabbietto01'
         
-        # Crea un oggetto sociallogin mock
-        sociallogin_mock = MagicMock()
-        sociallogin_mock.provider = 'frontier'
-        sociallogin_mock.user = self.user
-
         self.assertEqual(self.user.username, 'UserSignalsTestCase')
         
         # Call the signal handler directly
-        update_cmdr_profile(sender=None, request=None, sociallogin=sociallogin_mock)
+        update_cmdr_profile(sender=None, user=self.user)
 
         # Verifica che get_cmdr_name sia stato chiamato
         mock_get_cmdr_name.assert_called_once_with(self.user)
