@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from allauth.socialaccount.signals import social_account_updated, social_account_removed
+from allauth.socialaccount.signals import social_account_updated, social_account_removed, social_account_added
 import logging
 
 from users.models import User
@@ -9,15 +9,23 @@ from ed_dbsync.tasks.capiJournalSync import CapiJournalSync
 
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
-log = logging.getLogger(__name__)
+log_dja = logging.getLogger("django")
+log_name = logging.getLogger(__name__)
+
+@receiver(social_account_added)
+def update_cmdr_profile(sender, **kwargs):
+    log_dja.info("DEBUG: social_account_added signal received (ed_dbsync.signals)")
+    log_name.info("DEBUG: social_account_added signal received (ed_dbsync.signals)")
 
 @receiver(social_account_updated)
 def update_social_account(sender, **kwargs):
-    log.info("DEBUG: social_account_updated signal received")
+    log_dja.info("DEBUG: social_account_updated signal received (ed_dbsync.signals)")
+    log_name.info("DEBUG: social_account_updated signal received (ed_dbsync.signals)")
 
 @receiver(social_account_removed)
 def remove_social_account(sender, **kwargs):
-    log.info("DEBUG: social_account_removed signal received")
+    log_dja.info("DEBUG: social_account_removed signal received (ed_dbsync.signals)")
+    log_name.info("DEBUG: social_account_removed signal received (ed_dbsync.signals)")
 
 # @receiver(social_account_updated)
 # def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
@@ -31,14 +39,14 @@ def remove_social_account(sender, **kwargs):
 #         sociallogin: The social login instance containing the updated account information.
 #         **kwargs: Additional keyword arguments.
 #     """
-#     log.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", exc_info={"sociallogin": sociallogin})
+#     log_dja.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", exc_info={"sociallogin": sociallogin})
 #     print(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ")
 #     if sociallogin.provider != 'frontier':
-#         log.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")
+#         log_dja.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")
 #         return
     
 #     user:User = sociallogin.user
-#     log.info(f"Social account updated for user: {user.username}")
+#     log_dja.info(f"Social account updated for user: {user.username}")
 #     interval_schedule, create = IntervalSchedule.objects.get_or_create(
 #         every=24,  # 24 hours
 #         period=IntervalSchedule.HOURS,
@@ -57,7 +65,7 @@ def remove_social_account(sender, **kwargs):
 #         name=CapiJournalSync.get_task_name_for_periodic_task(user),
 #         defaults=defaults
 #     )
-#     log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
+#     log_dja.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
 
 # @receiver(social_account_removed)
 # def remove_social_account(sender, request, socialaccount:SocialAccount, **kwargs):
@@ -75,10 +83,10 @@ def remove_social_account(sender, **kwargs):
 #         return
     
 #     user:User = socialaccount.user
-#     log.info(f"Social account removed for user: {user.username}")
+#     log_dja.info(f"Social account removed for user: {user.username}")
 #     try:
 #         tasck = PeriodicTask.objects.get(name=CapiJournalSync.get_task_name_for_periodic_task(user))
 #         tasck.delete()
-#         log.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
+#         log_dja.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
 #     except PeriodicTask.DoesNotExist:
-#         log.warning(f"No periodic task found for user: {user.username} (ID: {user.id})")
+#         log_dja.warning(f"No periodic task found for user: {user.username} (ID: {user.id})")
