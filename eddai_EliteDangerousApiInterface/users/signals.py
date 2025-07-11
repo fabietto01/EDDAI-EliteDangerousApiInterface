@@ -7,7 +7,32 @@ from .utility import get_cmdr_name
 from .models import User
 import logging
 
-log = logging.getLogger("django")
+log = logging.getLogger("django.user.signals")
+
+def _update_cmdr_username(user, description=""):
+    """
+    Funzione comune per aggiornare il nome utente CMDR
+    
+    Args:
+        user (User): Utente da aggiornare
+        description (str): Descrizione dell'operazione per i log
+    
+    Returns:
+        bool: True se l'aggiornamento è avvenuto, False altrimenti
+    """
+    try:
+        username = get_cmdr_name(user)
+        
+        if username and username != user.username:
+            user.username = username
+            user.save()
+            return True
+        
+        return False
+    except Exception as e:
+        user_id = getattr(user, 'id', 'unknown')
+        log.error(f"Error updating CMDR profile {description} for user {user_id}", exc_info=e)
+        return False
 
 @receiver(user_signed_up)
 def update_cmdr_profile(sender, user:User, **kwargs):
@@ -15,26 +40,15 @@ def update_cmdr_profile(sender, user:User, **kwargs):
     Aggiorna il profilo CMDR quando un utente si registra
     """
     try:
-
-        log.info(f"User signed up: {user.id}, updating CMDR profile.")
-
+        log.info(f"Signal: user_signed_up ricevuto per user {user.id}")
+        
         if not SocialAccount.objects.filter(user=user, provider='frontier').exists():
-            log.info(f"No Frontier social account found for user {user.id}, skipping CMDR profile update.")
             return
         
-        username = get_cmdr_name(user)
-
-        if username and username != user.username:
-            user.username = username
-            user.save()
-            log.debug(f"CMDR profile updated for user {user.id} with username {username}")
-        else:
-            log.debug(f"No change in CMDR profile for user {user.id}, username remains {user.username}")
-
-        log.info(f"CMDR profile updated for user {user.id} with username {username}")
-
+        _update_cmdr_username(user, "at signup")
+        
     except Exception as e:
-        log.error(f"Error updating CMDR profile for user {user.id}", exc_info=e)
+        log.error(f"Error in user_signed_up signal for user {user.id}", exc_info=e)
 
 @receiver(social_account_added)
 def update_cmdr_profile_on_connect(sender, request, sociallogin:SocialLogin, **kwargs):
@@ -42,28 +56,14 @@ def update_cmdr_profile_on_connect(sender, request, sociallogin:SocialLogin, **k
     Aggiorna il profilo CMDR quando un account Frontier viene collegato
     """
     try:
-
         user = sociallogin.user
-        log.info(f"Frontier account connected for user {user.id}, updating CMDR profile.")
-
+        log.info(f"Signal: social_account_added ricevuto per user {user.id}")
+        
         if not sociallogin or sociallogin.account.provider != 'frontier':
-            log.info("Social login is not for Frontier provider, skipping CMDR profile update.")
             return
             
-        username = get_cmdr_name(user)
+        _update_cmdr_username(user, "on connect")
         
-        if username and username != user.username:
-            user.username = username
-            user.save()
-            log.debug(f"CMDR profile updated for user {user.id} with username {username}")
-        else:
-            log.debug(f"No change in CMDR profile for user {user.id}, username remains {user.username}")
-
-        log.info(f"CMDR profile updated for user {user.id} with username {username}")
-
     except Exception as e:
-        if sociallogin and sociallogin.user:
-            user_id = sociallogin.user.id
-        else:
-            user_id = "unknown"
-        log.error(f"Error updating CMDR profile on connect for user {user_id}", exc_info=e)
+        user_id = getattr(getattr(sociallogin, 'user', None), 'id', 'unknown')
+        log.error(f"Error in social_account_added signal for user {user_id}", exc_info=e)
