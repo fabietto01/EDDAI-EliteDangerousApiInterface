@@ -13,7 +13,8 @@ def update_cmdr_profile(sender, request, sociallogin:SocialLogin, **kwargs):
     """
     Aggiorna il profilo CMDR quando un account social viene aggiornato
     """
-    log.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", {"sociallogin": sociallogin})
+    log.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", exc_info={"sociallogin": sociallogin})
+    print(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ")
     try:
         if sociallogin.provider != 'frontier':
             log.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")

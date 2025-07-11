@@ -27,8 +27,7 @@ class UserSignalsTestCase(TestCase):
         
         # Crea un oggetto sociallogin mock
         sociallogin_mock = MagicMock()
-        sociallogin_mock.account = MagicMock()
-        sociallogin_mock.account.provider = 'frontier'
+        sociallogin_mock.provider = 'frontier'
         sociallogin_mock.user = self.user
 
         self.assertEqual(self.user.username, 'UserSignalsTestCase')
