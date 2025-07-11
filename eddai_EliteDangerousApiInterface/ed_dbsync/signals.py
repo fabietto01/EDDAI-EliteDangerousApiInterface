@@ -9,7 +9,8 @@ from ed_dbsync.tasks.capiJournalSync import CapiJournalSync
 
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 
-log_dja = logging.getLogger("django")
+log = logging.getLogger("django")
+
 
 @receiver(social_account_updated)
 def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
@@ -23,13 +24,12 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         sociallogin: The social login instance containing the updated account information.
         **kwargs: Additional keyword arguments.
     """
-    log_dja.info(f"Social account updated for user: {sociallogin.user.username} (ID: {sociallogin.user.id}). Provider {sociallogin.provider} ", exc_info={"sociallogin": sociallogin})
-    if sociallogin.provider != 'frontier':
-        log_dja.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")
+    if sociallogin.provider != 'Frontier':
+        log.info(f"Social account updated for non-frontier provider: {sociallogin.provider}")
         return
     
     user:User = sociallogin.user
-    log_dja.info(f"Social account updated for user: {user.username}")
+    log.info(f"Social account updated for user: {user.username}")
     interval_schedule, create = IntervalSchedule.objects.get_or_create(
         every=24,  # 24 hours
         period=IntervalSchedule.HOURS,
@@ -48,7 +48,7 @@ def update_social_account(sender, request, sociallogin:SocialLogin, **kwargs):
         name=CapiJournalSync.get_task_name_for_periodic_task(user),
         defaults=defaults
     )
-    log_dja.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
+    log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
 
 @receiver(social_account_removed)
 def remove_social_account(sender, request, socialaccount:SocialAccount, **kwargs):
@@ -62,14 +62,14 @@ def remove_social_account(sender, request, socialaccount:SocialAccount, **kwargs
         sociallogin: The social login instance containing the account information.
         **kwargs: Additional keyword arguments.
     """
-    if socialaccount.provider != 'frontier':
+    if socialaccount.provider != 'Frontier':
         return
     
     user:User = socialaccount.user
-    log_dja.info(f"Social account removed for user: {user.username}")
+    log.info(f"Social account removed for user: {user.username}")
     try:
         tasck = PeriodicTask.objects.get(name=CapiJournalSync.get_task_name_for_periodic_task(user))
         tasck.delete()
-        log_dja.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
+        log.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
     except PeriodicTask.DoesNotExist:
-        log_dja.warning(f"No periodic task found for user: {user.username} (ID: {user.id})")
+        log.warning(f"No periodic task found for user: {user.username} (ID: {user.id})")
