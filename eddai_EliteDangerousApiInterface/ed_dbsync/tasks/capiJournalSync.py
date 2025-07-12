@@ -65,7 +65,13 @@ class CapiJournalSync(Task):
             if yesterday:
                 data = now() - datetime.timedelta(days=1)
                 kwargs['data'] = data.strftime('%Y/%m/%d')
-                
+
+            token_expired_at = client.get_social_token().expires_at
+            if token_expired_at and token_expired_at < now():
+                log.warning(f"Token for user {user.username} (ID: {user_id}) is expired. Attempting to refresh token...")
+                if not refresh_frontier_token(user=user):
+                    raise CapiClinetAuthError()
+            
             log.info(f"Creating CAPI client for user: {user.username} (ID: {user_id})")
             journal_entries = client.get_journal(*args, **kwargs)
         
