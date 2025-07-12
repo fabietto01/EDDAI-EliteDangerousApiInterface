@@ -12,6 +12,9 @@ from ed_dbsync.connectors.capi.exceptions import (
 from ed_dbsync.dataclass import IncomingData
 from ed_dbsync.tasks import AnalystTasck
 
+import datetime
+from django.utils.timezone import now
+
 from users.utility import refresh_frontier_token
 
 log = get_task_logger(__name__)
@@ -31,7 +34,26 @@ class CapiJournalSync(Task):
         return f"CapiJournalSync_for_userid-{user.id}"
 
     def run(self, user_id: int, *args, **kwargs):
-        
+        """
+        Synchronizes a user's Elite Dangerous journal entries from the Companion API (CAPI).
+        Retrieves journal entries for the specified user, then processes them by creating
+        analyst tasks for each entry. Handles authentication issues by attempting to refresh
+        Frontier tokens when necessary.
+        Args:
+            user_id (int): The ID of the user whose journal entries should be synchronized.
+            *args: Additional positional arguments passed to the CAPI client's get_journal method.
+            **kwargs: Additional keyword arguments:
+                - yesterday (bool): If True, retrieves journal entries from the previous day.
+                - Other kwargs are passed directly to the CAPI client's get_journal method.
+        Raises:
+            User.DoesNotExist: If no user with the specified ID exists.
+            JournalNoContentError: If no journal entries are found for the specified date.
+            CapiClinetRequestError: If there's an error communicating with the CAPI.
+            Exception: For any other unexpected errors during synchronization.
+        Note:
+            This method will retry operations in case of authentication errors (after attempting
+            to refresh the token) or when partial content is received from the CAPI.
+        """
         try:
 
             user = User.objects.get(id=user_id)
@@ -39,6 +61,11 @@ class CapiJournalSync(Task):
 
             client = CapiClient.from_task(user)
 
+            yesterday = kwargs.get('yesterday', False)
+            if yesterday:
+                data = now() - datetime.timedelta(days=1)
+                kwargs['data'] = data.strftime('%Y/%m/%d')
+                
             log.info(f"Creating CAPI client for user: {user.username} (ID: {user_id})")
             journal_entries = client.get_journal(*args, **kwargs)
         

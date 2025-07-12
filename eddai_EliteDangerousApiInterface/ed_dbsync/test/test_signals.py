@@ -1,10 +1,9 @@
 from django.test import TestCase
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from ed_dbsync.signals import (
-    update_social_account, remove_social_account,
-    user_deleted, update_account_on_signup,
-    update_account_on_connect
+    handle_social_account_update, handle_social_account_removal,
+    handle_user_deletion, setup_capi_on_signup
 )
 from users.models import User
 
@@ -30,30 +29,36 @@ class EdDbsyncSignalsTestCase(TestCase):
         # Create a user and a social account for testing
         cls.user = User.objects.create(username='EdDbsyncSignalsTestCase')
 
-    def test_update_social_account(self):
+    def test_handle_social_account_update(self):
         
         sociallogin_mock = MagicMock()
-        sociallogin_mock.provider = 'frontier'
+        sociallogin_mock.account = MagicMock()
+        sociallogin_mock.account.provider = 'frontier'
         sociallogin_mock.user = self.user
 
-        update_social_account(sender=None, request=None, sociallogin=sociallogin_mock)
+        handle_social_account_update(sender=None, request=None, sociallogin=sociallogin_mock)
 
         # Check if the periodic task was created or updated
         exists_periodic_task = PeriodicTask.objects.filter(name=self.get_tasck_name).exists()
         self.assertTrue(exists_periodic_task, f"Periodic task '{self.get_tasck_name}' should not exist")
 
-    def test_remove_social_account(self):
+    def test_handle_social_account_removal(self):
 
-        sociallogin_mock = MagicMock()
-        sociallogin_mock.provider = 'frontier'
-        sociallogin_mock.user = self.user
+        socialaccount_mock = MagicMock()
+        socialaccount_mock.account = MagicMock()
+        socialaccount_mock.account.provider = 'frontier'
+        socialaccount_mock.user = self.user
 
-        # Create the periodic task first
-        update_social_account(sender=None, request=None, sociallogin=sociallogin_mock)
-
-        # Now remove the social account
-        remove_social_account(sender=None, request=None, socialaccount=sociallogin_mock)
+        handle_social_account_removal(sender=None, request=None, socialaccount=socialaccount_mock)
 
         # Check if the periodic task was deleted
         exists_periodic_task = PeriodicTask.objects.filter(name=self.get_tasck_name).exists()
-        self.assertFalse(exists_periodic_task, f"Periodic task '{self.get_tasck_name}' should exist")
+        self.assertFalse(exists_periodic_task, f"Periodic task '{self.get_tasck_name}' should not exist after removal")
+
+    def test_handle_user_deletion(self):
+
+        handle_user_deletion(sender=None, instance=self.user)
+
+        # Check if the periodic task was deleted
+        exists_periodic_task = PeriodicTask.objects.filter(name=self.get_tasck_name).exists()
+        self.assertFalse(exists_periodic_task, f"Periodic task '{self.get_tasck_name}' should not exist after user deletion")
