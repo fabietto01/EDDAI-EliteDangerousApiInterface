@@ -21,7 +21,7 @@
     <!-- Sezione Coming Soon -->
     <section class="coming-soon full-screen">
       <h1 ref="text1"
-          class="scroll-text" 
+          class="scroll-text text-center" 
           :style="{
             opacity: textOpacity.text1,
             transform: `translateX(${textTransform.text1}px)`
@@ -50,9 +50,9 @@
     </section>
 
 
-    <section class="full-screen">
+    <!-- <section class="full-screen">
       <p></p>
-    </section>
+    </section> -->
   </div>
   
 </template>
@@ -156,7 +156,9 @@ export default {
 
 /* Info section */
 .info-section {
-  padding: 2rem;
+  min-height: fit-content;
+  height: 100vh;
+  padding: 0 2rem;
   display: flex;
   justify-content: center;
   align-items: center;

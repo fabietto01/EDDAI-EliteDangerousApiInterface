@@ -72,6 +72,10 @@ export default {
     .navbar-nav .nav-link {
         font-size: 40px;
     }
+
+    .nav-btn{
+        display: none;
+    }
     
 }
 
