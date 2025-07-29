@@ -46,17 +46,7 @@
           <li>Database: PostgreSQL</li>
         </ul>
         <p>Il progetto è open-source ed è disponibile su <a class="info-section-link" href="https://github.com/fabietto01/EDDAI-EliteDangerousApiInterface" target="_blank" rel="noopener noreferrer">Github</a></p>
-
-        <a href="http://" target="_blank" rel="noopener noreferrer"></a>
-
-        <!-- <div>
-          <a href="https://github.com/fabietto01/EDDAI-EliteDangerousApiInterface" target="_blank">Repository GitHub</a><br />
-        </div>
-        <div>
-          <a href="/api/schema/swagger-ui/" target="_blank">Swagger API</a>
-        </div> -->
       </div>
-
     </section>
 
 
@@ -173,10 +163,6 @@ export default {
   background: #121212;
 }
 
-/* .info-section p {
-  margin-bottom: 2rem;
-} */
-
 .info-section-testo {
   margin-bottom: 2rem;
 }
@@ -195,9 +181,6 @@ export default {
 .info-section a:hover {
   color: #aac9de;
 }
-
-
-
 
 
 
