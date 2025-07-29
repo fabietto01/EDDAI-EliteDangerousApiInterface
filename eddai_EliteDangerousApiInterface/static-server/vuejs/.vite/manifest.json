@@ -1,11 +1,26 @@
 {
   "index.html": {
-    "file": "assets/index-OTiXHNn-.js",
+    "file": "assets/index-Cz-KYpWe.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
+    "dynamicImports": [
+      "src/views/ScrollTextAnimation.vue"
+    ],
     "css": [
-      "assets/index-BBxrOdiR.css"
+      "assets/index-jBJELwkZ.css"
+    ]
+  },
+  "src/views/ScrollTextAnimation.vue": {
+    "file": "assets/ScrollTextAnimation-Ce6rqAbr.js",
+    "name": "ScrollTextAnimation",
+    "src": "src/views/ScrollTextAnimation.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ],
+    "css": [
+      "assets/ScrollTextAnimation-TCma1BtQ.css"
     ]
   }
 }
