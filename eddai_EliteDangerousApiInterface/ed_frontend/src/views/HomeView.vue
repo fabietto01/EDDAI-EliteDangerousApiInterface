@@ -33,14 +33,28 @@
 
     <!-- Sezione Informazioni -->
     <section class="info-section">
-      <h2>Informazioni sul progetto</h2>
-      <p>Questo progetto ha lo scopo di offrire un portale per la consultazione di informazioni strutturate.</p>
-      <p></p>
-      <div>
-        <a href="https://github.com/tuo-progetto" target="_blank">Repository GitHub</a><br />
-      </div>
-      <div>
-        <a href="https://tuo-backend.com/swagger" target="_blank">Swagger API</a>
+      <div class="container-md text-center">
+        <h2 id="infoSectionTitle" class="fw-bold info-section-testo" style="color: #f36c1b;">Elite Dangerous Data Interface (EDDAI)</h2>
+        <p class="info-section-testo">Elite Dangerous Data Interface (EDDAI) nasce con l’idea di ricreare il TOOL EDDB (Elite Dangerous Database).</p>
+        <p class="info-section-testo">Si tratta di un database che fornisce un unico punto dove ricercare in maniera precisa tutte le informazioni relative a Elite Dangerous (materiali, sistemi stellari, stazioni, fazioni etc.) grazie all’integrazione con API CAPI (API fornite direttamente da Frontier) e EDDN (Elite Dangerous Data Network) che sono quindi fonti sicure e precise dei dati di EDDAI. </p>
+        <p class="info-section-testo">E’ possibile applicare dei filtri per affinare la propria query in base alle necessità, arrivando a poter gestire anche ricerche granulari e quindi complesse. A differenza di altri tool esistenti, infatti, è possibile per esempio ricercare un particolare sistema che abbia dei parametri specifici in termini di caratteristiche dei pianeti che lo compongono. </p>
+        <p class="info-section-testo">L’interfaccia consente un uso semplice e immediato del tool. Per i developer sono anche disponibili delle <a class="info-section-link" href="/api/schema/swagger-ui/" target="_blank" rel="noopener noreferrer">API REST</a> con cui è possibile integrarsi.</p>
+        <p>Le tecnologie utilizzate per lo sviluppo di Elite Dangerous Data Interface sono: </p>
+        <ul class="info-section-testo" style="margin-bottom: 2rem;">
+          <li>Front-End: Vue.js</li>
+          <li>Back-End: Python (Django)</li>
+          <li>Database: PostgreSQL</li>
+        </ul>
+        <p>Il progetto è open-source ed è disponibile su <a class="info-section-link" href="https://github.com/fabietto01/EDDAI-EliteDangerousApiInterface" target="_blank" rel="noopener noreferrer">Github</a></p>
+
+        <a href="http://" target="_blank" rel="noopener noreferrer"></a>
+
+        <!-- <div>
+          <a href="https://github.com/fabietto01/EDDAI-EliteDangerousApiInterface" target="_blank">Repository GitHub</a><br />
+        </div>
+        <div>
+          <a href="/api/schema/swagger-ui/" target="_blank">Swagger API</a>
+        </div> -->
       </div>
 
     </section>
@@ -159,6 +173,28 @@ export default {
   background: #121212;
 }
 
+/* .info-section p {
+  margin-bottom: 2rem;
+} */
+
+.info-section-testo {
+  margin-bottom: 2rem;
+}
+
+.info-section ul {
+  display: inline-block;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.info-section a {
+  color: #f36c1b;
+  /* text-decoration: none; */
+}
+
+.info-section a:hover {
+  color: #aac9de;
+}
 
 
 
