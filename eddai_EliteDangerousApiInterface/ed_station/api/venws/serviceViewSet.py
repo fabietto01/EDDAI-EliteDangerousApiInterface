@@ -1,10 +1,19 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework.filters import SearchFilter
 
 from ..serializers import CompactedServiceSerializer, ServiceSerializer
 from ed_station.models import Service
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
+
+@extend_schema_view(
+    list=extend_schema(
+        description=_("Returns a list of services with a compact representation.")
+    ),
+    retrieve=extend_schema(description=_("Returns the details of a service by ID"))
+)
 class ServiceViewSet(ReadOnlyModelViewSet):
     """
     ServiceViewSet is a viewset for handling CRUD operations on the Service model.

@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'ed_station',
     'ed_economy',
     
-    'eddn',
+    'ed_dbsync',
 
 ]
 
@@ -209,8 +209,10 @@ ACCOUNT_EMAIL_VERIFICATION  = 'none'
 
 # socialaccount
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
-#SOCIALACCOUNT_ADAPTER  = 'users.adapter.CustomSocialAccountAdapter'
 SOCIALACCOUNT_ONLY = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_PROVIDERS = {
     'frontier': {
         'SCOPE': ['auth', 'capi'],
@@ -306,29 +308,26 @@ LOGGING = {
         },
         "celery.task.console": {
             "()": "celery.app.log.TaskFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [CELERY-TASK] [%(task_name)s(%(task_id)s)] %(message)s",
         },
         "celery.worker.console": {
             "()": "celery.utils.log.ColorFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] %(message)s",
+            "format": "[%(asctime)s] [%(levelname)s] [CELERY-WORKER] %(message)s",
         },
     },
     "handlers": {
         "celery.task.console": {
             "level": "INFO",
-            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.task.console",
         },
         'celery.worker': {
             "level": "INFO",
-            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "celery.worker.console",
         },
         "console": {
             "level": "INFO",
-            "filters": ["require_debug_true"],
             "class": "logging.StreamHandler",
             "formatter": "django.console",
         },
@@ -392,6 +391,10 @@ AUTHORI_SED_SOFTWARS = [
 EDDN_USER_NAME_AGENT = os.environ.get('EDDN_USER_NAME_AGENT', "EDDN-Client")
 EDDN_USER_PASSWORD_AGENT = os.environ.get('EDDN_USER_PASSWORD_AGENT', 'password!123')
 
+# impostazioni per la gestione del servizio CAPI
+CAPI_HOST = os.environ.get('CAPI_HOST', 'companion.orerve.net')
+CAPI_USER_AGENT = os.environ.get('CAPI_USER_AGENT', 'EDCD-EDDAI-0.0.1')
+
 #impostazioni per la gestione delle code di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html
 CELERY_BROKER_URL = F'amqp://{os.environ.get("CELERY_BROKER_USER")}:{os.environ.get("CELERY_BROKER_PASSWORD")}@{os.environ.get("CELERY_BROKER_HOST")}:5672/{os.environ.get("CELERY_BROKER_VHOST")}'
@@ -413,16 +416,16 @@ CELERY_TASK_DEFAULT_QUEUE = 'default'
 from kombu import Queue
 CELERY_TASK_QUEUES = (
     Queue('default', routing_key='task.#'),
-    Queue('eddn', routing_key='service.eddn'),
+    Queue('ed_dbsync', routing_key='ed_dbsync.#'),
     Queue('admin', routing_key='admin.#'),
 )
 
 #impostazione per la gestione dei ruting dei tasck di celery
 #https://docs.celeryq.dev/en/stable/userguide/configuration.html#task-routes
 CELERY_TASK_ROUTES = {
-    "service.eddn": {
-        "queue": "eddn",
-        "routing_key": "service.eddn",
+    "ed_dbsync.#": {
+        "queue": "ed_dbsync",
+        "routing_key": "ed_dbsync.#",
     }
 }
 

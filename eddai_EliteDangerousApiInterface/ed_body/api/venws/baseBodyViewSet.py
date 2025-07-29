@@ -1,6 +1,7 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin
 from ed_core.api.mixins import DistanceModelMixin
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
@@ -10,15 +11,24 @@ from ..serializers import BaseBodySerializer, BaseBodyDistanceSerializer
 
 from ed_body.models import BaseBody
 
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import (
+    extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes
+)
 
 @extend_schema_view(
     list=extend_schema(
-        description="Returns a list of base bodies, if the parameter distance_by_system is passed,\
-            it returns the distance between base bodies in the distance_st field",
-        responses={200: BaseBodyDistanceSerializer(many=True)}
+        description=_("Returns a list of celestial bodies, including both planets and stars."),
+        parameters=[
+            OpenApiParameter(name='name', description=_("Filter by the name of the body."), required=False, type=OpenApiTypes.STR),
+            OpenApiParameter(name='name__startswith', description=_("Filter bodies whose names start with the specified string."), required=False, type=OpenApiTypes.STR),
+            OpenApiParameter(name='system', description=_("Filters based on the system ID of the body. this filter disables the possibility of calculating distances between systemi"), required=False, type=OpenApiTypes.INT64),
+            OpenApiParameter(name='distance__gt', description=_("Filter bodies whose distance is greater than the specified value."), required=False, type=OpenApiTypes.FLOAT),
+            OpenApiParameter(name='distance__gte', description=_("Filter bodies whose distance is greater than or equal to the specified value."), required=False, type=OpenApiTypes.FLOAT),
+            OpenApiParameter(name='distance__lt', description=_("Filter bodies whose distance is less than the specified value."), required=False, type=OpenApiTypes.FLOAT),
+            OpenApiParameter(name='distance__lte', description=_("Filter bodies whose distance is less than or equal to the specified value."), required=False, type=OpenApiTypes.FLOAT),
+            OpenApiParameter(name='ordering_body', description=_("Sorts the bodies in the system according to their hierarchy in the system, filter only works if passed in conteporanium with system"), required=False, type=OpenApiTypes.BOOL),
+        ]
     ),
-    retrieve=extend_schema(description="Returns the details of a base bodies by ID"),
 )
 class BaseBodyViewSet(DistanceModelMixin, ListModelMixin, GenericViewSet):
     """

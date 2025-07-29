@@ -22,5 +22,6 @@ class RingFilterSet(BaseDistanceFilterSet):
         fields = {
             'name': ['exact'],
             'body': ['exact'],
+            'body__system': ['exact'],
             'ringType': ['exact', "in"],
         }

@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from eddn.models import AbstractDataEDDN
+from ed_dbsync.models import AbstractDataEDDN
 
 class StationType(AbstractDataEDDN, models.Model):
     name = models.CharField(
@@ -17,4 +17,4 @@ class StationType(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('station type')
         verbose_name_plural = _('station types')
-    
+        ordering = ['name']

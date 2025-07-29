@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from eddn.models import AbstractDataEDDN
+from ed_dbsync.models import AbstractDataEDDN
 
 class Economy(AbstractDataEDDN, models.Model):
 

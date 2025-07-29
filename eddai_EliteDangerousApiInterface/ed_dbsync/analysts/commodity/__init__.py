@@ -1,0 +1,1 @@
+from .analyst import Commodity3Analyst

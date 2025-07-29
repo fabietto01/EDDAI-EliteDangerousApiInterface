@@ -62,8 +62,8 @@ class SystemViewSetTestCase(APITestCase):
         self.assertEqual(len(response.data['results']), qs.count())
         filter_params = {
             'conrollingFaction__not': 1,
-            'conrollingFaction_state': 1,
-            'conrollingFaction_not_state': 4
+            'conrollingFaction__state': 1,
+            'conrollingFaction__not__state': 4
         }
         response = self.client.get(url, filter_params)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

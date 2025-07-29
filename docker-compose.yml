@@ -24,7 +24,19 @@ x-common-config: &default-config
   - POSTGIS_USER=${POSTGIS_USER}
   - POSTGIS_PASSWORD=${POSTGIS_PASSWORD}
   - POSTGIS_DB=${POSTGIS_DB}
+  - LOKI_HOST=${LOKI_HOST}
+  - LOKI_PORT=${LOKI_PORT}
   restart: always
+  networks:
+    - eddai
+
+volumes:
+  static_volume:
+  media_volume:
+
+networks:
+  eddai:
+    driver: bridge
 
 services:
   django:
@@ -34,8 +46,9 @@ services:
     volumes:
       - static_volume:/app/static-server
       - media_volume:/app/media-server
-    ports:
-      - "8080:8080"
+    depends_on:
+      - celery_worker_task
+      - celery_worker_admin
   celery_worker_task:
     <<: *default-config
     deploy:
@@ -46,16 +59,16 @@ services:
     deploy:
       replicas: 3
     command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin -n WorkerAdmin@%h
-  celery_worker_eddn:
+  celery_worker_ed_dbsync:
     <<: *default-config
     deploy:
       replicas: 3
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q eddn -n WorkerEddn@%h
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q ed_dbsync -n WorkerDBSync@%h
   celery_worker_all:
     <<: *default-config
     deploy:
       replicas: 3
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,eddn,default -n WorkerAdmin@%h
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,ed_dbsync,default -n WorkerAdmin@%h
   celery_beat:
     <<: *default-config
     container_name: celery_beat
@@ -64,17 +77,17 @@ services:
     <<: *default-config
     container_name: eddn
     command: python eddn.py
+    depends_on:
+      - celery_worker_ed_dbsync
   nginx:
     build: ./nginx
     container_name: nginx
     ports:
       - "80:80"
+    depends_on:
+      - django
     volumes:
       - static_volume:/app/static-server
       - media_volume:/app/media-server
-    depends_on:
-      - django
-
-volumes:
-  static_volume:
-  media_volume:
+    networks:
+      - eddai
