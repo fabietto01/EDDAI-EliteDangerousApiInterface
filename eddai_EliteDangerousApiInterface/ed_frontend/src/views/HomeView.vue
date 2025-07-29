@@ -51,7 +51,7 @@
 
 
     <section class="full-screen">
-      <p>fabio culo</p>
+      <p></p>
     </section>
   </div>
   
