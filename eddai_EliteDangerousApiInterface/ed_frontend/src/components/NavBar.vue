@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-md">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <div class="rounded-circle" style="width: 40px; height: 40px; background-color: #b1b2b5; margin-right: 10px;"></div>
@@ -46,6 +46,7 @@ export default {
 }
 
 .nav-btn {
+    display: none; 
     background-color: #f36c1b; color: #1c1b1d;
     box-shadow: inset 4px 4px 4px 0px #00000033;
 }
@@ -71,10 +72,6 @@ export default {
     } 
     .navbar-nav .nav-link {
         font-size: 40px;
-    }
-
-    .nav-btn{
-        display: none;
     }
     
 }

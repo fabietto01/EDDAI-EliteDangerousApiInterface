@@ -176,6 +176,7 @@ pre.highlight code {
 body {
   margin: 0px;
   padding: 0px;
+  min-width: 256px;
 }
 
 .coredocs-section-title {

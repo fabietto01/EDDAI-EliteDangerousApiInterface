@@ -1,6 +1,6 @@
 {
   "index.html": {
-    "file": "assets/index-BPjxUQHO.js",
+    "file": "assets/index-CyhBLusp.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -8,11 +8,11 @@
       "src/views/ScrollTextAnimation.vue"
     ],
     "css": [
-      "assets/index-CpipdfOl.css"
+      "assets/index-4FAtxKam.css"
     ]
   },
   "src/views/ScrollTextAnimation.vue": {
-    "file": "assets/ScrollTextAnimation-DTmIHgOS.js",
+    "file": "assets/ScrollTextAnimation-MtjI4TFf.js",
     "name": "ScrollTextAnimation",
     "src": "src/views/ScrollTextAnimation.vue",
     "isDynamicEntry": true,
