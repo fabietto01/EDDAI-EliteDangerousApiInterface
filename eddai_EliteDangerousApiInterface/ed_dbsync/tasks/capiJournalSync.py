@@ -96,10 +96,15 @@ class CapiJournalSync(Task):
             log.error(f"User with id {user_id} does not exist.")
             raise e
         except CapiClinetAuthError as e:
-            if refresh_frontier_token(user=user):
-                log.warning(f"Token refreshed for user {user.username} (ID: {user.id}). Retrying CAPI journal sync...", exc_info=e)
-                raise self.retry(exc=e)
-            log.warning(f"Failed to refresh token for user {user.username} (ID: {user.id}). CAPI journal sync will not be retried.", exc_info=e)
+            
+            from django_celery_beat.models import PeriodicTask
+
+            task = PeriodicTask.objects.get(
+                name=CapiJournalSync.get_task_name_for_periodic_task(user)
+            )
+            task.enabled = False
+            task.save()
+
         except JournalPartialContentError as e:
             log.warning(f"Partial content received for user {user.username} (ID: {user.id}). Retrying...", exc_info=e)
             raise self.retry(exc=e)
@@ -108,9 +113,9 @@ class CapiJournalSync(Task):
             raise e
         except CapiClinetRequestError as e:
             log.error(f"CapiClinetRequestError occurred for user {user.username} (ID: {user_id})", exc_info=e)
-            raise e
+            raise self.retry(exc=e)
         except Exception as e:
             log.error(f"An unexpected error occurred during CAPI journal sync for user {user.username} (ID: {user_id})", exc_info=e)
-            raise e
+            raise self.retry(exc=e)
         finally:
             log.info(f"Finished CAPI journal sync for user: {user.username} (ID: {user_id})")
