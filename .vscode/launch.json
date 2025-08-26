@@ -5,148 +5,81 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Django",
+      "name": "System Service",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
+      "program": "${workspaceFolder}/services/system_service/manage.py",
       "args": [
         "runserver",
       ],
       "django": true,
-      "consoleTitle": "Python Debug Django",
-      "envFile": "${workspaceFolder}/.env"
+      "consoleName": "System Service",
+      "envFile": "${workspaceFolder}/services/system_service/.env",
     },
     {
-      "name": "Python: Service eddn",
+      "name": "System Worker Service",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/eddn.py",
-      "envFile": "${workspaceFolder}/.env",
-      "consoleTitle": "Python Debug Service eddn",
-    },
-    {
-      "name": "Python: Celery Worker Tasck",
-      "type": "debugpy",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "envFile": "${workspaceFolder}/.env",
-      "env": {
-        "GEVENT_SUPPORT": "True"
-      },
-      "module": "celery",
+      "cwd": "${workspaceFolder}/services/system_service/",
       "args": [
-        "-A", "eddai_EliteDangerousApiInterface",
+        "-A", "config",
         "worker", 
         "-l","Debug", 
         "-P", "gevent", 
         "--autoscale", "50,5",
-        "-Q", "default",
-        "-n", "WorkerTasck@%h"
+        "-Q", "system_service_default,system_service_events_insert",
+        "-n", "SystemWorker@%h"
       ],
-      "consoleTitle": "Python Debug Worker Tasck"
-    },
-    {
-      "name": "Python: Celery Worker Admin",
-      "type": "debugpy",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "envFile": "${workspaceFolder}/.env",
+      "module": "celery",
+      "consoleName": "System Worker Service",
+      "envFile": "${workspaceFolder}/services/system_service/.env",
       "env": {
         "GEVENT_SUPPORT": "True"
       },
-      "module": "celery",
-      "args": [
-        "-A", "eddai_EliteDangerousApiInterface",
-        "worker", 
-        "-l","Debug", 
-        "-P", "gevent", 
-        "--autoscale", "50,5",
-        "-Q", "admin",
-        "-n", "WorkerAdmin@%h"
-      ],
-      "consoleTitle": "Python Debug Worker Admin"
     },
     {
-      "name": "Python: Celery Worker dbsync",
+      "name": "BGS Service",
       "type": "debugpy",
       "request": "launch",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "envFile": "${workspaceFolder}/.env",
-      "env": {
-        "GEVENT_SUPPORT": "True"
-      },
-      "module": "celery",
+      "program": "${workspaceFolder}/services/bgs_service/manage.py",
       "args": [
-        "-A", "eddai_EliteDangerousApiInterface",
-        "worker", 
-        "-l","Debug", 
-        "-P", "gevent", 
-        "--autoscale", "50,5",
-        "-Q", "ed_dbsync",
-        "-n", "WorkerDBsync@%h"
-      ],
-      "consoleTitle": "Python Debug Worker dbsync"
-    },
-    {
-      "name": "Python: Celery beat",
-      "type": "debugpy",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "envFile": "${workspaceFolder}/.env",
-      "env": {
-        "GEVENT_SUPPORT": "True"
-      },
-      "module": "celery",
-      "args": [
-        "--app", "eddai_EliteDangerousApiInterface",
-        "beat", 
-        "--loglevel","Debug",
-        "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"
-      ],
-      "consoleTitle": "Python Debug Celery beat"
-    },
-    {
-      "name": "Python: Django Shell",
-      "type": "debugpy",
-      "request": "launch",
-      "program": "${workspaceFolder}/eddai_EliteDangerousApiInterface/manage.py",
-      "envFile": "${workspaceFolder}/.env",
-      "args": [
-        "shell",
-      ],
-      "django": true
-    },
-    {
-      "name": "Python: Django Tests",
-      "type": "debugpy",
-      "request": "launch",
-      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/",
-      "envFile": "${workspaceFolder}/.env",
-      "program": "manage.py",
-      "args": [
-        "test",
-        "--noinput"
+        "runserver",
       ],
       "django": true,
+      "consoleName": "BGS Service Console",
+      "envFile": "${workspaceFolder}/services/bgs_service/.env",
+    },
+    {
+      "name": "BGS Worker Service",
+      "type": "debugpy",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/services/bgs_service/",
+      "args": [
+        "-A", "config",
+        "worker", 
+        "-l","Debug", 
+        "-P", "gevent", 
+        "--autoscale", "50,5",
+        "-Q", "bgs_service_events_insert,bgs_service_default",
+        "-n", "bgsWorker@%h"
+      ],
+      "module": "celery",
+      "consoleName": "BGS Worker Service",
+      "envFile": "${workspaceFolder}/services/bgs_service/.env",
       "env": {
-        "DJANGO_SETTINGS_MODULE": "eddai_EliteDangerousApiInterface.settings.test"
+        "GEVENT_SUPPORT": "True"
       },
-      "consoleTitle": "Python Debug Django Tests"
-    }
+    },
   ],
   "compounds": [
     {
-      "name": "Django/Celery Workers",
+      "name": "All Services",
       "configurations": [
-        "Python: Celery Worker Tasck", "Python: Celery Worker Admin",
-        "Python: Celery Worker dbsync", "Python: Celery beat",
-        "Python: Django"
-      ],
-      "stopAll": true
+        "System Service",
+        "System Worker Service",
+        "BGS Service",
+        "BGS Worker Service"
+      ]
     }
   ]
 }

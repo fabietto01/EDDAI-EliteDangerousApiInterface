@@ -1,0 +1,93 @@
+services:
+    rabbitmq:
+        image: rabbitmq:4.1.3-management
+        environment:
+            TZ: UTC
+            RABBITMQ_DEFAULT_USER: rabbitmq_user
+            RABBITMQ_DEFAULT_PASS: 123
+        volumes:
+            - rabitmqvol:/var/lib/rabbitmq
+        ports:
+            - "15672:15672"
+        networks:
+            - beckend_network
+        restart: always
+    redis_result:
+        image: redis:6.2.12
+        environment:
+            TZ: UTC
+        networks:
+            - beckend_network
+        restart: always
+        volumes:
+            - redis_resultsvol:/data
+    postgis_system_service:
+        image: postgis/postgis:16-3.4
+        environment:
+            TZ: UTC
+            POSTGRES_USER: postgres_user
+            POSTGRES_PASSWORD:  123
+            POSTGRES_DB: system_service
+        volumes:
+            - postgis_systemvol:/var/lib/postgresql/data
+        networks:
+            - beckend_network
+        restart: always
+    redis_system_service:
+        image: redis:6.2.12
+        environment:
+            TZ: UTC
+        networks:
+            - beckend_network
+        restart: always
+        volumes:
+            - redis_systemvol:/data
+    postgis_bgs_service:
+        image: postgis/postgis:16-3.4
+        environment:
+            TZ: UTC
+            POSTGRES_USER: postgres_user
+            POSTGRES_PASSWORD:  123
+            POSTGRES_DB: bgs_service
+        volumes:
+            - postgis_bgsvol:/var/lib/postgresql/data
+        networks:
+            - beckend_network
+        restart: always
+    redis_bgs_service:
+        image: redis:6.2.12
+        environment:
+            TZ: UTC
+        networks:
+            - beckend_network
+        restart: always
+        volumes:
+            - redis_bgsvol:/data
+    sviluppo:
+        build: 
+            context: .
+            dockerfile: ./services/Dockerfile.dev
+        volumes:
+        - .:/workspace:cached
+        command: sleep infinity
+        networks:
+            - beckend_network
+        depends_on:
+            - rabbitmq
+            - redis_result
+            - postgis_system_service
+            - redis_system_service
+            - postgis_bgs_service
+            - redis_bgs_service
+
+volumes:
+    rabitmqvol:
+    redis_resultsvol:
+    postgis_systemvol:
+    redis_systemvol:
+    postgis_bgsvol:
+    redis_bgsvol:
+
+networks:
+    beckend_network:
+        driver: bridge

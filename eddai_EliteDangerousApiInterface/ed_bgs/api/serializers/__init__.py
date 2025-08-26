@@ -1,1 +1,0 @@
-from .minorFactionBasicInformation import MinorFactionBasicInformation

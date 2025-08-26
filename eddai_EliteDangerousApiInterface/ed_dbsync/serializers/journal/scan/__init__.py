@@ -1,3 +1,0 @@
-from .baseScanSerializer import BaseScanSerializer
-from .planetScanSerializer import PlanetScanSerializer
-from .starScanSerializer import StarScanSerializer

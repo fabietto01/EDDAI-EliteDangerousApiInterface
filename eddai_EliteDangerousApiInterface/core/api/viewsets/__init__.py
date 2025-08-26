@@ -1,1 +1,0 @@
-from .ModelViewSet import OwnerAndDateModelViewSet

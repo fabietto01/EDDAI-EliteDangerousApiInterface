@@ -151,9 +151,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# certifications
-*.pem
-*.p12
-rabbitmq_config/
-mysql_config/
-eddai_EliteDangerousApiInterface/celerybeat-schedule.*
+# VS Code
+.vscode/
+
+# devcontainer
+.devcontainer/

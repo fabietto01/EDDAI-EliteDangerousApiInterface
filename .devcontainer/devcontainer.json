@@ -1,9 +1,8 @@
 {
 	"name": "eddia-devcontainer",
-	"build": {
-		"context": "..",
-		"dockerfile": "Dockerfile"
-	},
+	"dockerComposeFile": "../docker-compose.dev.yml",
+	"service": "sviluppo",
+	"workspaceFolder": "/workspace",
 	"customizations": {
 		"vscode": {
 			"extensions": [
