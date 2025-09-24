@@ -29,6 +29,7 @@ x-common-config: &default-config
   restart: always
   networks:
     - eddai
+    - loki
 
 volumes:
   static_volume:
@@ -36,7 +37,10 @@ volumes:
 
 networks:
   eddai:
-    driver: bridge
+  proxy:
+    external: true
+  loki:
+    external: true
 
 services:
   django:
@@ -82,8 +86,6 @@ services:
   nginx:
     build: ./nginx
     container_name: nginx
-    ports:
-      - "80:80"
     depends_on:
       - django
     volumes:
@@ -91,3 +93,14 @@ services:
       - media_volume:/app/media-server
     networks:
       - eddai
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      # Router per le richieste HTTP
+      - "traefik.http.routers.nginx.rule=Host(`eddai.italiangamingsystem.it`)"
+      - "traefik.http.routers.nginx.entrypoints=https"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.routers.nginx.tls.certresolver=claudflare"
+      - "traefik.http.routers.nginx.service=nginx"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
