@@ -27,15 +27,11 @@ jobs:
 
       - name: Extract tag version
         id: version
-        run: |
-          VERSION="${GITHUB_REF##*/}"
-          VERSION="${VERSION#v}"
-          echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
+        run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-          REPO_NAME="${GITHUB_REPOSITORY#*/}"
-          REPO_LOWER=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
-          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER}/${REPO_LOWER}"
-          echo "IMAGE=${IMAGE}" >> "$GITHUB_ENV"
+      - name: Convert repository name to lowercase
+        id: repo
+        run: echo "REPO_NAME=$(echo ${{ github.event.repository.name }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -44,7 +40,5 @@ jobs:
           file: ./eddai_EliteDangerousApiInterface/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE }}:${{ env.VERSION }}
-            ${{ env.IMAGE }}:latest
-
-      
+            ghcr.io/${{ github.repository_owner }}/${{ env.REPO_NAME }}:${{ env.VERSION }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.REPO_NAME }}:latest
