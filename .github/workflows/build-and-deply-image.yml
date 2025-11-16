@@ -27,7 +27,15 @@ jobs:
 
       - name: Extract tag version
         id: version
-        run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+        run: |
+          VERSION="${GITHUB_REF##*/}"
+          VERSION="${VERSION#v}"
+          echo "VERSION=${VERSION}" >> "$GITHUB_ENV"
+
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          REPO_LOWER=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER}/${REPO_LOWER}"
+          echo "IMAGE=${IMAGE}" >> "$GITHUB_ENV"
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -36,7 +44,7 @@ jobs:
           file: ./eddai_EliteDangerousApiInterface/Dockerfile
           push: true
           tags: |
-            ${{ env.VERSION }}
-            latest
+            ${{ env.IMAGE }}:${{ env.VERSION }}
+            ${{ env.IMAGE }}:latest
 
       
