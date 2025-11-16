@@ -1,6 +1,6 @@
 x-common-config: &default-config
   pull_policy: always
-  build: ./eddai_EliteDangerousApiInterface
+  image: ghcr.io/fabietto01/eddai-elitedangerousapiinterface:latest
   environment:
   - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
   - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
