@@ -12,15 +12,60 @@ This is an open-source project written in Python, Django, Django REST Framework,
 
 ## Development Guide
 
-### Setting Up the Development Environment
+### Setting Up the Development Environment (Recommended: Dev Containers)
 
-To set up the development environment, follow these steps:
+The easiest and recommended way to set up the development environment is using Dev Containers. This approach automatically configures all necessary dependencies (RabbitMQ, Redis, PostGIS) in an isolated container environment.
 
-#### 1. Install Dependencies
+#### 1. Prerequisites
 
-For development, some dependencies are required: RabbitMQ, Redis, and PostGIS. Specifically, RabbitMQ is used as a broker for Celery, Redis as the backend for Celery and Django cache, and finally, PostGIS is a spatial database based on PostgreSQL.
+Before starting, ensure you have the following installed:
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [Git](https://git-scm.com/)
 
-It is recommended to host everything on Docker for development, for better management.
+#### 2. Clone the Repository
+
+```sh
+git clone https://github.com/yourusername/EDDAI-EliteDangerousApiInterface.git
+cd EDDAI-EliteDangerousApiInterface
+```
+
+#### 3. Setup Dev Container
+
+##### 3.1 Install the Dev Containers Extension
+
+1. **Open Visual Studio Code**
+2. **Install the Dev Containers extension**:
+    - Go to the Extensions view in Visual Studio Code (`Ctrl+Shift+X`)
+    - Search for `Dev Containers` (by Microsoft)
+    - Click Install
+
+##### 3.2 Open Project in Dev Container
+
+1. **Open the project folder** in Visual Studio Code:
+    ```sh
+    code .
+    ```
+
+2. **Start the Dev Container**:
+    - Open the Command Palette (`Ctrl+Shift+P`)
+    - Type and select `Dev Containers: Reopen in Container`
+    - Wait for the container to build and initialize (this may take a few minutes on first run)
+
+The Dev Container will automatically:
+- Set up a PostgreSQL database with PostGIS extension
+- Configure RabbitMQ for Celery task queue
+- Set up Redis for caching and Celery backend
+- Install all Python dependencies from `environment.yml`
+- Configure the development environment
+
+#### 4. Alternative Setup (Without Dev Containers - Not Recommended)
+
+If you prefer to develop without using containers, you can set up your environment manually. This method is not recommended due to the complexity of managing dependencies and configurations.
+
+##### 4.1 Install Backend Dependencies
+
+Install the backend dependencies using Docker with a docker-compose file. Create a `docker-compose.yml` file in your project root:
 
 ```yaml
 services:
@@ -56,35 +101,10 @@ services:
             - "5432:5432"
 ```
 
-#### 2. Clone the Repository
-
-```sh
-git clone https://github.com/yourusername/EDDAI-EliteDangerousApiInterface.git
-cd EDDAI-EliteDangerousApiInterface
-```
-
-#### 3. Initialize the Environment
-
-##### 3.1 Development with Visual Studio Code Dev Containers (Recommended)
-
-To streamline the development process, you can use Visual Studio Code Dev Containers. This allows you to develop inside a containerized environment with all dependencies pre-configured.
-
-1. **Install the Remote - Containers extension**:
-    - Go to the Extensions view in Visual Studio Code (`Ctrl+Shift+X`).
-    - Search for `Remote - Containers` and install it.
-
-2. **Open the project in a Dev Container**:
-    - Open the Command Palette (`Ctrl+Shift+P`).
-    - Select `Remote-Containers: Open Folder in Container...`.
-    - Choose the project folder.
-
-##### 3.2 Development Without Containers (Not Recommended)
-
-If you prefer to develop without using containers, you can set up your environment manually. This method is not recommended due to the complexity of managing dependencies and configurations.
+##### 4.2 Install Python Environment
 
 1. **Install Miniconda**:
-    - Download and install Miniconda from the [official website](https://docs.conda.io/en/latest/miniconda.html) for your operating system.
-    - Follow the installation instructions provided on the website.
+    - Download and install Miniconda from the [official website](https://docs.conda.io/en/latest/miniconda.html)
 
 2. **Create and Configure the Conda Environment**:
     ```sh
@@ -92,7 +112,7 @@ If you prefer to develop without using containers, you can set up your environme
     conda activate eddai
     ```
 
-#### 4. Configure Environment Variables
+#### 5. Configure Environment Variables
 
 Before running the application, you need to set up the environment variables. This can be done by copying the `.env.template` file and creating a new `.env` file where you will set your environment-specific variables.
 
@@ -104,7 +124,7 @@ Before running the application, you need to set up the environment variables. Th
 2. **Edit the `.env` file**:
     Open the `.env` file in your preferred text editor and set the necessary environment variables according to your development setup.
 
-#### 5. Database Initialization
+#### 6. Database Initialization
 
 After setting up the environment, you need to initialize the database. This involves cleaning the database, applying migrations, and importing initial data from fixtures. You can do this using Django's management commands.
 
@@ -123,13 +143,18 @@ After setting up the environment, you need to initialize the database. This invo
     python manage.py loaddata user economy system body bgs exploration material mining station
     ```
 
+4. **Creating a Django superuser**:
+    ```sh
+    python manage.py createsuperuser --username admin
+    ```
+
 These commands will ensure that your database is properly set up and ready for development.
 
-#### 6. Start the Server
+#### 7. Start the Server
 
 You can start the server using Visual Studio Code's debugging feature or through the terminal. Visual Studio Code is already configured for this project, so it is the recommended choice.
 
-##### 6.1 Using Visual Studio Code Debugging (Recommended)
+##### 7.1 Using Visual Studio Code Debugging (Recommended)
 
 1. **Open the Debug View**:
     - Click on the Debug icon in the Activity Bar on the side of Visual Studio Code.
@@ -140,7 +165,7 @@ You can start the server using Visual Studio Code's debugging feature or through
     - Select the debug configuration named `Django/Celery Workers`.
     - This will start the Django development server along with the three Celery workers and the Celery beat scheduler with the debugger attached.
 
-##### 6.2 Using the Terminal
+##### 7.2 Using the Terminal
 
 If you prefer to start the server through the terminal, you can do so with the following command:
 

@@ -1,0 +1,83 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.11.13-management-alpine
+    hostname: rabbitmq
+    environment:
+        TZ: UTC
+        RABBITMQ_DEFAULT_USER: eddai_dev_user
+        RABBITMQ_DEFAULT_PASS: eddai_dev_password
+        RABBITMQ_DEFAULT_VHOST: ed_dev
+    networks:
+      - eddai_dev
+    ports:
+      - "15672:15672"
+    restart: unless-stopped
+  redis_result_backend:
+      image: redis:6.2.12-alpine3.18
+      environment:
+          TZ: UTC
+      networks:
+        - eddai_dev
+      restart: unless-stopped
+  redis_cache:
+      image: redis:6.2.12-alpine3.18
+      environment:
+          TZ: UTC
+      networks:
+        - eddai_dev
+      restart: unless-stopped
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    environment:
+      POSTGRES_DB: ed_info
+      POSTGRES_USER: eddai_dev_user
+      POSTGRES_PASSWORD: eddai_dev_password
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - eddai_dev
+    restart: unless-stopped
+  # Servizio principale Django per sviluppo
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    environment:
+
+      POSTGIS_HOST: postgres
+      POSTGIS_DB: ed_info
+      POSTGIS_USER: eddai_dev_user
+      POSTGIS_PASSWORD: eddai_dev_password
+      
+
+      DJANGO_SETTINGS_MODULE: eddai_EliteDangerousApiInterface.settings.dev
+      DJANGO_CACHES_HOST: redis_cache
+      DJANGO_CACHES_PORT: 6379
+
+      CELERY_BROKER_HOST: rabbitmq
+      CELERY_BROKER_USER: eddai_dev_user
+      CELERY_BROKER_PASSWORD: eddai_dev_password
+      CELERY_BROKER_VHOST: ed_dev
+      CELERY_RESULT_BACKEND_HOST: redis_result_backend
+      CELERY_RESULT_BACKEND_PORT: 6379
+    volumes:
+      - ../..:/workspaces:cached
+    networks:
+      - eddai_dev
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis_result_backend
+      - redis_cache
+    restart: unless-stopped
+    command: sleep infinity  # Mantiene il container attivo per lo sviluppo
+
+volumes:
+  postgres_dev_data:
+  rabbitedvol:
+
+networks:
+  eddai_dev:
+    driver: bridge

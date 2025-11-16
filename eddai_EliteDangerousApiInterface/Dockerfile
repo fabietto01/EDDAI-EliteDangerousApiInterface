@@ -1,5 +1,5 @@
 # Use an official Miniconda3 image from ContinuumIO as the base image
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:25.3.1-1
 
 # Set the environment variable APP_HOME to /app
 ENV APP_HOME=/app
