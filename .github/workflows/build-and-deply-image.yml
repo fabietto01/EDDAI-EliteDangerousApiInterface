@@ -3,13 +3,16 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+*'  # Match tags like v1.0, v1.0.4, v1.0.4.5
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: Checkout
@@ -33,12 +36,14 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version: ${VERSION}"
 
-      - name: Convert repository name to lowercase
-        id: repo
-        run: |
-          REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          echo "name=${REPO_NAME}" >> $GITHUB_OUTPUT
-          echo "Repository name: ${REPO_NAME}"
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.version.outputs.version }}
+            latest
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -46,6 +51,5 @@ jobs:
           context: ./eddai_EliteDangerousApiInterface
           file: ./eddai_EliteDangerousApiInterface/Dockerfile
           push: true
-          tags: |
-            ghcr.io/${{ steps.repo.outputs.name }}:${{ steps.version.outputs.version }}
-            ghcr.io/${{ steps.repo.outputs.name }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
