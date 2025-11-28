@@ -23,7 +23,7 @@
                     </li>
                 </ul>
             </div>
-            <!-- <button class="btn nav-btn d-none d-md-block">Login</button> -->
+            <button class="btn nav-btn d-none d-md-block" @click="redirectToLogin">Login</button>
         </div>
     </nav>
 </template>
@@ -36,6 +36,11 @@ export default {
             navItems: [
             ],
         };
+    },
+    methods: {
+        redirectToLogin() {
+            window.location.href = '/users/login/';
+        },
     },
 };
 </script>
