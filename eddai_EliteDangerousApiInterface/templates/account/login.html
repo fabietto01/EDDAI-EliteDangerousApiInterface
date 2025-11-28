@@ -7,24 +7,21 @@
 
 {% block content %}
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div id="login-card" class="card p-4 shadow rounded">
-                    <div class="mb-5">
-                        <h1 class="text-center">Login</h1>
-                    </div>
-                    {% get_providers as socialaccount_providers %}
-                    {% if socialaccount_providers %}
-                        {% for provider in socialaccount_providers %}
-                            <div class="mb-3 text-center">
-                                {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
-                                <a class="btn btn-block" title="{{ provider.name }}" href="{{ href }}">{{ provider.name }}</a>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+    <!-- <div class="container mt-5 test1"> -->
+    <div class="container test1">
+        <div id="login-card" class="card p-4 shadow rounded">
+            <div class="mb-5">
+                <h1 class="text-center">Login</h1>
             </div>
+            {% get_providers as socialaccount_providers %}
+            {% if socialaccount_providers %}
+                {% for provider in socialaccount_providers %}
+                    <div class="mb-3 text-center">
+                        {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+                        <a class="btn btn-block" title="{{ provider.name }}" href="{{ href }}">{{ provider.name }}</a>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 
@@ -33,9 +30,30 @@
 
     {% providers_media_js %}
     <style>
+        html, body {
+            height: 100vh;
+            background-color: orange;
+        }
+        .container {
+            min-height: 100vh;
+            min-width: 100vw;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: orchid;
+            margin: 0;
+            padding: 0;
+        }
         #login-card{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             background-color: #1c1b1d;
             color: #f36c1d;
+            box-sizing: border-box;
         }
         .btn{
             background-color: #f36c1b; color: #1c1b1d;
