@@ -6,33 +6,43 @@
 {% endblock head_title %}
 
 {% block content %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div id="login-card" class="card p-4 shadow rounded">
-                    <div class="mb-5 text-center">
-                        {% if process == "connect" %}
-                            <h1>Connect {{ provider }}</h1>
-                            <p>You are about to connect a new third-party account from {{ provider }}.</p>
-                        {% else %}
-                            <h1>Sign In Via {{ provider }}</h1>
-                            <p>You are about to sign in using a third-party account from {{ provider }}.</p>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3 text-center">
-                        <form method="post">
-                            {% csrf_token %}
-                            <button class="btn">Continue</button>
-                        </form>
-                    </div>
-                </div>
+    <div class="test1">
+        <div id="login-card" class="card p-4 shadow rounded">
+            <div class="mb-5 text-center">
+                {% if process == "connect" %}
+                    <h1>Connect {{ provider }}</h1>
+                    <p>You are about to connect a new third-party account from {{ provider }}.</p>
+                {% else %}
+                    <h1>Sign In Via {{ provider }}</h1>
+                    <p>You are about to sign in using a third-party account from {{ provider }}.</p>
+                {% endif %}
+            </div>
+            <div class="mb-3 text-center">
+                <form method="post">
+                    {% csrf_token %}
+                    <button class="btn">Continue</button>
+                </form>
             </div>
         </div>
     </div>
 
     <style>
-        #login-card{
+        .test1 {
+            height: 100vh;
+            width: 100vw;
             background-color: #1c1b1d;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            min-height: 100vh;
+            /* width: 100vw; */
+        }
+        #login-card{
+            background-color: #1c1b1d; 
             color: #f36c1d;
         }
         .btn{
