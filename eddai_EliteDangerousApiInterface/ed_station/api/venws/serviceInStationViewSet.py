@@ -60,7 +60,12 @@ class ServiceInStationViewSet(OwnerAndDateModelViewSet):
     ServiceInStationViewSet is a view set for handling API requests related to ServiceInStation objects.
     """
     
-    queryset = ServiceInStation.objects.all()
+    queryset = ServiceInStation.objects.select_related(
+        'service',
+        'station',
+        'created_by',
+        'updated_by'
+    )
     serializer_class = ServiceInStationSerializer
     filterset_class = None
     filter_backends = [SearchFilter, DjangoFilterBackend]
