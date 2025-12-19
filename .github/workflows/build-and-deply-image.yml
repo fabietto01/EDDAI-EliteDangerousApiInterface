@@ -1,8 +1,7 @@
 name: Build and Deploy Image
 on:
-  push:
-    tags:
-      - 'releases/v[0-9]+.[0-9]+*'  # Match tags like v1.0, v1.0.4, v1.0.4.5
+  release:
+    types: [published]
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -24,8 +23,9 @@ jobs:
       - name: Extract tag version
         id: version
         run: |
-          # Remove 'v' prefix from tag and set as output
-          VERSION=${GITHUB_REF#refs/tags/v}
+          # Extract version from release tag (remove 'v' prefix if present)
+          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${VERSION#v}
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version: ${VERSION}"
 
