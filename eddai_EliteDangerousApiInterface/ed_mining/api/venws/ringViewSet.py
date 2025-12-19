@@ -41,7 +41,14 @@ class RingViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
         serializer_class (Serializer
     """
 
-    queryset = Ring.objects.all().order_by('id')
+    queryset = Ring.objects.select_related(
+        'body',
+        'body__system',
+        'created_by',
+        'updated_by'
+    ).prefetch_related(
+        'ed_mining_hotspot_related__type'
+    ).order_by('id')
     serializer_class = RingSerializer
     distance_serializer_class = RingDistanceSerializer
     filter_param_distance = 'distance_by_system'
