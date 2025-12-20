@@ -1,1 +1,2 @@
 from .materialSerializer import CompactedMaterialSerializer, MaterialSerializer, BaseMaterialSerializer
+from .materialInPlanetSerializer import CompactedMaterialInPlanetSerializer, MaterialInPlanetSerializer
