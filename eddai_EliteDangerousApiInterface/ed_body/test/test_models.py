@@ -1,7 +1,4 @@
 from django.test import TestCase
-from django.contrib.gis.geos import Point
-from django.core.exceptions import ValidationError
-from django.core.management import call_command
 
 from ed_body.models import (
     Planet, Star, BaseBody, StarLuminosity, StarType,
