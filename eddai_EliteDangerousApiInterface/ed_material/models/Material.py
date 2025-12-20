@@ -52,5 +52,6 @@ class Material(AbstractDataEDDN):
             models.Index(fields=['type']),
             models.Index(fields=['grade']),
         ]
+        ordering = ['name']
         verbose_name = _('material')
         verbose_name_plural = _('materials')

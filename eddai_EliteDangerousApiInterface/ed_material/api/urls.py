@@ -14,13 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('', include('ed_body.api.urls')),
-    path('', include('ed_station.api.urls')),
-    path('', include('ed_system.api.urls')),
-    path('', include('ed_economy.api.urls')),
-    path('', include('ed_mining.api.urls')),
-    path('', include('ed_material.api.urls')),
-]
+from .venws import (
+    MaterialViewSet,
+    MaterialInPlanetViewSet
+)
+
+# Router principale per Material
+router = DefaultRouter(trailing_slash=False)
+router.register(r'material', MaterialViewSet, basename='material')
+router.register(r'body/planet/(?P<planet_pk>\d+)/material', MaterialInPlanetViewSet, basename='material-in-planet')
+
+# Esporta gli URL del router
+urlpatterns = router.urls
