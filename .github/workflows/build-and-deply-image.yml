@@ -1,18 +1,23 @@
 name: Build and Deploy Image
 on:
-  push:
-    tags:
-      - 'releases/v[0-9]+.[0-9]+*'  # Match tags like v1.0, v1.0.4, v1.0.4.5
+  release:
+    types: [published]
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: write
       id-token: write
+      security-events: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      image-digest: ${{ steps.build.outputs.digest }}
+      image-tags: ${{ steps.meta.outputs.tags }}
 
     steps:
       - name: Checkout
@@ -24,7 +29,7 @@ jobs:
       - name: Extract tag version
         id: version
         run: |
-          # Remove 'v' prefix from tag and set as output
+          # Extract version from release tag (remove 'v' prefix if present)
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Extracted version: ${VERSION}"
@@ -46,6 +51,7 @@ jobs:
             latest
 
       - name: Build and push
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: ./eddai_EliteDangerousApiInterface
@@ -53,12 +59,31 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
+
+      - name: Run Trivy security scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
   
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Deployment Step
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -67,5 +92,26 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main --rebase
+            docker compose pull
             docker compose down
-            docker compose up -d --build
+            docker compose up -d
+            echo "Waiting for services to start..."
+            sleep 10
+
+      - name: Health check
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            docker compose ps
+            echo "Checking if services are healthy..."
+            if ! docker compose ps | grep -q "Up"; then
+              echo "ERROR: Services are not running!"
+              docker compose logs --tail=50
+              exit 1
+            fi
+            echo "✓ Deployment successful - Version: ${{ needs.build.outputs.version }}"
+            echo "✓ Image digest: ${{ needs.build.outputs.image-digest }}"
