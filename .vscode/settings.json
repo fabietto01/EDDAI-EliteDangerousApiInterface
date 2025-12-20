@@ -1,6 +1,8 @@
 {
-    "python.testing.unittestArgs": [],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "python.experiments.optInto": ["pythonTestAdapter"]
+    "python.testing.cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface",
+    "python.testing.unittestArgs": [
+        "--settings=eddai_EliteDangerousApiInterface.settings.test",
+    ]
 }
