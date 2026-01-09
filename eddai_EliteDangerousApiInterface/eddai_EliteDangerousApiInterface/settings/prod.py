@@ -46,11 +46,11 @@ LOGGING = {
         },
         "celery.task": {
             "()": "eddai_EliteDangerousApiInterface.logging.taskJsonFormatter.TaskJsonFormatter",
-            "format": "%(asctime)s %(name)s %(levelname)s %(message)s %(task_name)s %(task_id)s",
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s %(task_name)s %(task_id)s",
         },
         "celery": {
             "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
-            "format": "%(asctime)s %(name)s %(levelname)s %(message)s",
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
             "timestamp": True,
         },
     },
