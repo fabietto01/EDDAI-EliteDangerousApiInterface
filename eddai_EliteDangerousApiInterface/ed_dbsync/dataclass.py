@@ -1,13 +1,13 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 import uuid
 
 @dataclass(frozen=True)
 class IncomingData:
 
-    guiid: str = field(
+    guid: str = field(
         init=False, compare=True,
         repr=False, metadata={"description": "Unique identifier for the incoming data"},
-        default=lambda: str(uuid.uuid4())
+        default_factory=lambda: str(uuid.uuid4())
     )
     source: str = field(
         default_factory=str, compare=False,
@@ -22,5 +22,8 @@ class IncomingData:
         if self.source not in ["eddn", "capi_api"]:
             raise ValueError(f"Invalid source '{self.source}'. Valid sources are: {self._souce_valid}")
         
+    def to_dict(self) -> dict:
+        return asdict(self)
+        
     def __str__(self) -> str:
-        return str(self.guiid)
+        return str(self.guid)

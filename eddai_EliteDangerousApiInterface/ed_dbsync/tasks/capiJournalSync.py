@@ -55,9 +55,13 @@ class CapiJournalSync(Task):
             to refresh the token) or when partial content is received from the CAPI.
         """
         try:
-
             user = User.objects.get(id=user_id)
-            log.info(f"Starting CAPI journal sync for user: {user.username} (ID: {user_id})")
+            log.info(
+                f"Starting CAPI journal sync for user: {user_id}",
+                extra={
+                    'user_id': user_id,
+                }
+            )
 
             client = CapiClient.from_task(user)
 
@@ -68,18 +72,39 @@ class CapiJournalSync(Task):
 
             token_expired_at = client.get_social_token().expires_at
             if token_expired_at and token_expired_at < now():
-                log.warning(f"Token for user {user.username} (ID: {user_id}) is expired. Attempting to refresh token...")
+                log.warning(
+                    f"Token expired for user {user_id}. Attempting to refresh token",
+                    extra={
+                        'user_id': user_id,
+                        'token_expired_at': token_expired_at,
+                    }
+                )
                 if not refresh_frontier_token(user=user):
                     raise CapiClinetAuthError()
             
-            log.info(f"Creating CAPI client for user: {user.username} (ID: {user_id})")
+            log.info(
+                f"Creating CAPI client for user: {user_id}",
+                extra={
+                    'user_id': user_id,
+                }
+            )
             journal_entries = client.get_journal(*args, **kwargs)
         
             if not journal_entries:
-                log.debug("No journal entries found for the user.")
+                log.debug(
+                    f"No journal entries found for user: {user_id}",
+                    extra={
+                        'user_id': user_id,
+                    }
+                )
                 return
             
-            log.info(f"Found {len(journal_entries)} journal entries to process for user: {user.username} (ID: {user.id})")
+            log.info(
+                f"Found {len(journal_entries)} journal entries to process for user: {user_id}",
+                extra={
+                    'user_id': user.id,
+                }
+            )
 
             tasks = group(
                 AnalystTasck().s(
@@ -90,10 +115,21 @@ class CapiJournalSync(Task):
                 queue='ed_dbsync',
             )
 
-            log.info(f"Successfully initiated processing of {len(journal_entries)} journal entries for user: {user.username} (ID: {user.id})")
+            log.info(
+                f"Successfully initiated processing of {len(journal_entries)} journal entries for user: {user_id}",
+                extra={
+                    'user_id': {user_id},
+                }
+            )
 
-        except User.DoesNotExist as e: 
-            log.error(f"User with id {user_id} does not exist.")
+        except User.DoesNotExist as e:
+            log.error(
+                f"User with id {user_id} does not exist",
+                exc_info=True,
+                extra={
+                    'user_id': user_id,
+                }
+            )
             raise e
         except CapiClinetAuthError as e:
             
@@ -106,16 +142,45 @@ class CapiJournalSync(Task):
             task.save()
 
         except JournalPartialContentError as e:
-            log.warning(f"Partial content received for user {user.username} (ID: {user.id}). Retrying...", exc_info=e)
+            log.warning(
+                f"Partial content received for user {user_id}). Retrying...",
+                exc_info=True,
+                extra={
+                    'user_id': user.id,
+                }
+            )
             raise self.retry(exc=e)
         except JournalNoContentError as e:
-            log.error(f"No content found for user {user.username} (ID: {user_id}). This may mean the user has not played today.", exc_info=e)
+            log.error(
+                f"No content found for user {user_id}. This may mean the user has not played today",
+                exc_info=True,
+                extra={
+                    'user_id': user_id,
+                }
+            )
             raise e
         except CapiClinetRequestError as e:
-            log.error(f"CapiClinetRequestError occurred for user {user.username} (ID: {user_id})", exc_info=e)
+            log.error(
+                f"CapiClinetRequestError occurred for user {user_id}",
+                exc_info=True,
+                extra={
+                    'user_id': user_id,
+                }
+            )
             raise self.retry(exc=e)
         except Exception as e:
-            log.error(f"An unexpected error occurred during CAPI journal sync for user {user.username} (ID: {user_id})", exc_info=e)
+            log.error(
+                f"An unexpected error occurred during CAPI journal sync for user {user_id}",
+                exc_info=True,
+                extra={
+                    'user_id': user_id,
+                }
+            )
             raise self.retry(exc=e)
         finally:
-            log.info(f"Finished CAPI journal sync for user: {user.username} (ID: {user_id})")
+            log.info(
+                f"Finished CAPI journal sync for user: {user_id}",
+                extra={
+                    'user_id': user_id,
+                }
+            )

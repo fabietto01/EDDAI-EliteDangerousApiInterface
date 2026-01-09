@@ -51,7 +51,14 @@ class BaseDataAnalyst:
         
         This method should be implemented by subclasses to perform specific analysis logic.
         """
-        log.info(f"Start of data analysis. '{self.istance}' ", extra={'istance': self.istance})
+        log.info(
+            f"Start of data analysis.", 
+            extra={
+                'istance_id': self.istance.guid,
+                'analyst_class_name': self.__class__.__name__,
+                'agent_id': self.agent.id
+            }
+        )
         try:
             serializer = self.get_serializer(data=self.get_message())
             serializer.is_valid(raise_exception=True)
@@ -60,6 +67,24 @@ class BaseDataAnalyst:
                 updated_by=self.agent
             )
         except NotSerializerError as e:
-            log.debug("An appropriate serializer was not found.", exc_info=e, extra={'istance': self.istance })
+            log.debug(
+                "An appropriate serializer was not found.", 
+                exc_info=e, 
+                extra={
+                    'istance_id': self.istance.guid,
+                    'analyst_class_name': self.__class__.__name__,
+                    'agent_id': self.agent.id,
+                    'instance': self.istance,
+                }
+            )
         else:
-            log.info(f"Data analysis completed successfully. '{self.istance}'", extra={'istance': self.istance})
+            log.info(
+                "Data analysis completed successfully. ", 
+                exc_info=e, 
+                extra={
+                    'istance_id': self.istance.guid,
+                    'analyst_class_name': self.__class__.__name__,
+                    'agent_id': self.agent.id,
+                    'instance': self.istance,
+                }
+            )

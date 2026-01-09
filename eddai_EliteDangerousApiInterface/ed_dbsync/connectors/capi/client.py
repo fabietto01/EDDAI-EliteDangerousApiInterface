@@ -68,7 +68,6 @@ class CapiClient:
         try:
             return SocialApp.objects.get(name='Frointer')
         except SocialApp.DoesNotExist:
-            log.error("SocialApp 'Frointer' does not exist. Please ensure it is created in the admin panel.")
             raise CapiClinetAuthError("SocialApp 'Frointer' does not exist. Please create it in the admin panel.")
 
     def get_social_token(self) -> SocialToken:
@@ -81,7 +80,6 @@ class CapiClient:
         try:
             return SocialToken.objects.get(app=self.get_social_app(), account__user=self.agent)
         except SocialToken.DoesNotExist:
-            log.error(f"SocialToken for user {self.agent.username} does not exist. Please ensure the user is authenticated with CAPI.")
             raise CapiClinetAuthError(f"SocialToken for user {self.agent.username} does not exist. Please authenticate the user with CAPI.")
 
     def get_token(self) -> str:
@@ -130,10 +128,8 @@ class CapiClient:
             response.raise_for_status()
 
             if response.status_code == 204:
-                log.warning("No content in journal response (204 No Content). This may mean the player has not played this day.")
                 raise JournalNoContentError("No content in journal response (204 No Content). This may mean the player has not played this day.")
             if response.status_code == 206:
-                log.warning("Partial content in journal response (206 Partial Content). This may mean the request did not get the entire journal.")
                 raise JournalPartialContentError("Partial content in journal response (206 Partial Content). This may mean the request did not get the entire journal.")
 
             response_text = response.text.strip()
@@ -149,23 +145,27 @@ class CapiClient:
                         entry = json.loads(line)
                         response_json.append(entry)
                     except json.JSONDecodeError as line_error:
-                        log.warning(f"Could not parse line: {repr(line)} - Error: {line_error}", exc_info=line_error)
+                        log.warning(
+                            f"Could not parse journal line: {repr(line)}",
+                            exc_info=True,
+                            extra={
+                                'line_content': repr(line),
+                                'user_id': self.agent.id,
+                            }
+                        )
                         continue
             return response_json
         except requests.RequestException as e:
             if e.response.status_code == 401:
-                log.error("Authentication error: Invalid or expired token.")
                 raise CapiClinetAuthError("Authentication error: Invalid or expired token.")
             else:
-                log.error(f"Error in journal request: {e}")
-                raise CapiClinetRequestError(f"Error in journal request: {e}")
+                raise CapiClinetRequestError(f"Error in journal request") from e
         except JournalNoContentError as e:
             raise e
         except JournalPartialContentError as e:
             raise e
         except Exception as e:
-            log.error(f"Unexpected error in journal request: {e}")
-            raise CapiClientError(f"Unexpected error in journal request: {e}")
+            raise CapiClientError(f"Unexpected error in journal request") from e
 
     def get_profile(self, *arg, **kwargs) -> dict:
         """
@@ -182,8 +182,7 @@ class CapiClient:
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            log.error(f"Error in profile request: {e}")
-            raise CapiClientError(f"Error in profile request: {e}")
+            raise CapiClientError(f"Error in profile request") from e
 
     def get_fleetcarrier(self, *arg, **kwargs) -> dict:
         """
@@ -207,5 +206,4 @@ class CapiClient:
         except FleetCarrierNotOwnedError as e:
             raise e
         except requests.RequestException as e:
-            log.error(f"Error in fleetcarrier request: {e}")
-            raise CapiClientError(f"Error in fleetcarrier request: {e}")
+            raise CapiClientError(f"Error in fleetcarrier request") from e
