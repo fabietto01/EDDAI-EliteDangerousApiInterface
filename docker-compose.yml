@@ -29,7 +29,6 @@ x-common-config: &default-config
   restart: always
   networks:
     - eddai
-    - loki
 
 volumes:
   static_volume:
@@ -38,8 +37,6 @@ volumes:
 networks:
   eddai:
   proxy:
-    external: true
-  loki:
     external: true
 
 services:
