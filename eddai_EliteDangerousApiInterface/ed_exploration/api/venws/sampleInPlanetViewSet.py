@@ -79,10 +79,7 @@ class SampleInPlanetViewSet(OwnerAndDateModelViewSet):
     """
 
     queryset = Sample.objects.select_related(
-        'type',
-        'planet',
-        'created_by',
-        'updated_by'
+        'type'
     )
     serializer_class = SampleSerializer
     filterset_class = None

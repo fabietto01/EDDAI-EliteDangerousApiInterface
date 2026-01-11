@@ -14,6 +14,17 @@ class SignalSerializer(serializers.ModelSerializer):
         slug_field='name'
     )
 
+    def validate(self, attrs):
+        try:
+            planet_pk:int = self.context['planet_pk']
+            signal_pk:int = self.instance.pk if self.instance else None
+            if Signal.objects.filter(planet_id=planet_pk, type=attrs['type']).exclude(id=signal_pk).exists():
+                raise serializers.ValidationError('Signal with this type already exists in this planet.')
+        except KeyError:
+            from rest_framework import status
+            raise serializers.ValidationError('An internal server error occurred', code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return attrs
+
     class Meta:
         model = Signal
         fields = None

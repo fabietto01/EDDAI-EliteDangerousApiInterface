@@ -79,10 +79,7 @@ class SignalInPlanetViewSet(OwnerAndDateModelViewSet):
     """
 
     queryset = Signal.objects.select_related(
-        'type',
-        'planet',
-        'created_by',
-        'updated_by'
+        'type'
     )
     serializer_class = SignalSerializer
     filterset_class = None

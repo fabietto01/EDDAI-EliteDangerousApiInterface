@@ -4,5 +4,6 @@
     "python.testing.cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface",
     "python.testing.unittestArgs": [
         "--settings=eddai_EliteDangerousApiInterface.settings.test",
+        "--noinput"
     ]
 }
