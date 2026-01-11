@@ -14,14 +14,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('', include('ed_body.api.urls')),
-    path('', include('ed_station.api.urls')),
-    path('', include('ed_system.api.urls')),
-    path('', include('ed_economy.api.urls')),
-    path('', include('ed_mining.api.urls')),
-    path('', include('ed_material.api.urls')),
-    path('', include('ed_exploration.api.urls')),
-]
+from .venws import (
+    SampleSignalsViewSet,
+    SignalSignalsViewSet,
+    SampleInPlanetViewSet,
+    SignalInPlanetViewSet
+)
+
+router = DefaultRouter(trailing_slash=False)
+router.register(r'sample-signals', SampleSignalsViewSet)
+router.register(r'signal-signals', SignalSignalsViewSet)
+router.register(r'body/planet/(?P<planet_pk>\d+)/sample', SampleInPlanetViewSet)
+router.register(r'body/planet/(?P<planet_pk>\d+)/signal', SignalInPlanetViewSet)
+
+urlpatterns = router.urls
