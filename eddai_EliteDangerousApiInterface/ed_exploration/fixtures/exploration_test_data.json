@@ -1,0 +1,127 @@
+[
+    {
+        "model": "ed_exploration.sample",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 2,
+            "type": 1
+        }
+    },
+    {
+        "model": "ed_exploration.sample",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 2,
+            "type": 2
+        }
+    },
+    {
+        "model": "ed_exploration.sample",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 2,
+            "type": 3
+        }
+    },
+    {
+        "model": "ed_exploration.sample",
+        "pk": 4,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 3,
+            "type": 4
+        }
+    },
+    {
+        "model": "ed_exploration.sample",
+        "pk": 5,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 3,
+            "type": 5
+        }
+    },
+    {
+        "model": "ed_exploration.signal",
+        "pk": 1,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 2,
+            "type": 2,
+            "count": 5
+        }
+    },
+    {
+        "model": "ed_exploration.signal",
+        "pk": 2,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 2,
+            "type": 3,
+            "count": 3
+        }
+    },
+    {
+        "model": "ed_exploration.signal",
+        "pk": 3,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 2,
+            "type": 4,
+            "count": 8
+        }
+    },
+    {
+        "model": "ed_exploration.signal",
+        "pk": 4,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 3,
+            "type": 1,
+            "count": 2
+        }
+    },
+    {
+        "model": "ed_exploration.signal",
+        "pk": 5,
+        "fields": {
+            "created_at": "2025-01-30T16:03:59.954Z",
+            "updated_at": "2025-01-30T16:03:59.954Z",
+            "created_by": 1,
+            "updated_by": 1,
+            "planet": 3,
+            "type": 5,
+            "count": 10
+        }
+    }
+]
