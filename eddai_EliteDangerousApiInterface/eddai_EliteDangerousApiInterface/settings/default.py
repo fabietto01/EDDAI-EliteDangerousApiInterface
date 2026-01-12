@@ -359,4 +359,13 @@ SPECTACULAR_SETTINGS = {
         'persistAuthorization': True,
         'displayOperationId': True,
     },
+    # Nomi personalizzati per gli enum per evitare collisioni
+    'ENUM_NAME_OVERRIDES': {
+        'Material type': 'ed_material.models.Material.MaterialType',
+        'Material grade': 'ed_material.models.Material.MaterialGrade',
+        'State type': 'ed_bgs.models.State.TypeChoices',
+        'Government type': 'ed_bgs.models.Government.TipeChoices',
+        'Ring type': 'ed_mining.models.Ring.RingType',
+        'State phase': 'ed_bgs.models.StateInMinorFaction.PhaseChoices',
+    },
 }
