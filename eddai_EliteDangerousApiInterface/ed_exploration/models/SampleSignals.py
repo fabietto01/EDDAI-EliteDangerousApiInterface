@@ -17,3 +17,4 @@ class SampleSignals(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _("Sample type")
         verbose_name_plural = _("Samples type")
+        ordering = ['name']

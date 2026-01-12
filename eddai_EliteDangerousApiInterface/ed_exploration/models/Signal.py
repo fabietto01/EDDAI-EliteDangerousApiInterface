@@ -43,6 +43,7 @@ class Signal(OwnerAndDateModels):
     class Meta:
         verbose_name = _("Signals")
         verbose_name_plural = _("Signals")
+        ordering = ['type', 'planet']
         indexes = [
             models.Index(fields=['type', 'planet']),
         ]

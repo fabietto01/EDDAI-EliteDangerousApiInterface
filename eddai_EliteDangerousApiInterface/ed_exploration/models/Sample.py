@@ -34,6 +34,7 @@ class Sample(OwnerAndDateModels):
     class Meta:
         verbose_name = _("Sample")
         verbose_name_plural = _("Samples")
+        ordering = ['type', 'planet']
         indexes = [
             models.Index(fields=['type', 'planet']),
         ]

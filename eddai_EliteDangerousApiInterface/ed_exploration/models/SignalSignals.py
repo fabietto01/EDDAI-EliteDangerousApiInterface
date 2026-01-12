@@ -17,3 +17,4 @@ class SignalSignals(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _("Signal type")
         verbose_name_plural = _("Signals type")
+        ordering = ['name']
