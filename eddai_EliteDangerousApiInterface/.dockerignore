@@ -1,0 +1,50 @@
+# Frontend (non serve nel container backend)
+ed_frontend/
+
+# File di sviluppo
+environment-dev.yml
+*.md
+README.md
+LICENSE
+
+# Python cache
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database locale
+*.sqlite3
+db.sqlite3
+
+# Media e static (se gestiti separatamente)
+media-server/
+static-server/
+
+# Environment
+.env
+.env.*
+!.env.example
