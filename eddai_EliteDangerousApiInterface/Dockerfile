@@ -1,37 +1,65 @@
-# Use an official Miniconda3 image from ContinuumIO as the base image
-FROM continuumio/miniconda3:25.3.1-1
+# ============================================
+# STAGE 1: Builder - Install all dependencies
+# ============================================
+FROM continuumio/miniconda3:25.3.1-1 AS builder
 
-# Set the environment variable APP_HOME to /app
-ENV APP_HOME=/app
 # Configure PROJ_LIB environment variable for GDAL
 ENV PROJ_LIB=/opt/conda/share/proj
-# Create the /app directory
+
+# Set working directory for build
+WORKDIR /tmp/build
+
+# Copy and install conda environment
+COPY ./environment.yml .
+RUN umask 0002 && \
+    /opt/conda/bin/conda env update -n base -f environment.yml && \
+    # Install PROJ data if needed
+    if [ ! -d "/opt/conda/share/proj" ]; then \
+        conda install -y -c conda-forge proj-data; \
+    fi && \
+    # Clean conda cache and unnecessary files
+    conda clean -afy && \
+    # Remove static libraries (not needed at runtime)
+    find /opt/conda -follow -type f -name '*.a' -delete && \
+    # Remove Python cache
+    find /opt/conda -follow -type f -name '*.pyc' -delete && \
+    find /opt/conda -follow -type f -name '*.pyo' -delete && \
+    # Remove JavaScript source maps
+    find /opt/conda -follow -type f -name '*.js.map' -delete && \
+    # Remove conda package cache
+    rm -rf /opt/conda/pkgs
+
+# ============================================
+# STAGE 2: Runtime - Final lightweight image
+# ============================================
+FROM continuumio/miniconda3:25.3.1-1
+
+# Set environment variables
+ENV APP_HOME=/app
+ENV PROJ_LIB=/opt/conda/share/proj
+
+# Copy ONLY the compiled conda environment from builder (without cache/temp files)
+COPY --from=builder /opt/conda /opt/conda
+
+# Create app directory and set working directory
 RUN mkdir $APP_HOME
-# Set the working directory to /app
 WORKDIR $APP_HOME
 
-# Copy the environment.yml file to a temporary location in the container
-COPY ./environment.yml /tmp/conda-tmp/
-# Update the base conda environment using the environment.yml file
-RUN umask 0002 && /opt/conda/bin/conda env update -n base -f /tmp/conda-tmp/environment.yml
-# Verify PROJ data files are installed, install if needed
-RUN if [ ! -d "/opt/conda/share/proj" ]; then \
-        conda install -y -c conda-forge proj-data; \
-    fi
-# Create directory if it doesn't exist and set permissions
-RUN mkdir -p /opt/conda/share/proj && chmod -R 755 /opt/conda/share/proj
-
-# Copy the entire eddai_EliteDangerousApiInterface directory to /app
+# Copy application code (respects .dockerignore)
 COPY . $APP_HOME
 
-# Create a system group named 'app' and a system user named 'app' within that group
-RUN addgroup --system app && adduser --system --group app
-# Change the ownership of the /app directory to the 'app' user and group
-RUN chown -R app:app $APP_HOME
-# Ensure the entrypoint script is executable
-RUN chmod +x $APP_HOME/entrypoint.sh
+# Create system user, set permissions, and cleanup in a single layer
+RUN addgroup --system app && \
+    adduser --system --group app && \
+    chown -R app:app $APP_HOME && \
+    chmod +x $APP_HOME/entrypoint.sh && \
+    mkdir -p /opt/conda/share/proj && \
+    chmod -R 755 /opt/conda/share/proj && \
+    # Remove any Python cache that might have been copied
+    find $APP_HOME -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true && \
+    find $APP_HOME -type f -name "*.pyc" -delete 2>/dev/null || true
 
-# Switch to the 'app' user for running subsequent commands
+# Switch to non-root user
 USER app
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT ["./entrypoint.sh"]

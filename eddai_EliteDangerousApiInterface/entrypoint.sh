@@ -19,7 +19,7 @@ try:
         user="${POSTGIS_USER}",
         password="${POSTGIS_PASSWORD}",
         host="${POSTGIS_HOST}",
-        port="${POSTGIS_PORT}",
+        port="${POSTGIS_PORT:-5432}",
     )
 except psycopg.OperationalError:
     sys.exit(-1)
