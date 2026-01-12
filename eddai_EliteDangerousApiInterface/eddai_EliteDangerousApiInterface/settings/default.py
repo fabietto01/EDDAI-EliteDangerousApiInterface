@@ -346,11 +346,17 @@ VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
 #https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
     'TITLE': 'EDDAI - Elite Dangerous API Interface', 
-    'DESCRIPTION': "Le API di EDDAI-EliteDangerousApiInterface forniscono \
-        un'interfaccia per accedere e gestire i dati relativi al gioco Elite Dangerous. \
-        Queste API permettono agli sviluppatori di interagire con il database del \
-        progetto, consentendo operazioni di lettura dei dati.",
+    'DESCRIPTION': "The EDDAI-EliteDangerousApiInterface APIs provide \
+    an interface to access and manage data related to the Elite Dangerous game. \
+    These APIs allow developers to interact with the project database, \
+    enabling data read operations.",
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
 }
