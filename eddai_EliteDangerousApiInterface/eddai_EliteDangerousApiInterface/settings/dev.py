@@ -71,22 +71,27 @@ LOGGING = {
         "celery.task":{
             "handlers": ["celery.task.console", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "celery.beat":{
             "handlers": ["celery.worker", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "celery.worker":{
             "handlers": ["celery.worker", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "eddn":{
             "handlers": ["console", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "django": {
             "handlers": ["console", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "django.server": {
             "handlers": ["console", "django.server"],
