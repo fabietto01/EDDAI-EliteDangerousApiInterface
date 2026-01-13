@@ -38,7 +38,7 @@ class DockedSerializer(BaseJournalSerializer):
     StationEconomies = serializers.ListField(
         child=EconomySerializer(),
         min_length = 1,
-        max_length = 2,
+        max_length = 7,
     )
     StationFaction = MinorFactionSerializer()
 
