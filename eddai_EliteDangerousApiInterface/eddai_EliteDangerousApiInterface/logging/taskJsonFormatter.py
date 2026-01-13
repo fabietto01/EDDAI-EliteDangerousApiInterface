@@ -1,7 +1,6 @@
 from pythonjsonlogger.jsonlogger import JsonFormatter
 from celery._state import get_current_task
 
-
 class TaskJsonFormatter(JsonFormatter):
 
     def format(self, record):

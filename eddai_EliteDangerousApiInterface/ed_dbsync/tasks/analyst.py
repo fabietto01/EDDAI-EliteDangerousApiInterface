@@ -92,12 +92,13 @@ class AnalystTasck(Task):
                 }
             )
         except ValidationError as e:
+            analyst_name = analyst.__class__.__name__ if analyst else "Unknown"
             log.error(
                 f"Validation error during analysis:", 
                 exc_info=True, extra={
                     'istance_id': istance.guid, 'instance': istance,
                     'istance_source':istance.source,
-                    'analyst_class_name': analyst.__class__.__name__
+                    'analyst_class_name': analyst_name
                 }
             )
             raise e

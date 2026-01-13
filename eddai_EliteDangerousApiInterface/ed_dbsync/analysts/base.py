@@ -80,7 +80,6 @@ class BaseDataAnalyst:
         else:
             log.info(
                 "Data analysis completed successfully. ", 
-                exc_info=e, 
                 extra={
                     'istance_id': self.istance.guid,
                     'analyst_class_name': self.__class__.__name__,

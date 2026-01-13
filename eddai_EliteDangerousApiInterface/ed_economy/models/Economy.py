@@ -14,7 +14,17 @@ class Economy(AbstractDataEDDN, models.Model):
     )
 
     def __str__(self) -> str:
-        return self.name
+        return self.name    
+    
+    @staticmethod
+    def get_max_proportion() -> float:
+        """Return the maximum proportion value for an economy."""
+        return 3.0
+    
+    @staticmethod
+    def get_min_proportion() -> float:
+        """Return the minimum proportion value for an economy."""
+        return 0.0
 
     class Meta:
         verbose_name = _('economy')
