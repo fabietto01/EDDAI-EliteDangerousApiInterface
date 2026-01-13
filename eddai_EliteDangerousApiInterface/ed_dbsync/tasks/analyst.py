@@ -54,10 +54,7 @@ class AnalystTasck(Task):
             raise NotSourceError(f"Unsupported EDDN schemaRef: {istance.data['$schemaRef']}")
 
     def analyst_capi_api(self, istance:IncomingData):
-        raise NotImplementedError(
-            "The service has not yet implemented the EDDN analyst. "
-            "Please implement the 'run_eddn' method in the AnalystTasck class."
-        )
+        return JournalAnalyst
 
     def run(self, *args, **kwargs):
         """
