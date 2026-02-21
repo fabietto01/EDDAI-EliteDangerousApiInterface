@@ -1,5 +1,7 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from ed_bgs.api.filterSet.powerFilterSet import PowerFilterSet
 from ed_bgs.api.serializers import PowerSerializer, PowerBasicInformationSerializer
 from ed_bgs.models import Power
 from django.utils.translation import gettext_lazy as _
@@ -12,7 +14,8 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 class PowerViewSet(ReadOnlyModelViewSet):
     queryset = Power.objects.select_related('headquarter', 'allegiance')
     serializer_class = PowerSerializer
-    filter_backends = [SearchFilter]
+    filterset_class = PowerFilterSet
+    filter_backends = [SearchFilter,DjangoFilterBackend]
     search_fields = ['name']
 
     def get_serializer_class(self):
