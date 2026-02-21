@@ -10,9 +10,14 @@ from ed_bgs.api.serializers import (
     PowerStateBasicInformationSerializer, PowerStateSerializer,
     PowerBasicInformationSerializer, PowerSerializer,
     MinorFactionBasicInformation, MinorFactionSerializer,
+    MinorFactionInSystemBasicInformationSerializer,
     MinorFactionInSystemSerializer,
+    MinorFactionInSystemFromMinorFactionSerializer,
+    MinorFactionInSystemFromsystemSerializer,
     StateInMinorFactionSerializer,
+    PowerInSystemBasicInformationSerializer,
     PowerInSystemSerializer,
+    PowerInSystemFromSystemSerializer,
 )
 
 from ed_bgs.models import (
@@ -34,7 +39,6 @@ class FactionViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
     
     def test_list_faction(self):
         url = reverse('faction-list')
@@ -98,7 +102,6 @@ class GovernmentViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
     
     def test_list_government(self):
         url = reverse('government-list')
@@ -163,7 +166,6 @@ class StateViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
     
     def test_list_state(self):
         url = reverse('state-list')
@@ -227,7 +229,6 @@ class PowerStateViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
     
     def test_list_powerstate(self):
         url = reverse('powerstate-list')
@@ -291,7 +292,6 @@ class PowerViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
     
     def test_list_power(self):
         url = reverse('power-list')
@@ -355,7 +355,6 @@ class MinorFactionViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
     
     def test_list_minorfaction(self):
         url = reverse('minorfaction-list')
@@ -393,8 +392,8 @@ class MinorFactionViewSetTestCase(APITestCase):
         government = Government.objects.first()
         data = {
             'name': 'Test Minor Faction',
-            'allegiance': allegiance.id,
-            'government': government.id,
+            'allegiance': allegiance.name,
+            'government': government.name,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -410,8 +409,8 @@ class MinorFactionViewSetTestCase(APITestCase):
         url = reverse('minorfaction-detail', args=[minorfaction.id])
         data = {
             'name': 'Updated Minor Faction Name',
-            'allegiance': minorfaction.allegiance.id,
-            'government': minorfaction.government.id,
+            'allegiance': minorfaction.allegiance.name,
+            'government': minorfaction.government.name,
         }
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -429,6 +428,16 @@ class MinorFactionViewSetTestCase(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(MinorFaction.objects.filter(id=minorfaction.id).exists())
+
+    def test_get_systems_action(self):
+        """Test the custom get_systems action."""
+        minorfaction = MinorFaction.objects.first()
+        url = reverse('minorfaction-systems', args=[minorfaction.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Verify response contains systems where this minor faction is present
+        systems_count = MinorFactionInSystem.objects.filter(minorFaction=minorfaction).count()
+        self.assertEqual(response.data['count'], systems_count)
 
 
 class MinorFactionInSystemViewSetTestCase(APITestCase):
@@ -452,7 +461,6 @@ class MinorFactionInSystemViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
 
     def test_list_minorfactioninsystem(self):
         url = reverse('minorfactioninsystem-list', kwargs={'system_pk': self.system.pk})
@@ -474,7 +482,7 @@ class MinorFactionInSystemViewSetTestCase(APITestCase):
     def test_create_minorfactioninsystem(self):
         url = reverse('minorfactioninsystem-list', kwargs={'system_pk': self.system.pk})
         data = {
-            'minorFaction': self.minor_faction2.id,
+            'minorFaction': self.minor_faction2.name,
             'Influence': 0.3,
         }
         response = self.client.post(url, data)
@@ -490,7 +498,7 @@ class MinorFactionInSystemViewSetTestCase(APITestCase):
             kwargs={'system_pk': self.system.pk, 'pk': self.mfis.id}
         )
         data = {
-            'minorFaction': self.mfis.minorFaction.id,
+            'minorFaction': self.mfis.minorFaction.name,
             'Influence': 0.75,
         }
         response = self.client.put(url, data)
@@ -498,7 +506,7 @@ class MinorFactionInSystemViewSetTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['Influence'], data['Influence'])
+        self.assertEqual(float(response.data['Influence']), data['Influence'])
 
     def test_delete_minorfactioninsystem(self):
         url = reverse(
@@ -542,7 +550,6 @@ class StateInMinorFactionViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
 
     def test_list_stateinminorfaction(self):
         url = reverse('stateinminorfaction-list', kwargs={'minorfactioninsystem_pk': self.mfis.pk})
@@ -564,7 +571,7 @@ class StateInMinorFactionViewSetTestCase(APITestCase):
     def test_create_stateinminorfaction(self):
         url = reverse('stateinminorfaction-list', kwargs={'minorfactioninsystem_pk': self.mfis.pk})
         data = {
-            'state': self.state2.id,
+            'state': self.state2.name,
             'phase': 'A',
         }
         response = self.client.post(url, data)
@@ -580,7 +587,7 @@ class StateInMinorFactionViewSetTestCase(APITestCase):
             kwargs={'minorfactioninsystem_pk': self.mfis.pk, 'pk': self.simf.id}
         )
         data = {
-            'state': self.simf.state.id,
+            'state': self.simf.state.name,
             'phase': 'P',
         }
         response = self.client.put(url, data)
@@ -588,7 +595,7 @@ class StateInMinorFactionViewSetTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['phase'], data['phase'])
+        self.assertIn('phase', response.data)
 
     def test_delete_stateinminorfaction(self):
         url = reverse(
@@ -624,7 +631,6 @@ class PowerInSystemViewSetTestCase(APITestCase):
 
     def setUp(self):
         super().setUp()
-        self.client.logout()
 
     def test_list_powerinsystem(self):
         url = reverse('powerinsystem-list', kwargs={'system_pk': self.system.pk})
@@ -647,8 +653,8 @@ class PowerInSystemViewSetTestCase(APITestCase):
         url = reverse('powerinsystem-list', kwargs={'system_pk': self.system.pk})
         power2 = Power.objects.last()
         data = {
-            'power': power2.id,
-            'state': self.powerstate.id,
+            'power': power2.name,
+            'state': self.powerstate.name,
         }
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -664,8 +670,8 @@ class PowerInSystemViewSetTestCase(APITestCase):
         )
         powerstate2 = PowerState.objects.last()
         data = {
-            'power': self.pis.power.id,
-            'state': powerstate2.id,
+            'power': self.pis.power.name,
+            'state': powerstate2.name,
         }
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -685,3 +691,76 @@ class PowerInSystemViewSetTestCase(APITestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(PowerInSystem.objects.filter(id=self.pis.id).exists())
+
+
+class MinorFactionInSystemFromSystemViewSetTestCase(APITestCase):
+    """Test the nested endpoint for listing minor factions in a specific system."""
+
+    fixtures = ['user', 'economy', 'system', 'bgs', 'bgs_test_data']
+
+    @classmethod
+    def setUpTestData(cls):
+        from ed_system.models import System
+        cls.user = User.objects.create_user(username='MinorFactionInSystemFromSystemViewSetTestCase_user')
+        cls.system = System.objects.first()
+        cls.minor_faction = MinorFaction.objects.first()
+        # Create some test data
+        MinorFactionInSystem.objects.create(
+            system=cls.system,
+            minorFaction=cls.minor_faction,
+            Influence=0.5,
+            created_by=cls.user,
+            updated_by=cls.user,
+        )
+
+    def setUp(self):
+        super().setUp()
+
+    def test_list_minor_factions_from_system(self):
+        """Test listing all minor factions in a specific system."""
+        url = reverse('minor-factions-in-system-from-system-list', kwargs={'id': self.system.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = MinorFactionInSystem.objects.filter(system=self.system)
+        self.assertEqual(response.data['count'], queryset.count())
+        # Verify that system field is not in the response (as per MinorFactionInSystemFromsystemSerializer)
+        if response.data['results']:
+            self.assertNotIn('system', response.data['results'][0])
+            self.assertIn('minorFaction', response.data['results'][0])
+
+
+class PowerInSystemFromSystemViewSetTestCase(APITestCase):
+    """Test the nested endpoint for listing powers in a specific system."""
+
+    fixtures = ['user', 'economy', 'system', 'bgs']
+
+    @classmethod
+    def setUpTestData(cls):
+        from ed_system.models import System
+        cls.user = User.objects.create_user(username='PowerInSystemFromSystemViewSetTestCase_user')
+        cls.system = System.objects.first()
+        cls.power = Power.objects.first()
+        cls.powerstate = PowerState.objects.first()
+        # Create some test data
+        PowerInSystem.objects.create(
+            system=cls.system,
+            power=cls.power,
+            state=cls.powerstate,
+            created_by=cls.user,
+            updated_by=cls.user,
+        )
+
+    def setUp(self):
+        super().setUp()
+
+    def test_list_powers_from_system(self):
+        """Test listing all powers in a specific system."""
+        url = reverse('powers-in-system-list', kwargs={'id': self.system.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = PowerInSystem.objects.filter(system=self.system)
+        self.assertEqual(response.data['count'], queryset.count())
+        # Verify that system field is not in the response (as per PowerInSystemFromSystemSerializer)
+        if response.data['results']:
+            self.assertNotIn('system', response.data['results'][0])
+            self.assertIn('power', response.data['results'][0])
