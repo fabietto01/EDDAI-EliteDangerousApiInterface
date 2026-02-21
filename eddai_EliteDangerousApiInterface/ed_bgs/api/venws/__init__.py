@@ -4,6 +4,6 @@ from .stateViewSet import StateViewSet
 from .powerStateViewSet import PowerStateViewSet
 from .powerViewSet import PowerViewSet
 from .minorFactionViewSet import MinorFactionViewSet
-from .minorFactionInSystemViewSet import MinorFactionInSystemViewSet
+from .minorFactionInSystemViewSet import MinorFactionInSystemViewSet, MinorFactionInSystemFromSystemSerializer
 from .stateInMinorFactionViewSet import StateInMinorFactionViewSet
-from .powerInSystemViewSet import PowerInSystemViewSet
+from .powerInSystemViewSet import PowerInSystemViewSet, PowerInSystemFromSystemViewSet

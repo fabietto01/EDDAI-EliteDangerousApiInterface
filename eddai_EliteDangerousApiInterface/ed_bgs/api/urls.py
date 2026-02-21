@@ -8,8 +8,10 @@ from .venws import (
     PowerViewSet,
     MinorFactionViewSet,
     MinorFactionInSystemViewSet,
+    MinorFactionInSystemFromSystemSerializer,
     StateInMinorFactionViewSet,
     PowerInSystemViewSet,
+    PowerInSystemFromSystemViewSet,
 )
 
 router = DefaultRouter(trailing_slash=False)
@@ -19,8 +21,10 @@ router.register(r'bgs/states', StateViewSet)
 router.register(r'bgs/power-states', PowerStateViewSet)
 router.register(r'bgs/powers', PowerViewSet)
 router.register(r'bgs/minor-factions', MinorFactionViewSet)
-router.register(r'bgs/systems/(?P<system_pk>[^/.]+)/minor-factions', MinorFactionInSystemViewSet)
-router.register(r'bgs/systems/(?P<system_pk>[^/.]+)/powers', PowerInSystemViewSet)
+router.register(r'bgs/minor-factions-in-system', MinorFactionInSystemViewSet)
+router.register(r'bgs/power-in-system', PowerInSystemViewSet)
 router.register(r'bgs/minor-factions-in-system/(?P<minorfactioninsystem_pk>[^/.]+)/states', StateInMinorFactionViewSet)
+router.register(r'system/(?P<id>[^/.]+)/minor-factions', MinorFactionInSystemFromSystemSerializer, basename='minor-factions-in-system-from-system')
+router.register(r'system/(?P<id>[^/.]+)/powers', PowerInSystemFromSystemViewSet, basename='powers-in-system')
 
 urlpatterns = router.urls

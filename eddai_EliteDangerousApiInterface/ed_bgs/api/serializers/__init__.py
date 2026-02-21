@@ -5,6 +5,15 @@ from .stateSerializer import StateBasicInformationSerializer, StateSerializer
 from .powerStateSerializer import PowerStateBasicInformationSerializer, PowerStateSerializer
 from .minorFactionSerializer import MinorFactionSerializer
 from .powerSerializer import PowerBasicInformationSerializer, PowerSerializer
-from .minorFactionInSystemSerializer import MinorFactionInSystemSerializer
+from .minorFactionInSystemSerializer import (
+    MinorFactionInSystemBasicInformationSerializer,
+    MinorFactionInSystemSerializer,
+    MinorFactionInSystemFromMinorFactionSerializer,
+    MinorFactionInSystemFromsystemSerializer
+)
 from .stateInMinorFactionSerializer import StateInMinorFactionSerializer
-from .powerInSystemSerializer import PowerInSystemSerializer
+from .powerInSystemSerializer import (
+    PowerInSystemBasicInformationSerializer,
+    PowerInSystemSerializer,
+    PowerInSystemFromSystemSerializer
+)
