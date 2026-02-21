@@ -1,6 +1,8 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from ed_bgs.api.serializers import GovernmentSerializer, GovernmentBasicInformationSerializer
+from ed_bgs.api.filterSet.governmentFilterSet import GovernmentFilterSet
 from ed_bgs.models import Government
 from django.utils.translation import gettext_lazy as _
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -12,7 +14,8 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 class GovernmentViewSet(ReadOnlyModelViewSet):
     queryset = Government.objects.all()
     serializer_class = GovernmentSerializer
-    filter_backends = [SearchFilter]
+    filterset_class = GovernmentFilterSet
+    filter_backends = [SearchFilter, DjangoFilterBackend]
     search_fields = ['name']
 
     def get_serializer_class(self):
