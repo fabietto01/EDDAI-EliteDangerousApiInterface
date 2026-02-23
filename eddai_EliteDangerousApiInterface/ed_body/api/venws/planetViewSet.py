@@ -52,7 +52,16 @@ class PlanetViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
         search_fields (list): A list of fields that can be searched using the search filter backend.
     """
     
-    queryset = Planet.objects.all()
+    queryset = Planet.objects.select_related(
+        'system',
+        'atmosphereType',
+        'planetType',
+        'volcanism',
+        'created_by',
+        'updated_by'
+    ).prefetch_related(
+        'ed_body_atmospherecomponentinplanet_related__atmosphere_component'
+    )
     serializer_class = PlanetSerializer
     distance_serializer_class = PlanetDistanceSerializer
     filter_param_distance = 'distance_by_system'

@@ -52,7 +52,12 @@ class CommodityInStationViewSet(OwnerAndDateModelViewSet):
     CommodityInStationViewSet is a view set for handling API requests related to CommodityInStation objects.
     """
     
-    queryset = CommodityInStation.objects.all()
+    queryset = CommodityInStation.objects.select_related(
+        'commodity',
+        'station',
+        'created_by',
+        'updated_by'
+    )
     serializer_class = CommodityInStationSerializer
     filterset_class = None
     filter_backends = [SearchFilter, DjangoFilterBackend]

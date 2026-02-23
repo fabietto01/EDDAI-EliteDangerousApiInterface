@@ -75,7 +75,12 @@ class AtmosphereComponentInPlanetViewSet(OwnerAndDateModelViewSet):
         multiple_add_atmosphere_components: Bulk add endpoint for atmosphere components, with validation and error responses for duplicates or missing planets.
     """
 
-    queryset = AtmosphereComponentInPlanet.objects.all()
+    queryset = AtmosphereComponentInPlanet.objects.select_related(
+        'atmosphere_component',
+        'planet',
+        'created_by',
+        'updated_by'
+    )
     serializer_class = AtmosphereComponentInPlanetSerializer
     filterset_class = None
     filter_backends = [SearchFilter, DjangoFilterBackend]

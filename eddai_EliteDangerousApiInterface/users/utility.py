@@ -1,5 +1,5 @@
 import requests
-from django.conf import settings
+from users.models import User
 from django.utils import timezone
 from datetime import timedelta
 from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def refresh_frontier_token(user):
+def refresh_frontier_token(user:User) -> bool:
     """
     Rinnova il token di accesso per un utente autenticato via Frontier.
     
@@ -60,23 +60,52 @@ def refresh_frontier_token(user):
             
         token.save()
         
-        logger.info(f"Token rinnovato con successo per l'utente {user.username}")
+        logger.info(
+            f"Token {token.id} successfully renewed",
+            extra={
+                'user_id': user.id,
+                'token_id': token.id,
+                'token_expires_at': token.expires_at,
+            }
+        )
         return True
         
     except SocialAccount.DoesNotExist:
-        logger.error(f"L'utente {user.username} non ha un account Frontier collegato")
+        logger.error(
+            f"User {user.id} does not have a linked Frontier account",
+            extra={
+                'user_id': user.id,
+            }
+        )
         return False
     except SocialToken.DoesNotExist:
-        logger.error(f"Non è stato trovato alcun token per l'utente {user.username}")
+        logger.error(
+            f"No token found for user {user.id}",
+            extra={
+                'user_id': user.id,
+            }
+        )
         return False
     except requests.RequestException as e:
-        logger.error(f"Errore durante il rinnovo del token: {str(e)}")
+        logger.error(
+            f"Token renewal request failed for user {user.id}",
+            extra={
+                'user_id': user.id,
+                'error': str(e),
+            }
+        )
         return False
     except Exception as e:
-        logger.error(f"Errore imprevisto durante il rinnovo del token: {str(e)}")
+        logger.error(
+            f"Unexpected error during token renewal for user {user.id}",
+            extra={
+                'user_id': user.id,
+                'error': str(e),
+            }
+        )
         return False
     
-def get_cmdr_name(user):
+def get_cmdr_name(user: User) -> str:
     """
     Recupera il nome del comandante (CMDR) dall'API di Elite Dangerous.
     
@@ -98,9 +127,20 @@ def get_cmdr_name(user):
         if cmdr_name:                
             return cmdr_name
         else:
-            logger.warning(f"Nome CMDR non trovato nella risposta API per l'utente {user.username}")
+            logger.warning(
+                f"CMDR name not found in API response for user {user.id}",
+                extra={
+                    'user_id': user.id,
+                }
+            )
             return None
         
     except Exception as e:
-        logger.error(f"Errore imprevisto durante il recupero del nome CMDR: {str(e)}")
+        logger.error(
+            f"Unexpected error while retrieving CMDR name for user {user.id}",
+            extra={
+                'user_id': user.id,
+                'error': str(e),
+            }
+        )
         return None

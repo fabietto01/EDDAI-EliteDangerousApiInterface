@@ -23,9 +23,20 @@ def _delete_capi_sync_task(user:User):
     try:
         task = PeriodicTask.objects.get(name=CapiJournalSync.get_task_name_for_periodic_task(user))
         task.delete()
-        log.info(f"Periodic task for CAPI journal sync removed for user: {user.username} (ID: {user.id})")
+        log.info(
+            f"Periodic task for CAPI journal sync removed for user: {user.id}",
+            extra={
+                'user_id': user.id,
+                'task_name': task.name,
+            }
+        )
     except PeriodicTask.DoesNotExist:
-        log.warning(f"No periodic task found for user: {user.username} (ID: {user.id})")
+        log.warning(
+            f"No periodic task found for user: {user.id}",
+            extra={
+                'user_id': user.id,
+            }
+        )
 
 def _create_capi_sync_task(user:User):
     """
@@ -50,13 +61,20 @@ def _create_capi_sync_task(user:User):
             'user_id': f'{user.id}',
             'yesterday': True,  # Default to sync yesterday's data
         }),
-        'description': f"Sync CAPI journal for user {user.username} (ID: {user.id})",
+        'description': f"Sync CAPI journal for user {user.id}",
     }
-    PeriodicTask.objects.update_or_create(
+    task, created = PeriodicTask.objects.update_or_create(
         name=CapiJournalSync.get_task_name_for_periodic_task(user),
         defaults=defaults
     )
-    log.info(f"Periodic task for CAPI journal sync created/updated for user: {user.username} (ID: {user.id})")
+    log.info(
+        f"Periodic task for CAPI journal sync {'created' if created else 'updated'} for user: {user.id}",
+        extra={
+            'user_id': user.id,
+            'task_name': task.name,
+            'task_created': created,
+        }
+    )
 
 @receiver(social_account_updated)
 def handle_social_account_update(sender, request, sociallogin:SocialLogin, **kwargs):
@@ -71,11 +89,23 @@ def handle_social_account_update(sender, request, sociallogin:SocialLogin, **kwa
         **kwargs: Additional keyword arguments.
     """
     if sociallogin.account.provider != 'frontier':
-        log.info(f"Social account updated for non-Frontier provider: {sociallogin.account.provider}")
+        log.info(
+            f"Social account updated for non-Frontier provider: {sociallogin.account.provider}",
+            extra={
+                'provider': sociallogin.account.provider,
+                'user_id': sociallogin.user.id,
+            }
+        )
         return
     
     user:User = sociallogin.user
-    log.info(f"Frontier account updated for user: {user.username} (ID: {user.id})")
+    log.info(
+        f"Frontier account updated for user: {user.id}",
+        extra={
+            'user_id': user.id,
+            'provider': 'frontier',
+        }
+    )
     _create_capi_sync_task(user)
 
 @receiver(social_account_removed)
@@ -91,7 +121,13 @@ def handle_social_account_removal(sender, request, socialaccount:SocialAccount, 
         **kwargs: Additional keyword arguments.
     """
     user:User = socialaccount.user
-    log.info(f"Social account removed for user: {user.username}")
+    log.info(
+        f"Social account removed for user: {user.id}",
+        extra={
+            'user_id': user.id,
+            'provider': socialaccount.provider,
+        }
+    )
 
     if socialaccount.provider != 'frontier':
         return
@@ -109,7 +145,12 @@ def handle_user_deletion(sender, instance:User, **kwargs):
         instance: The user instance being deleted.
         **kwargs: Additional keyword arguments.
     """
-    log.info(f"User deleted: {instance.username} (ID: {instance.id})")
+    log.info(
+        f"User deleted: {instance.id}",
+        extra={
+            'user_id': instance.id,
+        }
+    )
     _delete_capi_sync_task(instance)
 
 @receiver(user_signed_up)
@@ -124,16 +165,41 @@ def setup_capi_on_signup(sender, user:User, **kwargs):
         **kwargs: Additional keyword arguments.
     """
     try:
-        log.info(f"Signal: user_signed_up received for user {user.id}")
+        log.info(
+            f"Signal: user_signed_up received for user {user.id}",
+            extra={
+                'user_id': user.id,
+                
+            }
+        )
         
         if not SocialAccount.objects.filter(user=user, provider='frontier').exists():
-            log.info(f"No Frontier account found for user {user.username} (ID: {user.id}), skipping CAPI sync setup")
+            log.info(
+                f"No Frontier account found for user {user.id}, skipping CAPI sync setup",
+                extra={
+                    'user_id': user.id,
+                    
+                }
+            )
             return
         
-        log.info(f"User {user.username} (ID: {user.id}) signed up with Frontier, setting up CAPI sync")
+        log.info(
+            f"User {user.id} signed up with Frontier, setting up CAPI sync",
+            extra={
+                'user_id': user.id,
+                
+                'provider': 'frontier',
+            }
+        )
         _create_capi_sync_task(user)
     except Exception as e:
-        log.error(f"Error setting up CAPI sync for new user {user.id}", exc_info=e)
+        log.error(
+            f"Error setting up CAPI sync for new user {user.id}",
+            exc_info=True,
+            extra={
+                'user_id': user.id,
+            }
+        )
 
 @receiver(social_account_added)
 def setup_capi_on_connect(sender, request, sociallogin:SocialLogin, **kwargs):
@@ -148,10 +214,29 @@ def setup_capi_on_connect(sender, request, sociallogin:SocialLogin, **kwargs):
         **kwargs: Additional keyword arguments.
     """
     if sociallogin.account.provider != 'frontier':
-        log.info(f"Social account added for non-Frontier provider: {sociallogin.account.provider}")
+        log.info(
+            f"Social account added for non-Frontier provider: {sociallogin.account.provider}",
+            extra={
+                'provider': sociallogin.account.provider,
+                'user_id': sociallogin.user.id,
+            }
+        )
         return
         
     user:User = sociallogin.user
-    log.info(f"Signal: social_account_added received for user {user.id}")
-    log.info(f"User {user.username} (ID: {user.id}) connected Frontier account, setting up CAPI sync")
+    log.info(
+        f"Signal: social_account_added received for user {user.id}",
+        extra={
+            'user_id': user.id,
+            
+        }
+    )
+    log.info(
+        f"User {user.id} connected Frontier account, setting up CAPI sync",
+        extra={
+            'user_id': user.id,
+            
+            'provider': 'frontier',
+        }
+    )
     _create_capi_sync_task(user)

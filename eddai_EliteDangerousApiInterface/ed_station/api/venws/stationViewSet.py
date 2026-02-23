@@ -39,7 +39,17 @@ from drf_spectacular.utils import (
 )
 class StationViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     
-    queryset = Station.objects.all()
+    queryset = Station.objects.select_related(
+        'system',
+        'type',
+        'primaryEconomy',
+        'secondaryEconomy',
+        'minorFaction',
+        'created_by',
+        'updated_by'
+    ).prefetch_related(
+        'service'
+    )
     serializer_class = StationSerializer
     distance_serializer_class = StationDistanceSerializer
     filter_param_distance = "distance_by_system"

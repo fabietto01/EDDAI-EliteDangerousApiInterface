@@ -39,70 +39,69 @@ LOGGING = {
         },
     },
     "formatters": {
-        "django.server": {
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
-        },
         "django.console":{
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+            "timestamp": True,
         },
-        "celery.task.console": {
-            "()": "celery.app.log.TaskFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] [CELERY-TASK] [%(task_name)s(%(task_id)s)] %(message)s",
+        "celery.task": {
+            "()": "eddai_EliteDangerousApiInterface.logging.taskJsonFormatter.TaskJsonFormatter",
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s %(task_name)s %(task_id)s",
         },
-        "celery.worker.console": {
-            "()": "celery.utils.log.ColorFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] [CELERY-WORKER] %(message)s",
+        "celery": {
+            "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+            "timestamp": True,
         },
     },
     "handlers": {
-        "celery.task.loki": {
+        "celery.task": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.task.console",
-            "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
-            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery.task"},
-            "version": "1",
+            "formatter": "celery.task",
+            "url": f"https://{os.environ.get('LOKI_HOST')}:{os.environ.get('LOKI_PORT', '443')}/loki/api/v1/push",
+            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery_task"},
+            "version": "2",
         },
-        "celery.worker.loki": {
+        "celery.worker": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.worker.console",
-            "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
-            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery.worker"},
-            "version": "1",
+            "formatter": "celery",
+            "url": f"https://{os.environ.get('LOKI_HOST')}:{os.environ.get('LOKI_PORT', '443')}/loki/api/v1/push",
+            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery_worker"},
+            "version": "2",
         },
-        "celery.beat.loki": {
+        "celery.beat": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
-            "formatter": "celery.worker.console",
-            "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
-            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery.beat"},
-            "version": "1",
+            "formatter": "celery",
+            "url": f"https://{os.environ.get('LOKI_HOST')}:{os.environ.get('LOKI_PORT', '443')}/loki/api/v1/push",
+            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery_beat"},
+            "version": "2",
         },
-        "eddn.loki": {
+        "celery": {
+            "level": "INFO",
+            "class": "logging_loki.LokiHandler",
+            "formatter": "celery",
+            "url": f"https://{os.environ.get('LOKI_HOST')}:{os.environ.get('LOKI_PORT', '443')}/loki/api/v1/push",
+            "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "celery"},
+            "version": "2",
+        },
+        "eddn": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
             "formatter": "django.console",
-            "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
+            "url": f"https://{os.environ.get('LOKI_HOST')}:{os.environ.get('LOKI_PORT', '443')}/loki/api/v1/push",
             "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "eddn"},
-            "version": "1",
+            "version": "2",
         },
-        "django.loki": {
+        "django": {
             "level": "INFO",
             "class": "logging_loki.LokiHandler",
             "formatter": "django.console",
-            "url": f"http://{os.environ.get('LOKI_HOST', 'localhost')}:{os.environ.get('LOKI_PORT', '3100')}/loki/api/v1/push",
+            "url": f"https://{os.environ.get('LOKI_HOST')}:{os.environ.get('LOKI_PORT', '443')}/loki/api/v1/push",
             "tags": {"application": "eddai_EliteDangerousApiInterface", "service": "django"},
-            "version": "1",
-        },
-        "django.server": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "django.server",
+            "version": "2",
         },
         "mail_admins": {
             "level": "CRITICAL",
@@ -112,27 +111,32 @@ LOGGING = {
     },
     "loggers": {
         "celery.task":{
-            "handlers": ["celery.task.loki", "mail_admins"],
+            "handlers": ["celery.task", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "celery.beat":{
-            "handlers": ["celery.beat.loki", "mail_admins"],
+            "handlers": ["celery.beat", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "celery.worker":{
-            "handlers": ["celery.worker.loki", "mail_admins"],
+            "handlers": ["celery.worker", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
+        },
+        "celery":{
+            "handlers": ["celery", "mail_admins"],
+            "level": "INFO",
+            "propagate": False,
         },
         "eddn":{
-            "handlers": ["eddn.loki", "mail_admins"],
+            "handlers": ["eddn", "mail_admins"],
             "level": "INFO",
+            "propagate": False,
         },
         "django": {
-            "handlers": ["django.loki", "mail_admins"],
-            "level": "INFO",
-        },
-        "django.server": {
-            "handlers": ["django.loki", "django.server"],
+            "handlers": ["django", "mail_admins"],
             "level": "INFO",
             "propagate": False,
         },

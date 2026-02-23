@@ -1,4 +1,5 @@
 import zlib, zmq, json
+from typing import Optional
 import logging
 
 from django.conf import settings
@@ -29,7 +30,7 @@ class EDDNClient:
     rely = settings.EDDN_RELY
     authori_softwers = settings.AUTHORI_SED_SOFTWARS
 
-    _agent = None
+    _agent: Optional[User] = None
 
     @property
     def agent(self) -> User:
@@ -93,11 +94,21 @@ class EDDNClient:
                 self.log.error(f"Failed to decode message")
                 break
 
-            self.log.debug(f"Received and decompressed message: {dataJson}")
+            istance = IncomingData(data=dataJson, source="eddn")
+            self.log.debug(
+                f"Received and decompressed message", 
+                extra={
+                    'istance_id': istance.guid,
+                    'istance_source':istance.source,
+                    'istance': istance
+                }
+            )
 
             if dataJson['header']['softwareName'] in self.authori_softwers:
-                istance = IncomingData(data=dataJson, source="eddn")
-                self.log.info(f"Send message to worker: {istance.guiid}", extra={'istance': istance})
+                self.log.info(
+                    f"Send message to worker", 
+                    extra={'istance_id': istance.guid, 'istance_source':istance.source}
+                )
                 AnalystTasck().apply_async(
                     kwargs={'istance':istance, 'agent':self.agent}, 
                     queue="ed_dbsync"

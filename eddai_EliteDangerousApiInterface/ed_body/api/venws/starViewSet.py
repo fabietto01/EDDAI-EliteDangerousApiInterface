@@ -46,7 +46,13 @@ class StarViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
         search_fields (list): A list of fields that can be searched using the search filter.
     """
     
-    queryset = Star.objects.all()
+    queryset = Star.objects.select_related(
+        'system',
+        'luminosity',
+        'starType',
+        'created_by',
+        'updated_by'
+    )
     serializer_class = StarSerializer
     distance_serializer_class = StarDistanceSerializer
     filter_param_distance = 'distance_by_system'

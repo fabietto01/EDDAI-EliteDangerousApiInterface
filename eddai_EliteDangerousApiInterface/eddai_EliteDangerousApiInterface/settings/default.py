@@ -280,97 +280,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# Struttura dati contenente informazioni di configurazione. 
-# Quando non è vuoto, il Il contenuto di questa struttura di dati 
-# verrà passato come argomento al Metodo di configurazione descritto in LOGGING_CONFIG.
-# https://docs.djangoproject.com/en/4.1/ref/settings/#logging
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "filters": {
-        "require_debug_false": {
-            "()": "django.utils.log.RequireDebugFalse",
-        },
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-        },
-    },
-    "formatters": {
-        "django.server": {
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
-        },
-        "django.console":{
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
-        },
-        "celery.task.console": {
-            "()": "celery.app.log.TaskFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] [CELERY-TASK] [%(task_name)s(%(task_id)s)] %(message)s",
-        },
-        "celery.worker.console": {
-            "()": "celery.utils.log.ColorFormatter",
-            "format": "[%(asctime)s] [%(levelname)s] [CELERY-WORKER] %(message)s",
-        },
-    },
-    "handlers": {
-        "celery.task.console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "celery.task.console",
-        },
-        'celery.worker': {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "celery.worker.console",
-        },
-        "console": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "django.console",
-        },
-        "django.server": {
-            "level": "INFO",
-            "class": "logging.StreamHandler",
-            "formatter": "django.server",
-        },
-        "mail_admins": {
-            "level": "CRITICAL",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
-    },
-    "loggers": {
-        "celery.task":{
-            "handlers": ["celery.task.console", "mail_admins"],
-            "level": "INFO",
-        },
-        "celery.beat":{
-            "handlers": ["celery.worker", "mail_admins"],
-            "level": "INFO",
-        },
-        "celery.worker":{
-            "handlers": ["celery.worker", "mail_admins"],
-            "level": "INFO",
-        },
-        "eddn":{
-            "handlers": ["console", "mail_admins"],
-            "level": "INFO",
-        },
-        "django": {
-            "handlers": ["console", "mail_admins"],
-            "level": "INFO",
-        },
-        "django.server": {
-            "handlers": ["console", "django.server"],
-            "level": "INFO",
-            "propagate": False,
-        },
-    },
-}
-
 # impostazioni per la gestione del servizio EDDN
 EDDN_RELY = "tcp://eddn.edcd.io:9500"
 EDDN_TIMEOUT = 600000
@@ -437,11 +346,26 @@ VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
 #https://drf-spectacular.readthedocs.io/en/latest/settings.html
 SPECTACULAR_SETTINGS = {
     'TITLE': 'EDDAI - Elite Dangerous API Interface', 
-    'DESCRIPTION': "Le API di EDDAI-EliteDangerousApiInterface forniscono \
-        un'interfaccia per accedere e gestire i dati relativi al gioco Elite Dangerous. \
-        Queste API permettono agli sviluppatori di interagire con il database del \
-        progetto, consentendo operazioni di lettura dei dati.",
+    'DESCRIPTION': "The EDDAI-EliteDangerousApiInterface APIs provide \
+    an interface to access and manage data related to the Elite Dangerous game. \
+    These APIs allow developers to interact with the project database, \
+    enabling data read operations.",
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SCHEMA_PATH_PREFIX': '/api/v[0-9]',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
+    # Nomi personalizzati per gli enum per evitare collisioni
+    'ENUM_NAME_OVERRIDES': {
+        'Material type': 'ed_material.models.Material.MaterialType',
+        'Material grade': 'ed_material.models.Material.MaterialGrade',
+        'State type': 'ed_bgs.models.State.TypeChoices',
+        'Government type': 'ed_bgs.models.Government.TipeChoices',
+        'Ring type': 'ed_mining.models.Ring.RingType',
+        'State phase': 'ed_bgs.models.StateInMinorFaction.PhaseChoices',
+    },
 }

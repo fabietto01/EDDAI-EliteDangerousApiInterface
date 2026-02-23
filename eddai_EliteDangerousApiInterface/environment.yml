@@ -10,7 +10,8 @@ dependencies:
   - psycopg2=2.9.9
   - libarchive=3.7.7
   - pip:
-      - python-logging-loki==0.3.1
+      - python-logging-loki-v2==1.1.1
+      - python-json-logger==4.0.0
       - celery==5.4.0
       - django==5.1.1
       - django-cacheops==7.1

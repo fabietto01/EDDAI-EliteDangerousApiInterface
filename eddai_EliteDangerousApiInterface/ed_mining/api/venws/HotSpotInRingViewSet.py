@@ -76,7 +76,13 @@ class HotSpotInRingViewSet(OwnerAndDateModelViewSet):
     HotSpotInRingViewSet is a view set for handling API requests related to HotSpotInRing objects.
     """
     
-    queryset = HotSpotInRing.objects.all()
+    queryset = HotSpotInRing.objects.select_related(
+        'type',
+        'ring',
+        'ring__body',
+        'created_by',
+        'updated_by'
+    )
     serializer_class = HotSpotInRingSerializer
     filter_backends = [SearchFilter]
     search_fields = ['type__name']

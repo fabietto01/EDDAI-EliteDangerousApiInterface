@@ -36,3 +36,4 @@ class Government(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('government')
         verbose_name_plural = _('governments')
+        ordering = ['name']

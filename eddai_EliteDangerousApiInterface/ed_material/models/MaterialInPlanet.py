@@ -42,6 +42,7 @@ class MaterialInPlanet(OwnerAndDateModels):
     class Meta:
         verbose_name = _('material in planet')
         verbose_name_plural = _('materials in planets')
+        ordering = ['planet__id', 'material__name']
         indexes = [
             models.Index(fields=['planet', 'material'], name='planet_material_idx'),
         ]

@@ -14,7 +14,7 @@ class SignalInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     fields = ("planet", "type", "count", "created_by", "updated_by", "created_at", "updated_at")
     extra = 0
 
-class SampleInline(admin.TabularInline):
+class SampleInline(BaseOwnerModelsTabularInline, admin.TabularInline):
     model = Sample
     raw_id_fields = ("planet",)
     readonly_fields = ("created_by", "updated_by", "created_at", "updated_at")

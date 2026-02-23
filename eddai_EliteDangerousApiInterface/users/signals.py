@@ -31,7 +31,14 @@ def _update_cmdr_username(user, description=""):
         return False
     except Exception as e:
         user_id = getattr(user, 'id', 'unknown')
-        log.error(f"Error updating CMDR profile {description} for user {user_id}", exc_info=e)
+        log.error(
+            f"Error updating CMDR profile {description} for user {user_id}",
+            exc_info=True,
+            extra={
+                'user_id': user_id,
+                'description': description,
+            }
+        )
         return False
 
 @receiver(user_signed_up)
@@ -40,7 +47,12 @@ def update_cmdr_profile(sender, user:User, **kwargs):
     Aggiorna il profilo CMDR quando un utente si registra
     """
     try:
-        log.info(f"Signal: user_signed_up ricevuto per user {user.id}")
+        log.info(
+            f"Signal: user_signed_up ricevuto per user {user.id}",
+            extra={
+                'user_id': user.id,
+            }
+        )
         
         if not SocialAccount.objects.filter(user=user, provider='frontier').exists():
             return
@@ -48,7 +60,13 @@ def update_cmdr_profile(sender, user:User, **kwargs):
         _update_cmdr_username(user, "at signup")
         
     except Exception as e:
-        log.error(f"Error in user_signed_up signal for user {user.id}", exc_info=e)
+        log.error(
+            f"Error in user_signed_up signal for user {user.id}",
+            exc_info=True,
+            extra={
+                'user_id': user.id,
+            }
+        )
 
 @receiver(social_account_added)
 def update_cmdr_profile_on_connect(sender, request, sociallogin:SocialLogin, **kwargs):
@@ -57,7 +75,13 @@ def update_cmdr_profile_on_connect(sender, request, sociallogin:SocialLogin, **k
     """
     try:
         user = sociallogin.user
-        log.info(f"Signal: social_account_added ricevuto per user {user.id}")
+        log.info(
+            f"Signal: social_account_added ricevuto per user {user.id}",
+            extra={
+                'user_id': user.id,
+                'provider': sociallogin.account.provider,
+            }
+        )
         
         if not sociallogin or sociallogin.account.provider != 'frontier':
             return
@@ -66,4 +90,10 @@ def update_cmdr_profile_on_connect(sender, request, sociallogin:SocialLogin, **k
         
     except Exception as e:
         user_id = getattr(getattr(sociallogin, 'user', None), 'id', 'unknown')
-        log.error(f"Error in social_account_added signal for user {user_id}", exc_info=e)
+        log.error(
+            f"Error in social_account_added signal for user {user_id}",
+            exc_info=True,
+            extra={
+                'user_id': user_id,
+            }
+        )

@@ -55,7 +55,15 @@ class SystemViewSet(DistanceModelMixin, OwnerAndDateModelViewSet):
     """
     Handles requests related to systems.
     """
-    queryset = System.objects.all()
+    queryset = System.objects.select_related(
+        'primaryEconomy',
+        'secondaryEconomy',
+        'conrollingFaction',
+        'conrollingFaction__allegiance',
+        'conrollingFaction__government',
+        'created_by',
+        'updated_by'
+    )
     serializer_class = SystemSerializer
     distance_serializer_class = SystemDistanceSerializer
     filter_param_distance = 'distance_by_system'

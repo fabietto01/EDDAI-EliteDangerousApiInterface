@@ -8,6 +8,6 @@ class EconomySerializer(serializers.Serializer):
         slug_field='eddn',
     )
     Proportion = serializers.FloatField(
-        min_value=0,
-        max_value=1.15,
+        min_value=Economy.get_min_proportion(),
+        max_value=Economy.get_max_proportion(),
     )
