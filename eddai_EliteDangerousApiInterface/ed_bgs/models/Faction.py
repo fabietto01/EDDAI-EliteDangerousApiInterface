@@ -24,3 +24,4 @@ class Faction(AbstractDataEDDN, models.Model):
     class Meta:
         verbose_name = _('faction')
         verbose_name_plural = _('factions')
+        ordering = ['name']
