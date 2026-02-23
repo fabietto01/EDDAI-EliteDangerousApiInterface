@@ -39,6 +39,7 @@ class MinorFaction(OwnerAndDateModels):
     class Meta:
         verbose_name = _('Minor Faction')
         verbose_name_plural = _('Minor Factions')
+        ordering = ['name']
         indexes = [
             models.Index(fields=['allegiance'], name='idx_minor_faction_allegiance'),
             models.Index(fields=['government'], name='idx_minor_faction_government'),
