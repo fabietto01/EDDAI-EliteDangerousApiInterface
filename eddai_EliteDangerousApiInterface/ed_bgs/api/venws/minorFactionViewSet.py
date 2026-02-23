@@ -46,7 +46,8 @@ class MinorFactionViewSet(OwnerAndDateModelViewSet):
     @action(
         detail=True, 
         methods=[HTTPMethod.GET], 
-        url_path='systems'
+        url_path='systems',
+        url_name='systems'
     )
     def get_systems(self, request, pk=None):
         """

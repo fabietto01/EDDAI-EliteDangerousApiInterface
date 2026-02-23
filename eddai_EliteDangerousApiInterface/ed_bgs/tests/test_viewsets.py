@@ -1,7 +1,6 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
-import random
 
 from ed_bgs.api.serializers import (
     FactionBasicInformationSerializer, FactionSerializer,
@@ -441,6 +440,7 @@ class MinorFactionViewSetTestCase(APITestCase):
 
 
 class MinorFactionInSystemViewSetTestCase(APITestCase):
+    """Test case for MinorFactionInSystemViewSet - a standard (non-nested) viewset."""
 
     fixtures = ['user', 'economy', 'system', 'bgs', 'bgs_test_data']
 
@@ -449,75 +449,161 @@ class MinorFactionInSystemViewSetTestCase(APITestCase):
         from ed_system.models import System
         cls.user = User.objects.create_user(username='MinorFactionInSystemViewSetTestCase_user')
         cls.system = System.objects.first()
+        cls.system2 = System.objects.last()
         cls.minor_faction = MinorFaction.objects.first()
         cls.minor_faction2 = MinorFaction.objects.last()
-        cls.mfis = MinorFactionInSystem.objects.create(
-            system=cls.system,
-            minorFaction=cls.minor_faction,
-            Influence=0.5,
-            created_by=cls.user,
-            updated_by=cls.user,
-        )
 
     def setUp(self):
         super().setUp()
+        # Create test data for each test
+        self.mfis = MinorFactionInSystem.objects.create(
+            system=self.system,
+            minorFaction=self.minor_faction,
+            Influence=0.5,
+            created_by=self.user,
+            updated_by=self.user,
+        )
 
     def test_list_minorfactioninsystem(self):
-        url = reverse('minorfactioninsystem-list', kwargs={'system_pk': self.system.pk})
+        """Test listing all minor factions in systems."""
+        url = reverse('minorfactioninsystem-list')
         response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], MinorFactionInSystem.objects.count())
+        serializer = MinorFactionInSystemBasicInformationSerializer(
+            MinorFactionInSystem.objects.all(),
+            many=True,
+        )
+        for result, expected in zip(response.data['results'], serializer.data):
+            self.assertEqual(result, expected)
+
+    def test_filter_by_system(self):
+        """Test filtering minor factions by system."""
+        # Create another MFIS in a different system
+        MinorFactionInSystem.objects.create(
+            system=self.system2,
+            minorFaction=self.minor_faction2,
+            Influence=0.3,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        url = reverse('minorfactioninsystem-list')
+        response = self.client.get(url, {'system': self.system.id})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         queryset = MinorFactionInSystem.objects.filter(system=self.system)
         self.assertEqual(response.data['count'], queryset.count())
+        # Verify all results belong to the filtered system
+        for result in response.data['results']:
+            self.assertEqual(result['system'], self.system.name)
+
+    def test_filter_by_minorfaction(self):
+        """Test filtering by minor faction."""
+        # Create another MFIS with different faction
+        MinorFactionInSystem.objects.create(
+            system=self.system2,
+            minorFaction=self.minor_faction2,
+            Influence=0.3,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        url = reverse('minorfactioninsystem-list')
+        response = self.client.get(url, {'minorFaction': self.minor_faction.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = MinorFactionInSystem.objects.filter(minorFaction=self.minor_faction)
+        self.assertEqual(response.data['count'], queryset.count())
+        # Verify all results belong to the filtered faction
+        for result in response.data['results']:
+            self.assertEqual(result['minorFaction'], self.minor_faction.name)
 
     def test_retrieve_minorfactioninsystem(self):
-        url = reverse(
-            'minorfactioninsystem-detail',
-            kwargs={'system_pk': self.system.pk, 'pk': self.mfis.id}
-        )
+        """Test retrieving a specific minor faction in system."""
+        url = reverse('minorfactioninsystem-detail', args=[self.mfis.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = MinorFactionInSystemSerializer(self.mfis)
-        self.assertDictEqual(response.data, serializer.data)
+        self.assertEqual(response.data, serializer.data)
+        # Verify states field is included in detail view
+        self.assertIn('states', response.data)
 
     def test_create_minorfactioninsystem(self):
-        url = reverse('minorfactioninsystem-list', kwargs={'system_pk': self.system.pk})
+        """Test creating a new minor faction in system record."""
+        url = reverse('minorfactioninsystem-list')
         data = {
+            'system': self.system.name,
             'minorFaction': self.minor_faction2.name,
             'Influence': 0.3,
         }
+        # Test without authentication
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Test with authentication
         self.client.force_authenticate(user=self.user)
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['system'], data['system'])
         self.assertEqual(response.data['minorFaction'], data['minorFaction'])
+        self.assertEqual(float(response.data['Influence']), data['Influence'])
+        
+        # Verify the record was created
+        self.assertTrue(
+            MinorFactionInSystem.objects.filter(
+                system=self.system,
+                minorFaction=self.minor_faction2
+            ).exists()
+        )
 
     def test_update_minorfactioninsystem(self):
-        url = reverse(
-            'minorfactioninsystem-detail',
-            kwargs={'system_pk': self.system.pk, 'pk': self.mfis.id}
-        )
+        """Test updating an existing minor faction in system record."""
+        url = reverse('minorfactioninsystem-detail', args=[self.mfis.id])
         data = {
+            'system': self.mfis.system.name,
             'minorFaction': self.mfis.minorFaction.name,
             'Influence': 0.75,
         }
+        # Test without authentication
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Test with authentication
         self.client.force_authenticate(user=self.user)
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(float(response.data['Influence']), data['Influence'])
+        
+        # Verify the record was updated
+        self.mfis.refresh_from_db()
+        self.assertEqual(float(self.mfis.Influence), data['Influence'])
+
+    def test_partial_update_minorfactioninsystem(self):
+        """Test partially updating a minor faction in system record."""
+        url = reverse('minorfactioninsystem-detail', args=[self.mfis.id])
+        data = {
+            'Influence': 0.65,
+        }
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(float(response.data['Influence']), data['Influence'])
+        
+        # Verify the record was updated
+        self.mfis.refresh_from_db()
+        self.assertEqual(float(self.mfis.Influence), data['Influence'])
 
     def test_delete_minorfactioninsystem(self):
-        url = reverse(
-            'minorfactioninsystem-detail',
-            kwargs={'system_pk': self.system.pk, 'pk': self.mfis.id}
-        )
+        """Test deleting a minor faction in system record."""
+        url = reverse('minorfactioninsystem-detail', args=[self.mfis.id])
+        
+        # Test without authentication
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Test with authentication
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+        # Verify the record was deleted
         self.assertFalse(MinorFactionInSystem.objects.filter(id=self.mfis.id).exists())
 
 
@@ -619,77 +705,179 @@ class PowerInSystemViewSetTestCase(APITestCase):
         from ed_system.models import System
         cls.user = User.objects.create_user(username='PowerInSystemViewSetTestCase_user')
         cls.system = System.objects.first()
+        cls.system2 = System.objects.last()
         cls.power = Power.objects.first()
+        cls.power2 = Power.objects.last()
         cls.powerstate = PowerState.objects.first()
-        cls.pis = PowerInSystem.objects.create(
-            system=cls.system,
-            power=cls.power,
-            state=cls.powerstate,
-            created_by=cls.user,
-            updated_by=cls.user,
-        )
+        cls.powerstate2 = PowerState.objects.last()
 
     def setUp(self):
         super().setUp()
+        # Create test data for each test
+        self.pis = PowerInSystem.objects.create(
+            system=self.system,
+            power=self.power,
+            state=self.powerstate,
+            created_by=self.user,
+            updated_by=self.user,
+        )
 
     def test_list_powerinsystem(self):
-        url = reverse('powerinsystem-list', kwargs={'system_pk': self.system.pk})
+        """Test listing all powers in systems without filters."""
+        url = reverse('powerinsystem-list')
         response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], PowerInSystem.objects.count())
+        serializer = PowerInSystemBasicInformationSerializer(
+            PowerInSystem.objects.all(),
+            many=True,
+        )
+        for result, expected in zip(response.data['results'], serializer.data):
+            self.assertEqual(result, expected)
+
+    def test_filter_by_system(self):
+        """Test filtering powers in system by system."""
+        # Create another PowerInSystem in a different system
+        PowerInSystem.objects.create(
+            system=self.system2,
+            power=self.power2,
+            state=self.powerstate,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        url = reverse('powerinsystem-list')
+        response = self.client.get(url, {'system': self.system.id})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         queryset = PowerInSystem.objects.filter(system=self.system)
         self.assertEqual(response.data['count'], queryset.count())
+        # Verify all results belong to the filtered system
+        for result in response.data['results']:
+            self.assertEqual(result['system'], self.system.name)
+
+    def test_filter_by_power(self):
+        """Test filtering by power."""
+        # Create another PowerInSystem with different power
+        PowerInSystem.objects.create(
+            system=self.system2,
+            power=self.power2,
+            state=self.powerstate,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        url = reverse('powerinsystem-list')
+        response = self.client.get(url, {'power': self.power.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = PowerInSystem.objects.filter(power=self.power)
+        self.assertEqual(response.data['count'], queryset.count())
+        # Verify all results belong to the filtered power
+        for result in response.data['results']:
+            self.assertEqual(result['power'], self.power.name)
+
+    def test_filter_by_state(self):
+        """Test filtering by power state."""
+        # Create another PowerInSystem with different state
+        PowerInSystem.objects.create(
+            system=self.system2,
+            power=self.power,
+            state=self.powerstate2,
+            created_by=self.user,
+            updated_by=self.user,
+        )
+        url = reverse('powerinsystem-list')
+        response = self.client.get(url, {'state': self.powerstate.id})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = PowerInSystem.objects.filter(state=self.powerstate)
+        self.assertEqual(response.data['count'], queryset.count())
+        # Verify all results belong to the filtered state
+        for result in response.data['results']:
+            self.assertEqual(result['state'], self.powerstate.name)
 
     def test_retrieve_powerinsystem(self):
-        url = reverse(
-            'powerinsystem-detail',
-            kwargs={'system_pk': self.system.pk, 'pk': self.pis.id}
-        )
+        """Test retrieving a specific power in system."""
+        url = reverse('powerinsystem-detail', args=[self.pis.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer = PowerInSystemSerializer(self.pis)
-        self.assertDictEqual(response.data, serializer.data)
+        self.assertEqual(response.data, serializer.data)
 
     def test_create_powerinsystem(self):
-        url = reverse('powerinsystem-list', kwargs={'system_pk': self.system.pk})
-        power2 = Power.objects.last()
+        """Test creating a new power in system record."""
+        url = reverse('powerinsystem-list')
         data = {
-            'power': power2.name,
+            'system': self.system2.name,
+            'power': self.power2.name,
             'state': self.powerstate.name,
         }
+        # Test without authentication
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Test with authentication
         self.client.force_authenticate(user=self.user)
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['system'], data['system'])
         self.assertEqual(response.data['power'], data['power'])
+        self.assertEqual(response.data['state'], data['state'])
+        
+        # Verify the record was created with correct owner
+        created_pis = PowerInSystem.objects.get(id=response.data['id'])
+        self.assertEqual(created_pis.created_by, self.user)
+        self.assertEqual(created_pis.updated_by, self.user)
 
     def test_update_powerinsystem(self):
-        url = reverse(
-            'powerinsystem-detail',
-            kwargs={'system_pk': self.system.pk, 'pk': self.pis.id}
-        )
-        powerstate2 = PowerState.objects.last()
+        """Test updating an existing power in system record."""
+        url = reverse('powerinsystem-detail', args=[self.pis.id])
         data = {
+            'system': self.pis.system.name,
             'power': self.pis.power.name,
-            'state': powerstate2.name,
+            'state': self.powerstate2.name,
         }
+        # Test without authentication
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Test with authentication
         self.client.force_authenticate(user=self.user)
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['state'], data['state'])
+        
+        # Verify the record was updated
+        self.pis.refresh_from_db()
+        self.assertEqual(self.pis.state.name, data['state'])
+        self.assertEqual(self.pis.updated_by, self.user)
+
+    def test_partial_update_powerinsystem(self):
+        """Test partially updating a power in system record."""
+        url = reverse('powerinsystem-detail', args=[self.pis.id])
+        data = {
+            'state': self.powerstate2.name,
+        }
+        self.client.force_authenticate(user=self.user)
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['state'], data['state'])
+        
+        # Verify the record was updated
+        self.pis.refresh_from_db()
+        self.assertEqual(self.pis.state.name, data['state'])
+        self.assertEqual(self.pis.updated_by, self.user)
 
     def test_delete_powerinsystem(self):
-        url = reverse(
-            'powerinsystem-detail',
-            kwargs={'system_pk': self.system.pk, 'pk': self.pis.id}
-        )
+        """Test deleting a power in system record."""
+        url = reverse('powerinsystem-detail', args=[self.pis.id])
+        
+        # Test without authentication
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        
+        # Test with authentication
         self.client.force_authenticate(user=self.user)
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        
+        # Verify the record was deleted
         self.assertFalse(PowerInSystem.objects.filter(id=self.pis.id).exists())
 
 

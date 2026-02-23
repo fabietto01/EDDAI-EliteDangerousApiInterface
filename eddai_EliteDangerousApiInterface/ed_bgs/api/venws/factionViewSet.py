@@ -1,7 +1,6 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from ed_bgs.api.filterSet.factionFilterSet import FactionFilterSet
 from ed_bgs.api.serializers import FactionSerializer, FactionBasicInformationSerializer
 from ed_bgs.models import Faction
 from django.utils.translation import gettext_lazy as _
@@ -12,10 +11,9 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
     retrieve=extend_schema(description=_("Get detailed information about a specific faction by its ID.")),
 )
 class FactionViewSet(ReadOnlyModelViewSet):
-    queryset = Faction.objects.select_related('government')
+    queryset = Faction.objects.all()
     serializer_class = FactionSerializer
-    filterset_class = FactionFilterSet
-    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filter_backends = [SearchFilter]
     search_fields = ['name']
 
     def get_serializer_class(self):
