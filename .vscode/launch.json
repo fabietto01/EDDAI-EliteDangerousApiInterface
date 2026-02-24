@@ -136,6 +136,14 @@
         "DJANGO_SETTINGS_MODULE": "eddai_EliteDangerousApiInterface.settings.test"
       },
       "consoleTitle": "Python Debug Django Tests"
+    },
+    {
+      "name": "Vue.js: Vite Server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}/eddai_EliteDangerousApiInterface/ed_frontend",
+      "consoleTitle": "Vite Dev Server"
     }
   ],
   "compounds": [
