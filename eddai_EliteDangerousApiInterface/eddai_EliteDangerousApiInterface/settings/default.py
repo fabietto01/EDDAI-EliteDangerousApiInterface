@@ -204,14 +204,19 @@ LOGOUT_REDIRECT_URL = '/'
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 # 1 day
 
 # allauth
-# https://docs.allauth.org/en/latest/account/configuration.html
-ACCOUNT_EMAIL_VERIFICATION  = 'none'
+# https://django-allauth.readthedocs.io/en/latest/account/configuration.html
+ACCOUNT_LOGIN_METHODS = {'email', 'username'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
 
 # socialaccount
-# https://docs.allauth.org/en/latest/socialaccount/configuration.html
-SOCIALACCOUNT_ONLY = True
-SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+# https://django-allauth.readthedocs.io/en/latest/socialaccount/configuration.html
+SOCIALACCOUNT_ONLY = False
+SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_PROVIDERS = {
     'frontier': {
