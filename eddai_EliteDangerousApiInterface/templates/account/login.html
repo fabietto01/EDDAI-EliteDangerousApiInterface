@@ -1,38 +1,96 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load socialaccount %}
+{% load account %}
+
 {% block head_title %}
     {% trans "Login" %}
 {% endblock head_title %}
 
 {% block content %}
 
-    <!-- <div class="container mt-5 test1"> -->
     <div class="container test1">
         <div id="login-card" class="card p-4 shadow rounded">
             <div class="mb-5">
-                <h1 class="text-center">Login</h1>
+                <h1 class="text-center">{% trans "Login" %}</h1>
             </div>
+
+            <!-- Authentication Form -->
+            <div id="login-form-section" class="mb-4">
+                <form class="login" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Login/Email Field -->
+                    <div class="form-group mb-3">
+                        <label for="id_login" class="form-label">{% trans "Email or Username" %}</label>
+                        <input class="form-control" type="text" name="login" id="id_login" 
+                               placeholder="{% trans 'Email or username' %}" required autofocus>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group mb-3">
+                        <label for="id_password" class="form-label">{% trans "Password" %}</label>
+                        <input class="form-control" type="password" name="password" id="id_password" 
+                               placeholder="{% trans 'Password' %}" required>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input" type="checkbox" name="remember" id="id_remember" 
+                               value="on">
+                        <label class="form-check-label" for="id_remember">
+                            {% trans "Remember Me" %}
+                        </label>
+                    </div>
+
+                    <!-- Sign In Button -->
+                    <button class="btn btn-login w-100" type="submit">{% trans "Sign In" %}</button>
+                </form>
+
+                <!-- Password Reset and Sign Up Links -->
+                <div class="text-center mt-4">
+                    <p>
+                        <a class="link-light" href="{% url 'account_reset_password' %}">
+                            {% trans "Forgot Password?" %}
+                        </a>
+                    </p>
+                    <p class="mb-0">
+                        {% trans "Don't have an account?" %}
+                        <a class="link-light fw-bold" href="{% url 'account_signup' %}">
+                            {% trans "Sign Up" %}
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider my-4">
+                <span>{% trans "or continue with" %}</span>
+            </div>
+
+            <!-- Social Account Providers -->
             {% get_providers as socialaccount_providers %}
             {% if socialaccount_providers %}
-                {% for provider in socialaccount_providers %}
-                    <div class="mb-3 text-center">
-                        {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
-                        <a class="btn btn-block" title="{{ provider.name }}" href="{{ href }}">{{ provider.name }}</a>
-                    </div>
-                {% endfor %}
+                <div id="social-login-section">
+                    {% for provider in socialaccount_providers %}
+                        <div class="mb-3">
+                            {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+                            <a class="btn btn-social w-100" title="{{ provider.name }}" href="{{ href }}">
+                                <i class="fab fa-{{ provider.name|lower }}"></i> {% trans "Continue with" %} {{ provider.name }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         </div>
     </div>
 
-
-
-
     {% providers_media_js %}
+    
     <style>
         html, body {
             height: 100vh;
-            background-color: orange;
+            background-color: #0a0a0a;
         }
         .container {
             min-height: 100vh;
@@ -41,27 +99,215 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: orchid;
+            background: linear-gradient(135deg, #1c1b1d 0%, #2a2829 100%);
             margin: 0;
             padding: 0;
         }
-        #login-card{
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        #login-card {
+            width: 90%;
+            max-width: 450px;
+            padding: 2.5rem;
             background-color: #1c1b1d;
             color: #f36c1d;
-            box-sizing: border-box;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(243, 108, 29, 0.1);
         }
-        .btn{
-            background-color: #f36c1b; color: #1c1b1d;
-            box-shadow: inset 4px 4px 4px 0px #00000033; 
+
+        /* Form Styling */
+        .form-label {
+            color: #f36c1d;
+            font-weight: 500;
+            font-size: 0.95rem;
         }
-        .btn:hover{
-            background-color: #b5c9dc; color: #1c1b1d;
-            box-shadow: inset 4px 4px 4px 0px #00000033; 
+
+        .form-control {
+            background-color: #2a2829;
+            color: #f36c1d;
+            border: 1px solid rgba(243, 108, 29, 0.3);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: #2a2829;
+            color: #f36c1d;
+            border-color: #f36c1d;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(243, 108, 29, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: rgba(243, 108, 29, 0.5);
+        }
+
+        .form-check-label {
+            color: #f36c1d;
+            font-size: 0.95rem;
+            margin-left: 0.5rem;
+        }
+
+        .form-check-input {
+            background-color: #2a2829;
+            border: 1px solid rgba(243, 108, 29, 0.3);
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: #f36c1d;
+            border-color: #f36c1d;
+        }
+
+        .form-check-input:focus {
+            border-color: #f36c1d;
+            box-shadow: 0 0 0 3px rgba(243, 108, 29, 0.1);
+        }
+
+        /* Button Styling */
+        .btn {
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: #f36c1b;
+            color: #1c1b1d;
+            box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
+            padding: 0.75rem 1rem;
+        }
+
+        .btn-login:hover {
+            background-color: #ff8533;
+            color: #1c1b1d;
+            box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+            box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-social {
+            background-color: transparent;
+            color: #f36c1d;
+            border: 2px solid rgba(243, 108, 29, 0.3);
+            padding: 0.75rem 1rem;
+        }
+
+        .btn-social:hover {
+            background-color: rgba(243, 108, 29, 0.1);
+            color: #ff8533;
+            border-color: #ff8533;
+        }
+
+        /* Links */
+        .link-light {
+            color: #f36c1d !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .link-light:hover {
+            color: #ff8533 !important;
+            text-decoration: underline;
+        }
+
+        /* Text */
+        p {
+            color: rgba(243, 108, 29, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            color: #f36c1d;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            color: rgba(243, 108, 29, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: rgba(243, 108, 29, 0.2);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            #login-card {
+                width: 95%;
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Error Messages */
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+
+        .errorlist li {
+            color: #ff6b6b;
+            background-color: rgba(255, 107, 107, 0.1);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border-left: 3px solid #ff6b6b;
+            font-size: 0.95rem;
+        }
+
+        .non_field_errors {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Icon Styling for Social Buttons */
+        .btn-social i {
+            margin-right: 0.5rem;
+        }
+
+        /* Shadow effect on card */
+        #login-card {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 {% endblock content %}
