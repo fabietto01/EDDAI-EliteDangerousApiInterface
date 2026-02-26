@@ -33,4 +33,11 @@ until postgres_ready; do
 done
 >&2 echo 'PostgreSQL is available'
 
+# Collect static files only for the web server (daphne)
+# Celery workers and other services don't need static files
+if echo "$*" | grep -q "daphne"; then
+  python manage.py collectstatic --noinput
+  >&2 echo 'Static files collected'
+fi
+
 exec "$@"

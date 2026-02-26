@@ -242,6 +242,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static-server'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media-server'
@@ -345,7 +348,7 @@ CELERY_TASK_ROUTES = {
 
 #Vite django connetion
 VITE_BUILD_DIRNAME = "vuejs"
-VITE_STATIC_BUNDLE = BASE_DIR / f"static-server/{VITE_BUILD_DIRNAME}"
+VITE_STATIC_BUNDLE = STATIC_ROOT / VITE_BUILD_DIRNAME
 
 #impostazione per la generazione automatica della documentazione API
 #https://drf-spectacular.readthedocs.io/en/latest/settings.html

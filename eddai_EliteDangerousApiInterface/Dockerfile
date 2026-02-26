@@ -1,7 +1,27 @@
 # ============================================
-# STAGE 1: Builder - Install all dependencies
+# STAGE 1: Frontend Builder - Build Vue.js app
 # ============================================
-FROM continuumio/miniconda3:25.3.1-1 AS builder
+FROM node:20-slim AS frontend-builder
+
+WORKDIR /build
+
+# Copy package files first for better layer caching
+COPY ./ed_frontend/package.json ./ed_frontend/package-lock.json* ./
+
+# Install dependencies (ci for reproducible builds)
+RUN npm ci --ignore-scripts
+
+# Copy Vue.js source code
+COPY ./ed_frontend/ ./
+
+# Build for production
+ENV NODE_ENV=production
+RUN npm run build
+
+# ============================================
+# STAGE 2: Backend Builder - Install conda env
+# ============================================
+FROM continuumio/miniconda3:25.3.1-1 AS backend-builder
 
 # Configure PROJ_LIB environment variable for GDAL
 ENV PROJ_LIB=/opt/conda/share/proj
@@ -30,7 +50,7 @@ RUN umask 0002 && \
     rm -rf /opt/conda/pkgs
 
 # ============================================
-# STAGE 2: Runtime - Final lightweight image
+# STAGE 3: Runtime - Final lightweight image
 # ============================================
 FROM continuumio/miniconda3:25.3.1-1
 
@@ -39,14 +59,18 @@ ENV APP_HOME=/app
 ENV PROJ_LIB=/opt/conda/share/proj
 
 # Copy ONLY the compiled conda environment from builder (without cache/temp files)
-COPY --from=builder /opt/conda /opt/conda
+COPY --from=backend-builder /opt/conda /opt/conda
 
 # Create app directory and set working directory
-RUN mkdir $APP_HOME
+RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
 # Copy application code (respects .dockerignore)
 COPY . $APP_HOME
+
+# Copy Vue.js built assets into the static/ directory (part of STATICFILES_DIRS)
+# collectstatic will then copy them to STATIC_ROOT (static-server/)
+COPY --from=frontend-builder /static/vuejs/ $APP_HOME/static/vuejs/
 
 # Create system user, set permissions, and cleanup in a single layer
 RUN addgroup --system app && \

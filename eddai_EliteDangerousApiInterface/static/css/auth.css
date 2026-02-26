@@ -1,0 +1,286 @@
+/* ==================== AUTH PAGES STYLING ==================== */
+/* Color scheme: #f36c1d (orange), #1c1b1d (dark), #2a2829 (dark-gray) */
+
+/* ==================== HTML & BODY ==================== */
+html, body {
+    height: 100vh;
+    background-color: #0a0a0a;
+}
+
+/* ==================== CONTAINER ==================== */
+.container {
+    min-height: 100vh;
+    min-width: 100vw;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1c1b1d 0%, #2a2829 100%);
+    margin: 0;
+    padding: 0;
+}
+
+.test1 {
+    height: 100vh;
+    width: 100vw;
+    background-color: #1c1b1d;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==================== CARD ==================== */
+#login-card {
+    width: 90%;
+    max-width: 450px;
+    padding: 2.5rem;
+    background-color: #1c1b1d;
+    color: #f36c1d;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(243, 108, 29, 0.1);
+}
+
+/* ==================== HEADINGS ==================== */
+h1 {
+    color: #f36c1d;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+p {
+    color: rgba(243, 108, 29, 0.8);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ==================== FORM ELEMENTS ==================== */
+.form-label {
+    color: #f36c1d;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    background-color: #2a2829;
+    color: #f36c1d;
+    border: 1px solid rgba(243, 108, 29, 0.3);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    background-color: #2a2829;
+    color: #f36c1d;
+    border-color: #f36c1d;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(243, 108, 29, 0.1);
+}
+
+.form-control::placeholder {
+    color: rgba(243, 108, 29, 0.5);
+}
+
+.form-text {
+    color: rgba(243, 108, 29, 0.6) !important;
+}
+
+.form-check-label {
+    color: #f36c1d;
+    font-size: 0.95rem;
+    margin-left: 0.5rem;
+}
+
+/* ==================== BUTTONS ==================== */
+.btn {
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-login {
+    background-color: #f36c1b;
+    color: #1c1b1d;
+    box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
+    padding: 0.75rem 1rem;
+}
+
+.btn-login:hover {
+    background-color: #ff8533;
+    color: #1c1b1d;
+    box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+    box-shadow: inset 4px 4px 4px 0px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background-color: rgba(243, 108, 29, 0.2);
+    color: #f36c1d;
+    border: 1px solid rgba(243, 108, 29, 0.3);
+    padding: 0.75rem 1rem;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(243, 108, 29, 0.3);
+    color: #ff8533;
+    border-color: #ff8533;
+}
+
+.btn-social {
+    background-color: transparent;
+    color: #f36c1d;
+    border: 2px solid rgba(243, 108, 29, 0.3);
+    padding: 0.75rem 1rem;
+}
+
+.btn-social:hover {
+    background-color: rgba(243, 108, 29, 0.1);
+    color: #ff8533;
+    border-color: #ff8533;
+}
+
+.btn-outline-secondary {
+    color: #f36c1d;
+    border: 1px solid rgba(243, 108, 29, 0.5);
+    background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+    color: #ff8533;
+    border-color: #ff8533;
+    background-color: rgba(243, 108, 29, 0.1);
+}
+
+/* ==================== LINKS ==================== */
+.link-light {
+    color: #f36c1d !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.link-light:hover {
+    color: #ff8533 !important;
+    text-decoration: underline;
+}
+
+/* ==================== DIVIDER ==================== */
+.divider {
+    display: flex;
+    align-items: center;
+    color: rgba(243, 108, 29, 0.5);
+    font-size: 0.85rem;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: rgba(243, 108, 29, 0.2);
+}
+
+.divider span {
+    padding: 0 1rem;
+}
+
+/* ==================== ALERTS ==================== */
+.alert {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.alert-info {
+    color: #4dabf7;
+    background-color: rgba(77, 171, 247, 0.1);
+    border: 1px solid rgba(77, 171, 247, 0.3);
+}
+
+.alert-info p {
+    color: #4dabf7;
+    margin-bottom: 0;
+}
+
+.alert-success {
+    color: #51cf66;
+    background-color: rgba(81, 207, 102, 0.1);
+    border: 1px solid rgba(81, 207, 102, 0.3);
+}
+
+.alert-success p {
+    color: #51cf66;
+    margin-bottom: 0;
+}
+
+.alert-danger {
+    color: #ff6b6b;
+    background-color: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.alert-danger strong {
+    color: #ff6b6b;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.alert-danger p {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+}
+
+/* ==================== ERROR LIST ==================== */
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.errorlist li {
+    color: #ff6b6b;
+    background-color: rgba(255, 107, 107, 0.1);
+    padding: 0.75rem;
+    border-radius: 6px;
+    border-left: 3px solid #ff6b6b;
+    font-size: 0.95rem;
+}
+
+.errorlist.non_field_errors li {
+    color: #ff6b6b;
+    font-size: 0.875rem;
+    padding: 0.25rem 0;
+    background-color: transparent;
+    border-left: none;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 600px) {
+    #login-card {
+        width: 95%;
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

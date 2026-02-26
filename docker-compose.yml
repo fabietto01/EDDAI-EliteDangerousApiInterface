@@ -45,7 +45,7 @@ services:
     container_name: django
     command: python -m daphne eddai_EliteDangerousApiInterface.asgi:application -p 8080 -b 0.0.0.0
     volumes:
-      - ./eddai_EliteDangerousApiInterface/static-server:/app/static-server
+      - static_volume:/app/static-server
       - media_volume:/app/media-server
     depends_on:
       - celery_worker_task
@@ -86,7 +86,7 @@ services:
     depends_on:
       - django
     volumes:
-      - ./eddai_EliteDangerousApiInterface/static-server:/app/static-server
+      - static_volume:/app/static-server
       - media_volume:/app/media-server
     networks:
       - eddai
