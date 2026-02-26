@@ -7,4 +7,4 @@ const endpoints = {
     },
 }
 
-export { endpoints};
+export {endpoints};
