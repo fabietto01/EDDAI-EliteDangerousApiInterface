@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load allauth %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
 
 {% block content %}
     <div class="container mt-5">
@@ -15,19 +20,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        #login-card{
-            background-color: #1c1b1d;
-            color: #f36c1d;
-        }
-        .btn{
-            background-color: #f36c1b; color: #1c1b1d;
-            box-shadow: inset 4px 4px 4px 0px #00000033; 
-        }
-        .btn:hover{
-            background-color: #b5c9dc; color: #1c1b1d;
-            box-shadow: inset 4px 4px 4px 0px #00000033; 
-        }
-    </style>
 {% endblock content %}
