@@ -347,7 +347,7 @@ CELERY_TASK_ROUTES = {
 }
 
 #Vite django connetion
-VITE_BUILD_DIRNAME = "vuejs"
+VITE_BUILD_DIRNAME = "build"
 VITE_STATIC_BUNDLE = STATIC_ROOT / VITE_BUILD_DIRNAME
 
 #impostazione per la generazione automatica della documentazione API

@@ -12,7 +12,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
-  base: process.env.NODE_ENV === "production" ? "/static/vuejs/" : "/",
+  base: process.env.NODE_ENV === "production" ? "/static/build/" : "/",
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -27,7 +27,7 @@ export default defineConfig({
   },
   build: {
     manifest: true,
-    outDir: "../static/vuejs/",
+    outDir: "../static/build/",
     emptyOutDir: true
   },
 })

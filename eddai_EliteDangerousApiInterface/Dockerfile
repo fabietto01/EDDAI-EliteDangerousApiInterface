@@ -70,7 +70,7 @@ COPY . $APP_HOME
 
 # Copy Vue.js built assets into the static/ directory (part of STATICFILES_DIRS)
 # collectstatic will then copy them to STATIC_ROOT (static-server/)
-COPY --from=frontend-builder /static/vuejs/ $APP_HOME/static/vuejs/
+COPY --from=frontend-builder /static/build/ $APP_HOME/static/build/
 
 # Create system user, set permissions, and cleanup in a single layer
 RUN addgroup --system app && \
