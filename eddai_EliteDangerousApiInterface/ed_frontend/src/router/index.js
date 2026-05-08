@@ -10,6 +10,11 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: '/system',
+      name: 'system',
+      component: () => import("../views/SystemView.vue")
+    },
+    {
       path: '/ScrollTextAnimation',
       name: 'ScrollTextAnimation',
       component: () => import("../views/ScrollTextAnimation.vue")
