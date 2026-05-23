@@ -23,21 +23,35 @@
                     </li>
                 </ul>
             </div>
-            <a class="btn nav-btn d-none d-md-block" href="/users/login/">Login</a>
+            <a v-if="!isAuthenticated" class="btn nav-btn d-none d-md-block" href="/users/login/">Login</a>
         </div>
     </nav>
 </template>
 
 <script>
+import { axiox } from '../common/api.service.js';
+
 export default {
     name: 'NavBar',
     data() {
         return {
-            navItems: [
-            ],
+            navItems: [],
+            isAuthenticated: false,
         };
     },
-    methods: {},
+    methods: {
+        async fetchAuthStatus() {
+            try {
+                await axiox.get('/users/api/v1/session');
+                this.isAuthenticated = true;
+            } catch {
+                this.isAuthenticated = false;
+            }
+        },
+    },
+    mounted() {
+        this.fetchAuthStatus();
+    },
 };
 </script>
 
