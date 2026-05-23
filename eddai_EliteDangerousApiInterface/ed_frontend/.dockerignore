@@ -28,10 +28,3 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-
-# Git and docs
-.git/
-*.md
-
-# nginx config (copied at build time, not needed in Node stage)
-nginx.conf
