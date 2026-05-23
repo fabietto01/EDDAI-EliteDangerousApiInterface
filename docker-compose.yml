@@ -81,8 +81,10 @@ services:
     depends_on:
       - celery_worker_ed_dbsync
   nginx:
-    build: ./nginx
+    image: ghcr.io/fabietto01/eddai-elitedangerousapiinterface-frontend:latest
+    pull_policy: always
     container_name: nginx
+    restart: always
     depends_on:
       - django
     volumes:
