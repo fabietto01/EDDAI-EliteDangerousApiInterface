@@ -36,7 +36,7 @@ volumes:
 
 networks:
   eddai:
-  proxy:
+  proxy_net:
     external: true
 
 services:
@@ -90,10 +90,10 @@ services:
       - media_volume:/app/media-server
     networks:
       - eddai
-      - proxy
+      - proxy_net
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      - "traefik.docker.network=proxy_net"
       # Router per le richieste HTTP
       - "traefik.http.routers.nginx.rule=Host(`eddai.italiangamingsystem.it`)"
       - "traefik.http.routers.nginx.entrypoints=https"
