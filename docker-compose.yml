@@ -54,7 +54,7 @@ services:
     <<: *default-config
     deploy:
       replicas: 3
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTasck@%h
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q default -n WorkerTask@%h
   celery_worker_admin:
     <<: *default-config
     deploy:
@@ -69,7 +69,7 @@ services:
     <<: *default-config
     deploy:
       replicas: 3
-    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,ed_dbsync,default -n WorkerAdmin@%h
+    command: celery -A eddai_EliteDangerousApiInterface worker -l info -P gevent --autoscale 100,5 -Q admin,ed_dbsync,default -n WorkerAll@%h
   celery_beat:
     <<: *default-config
     container_name: celery_beat
