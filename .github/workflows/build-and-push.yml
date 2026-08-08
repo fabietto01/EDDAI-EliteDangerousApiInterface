@@ -8,11 +8,6 @@ on:
         description: 'Tag/Version da deployare (es: v1.0.0)'
         required: true
         type: string
-      skip_deploy:
-        description: 'Salta il deploy (solo build)'
-        required: false
-        type: boolean
-        default: false
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
