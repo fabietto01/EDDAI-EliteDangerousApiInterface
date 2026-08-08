@@ -3,8 +3,12 @@ name: CI - Check and Test
 on:
   pull_request:
     branches: [ "*" ]
+    paths:
+      - 'eddai_EliteDangerousApiInterface/**'
   push:
     branches: [ "main" ]
+    paths:
+      - 'eddai_EliteDangerousApiInterface/**'
 
 env:
   IMAGE_NAME: eddai-elitedangerousapiinterface
