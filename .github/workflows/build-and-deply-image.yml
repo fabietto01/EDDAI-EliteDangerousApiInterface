@@ -2,6 +2,17 @@ name: Build and Deploy Image
 on: 
   release:
     types:  [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag/Version da deployare (es: v1.0.0)'
+        required: true
+        type: string
+      skip_deploy:
+        description: 'Salta il deploy (solo build)'
+        required: false
+        type: boolean
+        default: false
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -22,6 +33,35 @@ jobs:
     steps:
       - name:  Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Validate tag exists
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "🔍 Verifying tag: ${{ github.event.inputs.tag }}"
+          
+          # Fetch all tags
+          git fetch --tags
+          
+          # Check if tag exists
+          if ! git tag -l "${{ github.event.inputs.tag }}" | grep -q "^${{ github.event.inputs.tag }}$"; then
+            echo "❌ ERROR: Tag '${{ github.event.inputs.tag }}' does not exist in the repository!"
+            echo ""
+            echo "Available tags (last 10):"
+            git tag --sort=-version:refname | head -n 10
+            echo ""
+            echo "Please use an existing tag from the list above."
+            exit 1
+          fi
+          
+          echo "✅ Tag '${{ github.event.inputs.tag }}' exists and is valid"
+          
+          # Show tag details
+          echo ""
+          echo "Tag details:"
+          git show ${{ github.event.inputs.tag }} --no-patch --format="%H - %s (%ci)"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -39,8 +79,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=semver,pattern=v{{version}}
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern=v{{version}},enable=${{ github.event_name == 'release' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
+            type=raw,value=${{ github.event.inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Build and push
         id:  build
@@ -69,9 +111,12 @@ jobs:
     needs:  build
     runs-on: ubuntu-latest
     timeout-minutes:  15
+    if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.skip_deploy != 'true') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref }}
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -80,6 +125,8 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
+            echo "🚀 Starting deployment..."
+            echo "Version: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref_name }}"
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main --rebase
             docker compose pull
@@ -103,5 +150,6 @@ jobs:
               docker compose logs --tail=50
               exit 1
             fi
-            echo "✓ Deployment successful - Version: ${{ needs.build.outputs.version }}"
+            echo "✓ Deployment successful - Version: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || needs.build.outputs.version }}"
             echo "✓ Image digest: ${{ needs.build.outputs.image-digest }}"
+            echo "✓ Trigger: ${{ github.event_name }}"
