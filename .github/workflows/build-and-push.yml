@@ -3,11 +3,6 @@ on:
   release:
     types:  [published]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag/Version da deployare (es: v1.0.0)'
-        required: true
-        type: string
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -20,37 +15,45 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
+    outputs:
+      tag_name: ${{ steps.extract_tag.outputs.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.tag }}
+          ref: ${{ github.ref }}
           fetch-depth: 0
 
-      - name: Validate tag exists
+      - name: Validate that a tag was selected
+        id: extract_tag
         run: |
-          echo "🔍 Verifying tag: ${{ github.event.inputs.tag }}"
+          echo "🔍 Checking selected ref: ${{ github.ref }}"
           
-          # Fetch all tags
-          git fetch --tags
-          
-          # Check if tag exists
-          if ! git tag -l "${{ github.event.inputs.tag }}" | grep -q "^${{ github.event.inputs.tag }}$"; then
-            echo "❌ ERROR: Tag '${{ github.event.inputs.tag }}' does not exist in the repository!"
+          # Check if ref is a tag
+          if [[ "${{ github.ref }}" != refs/tags/* ]]; then
+            echo "❌ ERROR: You must select a TAG, not a branch!"
+            echo ""
+            echo "Please:"
+            echo "1. Click 'Run workflow' button"
+            echo "2. In the 'Use workflow from' dropdown, switch to the 'Tags' tab"
+            echo "3. Select a valid release tag (e.g., v1.0.0)"
             echo ""
             echo "Available tags (last 10):"
+            git fetch --tags
             git tag --sort=-version:refname | head -n 10
-            echo ""
-            echo "Please use an existing tag from the list above."
             exit 1
           fi
           
-          echo "✅ Tag '${{ github.event.inputs.tag }}' exists and is valid"
+          # Extract tag name from refs/tags/v1.0.0 -> v1.0.0
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+          
+          echo "✅ Valid tag selected: $TAG_NAME"
           
           # Show tag details
           echo ""
           echo "Tag details:"
-          git show ${{ github.event.inputs.tag }} --no-patch --format="%H - %s (%ci)"
+          git show "$TAG_NAME" --no-patch --format="%H - %s (%ci)"
 
   build-and-push:
     name: Build and Push Docker Image
@@ -70,7 +73,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref }}
+          ref: ${{ github.ref }}
           fetch-depth: 1
 
       - name: Set up Docker Buildx
@@ -91,7 +94,7 @@ jobs:
           tags: |
             type=semver,pattern=v{{version}},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
-            type=raw,value=${{ github.event.inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=ref,event=tag,enable=${{ github.event_name == 'workflow_dispatch' }}
             type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Build and push Docker image
