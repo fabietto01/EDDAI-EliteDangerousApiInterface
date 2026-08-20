@@ -22,7 +22,7 @@ RUN npm run build
 # ==============================================
 # STAGE 2: Production nginx with baked statics
 # ==============================================
-FROM nginx:1.25-alpine
+FROM nginxinc/nginx-unprivileged:1.25-alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
 
@@ -33,7 +33,7 @@ COPY nginx/nginx.conf /etc/nginx/conf.d/
 # initContainer running "collectstatic") without touching this path.
 COPY --from=frontend-builder /app/static-server/vuejs/ /app/vuejs/
 
-EXPOSE 80
+EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget -qO- http://localhost/health || exit 1
+    CMD wget -qO- http://localhost:8080/health || exit 1
