@@ -1,0 +1,32 @@
+# Python / Django backend artefacts (not needed for nginx frontend image)
+eddai_EliteDangerousApiInterface/**/__pycache__/
+eddai_EliteDangerousApiInterface/**/*.pyc
+eddai_EliteDangerousApiInterface/**/*.pyo
+eddai_EliteDangerousApiInterface/**/*.pyd
+eddai_EliteDangerousApiInterface/.pytest_cache/
+eddai_EliteDangerousApiInterface/*.sqlite3
+eddai_EliteDangerousApiInterface/media-server/
+eddai_EliteDangerousApiInterface/static-server/
+
+# Frontend node artefacts (rebuilt inside the Docker stage)
+eddai_EliteDangerousApiInterface/ed_frontend/node_modules/
+eddai_EliteDangerousApiInterface/ed_frontend/dist/
+eddai_EliteDangerousApiInterface/ed_frontend/dist-ssr/
+eddai_EliteDangerousApiInterface/ed_frontend/coverage/
+eddai_EliteDangerousApiInterface/ed_frontend/*.log
+
+# VCS & IDE
+.git/
+.gitignore
+.gitattributes
+.vscode/
+.idea/
+
+# CI & docs
+.github/
+docs/
+*.md
+
+# OS
+.DS_Store
+Thumbs.db
