@@ -13,7 +13,7 @@ on:
 env:
   REGISTRY: ghcr.io
   # Separate package name for the nginx/frontend image
-  IMAGE_NAME: ${{ github.repository }}-nginx
+  IMAGE_NAME: ${{ github.repository }}-frontend
 
 jobs:
   validate:
