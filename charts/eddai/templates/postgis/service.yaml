@@ -1,0 +1,17 @@
+{{- if eq (include "eddai.postgis.deployInternal" .) "true" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eddai.fullname" . }}-postgis
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "postgis") | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    {{- include "eddai.selectorLabels" (dict "ctx" . "component" "postgis") | nindent 4 }}
+  ports:
+    - name: postgis
+      port: {{ .Values.postgis.service.port }}
+      targetPort: postgis
+{{- end }}

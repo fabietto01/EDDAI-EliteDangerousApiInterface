@@ -1,0 +1,17 @@
+{{- if eq (include "eddai.redis.deployInternal" .) "true" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eddai.fullname" . }}-redis
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "redis") | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    {{- include "eddai.selectorLabels" (dict "ctx" . "component" "redis") | nindent 4 }}
+  ports:
+    - name: redis
+      port: {{ .Values.redis.service.port }}
+      targetPort: redis
+{{- end }}

@@ -1,0 +1,98 @@
+{{- if false }}
+{{/* DISABLED: This validation hook has been replaced by pre-install-db-init-job.yaml */}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "eddai.fullname" . }}-validate-credentials-secrets
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        {{- include "eddai.labels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "eddai.fullname" . }}-validate-hook
+      automountServiceAccountToken: true
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: validate
+          image: "bitnami/kubectl:latest"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              set -euo pipefail
+              NS="{{ .Release.Namespace }}"
+              fail=0
+
+              check_secret () {
+                local secret="$1"; shift
+                local keys=("$@")
+                echo "==> Verifico Secret '${secret}' in namespace '${NS}'..."
+                if ! kubectl get secret "${secret}" -n "${NS}" >/dev/null 2>&1; then
+                  echo "ERRORE: il Secret '${secret}' non esiste nel namespace '${NS}'."
+                  fail=1
+                  return
+                fi
+                for key in "${keys[@]}"; do
+                  val=$(kubectl get secret "${secret}" -n "${NS}" -o jsonpath="{.data.${key}}" || true)
+                  if [ -z "${val}" ]; then
+                    echo "ERRORE: al Secret '${secret}' manca la chiave obbligatoria '${key}'."
+                    fail=1
+                  fi
+                done
+              }
+
+              {{- if or .Values.rabbitmq.enabled .Values.rabbitmq.external }}
+              check_secret "{{ .Values.rabbitmq.credentialsSecret }}" \
+                user password vhost
+              {{- if .Values.rabbitmq.external }}
+              check_secret "{{ .Values.rabbitmq.credentialsSecret }}" \
+                host port
+              {{- end }}
+              {{- end }}
+
+              {{- if or .Values.redis.enabled .Values.redis.external }}
+              {{- if .Values.redis.external }}
+              check_secret "{{ .Values.redis.credentialsSecret }}" \
+                host port
+              {{- end }}
+              {{- if .Values.redis.auth.enabled }}
+              check_secret "{{ .Values.redis.credentialsSecret }}" \
+                password
+              {{- end }}
+              {{- end }}
+
+              {{- if or .Values.postgis.enabled .Values.postgis.external }}
+              check_secret "{{ .Values.postgis.credentialsSecret }}" \
+                user password database
+              {{- if .Values.postgis.external }}
+              check_secret "{{ .Values.postgis.credentialsSecret }}" \
+                host port
+              {{- end }}
+              {{- end }}
+
+              # Verifica Secret applicativo
+              check_secret "{{ .Values.app.credentialsSecret }}" \
+                DJANGO_SECRET_KEY
+
+              if [ "${fail}" -ne 0 ]; then
+                echo "Validazione fallita: crea o correggi i Secret richiesti prima di eseguire di nuovo l'helm install/upgrade."
+                exit 1
+              fi
+              echo "Tutti i Secret richiesti sono presenti e completi."
+          resources:
+            requests: {cpu: 10m, memory: 32Mi}
+            limits: {cpu: 100m, memory: 64Mi}
+{{- end }}

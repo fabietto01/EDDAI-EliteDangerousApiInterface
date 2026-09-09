@@ -1,0 +1,19 @@
+{{- if .Values.django.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "eddai.fullname" . }}-django-media
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "django") | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.django.persistence.accessMode }}
+  {{- $sc := include "eddai.storageClass" (dict "local" .Values.django.persistence.storageClass "global" .Values.global.storageClass) }}
+  {{- if $sc }}
+  storageClassName: {{ $sc }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.django.persistence.size }}
+{{- end }}

@@ -1,0 +1,7 @@
+{{/*
+Template unificato per tutti i deployment Celery (workers + beat).
+Itera sulla mappa celery.workers e genera un Deployment per ogni worker abilitato.
+*/}}
+{{- range $name, $config := .Values.celery.workers }}
+{{- include "eddai.celery.deployment" (dict "ctx" $ "name" $name "config" $config) }}
+{{- end }}

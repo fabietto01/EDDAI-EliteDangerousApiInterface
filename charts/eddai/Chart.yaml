@@ -1,0 +1,20 @@
+apiVersion: v2
+name: eddai
+description: >
+  Helm chart per EDDAI (Elite Dangerous API Interface): Django + Celery
+  (worker task/admin/ed_dbsync/all + beat) con dipendenze RabbitMQ, Redis
+  e PostGIS opzionali (interne o esterne). Portabile su qualsiasi cluster
+  Kubernetes, con StorageClass configurabile (Longhorn, Ceph, ecc.) e
+  Ingress agnostico (nginx, traefik, ecc.).
+type: application
+version: 0.2.0
+appVersion: "latest"
+keywords:
+  - django
+  - celery
+  - rabbitmq
+  - redis
+  - postgis
+  - elite-dangerous
+maintainers:
+  - name: fabietto01

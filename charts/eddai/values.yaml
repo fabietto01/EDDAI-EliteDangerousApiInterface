@@ -1,0 +1,465 @@
+## =============================================================================
+## EDDAI - values.yaml
+## Ogni sezione e' auto-contenuta per servizio (rabbitmq / redis / postgis /
+## django / celery worker*/beat). Le credenziali di rabbitmq/redis/postgis
+## vengono lette UNA SOLA VOLTA da django e da tutti i worker celery tramite
+## envFrom (Secret), senza dover essere ridichiarate.
+## =============================================================================
+
+global:
+  # Storage class da usare per TUTTI i PVC del chart, a meno di override
+  # puntuale nella sezione "persistence" di ogni singolo servizio.
+  # Lascia vuoto "" per usare la StorageClass di default del cluster.
+  # Esempi: "longhorn", "ceph-rbd", "ceph-fs", "local-path"
+  storageClass: ""
+
+  # Secret per pull di immagini da registry privati (es. ghcr.io privato)
+  imagePullSecrets: []
+  # - name: ghcr-credentials
+
+  labels: {}
+  annotations: {}
+
+# -----------------------------------------------------------------------------
+# Immagine applicativa condivisa da django + tutti i celery worker + beat
+# -----------------------------------------------------------------------------
+image:
+  repository: ghcr.io/fabietto01/eddai-elitedangerousapiinterface
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# -----------------------------------------------------------------------------
+# Sicurezza pod (applicata di default a tutti i Pod del chart)
+# -----------------------------------------------------------------------------
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false   # django scrive in /app/media-server; lasciare false per l'immagine applicativa
+  capabilities:
+    drop: ["ALL"]
+
+# NetworkPolicy: limita il traffico in ingresso verso rabbitmq/redis/postgis
+# ai soli pod applicativi del chart (django + celery), e nega tutto il resto.
+networkPolicy:
+  enabled: true
+
+# ServiceAccount dedicato, senza permessi RBAC e senza token montato
+serviceAccount:
+  create: true
+  name: ""
+  automountServiceAccountToken: false
+
+# -----------------------------------------------------------------------------
+# Ingress (agnostico dal controller: nginx, traefik, haproxy, ecc.)
+# -----------------------------------------------------------------------------
+ingress:
+  enabled: false
+  # Nome della IngressClass gia' installata nel cluster (es. "nginx", "traefik")
+  className: ""
+  annotations: {}
+  host: eddai.example.com
+  path: /
+  pathType: Prefix
+  tls: []
+  # - secretName: eddai-tls
+  #   hosts:
+  #     - eddai.example.com
+
+# =============================================================================
+# RABBITMQ (broker Celery)
+# =============================================================================
+rabbitmq:
+  # Se true: viene installato il StatefulSet RabbitMQ interno.
+  # L'host viene automaticamente sovrascitto con il Service interno.
+  enabled: true
+  # Se true: enabled deve essere false. I pod Django/Celery si connettono
+  # a un servizio esterno usando le credenziali dal Secret utente.
+  external: false
+
+  # Nome del Secret creato dall'utente con le credenziali RabbitMQ.
+  # Il Secret deve contenere le chiavi (formato semplice per leggibilità):
+  #   host: hostname o FQDN del server RabbitMQ
+  #   port: porta AMQP (default: "5672")
+  #   user: username per autenticazione
+  #   password: password per autenticazione
+  #   vhost: virtual host (default: "/")
+  # NOTA: Se enabled=true, l'host viene automaticamente sovrascritto
+  # con il Service interno (ignorando il valore nel Secret).
+  credentialsSecret: "eddai-rabbitmq-secret"
+
+  image:
+    repository: rabbitmq
+    tag: "3.13-management"
+    pullPolicy: IfNotPresent
+
+  service:
+    amqpPort: 5672
+    managementPort: 15672
+
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClass: ""     # override di global.storageClass, se valorizzato
+    accessMode: ReadWriteOnce
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Nodo unico: nessun HA, pod fissato su singolo nodo (vedi nodeSelector/affinity)
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # Health check probes
+  readinessProbe:
+    initialDelaySeconds: 30
+    timeoutSeconds: 20
+    periodSeconds: 20
+    failureThreshold: 5
+  livenessProbe:
+    initialDelaySeconds: 60
+    timeoutSeconds: 30
+    periodSeconds: 40
+    failureThreshold: 5
+# =============================================================================
+# REDIS (cache Django + result backend Celery)
+# =============================================================================
+redis:
+  # Se true: viene installato il StatefulSet Redis interno.
+  # L'host viene automaticamente sovrascitto con il Service interno.
+  enabled: true
+  # Se true: enabled deve essere false. I pod Django/Celery si connettono
+  # a un servizio esterno usando le credenziali dal Secret utente.
+  external: false
+
+  # Nome del Secret creato dall'utente con le credenziali Redis.
+  # Il Secret deve contenere le chiavi (formato semplice per leggibilità):
+  #   host: hostname o FQDN del server Redis
+  #   port: porta Redis (default: "6379")
+  #   password: password per autenticazione (opzionale se auth disabilitato)
+  # NOTA: Se enabled=true, l'host viene automaticamente sovrascritto
+  # con il Service interno (ignorando il valore nel Secret).
+  credentialsSecret: "eddai-redis-secret"
+
+  image:
+    repository: redis
+    tag: "7.4-alpine"
+    pullPolicy: IfNotPresent
+
+  # Configurazione autenticazione per il Redis INTERNO.
+  # Se external=true, questa sezione viene ignorata.
+  auth:
+    # Se true, il Redis interno richiede password (letta dal Secret utente).
+    # Se false, il Redis interno NON richiede autenticazione.
+    enabled: false
+
+  service:
+    port: 6379
+
+  persistence:
+    enabled: true
+    size: 2Gi
+    storageClass: ""
+    accessMode: ReadWriteOnce
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# =============================================================================
+# POSTGIS (database applicativo)
+# =============================================================================
+postgis:
+  # Se true: viene installato il StatefulSet PostGIS interno.
+  # L'host viene automaticamente sovrascitto con il Service interno.
+  enabled: true
+  # Se true: enabled deve essere false. I pod Django/Celery si connettono
+  # a un database esterno usando le credenziali dal Secret utente.
+  external: false
+
+  # Nome del Secret creato dall'utente con le credenziali PostgreSQL/PostGIS.
+  # Il Secret deve contenere le chiavi (formato semplice per leggibilità):
+  #   host: hostname o FQDN del server PostgreSQL
+  #   port: porta PostgreSQL (default: "5432")
+  #   user: username per autenticazione
+  #   password: password per autenticazione
+  #   database: nome del database
+  # NOTA: Se enabled=true, l'host viene automaticamente sovrascritto
+  # con il Service interno (ignorando il valore nel Secret).
+  credentialsSecret: "eddai-postgis-secret"
+
+  image:
+    repository: postgis/postgis
+    tag: "16-3.4"
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 5432
+
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: ""
+    accessMode: ReadWriteOnce
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# =============================================================================
+# VARIABILI APPLICATIVE CONDIVISE (django + tutti i celery)
+# =============================================================================
+app:
+  # --- Variabili NON sensibili (finiscono in una ConfigMap) ---
+  env:
+    DJANGO_SETTINGS_MODULE: "eddai_EliteDangerousApiInterface.settings.prod"
+    DJANGO_EMAIL_HOST: "smtp.example.com"
+    DJANGO_EMAIL_HOST_USER: "notifications@example.com"
+    DJANGO_DEFAULT_FROM_EMAIL: "notifications@example.com"
+    DJANGO_EMAIL_PORT: "587"
+    EDDN_USER_NAME_AGENT: "eddai-agent"
+    LOKI_HOST: "loki.logging.svc.cluster.local"
+    LOKI_PORT: "3100"
+
+  # --- Variabili SENSIBILI (fornite tramite Secret creato dall'utente) ---
+  # Nome del Secret creato dall'utente con le credenziali applicative.
+  # Il Secret deve contenere le chiavi:
+  #   DJANGO_SECRET_KEY: chiave segreta Django (obbligatoria)
+  #   DJANGO_EMAIL_HOST_PASSWORD: password SMTP (opzionale)
+  #   EDDN_USER_PASSWORD_AGENT: password agente EDDN (opzionale)
+  credentialsSecret: "eddai-app-secret"
+
+# =============================================================================
+# DJANGO (server ASGI via daphne)
+# =============================================================================
+django:
+  replicas: 1
+  command:
+    - python
+    - -m
+    - daphne
+    - eddai_EliteDangerousApiInterface.asgi:application
+    - -p
+    - "8080"
+    - -b
+    - "0.0.0.0"
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  # Volume per media di Django.
+  # Con 1 replica e' sufficiente ReadWriteOnce (compatibile con rancher.io/local-path).
+  persistence:
+    enabled: true
+    mountPath: /app/media-server
+    size: 5Gi
+    accessMode: ReadWriteOnce
+    storageClass: ""
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# =============================================================================
+# CELERY WORKERS & BEAT
+# Struttura consolidata: tutti i worker e beat sono definiti in una mappa.
+# Ogni worker puo' essere abilitato/disabilitato indipendentemente.
+# =============================================================================
+celery:
+  workers:
+    # Worker per la coda "default"
+    task:
+      enabled: true
+      type: worker
+      replicas: 3
+      command:
+        - celery
+        - -A
+        - eddai_EliteDangerousApiInterface
+        - worker
+        - -l
+        - info
+        - -P
+        - gevent
+        - --autoscale
+        - "100,5"
+        - -Q
+        - default
+        - -n
+        - "WorkerTask@%h"
+      resources:
+        requests: {cpu: 100m, memory: 256Mi}
+        limits: {cpu: 500m, memory: 512Mi}
+      podAnnotations: {}
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+
+    # Worker per la coda "admin"
+    admin:
+      enabled: true
+      type: worker
+      replicas: 3
+      command:
+        - celery
+        - -A
+        - eddai_EliteDangerousApiInterface
+        - worker
+        - -l
+        - info
+        - -P
+        - gevent
+        - --autoscale
+        - "100,5"
+        - -Q
+        - admin
+        - -n
+        - "WorkerAdmin@%h"
+      resources:
+        requests: {cpu: 100m, memory: 256Mi}
+        limits: {cpu: 500m, memory: 512Mi}
+      podAnnotations: {}
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+
+    # Worker per la coda "ed_dbsync"
+    ed-dbsync:
+      enabled: true
+      type: worker
+      replicas: 3
+      command:
+        - celery
+        - -A
+        - eddai_EliteDangerousApiInterface
+        - worker
+        - -l
+        - info
+        - -P
+        - gevent
+        - --autoscale
+        - "100,5"
+        - -Q
+        - ed_dbsync
+        - -n
+        - "WorkerDBSync@%h"
+      resources:
+        requests: {cpu: 100m, memory: 256Mi}
+        limits: {cpu: 500m, memory: 512Mi}
+      podAnnotations: {}
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+
+    # Worker multi-coda: gestisce tutte le code
+    all:
+      enabled: true
+      type: worker
+      replicas: 3
+      command:
+        - celery
+        - -A
+        - eddai_EliteDangerousApiInterface
+        - worker
+        - -l
+        - info
+        - -P
+        - gevent
+        - --autoscale
+        - "100,5"
+        - -Q
+        - "admin,ed_dbsync,default"
+        - -n
+        - "WorkerAll@%h"
+      resources:
+        requests: {cpu: 100m, memory: 256Mi}
+        limits: {cpu: 500m, memory: 512Mi}
+      podAnnotations: {}
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+
+    # Celery Beat: scheduler (una sola istanza per definizione)
+    beat:
+      enabled: true
+      type: beat
+      replicas: 1
+      command:
+        - celery
+        - -A
+        - eddai_EliteDangerousApiInterface
+        - beat
+        - -l
+        - info
+        - --scheduler
+        - django_celery_beat.schedulers:DatabaseScheduler
+      resources:
+        requests: {cpu: 50m, memory: 128Mi}
+        limits: {cpu: 250m, memory: 256Mi}
+      podAnnotations: {}
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+
+# =============================================================================
+# EDDN - Elite Dangerous Data Network listener
+# Servizio long-running che recupera dati da ZMQ e li passa ai worker Celery.
+# Dipende da RabbitMQ per essere operativo.
+# =============================================================================
+eddn:
+  enabled: true
+  replicas: 1
+  command:
+    - python
+    - eddn.py
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

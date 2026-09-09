@@ -1,0 +1,50 @@
+{{- if or .Values.rabbitmq.external .Values.redis.external .Values.postgis.external }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "eddai.fullname" . }}-validate-hook
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+automountServiceAccountToken: true
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "eddai.fullname" . }}-validate-hook
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "eddai.fullname" . }}-validate-hook
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-6"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "eddai.fullname" . }}-validate-hook
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "eddai.fullname" . }}-validate-hook
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

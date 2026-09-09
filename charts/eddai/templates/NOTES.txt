@@ -1,0 +1,33 @@
+EDDAI e' stato distribuito nel namespace {{ .Release.Namespace }} (release "{{ .Release.Name }}").
+
+Componenti attivi:
+  - RabbitMQ : {{ if eq (include "eddai.rabbitmq.deployInternal" .) "true" }}interno (deployato dal chart){{ else if .Values.rabbitmq.external }}esterno (secret: {{ .Values.rabbitmq.externalSecretName }}){{ else }}DISABILITATO{{ end }}
+  - Redis    : {{ if eq (include "eddai.redis.deployInternal" .) "true" }}interno (deployato dal chart){{ else if .Values.redis.external }}esterno (secret: {{ .Values.redis.externalSecretName }}){{ else }}DISABILITATO{{ end }}
+  - PostGIS  : {{ if eq (include "eddai.postgis.deployInternal" .) "true" }}interno (deployato dal chart){{ else if .Values.postgis.external }}esterno (secret: {{ .Values.postgis.externalSecretName }}){{ else }}DISABILITATO{{ end }}
+
+Django ({{ .Values.django.replicas }} repliche):
+{{- if .Values.ingress.enabled }}
+  http(s)://{{ .Values.ingress.host }}{{ .Values.ingress.path }}
+{{- else }}
+  Nessun Ingress abilitato. Accedi via port-forward:
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "eddai.fullname" . }}-django {{ .Values.django.service.port }}:{{ .Values.django.service.port }}
+{{- end }}
+
+Worker Celery attivi:
+  - task     : {{ if .Values.celery.workers.task.enabled }}{{ .Values.celery.workers.task.replicas }} repliche{{ else }}disabilitato{{ end }}
+  - admin    : {{ if .Values.celery.workers.admin.enabled }}{{ .Values.celery.workers.admin.replicas }} repliche{{ else }}disabilitato{{ end }}
+  - ed_dbsync: {{ if index .Values.celery.workers "ed-dbsync" "enabled" }}{{ index .Values.celery.workers "ed-dbsync" "replicas" }} repliche{{ else }}disabilitato{{ end }}
+  - all      : {{ if .Values.celery.workers.all.enabled }}{{ .Values.celery.workers.all.replicas }} repliche{{ else }}disabilitato{{ end }}
+  - beat     : {{ if .Values.celery.workers.beat.enabled }}{{ .Values.celery.workers.beat.replicas }} replica{{ else }}disabilitato{{ end }}
+
+EDDN Listener:
+  - Stato: {{ if .Values.eddn.enabled }}attivo ({{ .Values.eddn.replicas }} replica){{ else }}disabilitato{{ end }}
+  - Funzione: recupera dati da ZMQ e li passa ai worker Celery
+
+Per recuperare le password generate automaticamente:
+{{- if eq (include "eddai.rabbitmq.deployInternal" .) "true" }}
+  kubectl -n {{ .Release.Namespace }} get secret {{ include "eddai.rabbitmq.secretName" . }} -o jsonpath='{.data.CELERY_BROKER_PASSWORD}' | base64 -d; echo
+{{- end }}
+{{- if eq (include "eddai.postgis.deployInternal" .) "true" }}
+  kubectl -n {{ .Release.Namespace }} get secret {{ include "eddai.postgis.secretName" . }} -o jsonpath='{.data.POSTGIS_PASSWORD}' | base64 -d; echo
+{{- end }}

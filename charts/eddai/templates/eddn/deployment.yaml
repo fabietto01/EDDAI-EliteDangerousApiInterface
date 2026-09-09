@@ -1,0 +1,106 @@
+{{- if .Values.eddn.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eddai.fullname" . }}-eddn
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "eddn") | nindent 4 }}
+spec:
+  replicas: {{ .Values.eddn.replicas }}
+  strategy:
+    type: Recreate  # Solo 1 replica attiva alla volta
+  selector:
+    matchLabels:
+      {{- include "eddai.selectorLabels" (dict "ctx" . "component" "eddn") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eddai.componentLabels" (dict "ctx" . "component" "eddn") | nindent 8 }}
+      {{- with .Values.eddn.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "eddai.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.eddn.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.eddn.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.eddn.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if eq (include "eddai.rabbitmq.active" .) "true" }}
+      # InitContainer: attende che RabbitMQ sia raggiungibile prima di avviare EDDN
+      initContainers:
+        - name: wait-for-rabbitmq
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          command:
+            - python
+            - -c
+            - |
+              import socket
+              import time
+              import sys
+              
+              host = "{{ include "eddai.fullname" . }}-rabbitmq"
+              port = 5672
+              max_retries = 60
+              retry_delay = 5
+              
+              print(f"Waiting for RabbitMQ at {host}:{port}...")
+              
+              for attempt in range(max_retries):
+                  try:
+                      sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                      sock.settimeout(5)
+                      result = sock.connect_ex((host, port))
+                      sock.close()
+                      
+                      if result == 0:
+                          print(f"RabbitMQ is ready at {host}:{port}!")
+                          sys.exit(0)
+                      else:
+                          print(f"Attempt {attempt + 1}/{max_retries}: RabbitMQ not ready yet. Retrying in {retry_delay}s...")
+                          time.sleep(retry_delay)
+                  except Exception as e:
+                      print(f"Attempt {attempt + 1}/{max_retries}: Error checking RabbitMQ: {e}. Retrying in {retry_delay}s...")
+                      time.sleep(retry_delay)
+              
+              print(f"ERROR: RabbitMQ not reachable after {max_retries * retry_delay} seconds!")
+              sys.exit(1)
+          env:
+            {{- include "eddai.app.env" . | nindent 12 }}
+      {{- end }}
+      containers:
+        - name: eddn
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          command:
+            {{- toYaml .Values.eddn.command | nindent 12 }}
+          envFrom:
+            {{- include "eddai.app.envFrom" . | nindent 12 }}
+          env:
+            {{- include "eddai.app.env" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.eddn.resources | nindent 12 }}
+          # NOTA: Health checks non implementati - il processo non espone endpoint HTTP
+          # livenessProbe e readinessProbe saranno aggiunti in futuro quando disponibili
+{{- end }}

@@ -1,0 +1,20 @@
+{{- if eq (include "eddai.rabbitmq.deployInternal" .) "true" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eddai.fullname" . }}-rabbitmq
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "rabbitmq") | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    {{- include "eddai.selectorLabels" (dict "ctx" . "component" "rabbitmq") | nindent 4 }}
+  ports:
+    - name: amqp
+      port: {{ .Values.rabbitmq.service.amqpPort }}
+      targetPort: amqp
+    - name: management
+      port: {{ .Values.rabbitmq.service.managementPort }}
+      targetPort: management
+{{- end }}

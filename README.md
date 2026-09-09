@@ -199,6 +199,50 @@ This will start the Django development server, and you can access the applicatio
 
 Using Visual Studio Code's debugging feature is recommended as it provides a more integrated development experience.
 
+## 🚀 Kubernetes / Helm Deployment
+
+EDDAI can be deployed on Kubernetes using Helm. The chart includes all necessary components: Django, Celery workers, EDDN listener, RabbitMQ, Redis, and PostGIS.
+
+### Prerequisites
+
+- Kubernetes cluster (v1.24+)
+- Helm 3.14+
+- 4 Kubernetes Secrets with credentials (PostGIS, RabbitMQ, Redis, Django)
+
+### Quick Install
+
+```bash
+# Add the Helm repository
+helm repo add eddai https://fabietto01.github.io/EDDAI-EliteDangerousApiInterface/
+helm repo update
+
+# Create namespace and secrets
+kubectl create namespace eddai
+kubectl create secret generic eddai-postgis-secret -n eddai \
+  --from-literal=user=postgres \
+  --from-literal=password=<your-password> \
+  --from-literal=database=eddai \
+  --from-literal=port=5432
+# Create remaining secrets (rabbitmq, redis, app) as described in charts/eddai/README.md
+
+# Install the chart
+helm install eddai eddai/eddai -n eddai
+```
+
+### Documentation
+
+For complete Helm documentation, chart values, and advanced configuration, see:
+- [charts/eddai/README.md](charts/eddai/README.md) — Complete Helm chart guide
+- [GitHub Pages Helm Index](https://fabietto01.github.io/EDDAI-EliteDangerousApiInterface/) — Available chart versions
+
+### CI/CD
+
+The Helm chart is automatically released when a GitHub Release is published. Chart versions are synced with application releases and published to GitHub Pages.
+
+Workflows:
+- `.github/workflows/helm-lint-test.yml` — Validates chart syntax and templates on each PR
+- `.github/workflows/release-helm-chart.yml` — Packages and publishes chart on GitHub release
+
 ## Disclaimer
 
 EDDAI is not managed or affiliated with the game developer - Frontier Developments.

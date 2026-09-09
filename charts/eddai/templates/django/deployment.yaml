@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eddai.fullname" . }}-django
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "django") | nindent 4 }}
+spec:
+  replicas: {{ .Values.django.replicas }}
+  selector:
+    matchLabels:
+      {{- include "eddai.selectorLabels" (dict "ctx" . "component" "django") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eddai.componentLabels" (dict "ctx" . "component" "django") | nindent 8 }}
+      {{- with .Values.django.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "eddai.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.django.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.django.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.django.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: django
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          command:
+            {{- toYaml .Values.django.command | nindent 12 }}
+          envFrom:
+            {{- include "eddai.app.envFrom" . | nindent 12 }}
+          env:
+            {{- include "eddai.app.env" . | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+          {{- if .Values.django.persistence.enabled }}
+          volumeMounts:
+            - name: media
+              mountPath: {{ .Values.django.persistence.mountPath }}
+          {{- end }}
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.django.resources | nindent 12 }}
+      {{- if .Values.django.persistence.enabled }}
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: {{ include "eddai.fullname" . }}-django-media
+      {{- end }}

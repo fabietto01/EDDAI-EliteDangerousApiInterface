@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eddai.fullname" . }}-django
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "django") | nindent 4 }}
+spec:
+  type: {{ .Values.django.service.type }}
+  selector:
+    {{- include "eddai.selectorLabels" (dict "ctx" . "component" "django") | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.django.service.port }}
+      targetPort: http

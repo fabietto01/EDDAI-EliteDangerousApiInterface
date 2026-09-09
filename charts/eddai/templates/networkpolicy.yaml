@@ -1,0 +1,73 @@
+{{- if .Values.networkPolicy.enabled }}
+{{- if eq (include "eddai.rabbitmq.deployInternal" .) "true" }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "eddai.fullname" . }}-rabbitmq-restrict
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "rabbitmq") | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "eddai.selectorLabels" (dict "ctx" . "component" "rabbitmq") | nindent 6 }}
+  policyTypes: ["Ingress"]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: {{ .Release.Name }}
+      ports:
+        - protocol: TCP
+          port: 5672
+        - protocol: TCP
+          port: 15672
+{{- end }}
+{{- if eq (include "eddai.redis.deployInternal" .) "true" }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "eddai.fullname" . }}-redis-restrict
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "redis") | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "eddai.selectorLabels" (dict "ctx" . "component" "redis") | nindent 6 }}
+  policyTypes: ["Ingress"]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: {{ .Release.Name }}
+      ports:
+        - protocol: TCP
+          port: 6379
+{{- end }}
+{{- if eq (include "eddai.postgis.deployInternal" .) "true" }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "eddai.fullname" . }}-postgis-restrict
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "postgis") | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "eddai.selectorLabels" (dict "ctx" . "component" "postgis") | nindent 6 }}
+  policyTypes: ["Ingress"]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: {{ .Release.Name }}
+      ports:
+        - protocol: TCP
+          port: 5432
+{{- end }}
+{{- end }}

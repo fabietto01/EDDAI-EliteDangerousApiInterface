@@ -1,0 +1,191 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "eddai.fullname" . }}-db-init
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.labels" . | nindent 4 }}
+    app.kubernetes.io/component: db-init
+  annotations:
+    # Esegue DOPO install/upgrade, quando il database PostGIS è già attivo
+    helm.sh/hook: post-install,post-upgrade
+    # Peso: esegue dopo che tutti i servizi sono stati creati
+    helm.sh/hook-weight: "5"
+    # Cancella il job precedente prima di crearne uno nuovo
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  # Non ritentare automaticamente - il Job deve completarsi con successo
+  backoffLimit: 3
+  # TTL: cancella il Job dopo 600 secondi dal completamento (per cleanup)
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      name: {{ include "eddai.fullname" . }}-db-init
+      labels:
+        {{- include "eddai.componentLabels" (dict "ctx" . "component" "db-init") | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "eddai.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      
+      # Init container: aspetta che il database sia pronto e crea ed_info
+      initContainers:
+        - name: wait-for-db
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          command:
+            - python
+            - -c
+            - |
+              import psycopg2
+              import time
+              import os
+              
+              print("Waiting for PostgreSQL to be ready...")
+              max_attempts = 30
+              for attempt in range(max_attempts):
+                  try:
+                      conn = psycopg2.connect(
+                          host=os.environ['POSTGIS_HOST'],
+                          port=os.environ['POSTGIS_PORT'],
+                          user=os.environ['POSTGIS_USER'],
+                          password=os.environ['POSTGIS_PASSWORD'],
+                          dbname='postgres',
+                          connect_timeout=3
+                      )
+                      print("✓ PostgreSQL is up and ready!")
+                      
+                      # Crea database ed_info se non esiste
+                      conn.autocommit = True
+                      cur = conn.cursor()
+                      cur.execute("SELECT 1 FROM pg_database WHERE datname = 'ed_info'")
+                      if not cur.fetchone():
+                          print("Creating database 'ed_info'...")
+                          cur.execute(f"CREATE DATABASE ed_info OWNER {os.environ['POSTGIS_USER']}")
+                          print("✓ Database 'ed_info' created")
+                      else:
+                          print("✓ Database 'ed_info' already exists")
+                      cur.close()
+                      conn.close()
+                      
+                      # Connetti a ed_info e crea l'estensione PostGIS
+                      conn = psycopg2.connect(
+                          host=os.environ['POSTGIS_HOST'],
+                          port=os.environ['POSTGIS_PORT'],
+                          user=os.environ['POSTGIS_USER'],
+                          password=os.environ['POSTGIS_PASSWORD'],
+                          dbname='ed_info'
+                      )
+                      conn.autocommit = True
+                      cur = conn.cursor()
+                      cur.execute("CREATE EXTENSION IF NOT EXISTS postgis")
+                      print("✓ PostGIS extension enabled")
+                      cur.close()
+                      conn.close()
+                      break
+                  except Exception as e:
+                      if attempt < max_attempts - 1:
+                          print(f"PostgreSQL is unavailable - sleeping (attempt {attempt+1}/{max_attempts})")
+                          time.sleep(2)
+                      else:
+                          print(f"✗ Failed to connect after {max_attempts} attempts: {e}")
+                          exit(1)
+          env:
+            {{- include "eddai.postgis.env" . | nindent 12 }}
+      
+      containers:
+        - name: db-init
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -e
+              echo "================================================================"
+              echo "EDDAI Database Initialization Job"
+              echo "================================================================"
+              echo ""
+              
+              # Verifica connessione al database
+              echo "Step 1: Verifying database connection..."
+              python -c "
+              import psycopg2
+              import os
+              try:
+                  conn = psycopg2.connect(
+                      host=os.environ['POSTGIS_HOST'],
+                      port=os.environ['POSTGIS_PORT'],
+                      user=os.environ['POSTGIS_USER'],
+                      password=os.environ['POSTGIS_PASSWORD'],
+                      dbname=os.environ['POSTGIS_DATABASE']
+                  )
+                  conn.close()
+                  print('✓ Database connection successful')
+              except Exception as e:
+                  print(f'✗ Database connection failed: {e}')
+                  exit(1)
+              "
+              echo ""
+              
+              # Esegui le migrazioni
+              echo "Step 2: Running Django migrations..."
+              python manage.py migrate --noinput
+              if [ $? -ne 0 ]; then
+                echo "✗ ERROR: Migrations failed"
+                exit 1
+              fi
+              echo "✓ Migrations completed successfully"
+              echo ""
+              
+              # Carica i fixture data
+              echo "Step 3: Loading fixture data..."
+              python manage.py loaddata user economy system body bgs exploration material mining station
+              if [ $? -ne 0 ]; then
+                echo "⚠ WARNING: Fixture loading failed (data may already exist)"
+                echo "  This is not a critical error - continuing..."
+              else
+                echo "✓ Fixture data loaded successfully (768 objects)"
+              fi
+              echo ""
+              
+              # Verifica che il superuser esista, altrimenti crealo
+              echo "Step 4: Ensuring superuser exists..."
+              python manage.py shell -c "
+              from django.contrib.auth import get_user_model
+              User = get_user_model()
+              if not User.objects.filter(username='admin').exists():
+                  User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
+                  print('✓ Superuser created: admin / admin123')
+              else:
+                  print('✓ Superuser already exists')
+              "
+              echo ""
+              
+              echo "================================================================"
+              echo "Database initialization completed successfully!"
+              echo "================================================================"
+          envFrom:
+            {{- include "eddai.app.envFrom" . | nindent 12 }}
+          env:
+            {{- include "eddai.app.env" . | nindent 12 }}
+            # Override database name to ed_info (Django's expected database)
+            - name: POSTGIS_DATABASE
+              value: "ed_info"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
