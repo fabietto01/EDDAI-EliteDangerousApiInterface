@@ -1,10 +1,13 @@
 # ============================================
 # STAGE 1: Builder - Install all dependencies
 # ============================================
-FROM continuumio/miniconda3:25.3.1-1 AS builder
+FROM anaconda/miniconda:26.7.1 AS builder
 
 # Configure PROJ_LIB environment variable for GDAL
-ENV PROJ_LIB=/opt/conda/share/proj
+ENV CONDA_HOME=/opt/miniconda3 \
+    PATH=/opt/miniconda3/bin:$PATH \
+    CONDA_PLUGINS_AUTO_ACCEPT_TOS=true \
+    PROJ_LIB=/opt/miniconda3/share/proj
 
 # Set working directory for build
 WORKDIR /tmp/build
@@ -12,34 +15,36 @@ WORKDIR /tmp/build
 # Copy and install conda environment
 COPY ./environment.yml .
 RUN umask 0002 && \
-    /opt/conda/bin/conda env update -n base -f environment.yml && \
+    /opt/miniconda3/bin/conda env update -n base -f environment.yml && \
     # Install PROJ data if needed
-    if [ ! -d "/opt/conda/share/proj" ]; then \
-        conda install -y -c conda-forge proj-data; \
+    if [ ! -d "/opt/miniconda3/share/proj" ]; then \
+        /opt/miniconda3/bin/conda install -y -c conda-forge proj-data; \
     fi && \
     # Clean conda cache and unnecessary files
-    conda clean -afy && \
+    /opt/miniconda3/bin/conda clean -afy && \
     # Remove static libraries (not needed at runtime)
-    find /opt/conda -follow -type f -name '*.a' -delete && \
+    find /opt/miniconda3 -follow -type f -name '*.a' -delete && \
     # Remove Python cache
-    find /opt/conda -follow -type f -name '*.pyc' -delete && \
-    find /opt/conda -follow -type f -name '*.pyo' -delete && \
+    find /opt/miniconda3 -follow -type f -name '*.pyc' -delete && \
+    find /opt/miniconda3 -follow -type f -name '*.pyo' -delete && \
     # Remove JavaScript source maps
-    find /opt/conda -follow -type f -name '*.js.map' -delete && \
+    find /opt/miniconda3 -follow -type f -name '*.js.map' -delete && \
     # Remove conda package cache
-    rm -rf /opt/conda/pkgs
+    rm -rf /opt/miniconda3/pkgs
 
 # ============================================
 # STAGE 2: Runtime - Final lightweight image
 # ============================================
-FROM continuumio/miniconda3:25.3.1-1
+FROM anaconda/miniconda:26.7.1
 
 # Set environment variables
 ENV APP_HOME=/app
-ENV PROJ_LIB=/opt/conda/share/proj
+ENV CONDA_HOME=/opt/miniconda3 \
+    PATH=/opt/miniconda3/bin:$PATH \
+    PROJ_LIB=/opt/miniconda3/share/proj
 
 # Copy ONLY the compiled conda environment from builder (without cache/temp files)
-COPY --from=builder /opt/conda /opt/conda
+COPY --from=builder /opt/miniconda3 /opt/miniconda3
 
 # Create app directory and set working directory
 RUN mkdir $APP_HOME
@@ -49,12 +54,12 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 # Create system user, set permissions, and cleanup in a single layer
-RUN addgroup --system app && \
-    adduser --system --group app && \
+RUN groupadd --system app && \
+    useradd --system --gid app --no-create-home app && \
     chown -R app:app $APP_HOME && \
     chmod +x $APP_HOME/entrypoint.sh && \
-    mkdir -p /opt/conda/share/proj && \
-    chmod -R 755 /opt/conda/share/proj && \
+    mkdir -p /opt/miniconda3/share/proj && \
+    chmod -R 755 /opt/miniconda3/share/proj && \
     # Remove any Python cache that might have been copied
     find $APP_HOME -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true && \
     find $APP_HOME -type f -name "*.pyc" -delete 2>/dev/null || true

@@ -161,8 +161,8 @@ CACHEOPS_ENABLED = True
 
 # setting per la gestione della geolocalizzazione
 # https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
-GDAL_LIBRARY_PATH = r'/opt/conda/lib/libgdal.so'
-GEOS_LIBRARY_PATH = r'/opt/conda/lib/libgeos_c.so'
+GDAL_LIBRARY_PATH = r'/opt/miniconda3/lib/libgdal.so'
+GEOS_LIBRARY_PATH = r'/opt/miniconda3/lib/libgeos_c.so'
 
 # Router per il database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database-routers
