@@ -13,6 +13,24 @@ Django ({{ .Values.django.replicas }} repliche):
   kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "eddai.fullname" . }}-django {{ .Values.django.service.port }}:{{ .Values.django.service.port }}
 {{- end }}
 
+Frontend ({{ .Values.frontend.replicas }} repliche):
+{{- if .Values.frontend.enabled }}
+{{- if .Values.ingress.enabled }}
+  SPA Vue + Reverse Proxy Nginx:
+  http(s)://{{ .Values.ingress.host }}{{ .Values.ingress.path }}
+  
+  Healthz endpoint:
+  http(s)://{{ .Values.ingress.host }}{{ .Values.ingress.path }}healthz
+{{- else }}
+  Nessun Ingress abilitato. Accedi via port-forward:
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "eddai.fullname" . }}-frontend {{ .Values.frontend.service.port }}:{{ .Values.frontend.service.port }}
+  
+  Quindi visita: http://localhost:{{ .Values.frontend.service.port }}
+{{- end }}
+{{- else }}
+  DISABILITATO
+{{- end }}
+
 Worker Celery attivi:
   - task     : {{ if .Values.celery.workers.task.enabled }}{{ .Values.celery.workers.task.replicas }} repliche{{ else }}disabilitato{{ end }}
   - admin    : {{ if .Values.celery.workers.admin.enabled }}{{ .Values.celery.workers.admin.replicas }} repliche{{ else }}disabilitato{{ end }}

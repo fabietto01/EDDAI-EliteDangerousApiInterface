@@ -31,7 +31,6 @@ x-common-config: &default-config
     - eddai
 
 volumes:
-  static_volume:
   media_volume:
 
 networks:
@@ -45,8 +44,13 @@ services:
     container_name: django
     command: python -m daphne eddai_EliteDangerousApiInterface.asgi:application -p 8080 -b 0.0.0.0
     volumes:
-      - ./eddai_EliteDangerousApiInterface/static-server:/app/static-server
       - media_volume:/app/media-server
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthz/').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     depends_on:
       - celery_worker_task
       - celery_worker_admin
@@ -80,14 +84,35 @@ services:
     command: python eddn.py
     depends_on:
       - celery_worker_ed_dbsync
-  nginx:
-    build: ./nginx
-    container_name: nginx
+  frontend:
+    pull_policy: always
+    image: ${FRONTEND_IMAGE:-ghcr.io/fabietto01/eddai-elitedangerousapiinterface-frontend:latest}
+    container_name: frontend
+    restart: always
+    environment:
+      - DJANGO_UPSTREAM_HOST=django
+      - DJANGO_UPSTREAM_PORT=8080
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:mode=1777
+      - /var/cache/nginx:mode=1777
+      # Generato a runtime da envsubst (DJANGO_UPSTREAM_HOST/PORT): richiede scrittura anche a fs read-only.
+      - /etc/nginx/conf.d:mode=1777
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "--spider", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     depends_on:
-      - django
+      django:
+        condition: service_healthy
     volumes:
-      - ./eddai_EliteDangerousApiInterface/static-server:/app/static-server
-      - media_volume:/app/media-server
+      - media_volume:/usr/share/nginx/media:ro
     networks:
       - eddai
       - proxy_net
@@ -95,9 +120,9 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy_net"
       # Router per le richieste HTTP
-      - "traefik.http.routers.nginx.rule=Host(`eddai.italiangamingsystem.it`)"
-      - "traefik.http.routers.nginx.entrypoints=https"
-      - "traefik.http.routers.nginx.tls=true"
-      - "traefik.http.routers.nginx.tls.certresolver=claudflare"
-      - "traefik.http.routers.nginx.service=nginx"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend.rule=Host(`eddai.italiangamingsystem.it`)"
+      - "traefik.http.routers.frontend.entrypoints=https"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=claudflare"
+      - "traefik.http.routers.frontend.service=frontend"
+      - "traefik.http.services.frontend.loadbalancer.server.port=8080"

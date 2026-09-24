@@ -1,0 +1,104 @@
+{{- if .Values.frontend.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eddai.fullname" . }}-frontend
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "frontend") | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      {{- include "eddai.selectorLabels" (dict "ctx" . "component" "frontend") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eddai.componentLabels" (dict "ctx" . "component" "frontend") | nindent 8 }}
+      {{- with .Values.frontend.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "eddai.serviceAccountName" . }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.frontend.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.frontend.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          securityContext:
+            {{- toYaml .Values.frontend.securityContext | nindent 12 }}
+          env:
+            # Variabili d'ambiente per Nginx template
+            - name: DJANGO_UPSTREAM_HOST
+              value: {{ tpl .Values.frontend.djangoUpstream.host . | quote }}
+            - name: DJANGO_UPSTREAM_PORT
+              value: {{ .Values.frontend.djangoUpstream.port | quote }}
+          ports:
+            - name: http
+              containerPort: 8080
+          {{- if or .Values.frontend.tmpfsVolumes .Values.frontend.mediaVolume.enabled }}
+          volumeMounts:
+            {{- range .Values.frontend.tmpfsVolumes }}
+            - name: {{ .mountPath | replace "/" "-" | trimPrefix "-" }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
+            {{- if .Values.frontend.mediaVolume.enabled }}
+            - name: media
+              mountPath: {{ .Values.frontend.mediaVolume.mountPath }}
+              readOnly: true
+            {{- end }}
+          {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}
+      {{- if or .Values.frontend.tmpfsVolumes .Values.frontend.mediaVolume.enabled }}
+      volumes:
+        {{- range .Values.frontend.tmpfsVolumes }}
+        - name: {{ .mountPath | replace "/" "-" | trimPrefix "-" }}
+          emptyDir:
+            medium: Memory
+            {{- if .sizeLimit }}
+            sizeLimit: {{ .sizeLimit }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.frontend.mediaVolume.enabled }}
+        - name: media
+          persistentVolumeClaim:
+            claimName: {{ include "eddai.fullname" . }}-frontend-media
+        {{- end }}
+      {{- end }}
+{{- end }}

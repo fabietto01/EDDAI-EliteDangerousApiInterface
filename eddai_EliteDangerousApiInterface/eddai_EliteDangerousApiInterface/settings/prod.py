@@ -5,6 +5,18 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+# Traefik/Nginx sono davanti a Django: fidarsi dell'header X-Forwarded-Proto/Host.
+# https://docs.djangoproject.com/en/5.1/ref/settings/#secure-proxy-ssl-header
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
+# Cookie di sessione e CSRF: same-origin su HTTPS, mai in localStorage lato client.
+# https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-cookie-secure
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 # Un elenco di tutte le persone che ricevono notifiche di errore del codice. 
 # https://docs.djangoproject.com/en/4.1/ref/settings/#admins
 ADMINS = [("Fabio Zorzetto", "fabio.zorzetto.01@gmail.com")]

@@ -30,3 +30,7 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
+
+# Nessun fallback HTML: il frontend Vue e' servito da un'immagine Nginx separata.
+handler404 = 'ed_core.views.api_404_view'
+

@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Gli script di shell devono avere sempre EOL LF: entrypoint eseguiti in container Linux
+# falliscono con "no such file or directory" se contengono CRLF (checkout su Windows).
+*.sh text eol=lf
+

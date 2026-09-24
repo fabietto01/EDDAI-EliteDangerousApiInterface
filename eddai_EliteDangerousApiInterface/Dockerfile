@@ -53,10 +53,18 @@ WORKDIR $APP_HOME
 # Copy application code (respects .dockerignore)
 COPY . $APP_HOME
 
+# Raccoglie gli asset statici (admin, DRF, Swagger, ReDoc) nell'immagine: nessuna
+# connessione al DB e' richiesta da collectstatic, i valori sotto sono solo placeholder di build.
+RUN DJANGO_SECRET_KEY=build-time-placeholder-not-a-secret \
+    DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.prod \
+    python manage.py collectstatic --noinput
+
 # Create system user, set permissions, and cleanup in a single layer
 RUN groupadd --system app && \
     useradd --system --gid app --no-create-home app && \
     chown -R app:app $APP_HOME && \
+    # Normalizza gli EOL: un entrypoint con CRLF (checkout Windows) fallisce con "no such file or directory"
+    sed -i 's/\r$//' $APP_HOME/entrypoint.sh && \
     chmod +x $APP_HOME/entrypoint.sh && \
     mkdir -p /opt/miniconda3/share/proj && \
     chmod -R 755 /opt/miniconda3/share/proj && \

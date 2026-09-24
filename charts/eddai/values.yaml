@@ -463,3 +463,69 @@ eddn:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+# =============================================================================
+# FRONTEND - Vue SPA + Nginx reverse proxy
+# Servizio web che serve la SPA Vue, gli asset statici (Django admin, DRF),
+# e proxya le richieste API verso Django.
+# Dipende da Django per proxy funzionante.
+# =============================================================================
+frontend:
+  enabled: true
+  replicas: 1
+
+  # Immagine frontend: NOTA - repository separata dalla backend!
+  image:
+    repository: ghcr.io/fabietto01/eddai-elitedangerousapiinterface-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  # Proxy verso Django: risolve il DNS del Service Django interno
+  djangoUpstream:
+    host: "{{ include \"eddai.fullname\" . }}-django"
+    port: "8080"
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  # Security constraints per container (read-only filesystem, cap_drop, no-new-privileges)
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop: ["ALL"]
+
+  # tmpfs per Nginx: log, cache, e templating config via envsubst
+  tmpfsVolumes:
+    - mountPath: /tmp
+      sizeLimit: 128Mi
+    - mountPath: /var/cache/nginx
+      sizeLimit: 256Mi
+    - mountPath: /var/run/nginx
+      sizeLimit: 64Mi
+    - mountPath: /var/log/nginx
+      sizeLimit: 128Mi
+    - mountPath: /etc/nginx/conf.d
+      sizeLimit: 64Mi
+
+  # Volume per media (read-only, da montare come PVC se necessario)
+  mediaVolume:
+    enabled: false
+    # mountPath: /usr/share/nginx/media
+    # size: 5Gi
+    # accessMode: ReadWriteOnce
+    # storageClass: ""
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi
+
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}

@@ -3,13 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/generate-version.mjs",
     "preview": "vite preview",
-    "test:unit": "vitest"
+    "test:unit": "vitest run"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.5",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },

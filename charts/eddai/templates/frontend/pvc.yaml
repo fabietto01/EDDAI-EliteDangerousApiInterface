@@ -1,0 +1,16 @@
+{{- if and .Values.frontend.enabled .Values.frontend.mediaVolume.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "eddai.fullname" . }}-frontend-media
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "eddai.componentLabels" (dict "ctx" . "component" "frontend") | nindent 4 }}
+spec:
+  accessModes:
+    - {{ .Values.frontend.mediaVolume.accessMode }}
+  storageClassName: {{ .Values.frontend.mediaVolume.storageClass | default .Values.global.storageClass | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.frontend.mediaVolume.size }}
+{{- end }}

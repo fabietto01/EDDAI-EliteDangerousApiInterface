@@ -78,6 +78,11 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+# Django collectstatic output: rigenerato in fase di build immagine (collectstatic),
+# non deve essere versionato.
+/eddai_EliteDangerousApiInterface/static-server/
+/eddai_EliteDangerousApiInterface/media-server/
+
 # IPython
 profile_default/
 ipython_config.py
