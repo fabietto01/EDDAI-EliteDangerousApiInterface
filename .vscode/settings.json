@@ -5,5 +5,7 @@
     "python.testing.unittestArgs": [
         "--settings=eddai_EliteDangerousApiInterface.settings.test",
         "--noinput"
-    ]
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
 }

@@ -17,24 +17,4 @@
 			]
 		}
 	}
-	// "forwardPorts": [8000, 5432, 6379, 15672],
-	// "portsAttributes": {
-	// 	"8000": {
-	// 		"label": "Django Dev Server",
-	// 		"onAutoForward": "notify"
-	// 	},
-	// 	"5432": {
-	// 		"label": "PostgreSQL"
-	// 	},
-	// 	"6379": {
-	// 		"label": "Redis Cache"
-	// 	},
-	// 	"15672": {
-	// 		"label": "RabbitMQ Management"
-	// 	}
-	// },
-
-	// "postCreateCommand": "bash .devcontainer/setup.sh",
-
-	// "remoteUser": "root"
 }
