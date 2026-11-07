@@ -7,7 +7,7 @@ FROM anaconda/miniconda:26.7.1 AS builder
 ENV CONDA_HOME=/opt/miniconda3 \
     PATH=/opt/miniconda3/bin:$PATH \
     CONDA_PLUGINS_AUTO_ACCEPT_TOS=true \
-    PROJ_LIB=/opt/miniconda3/share/proj
+    PROJ_LIB=/opt/eddai/share/proj
 
 # Set working directory for build
 WORKDIR /tmp/build
@@ -15,39 +15,42 @@ WORKDIR /tmp/build
 # Copy and install conda environment
 COPY ./environment.yml .
 RUN umask 0002 && \
-    /opt/miniconda3/bin/conda env update -n base -f environment.yml && \
+    /opt/miniconda3/bin/conda env create --prefix /opt/eddai -f environment.yml && \
     # Install PROJ data if needed
-    if [ ! -d "/opt/miniconda3/share/proj" ]; then \
-        /opt/miniconda3/bin/conda install -y -c conda-forge proj-data; \
+    if [ ! -d "/opt/eddai/share/proj" ]; then \
+        /opt/miniconda3/bin/conda install --prefix /opt/eddai -y -c conda-forge proj-data; \
     fi && \
     # Clean conda cache and unnecessary files
     /opt/miniconda3/bin/conda clean -afy && \
     # Remove static libraries (not needed at runtime)
-    find /opt/miniconda3 -follow -type f -name '*.a' -delete && \
+    find /opt/eddai -follow -type f -name '*.a' -delete && \
     # Remove Python cache
-    find /opt/miniconda3 -follow -type f -name '*.pyc' -delete && \
-    find /opt/miniconda3 -follow -type f -name '*.pyo' -delete && \
+    find /opt/eddai -follow -type f -name '*.pyc' -delete && \
+    find /opt/eddai -follow -type f -name '*.pyo' -delete && \
     # Remove JavaScript source maps
-    find /opt/miniconda3 -follow -type f -name '*.js.map' -delete && \
-    # Remove conda package cache
-    rm -rf /opt/miniconda3/pkgs
+    find /opt/eddai -follow -type f -name '*.js.map' -delete
 
 # ============================================
 # STAGE 2: Runtime - Final lightweight image
 # ============================================
-FROM anaconda/miniconda:26.7.1
+FROM debian:trixie-20261104-slim AS runtime
 
 # Set environment variables
-ENV APP_HOME=/app
-ENV CONDA_HOME=/opt/miniconda3 \
-    PATH=/opt/miniconda3/bin:$PATH \
-    PROJ_LIB=/opt/miniconda3/share/proj
+ENV APP_HOME=/app \
+    APP_ENV=/opt/eddai \
+    PATH=/opt/eddai/bin:$PATH \
+    PROJ_LIB=/opt/eddai/share/proj
 
-# Copy ONLY the compiled conda environment from builder (without cache/temp files)
-COPY --from=builder /opt/miniconda3 /opt/miniconda3
+# Install only the runtime tools required by the entrypoint and user setup
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends bash passwd && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy only the application environment, not the Conda installation
+COPY --from=builder /opt/eddai /opt/eddai
 
 # Create app directory and set working directory
-RUN mkdir $APP_HOME
+RUN mkdir -p $APP_HOME/static-server $APP_HOME/media-server
 WORKDIR $APP_HOME
 
 # Copy application code (respects .dockerignore)
@@ -59,8 +62,7 @@ RUN groupadd --system app && \
     chown -R app:app $APP_HOME && \
     sed -i 's/\r$//' $APP_HOME/entrypoint.sh && \
     chmod +x $APP_HOME/entrypoint.sh && \
-    mkdir -p /opt/miniconda3/share/proj && \
-    chmod -R 755 /opt/miniconda3/share/proj && \
+    chmod -R 755 /opt/eddai/share/proj && \
     # Remove any Python cache that might have been copied
     find $APP_HOME -type d -name __pycache__ -exec rm -rf {} + && \
     find $APP_HOME -type f -name "*.pyc" -delete
@@ -68,4 +70,5 @@ RUN groupadd --system app && \
 # Switch to non-root user
 USER app
 
+EXPOSE 8080
 ENTRYPOINT ["./entrypoint.sh"]
