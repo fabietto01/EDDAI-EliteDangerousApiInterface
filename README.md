@@ -10,6 +10,79 @@ This is an open-source project written in Python, Django, Django REST Framework,
 1. **Data Collection**: EDDAI collects data from [EDDN](https://github.com/EDCD/EDDN), processes and saves the information in the database. It is also possible to send data through the available APIs.
 2. **Data Access**: Users can access the data through API endpoints, which provide structured and easy-to-use information. Additionally, it will be possible to access the data through a web application.
 
+## Container Deployment
+
+The frontend and backend are independent images. Traefik terminates HTTPS on the
+same public hostname and routes `/api/`, `/admin/`, `/users/`, `/static/`,
+`/healthz/` and the currently unused `/media/` to Django. All other paths go to
+the Vue static server. API paths without a trailing slash also reach Django.
+
+- Frontend: Node builds Vue, then non-root Nginx serves the bundled HTML, CSS and
+    JavaScript on port 8080. SPA navigation falls back to `index.html`; missing
+    assets return 404. It does not need the backend image or a shared filesystem.
+- Backend: Daphne serves Django on port 8080. WhiteNoise serves the static files
+    collected during the image build, including admin, GIS, DRF and custom CSS.
+    Login, Frontier callbacks, API documentation, Celery and EDDN remain backend
+    responsibilities. `/healthz/` is a liveness check, not a database readiness check.
+- Media uploads are currently unused. No media or static volumes are mounted.
+    Existing Docker volumes are not deleted by this change. Do not remove old media
+    data before checking and backing it up.
+
+### Images and Configuration
+
+Configure the existing backend environment variables and these deployment values
+in the root `.env` or the deployment environment. Replace the commit placeholders
+with the full commits published by the corresponding pipelines:
+
+```dotenv
+BACKEND_IMAGE=ghcr.io/fabietto01/eddai-elitedangerousapiinterface:sha-<backend-commit>
+FRONTEND_IMAGE=ghcr.io/fabietto01/eddai-elitedangerousapiinterface-frontend:sha-<frontend-commit>
+APP_HOST=eddai.italiangamingsystem.it
+DJANGO_SETTINGS_MODULE=eddai_EliteDangerousApiInterface.settings.prod
+```
+
+Image digests can be used instead of tags. There is deliberately no `latest`
+fallback. The two commits may differ if their API contracts remain compatible.
+Traefik must already be connected to the external `proxy_net` network, with an
+`https` entrypoint and the existing certificate resolver named `claudflare`.
+PostGIS, RabbitMQ, Redis, SMTP and Loki remain external dependencies.
+
+### Release and Rollback
+
+Back up the database before applying schema changes. From the repository root:
+
+```sh
+docker compose pull
+docker compose --profile release run --rm --no-deps migrate
+docker compose up -d --remove-orphans
+```
+
+On the first deployment, `--remove-orphans` removes the old `nginx` service, which
+must not keep its competing Traefik router. Do not add `--volumes`.
+Migrations run once explicitly, not once per replica. They must remain compatible
+with any old backend replicas still running during a rolling release.
+
+Scale independently with `docker compose up -d --scale frontend=2 --scale django=2`.
+Keep a single Celery Beat scheduler. Roll back by restoring the previous image
+references and recreating the affected services; this does not undo migrations.
+
+For local builds, set `BACKEND_IMAGE=eddai-backend:local` and
+`FRONTEND_IMAGE=eddai-frontend:local`, run `docker compose build django frontend`,
+then use `docker compose up -d --pull never` with the required external services.
+
+### Automated Builds
+
+The backend and frontend workflows publish separate GHCR images on relevant
+`main` changes, releases or a manually selected Git tag. Each image gets a
+`sha-<full-commit>` tag; releases also get a version tag. Frontend-only changes
+do not rebuild the backend. Both workflows produce provenance and SBOM metadata
+and upload image vulnerability reports. The frontend pipeline also checks SPA
+fallback and real 404 responses in its Nginx container.
+
+These workflows publish artifacts; they do not have credentials or automation
+to deploy to the production server. The Compose commands above are the explicit
+deployment procedure.
+
 ## Development Guide
 
 ### Setting Up the Development Environment (Recommended: Dev Containers)
@@ -195,7 +268,9 @@ To start the three Celery workers and the Celery beat scheduler, use the followi
     python celery -A eddai_EliteDangerousApiInterface beat -l Debug --scheduler django_celery_beat.schedulers:DatabaseSchedule
     ```
 
-This will start the Django development server, and you can access the application at `http://127.0.0.1:8000/`.
+This starts the Django backend at `http://127.0.0.1:8000/`; it no longer renders
+the Vue application. Start Vite separately as described in the
+[frontend guide](eddai_EliteDangerousApiInterface/ed_frontend/README.md).
 
 Using Visual Studio Code's debugging feature is recommended as it provides a more integrated development experience.
 

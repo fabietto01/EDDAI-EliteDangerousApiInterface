@@ -3,7 +3,20 @@ from celery.schedules import crontab
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.environ.get(
+    'DJANGO_ALLOWED_HOSTS', None
+)
+
+if ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ALLOWED_HOSTS.split(',')
+else:
+    ALLOWED_HOSTS = []
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 
 # Un elenco di tutte le persone che ricevono notifiche di errore del codice. 
 # https://docs.djangoproject.com/en/4.1/ref/settings/#admins
@@ -157,9 +170,15 @@ CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 # A list of strings representing the host/domain names that this Django site can serve.
 # https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
-CSRF_TRUSTED_ORIGINS = [
-    'https://eddai.italiangamingsystem.it'
-]
+
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    'DJANGO_CSRF_TRUSTED_ORIGINS', None
+)
+
+if CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS.split(',')
+else:
+    CSRF_TRUSTED_ORIGINS = []
 
 # Cacheops
 # https://github.com/Suor/django-cacheops?tab=readme-ov-file#setup

@@ -3,7 +3,9 @@ x-common-config: &default-config
   image: ghcr.io/fabietto01/eddai-elitedangerousapiinterface:latest
   environment:
   - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-  - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+  - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-eddai_EliteDangerousApiInterface.settings.prod}
+  - DJANGO_ALLOWED_HOSTS=${APP_HOST:-eddai.italiangamingsystem.it},localhost,127.0.0.1
+  - DJANGO_CSRF_TRUSTED_ORIGINS=https://${APP_HOST:-eddai.italiangamingsystem.it}
   - DJANGO_EMAIL_HOST=${DJANGO_EMAIL_HOST}
   - DJANGO_EMAIL_HOST_USER=${DJANGO_EMAIL_HOST_USER}
   - DJANGO_DEFAULT_FROM_EMAIL=${DJANGO_DEFAULT_FROM_EMAIL}
@@ -30,14 +32,14 @@ x-common-config: &default-config
   networks:
     - eddai
 
-volumes:
-  static_volume:
-  media_volume:
-
 networks:
   eddai:
   proxy_net:
     external: true
+
+volumes:
+  static_volume:
+  media_volume:
 
 services:
   django:
@@ -45,11 +47,37 @@ services:
     container_name: django
     command: python -m daphne eddai_EliteDangerousApiInterface.asgi:application -p 8080 -b 0.0.0.0
     volumes:
-      - ./eddai_EliteDangerousApiInterface/static-server:/app/static-server
+      - static_volume:/app/static-server:ro
       - media_volume:/app/media-server
-    depends_on:
-      - celery_worker_task
-      - celery_worker_admin
+    networks:
+      - eddai
+      - proxy_net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz/', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy_net"
+      - "traefik.http.routers.eddai-backend.rule=Host(`${APP_HOST:-eddai.italiangamingsystem.it}`) && (Path(`/api`) || PathPrefix(`/api/`) || Path(`/admin`) || PathPrefix(`/admin/`) || Path(`/users`) || PathPrefix(`/users/`) || Path(`/healthz`) || PathPrefix(`/healthz/`))"
+      - "traefik.http.routers.eddai-backend.priority=100"
+      - "traefik.http.routers.eddai-backend.entrypoints=https"
+      - "traefik.http.routers.eddai-backend.tls=true"
+      - "traefik.http.routers.eddai-backend.tls.certresolver=claudflare"
+      - "traefik.http.routers.eddai-backend.service=eddai-backend"
+      - "traefik.http.services.eddai-backend.loadbalancer.server.port=8080"
+  migrate:
+    <<: *default-config
+    profiles: [release]
+    restart: "no"
+    command:
+      - bash
+      - -c
+      - python manage.py migrate --noinput && python manage.py collectstatic --noinput
+    volumes:
+      - static_volume:/app/static-server
   celery_worker_task:
     <<: *default-config
     deploy:
@@ -80,24 +108,39 @@ services:
     command: python eddn.py
     depends_on:
       - celery_worker_ed_dbsync
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    depends_on:
-      - django
+  frontend:
+    image: ${FRONTEND_IMAGE:?Set FRONTEND_IMAGE to a frontend tag or digest}
+    pull_policy: always
+    build: ./eddai_EliteDangerousApiInterface/ed_frontend
+    restart: always
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m,mode=1777
     volumes:
-      - ./eddai_EliteDangerousApiInterface/static-server:/app/static-server
-      - media_volume:/app/media-server
+      - type: volume
+        source: static_volume
+        target: /app/static-server
+        read_only: true
+        volume:
+          nocopy: true
+      - type: volume
+        source: media_volume
+        target: /app/media-server
+        read_only: true
+        volume:
+          nocopy: true
     networks:
-      - eddai
       - proxy_net
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy_net"
-      # Router per le richieste HTTP
-      - "traefik.http.routers.nginx.rule=Host(`eddai.italiangamingsystem.it`)"
-      - "traefik.http.routers.nginx.entrypoints=https"
-      - "traefik.http.routers.nginx.tls=true"
-      - "traefik.http.routers.nginx.tls.certresolver=claudflare"
-      - "traefik.http.routers.nginx.service=nginx"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+      - "traefik.http.routers.eddai-frontend.rule=Host(`${APP_HOST:-eddai.italiangamingsystem.it}`)"
+      - "traefik.http.routers.eddai-frontend.priority=1"
+      - "traefik.http.routers.eddai-frontend.entrypoints=https"
+      - "traefik.http.routers.eddai-frontend.tls=true"
+      - "traefik.http.routers.eddai-frontend.tls.certresolver=claudflare"
+      - "traefik.http.routers.eddai-frontend.service=eddai-frontend"
+      - "traefik.http.services.eddai-frontend.loadbalancer.server.port=8080"

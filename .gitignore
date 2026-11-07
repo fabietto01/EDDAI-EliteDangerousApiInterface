@@ -160,3 +160,5 @@ cython_debug/
 rabbitmq_config/
 mysql_config/
 eddai_EliteDangerousApiInterface/celerybeat-schedule.*
+eddai_EliteDangerousApiInterface/static-server/
+eddai_EliteDangerousApiInterface/media-server/

@@ -1,7 +1,7 @@
-from django.views.generic import TemplateView
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 
-# Create your views here.
 
-
-class IndexTemplateView(TemplateView):
-    template_name = 'index.html'
+@require_GET
+def health_view(request):
+    return JsonResponse({'status': 'ok'})

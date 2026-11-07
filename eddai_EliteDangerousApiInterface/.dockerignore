@@ -43,6 +43,7 @@ db.sqlite3
 # Media e static (se gestiti separatamente)
 media-server/
 static-server/
+static/build/
 
 # Environment
 .env

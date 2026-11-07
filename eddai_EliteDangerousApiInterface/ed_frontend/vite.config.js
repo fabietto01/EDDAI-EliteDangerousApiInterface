@@ -12,7 +12,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
-  base: process.env.NODE_ENV === "production" ? "/static-server/vuejs/" : "/",
+  base: '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -21,13 +21,22 @@ export default defineConfig({
   server:{
     port: 5173,
     host: '127.0.0.1',
+    proxy: Object.fromEntries(
+      ['/api', '/admin', '/users', '/static', '/healthz'].map((path) => [
+        path,
+        {
+          target: process.env.DJANGO_DEV_UPSTREAM || 'http://127.0.0.1:8080',
+          changeOrigin: false,
+        },
+      ]),
+    ),
     watch: {
       usePolling: true
     }
   },
   build: {
     manifest: true,
-    outDir: "../static-server/vuejs/",
+    outDir: 'dist',
     emptyOutDir: true
   },
 })

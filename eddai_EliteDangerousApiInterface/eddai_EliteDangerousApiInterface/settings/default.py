@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -161,8 +162,8 @@ CACHEOPS_ENABLED = True
 
 # setting per la gestione della geolocalizzazione
 # https://docs.djangoproject.com/en/5.0/ref/contrib/gis/install/geolibs/#geos-library-path
-GDAL_LIBRARY_PATH = r'/opt/miniconda3/lib/libgdal.so'
-GEOS_LIBRARY_PATH = r'/opt/miniconda3/lib/libgeos_c.so'
+GDAL_LIBRARY_PATH = str(Path(sys.prefix) / 'lib' / 'libgdal.so')
+GEOS_LIBRARY_PATH = str(Path(sys.prefix) / 'lib' / 'libgeos_c.so')
 
 # Router per il database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database-routers
@@ -237,6 +238,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static-server'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media-server'
