@@ -4,6 +4,7 @@ from celery.schedules import crontab
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Un elenco di tutte le persone che ricevono notifiche di errore del codice. 
 # https://docs.djangoproject.com/en/4.1/ref/settings/#admins
