@@ -88,11 +88,21 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          flavor: latest=false
           tags: |
             type=semver,pattern=v{{version}},enable=${{ github.event_name == 'release' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
             type=raw,value=${{ github.event.inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' }}
-            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+
+      - name: Validate manual Docker tags
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          if grep -q ':latest$' <<< "$IMAGE_TAGS"; then
+            echo '::error::Manual builds must not update latest'
+            exit 1
+          fi
 
       - name: Build and push Docker image
         id: build
