@@ -105,7 +105,7 @@ services:
       - celery_worker_ed_dbsync
   nginx:
     pull_policy: always
-    image: docker pull ghcr.io/fabietto01/eddai-elitedangerousapiinterface-frontend:latest
+    image: ghcr.io/fabietto01/eddai-elitedangerousapiinterface-frontend:latest
     container_name: nginx
     depends_on:
       - django
