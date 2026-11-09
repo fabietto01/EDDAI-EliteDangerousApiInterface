@@ -1,0 +1,206 @@
+name: Build and Push Frontend
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag/Version da pubblicare (es: v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-frontend
+
+jobs:
+  validate:
+    name: Validate Tag
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Validate tag exists
+        env:
+          RELEASE_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          git show-ref --verify "refs/tags/$RELEASE_TAG"
+          git show "refs/tags/$RELEASE_TAG" --no-patch --format='%H - %s (%ci)'
+
+  build-and-push:
+    name: Build and Push Frontend Image
+    runs-on: ubuntu-latest
+    needs: [validate]
+    if: always() && (needs.validate.result == 'success' || needs.validate.result == 'skipped')
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    env:
+      TEST_IMAGE: eddai-frontend:release-${{ github.run_id }}
+    outputs:
+      image-digest: ${{ steps.build.outputs.digest }}
+      image-tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.ref }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern=v{{version}},enable=${{ github.event_name == 'release' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' && github.event.release.prerelease == false }}
+            type=raw,value=${{ github.event.inputs.tag }},enable=${{ github.event_name == 'workflow_dispatch' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'workflow_dispatch' }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies and test home route
+        working-directory: eddai_EliteDangerousApiInterface/ed_frontend
+        run: |
+          npm ci
+          npm run test:ci
+
+      - name: Build Docker image without publishing
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./nginx/Dockerfile
+          push: false
+          load: true
+          tags: ${{ env.TEST_IMAGE }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,scope=frontend,mode=max
+
+      - name: Start image and validate Nginx
+        run: |
+          docker run --rm "$TEST_IMAGE" nginx -t
+          docker run --detach --name frontend-smoke --publish 127.0.0.1:8080:8080 "$TEST_IMAGE"
+          curl --fail --silent --show-error --retry 10 --retry-delay 1 --retry-all-errors \
+            --output /dev/null http://127.0.0.1:8080/
+
+      - name: Install browser test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/frontend-browser" --no-save --package-lock=false playwright@1.56.1
+          node "$RUNNER_TEMP/frontend-browser/node_modules/playwright/cli.js" install --with-deps chromium
+
+      - name: Verify published page candidate in Chromium
+        run: |
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const { chromium } = require(`${process.env.RUNNER_TEMP}/frontend-browser/node_modules/playwright`);
+
+          (async () => {
+            const browser = await chromium.launch();
+            try {
+              for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+                const page = await browser.newPage({ viewport });
+                const errors = [];
+                const assets = [];
+                page.on('pageerror', error => errors.push(error.message));
+                page.on('requestfailed', request => errors.push(`${request.url()}: ${request.failure()?.errorText}`));
+                page.on('response', response => {
+                  if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`);
+                  if (new URL(response.url()).origin === 'http://127.0.0.1:8080') {
+                    if (['script', 'stylesheet'].includes(response.request().resourceType())) {
+                      assets.push(response);
+                    }
+                  }
+                });
+                const response = await page.goto('http://127.0.0.1:8080/', { waitUntil: 'networkidle' });
+                assert.equal(response.status(), 200);
+                assert.equal(await page.title(), 'EDDAI');
+                const heading = page.getByRole('heading', { name: 'Coming Soon', exact: true });
+                await heading.waitFor({ state: 'visible' });
+                assert.equal(await page.locator('#infoSectionTitle').textContent().then(text => text.trim()),
+                  'Elite Dangerous Data Interface (EDDAI)');
+                assert.equal(await page.locator('a.navbar-brand').getAttribute('href'), '/');
+                assert(assets.some(asset => asset.request().resourceType() === 'script'), 'No JavaScript loaded');
+                assert(assets.some(asset => asset.request().resourceType() === 'stylesheet'), 'No stylesheet loaded');
+                for (const asset of assets) {
+                  const contentType = asset.headers()['content-type'] || '';
+                  assert.match(contentType, asset.request().resourceType() === 'stylesheet'
+                    ? /text\/css/ : /(?:javascript|ecmascript)/);
+                }
+                assert.deepEqual(errors, []);
+                await page.close();
+              }
+            } finally {
+              await browser.close();
+            }
+          })().catch(error => { console.error(error); process.exitCode = 1; });
+          NODE
+
+      - name: Run Trivy security scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{ env.TEST_IMAGE }}
+          format: 'sarif'
+          output: 'trivy-frontend-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always() && steps.build.outcome == 'success'
+        with:
+          sarif_file: 'trivy-frontend-results.sarif'
+          category: frontend
+
+      - name: Publish tested Docker image
+        env:
+          IMAGE_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          if [[ -z "$IMAGE_TAGS" ]]; then
+            echo '::error::No Docker tags generated for this release'
+            exit 1
+          fi
+          while IFS= read -r image_tag; do
+            [[ -z "$image_tag" ]] && continue
+            docker tag "$TEST_IMAGE" "$image_tag"
+            docker push "$image_tag"
+          done <<< "$IMAGE_TAGS"
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs frontend-smoke || true
+
+      - name: Remove test container
+        if: always()
+        run: docker rm --force frontend-smoke || true
