@@ -5,10 +5,12 @@ on:
     branches: [ "*" ]
     paths:
       - 'eddai_EliteDangerousApiInterface/**'
+      - '!eddai_EliteDangerousApiInterface/ed_frontend/**'
   push:
     branches: [ "main" ]
     paths:
       - 'eddai_EliteDangerousApiInterface/**'
+      - '!eddai_EliteDangerousApiInterface/ed_frontend/**'
 
 env:
   IMAGE_NAME: eddai-elitedangerousapiinterface
