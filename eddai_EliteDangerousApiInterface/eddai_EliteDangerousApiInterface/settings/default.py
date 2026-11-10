@@ -110,13 +110,13 @@ ASGI_APPLICATION = "eddai_EliteDangerousApiInterface.asgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'ed_info',
+        'NAME': os.environ.get('POSTGIS_DB', 'ed_info'),
         'USER':  os.environ.get('POSTGIS_USER', "postgres"),
         'PASSWORD': os.environ.get('POSTGIS_PASSWORD', "123"),
         'HOST': os.environ.get('POSTGIS_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGIS_PORT', '5432'),
         "TEST": {
-            "NAME": "ed_info_test",
+            "NAME": f'{os.environ.get('POSTGIS_DB', 'ed_info')}_test',
             "DEPENDENCIES": [],
         },
         'OPTIONS':{
