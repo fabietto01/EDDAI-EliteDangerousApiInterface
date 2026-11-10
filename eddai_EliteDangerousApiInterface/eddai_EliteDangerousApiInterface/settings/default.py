@@ -116,7 +116,7 @@ DATABASES = {
         'HOST': os.environ.get('POSTGIS_HOST', 'localhost'),
         'PORT': os.environ.get('POSTGIS_PORT', '5432'),
         "TEST": {
-            "NAME": f'{os.environ.get('POSTGIS_DB', 'ed_info')}_test',
+            "NAME": f"{os.environ.get('POSTGIS_DB', 'ed_info')}_test",
             "DEPENDENCIES": [],
         },
         'OPTIONS':{
